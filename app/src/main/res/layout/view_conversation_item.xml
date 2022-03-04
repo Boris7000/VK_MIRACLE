@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="9dp">
+
+    <FrameLayout
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical">
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/photo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="?attr/placeHolderColor"
+            app:riv_border_color="?attr/colorContrast10"
+            app:riv_border_width="@dimen/imageBorderWidth"
+            app:riv_mutate_background="true"
+            app:riv_oval="true" />
+
+        <ViewStub
+            android:id="@+id/onlineStatusStub"
+            android:inflatedId="@+id/onlineStatus"
+            android:layout="@layout/view_online_status_stub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"/>
+
+        <ViewStub
+            android:id="@+id/imageTextStub"
+            android:inflatedId="@+id/imageText"
+            android:layout="@layout/view_image_text_stub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:isScrollContainer="false">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="16sp"
+                    tools:text="Имя диалога" />
+
+                <ViewStub
+                    android:id="@+id/verifiedStub"
+                    android:inflatedId="@+id/verified"
+                    android:layout_width="12sp"
+                    android:layout_height="12sp"
+                    android:layout_marginTop="0.7sp"
+                    android:layout_marginStart="5sp"
+                    android:layout_weight="0"
+                    android:layout="@layout/view_verified_icon_stub"/>
+
+                <ViewStub
+                    android:id="@+id/mutedStub"
+                    android:inflatedId="@+id/muted"
+                    android:layout_width="12sp"
+                    android:layout_height="12sp"
+                    android:layout_marginTop="2sp"
+                    android:layout_marginStart="5sp"
+                    android:layout_weight="0"
+                    android:layout="@layout/view_muted_icon_stub"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:isScrollContainer="false">
+
+                <TextView
+                    android:id="@+id/message_text_from"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorContrast40"
+                    android:textSize="15sp"
+                    tools:text="Кто: " />
+
+                <TextView
+                    android:id="@+id/body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="15sp"
+                    tools:text="Текст" />
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4sp"
+                    android:layout_weight="0"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorContrast40"
+                    android:textSize="15sp"
+                    tools:text="Когда" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/unreadDot"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_weight="0"
+            android:layout_marginHorizontal="8dp"
+            android:background="@drawable/conversation_unread"/>
+
+        <TextView
+            android:id="@+id/unreadCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:background="@drawable/conversation_counter_bg"
+            android:fontFamily="sans-serif-medium"
+            android:includeFontPadding="false"
+            android:paddingHorizontal="7.5dp"
+            android:paddingVertical="3dp"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="14sp"
+            tools:text="100" />
+
+    </LinearLayout>
+</FrameLayout>

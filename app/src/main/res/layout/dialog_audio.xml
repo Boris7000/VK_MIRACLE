@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_card"
+        android:padding="16dp">
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:padding="16dp"
+            android:background="@drawable/rounded_card_child_white"
+            tools:backgroundTint="@color/black">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/photo"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/white_half_10"
+                app:riv_border_color="@color/white_half_20"
+                android:scaleType="centerCrop"
+                app:riv_border_width="@dimen/imageBorderWidth"
+                app:riv_mutate_background="true"
+                app:riv_corner_radius="@dimen/child_round2"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="64dp"
+                android:layout_marginEnd="52dp"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:isScrollContainer="false">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:fontFamily="sans-serif"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        tools:text="Title" />
+
+                    <ViewStub
+                        android:id="@+id/explicitStub"
+                        android:inflatedId="@+id/explicit"
+                        android:layout_width="16sp"
+                        android:layout_height="16sp"
+                        android:layout_marginTop="1.1sp"
+                        android:layout_marginStart="4.2sp"
+                        android:layout="@layout/view_explicit_icon_stub_sheet"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/white_half_60"
+                    android:textSize="15sp"
+                    tools:text="Subtitle" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/pl_repeat"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_gravity="end"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_share_28"
+                app:tint="@color/white_half_40" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="4dp">
+
+        </LinearLayout>
+
+        <com.vkontakte.miracle.engine.view.MiracleButton
+            android:id="@+id/cancel_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:active="false"
+            app:outline="false"
+            app:secondary="true"
+            app:text="@string/cancel" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,356 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="LightBaseTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorError">@color/error</item>
+        <item name="backgroundColor">@color/white</item>
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="android:windowBackground">?attr/backgroundColor</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!--<item name="android:statusBarColor">?attr/backgroundColor</item>-->
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <!--<item name="android:navigationBarColor">?attr/backgroundColor</item>-->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+
+        <item name="android:colorButtonNormal">?attr/colorPrimary</item>
+        <item name="colorSwitchThumbNormal">@color/lightControlNormal</item>
+        <item name="colorControlActivated">?android:attr/colorButtonNormal</item>
+        <item name="swipeRefreshCircleColor">@color/white</item>
+
+        <item name="colorContrast100">@color/contrast100_Light</item>
+        <item name="colorContrast90">@color/contrast90_Light</item>
+        <item name="colorContrast80">@color/contrast80_Light</item>
+        <item name="colorContrast70">@color/contrast70_Light</item>
+        <item name="colorContrast60">@color/contrast60_Light</item>
+        <item name="colorContrast50">@color/contrast50_Light</item>
+        <item name="colorContrast40">@color/contrast40_Light</item>
+        <item name="colorContrast30">@color/contrast30_Light</item>
+        <item name="colorContrast20">@color/contrast20_Light</item>
+        <item name="colorContrast10">@color/contrast10_Light</item>
+
+        <item name="android:textColor">?attr/colorContrast100</item>
+        <item name="textHighlightColor">@color/textHighLightColorLight</item>
+        <item name="placeHolderColor">@color/lightPlaceHolder</item>
+        <item name="colorOnBackground">?attr/colorContrast100</item>
+
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimaryTranslucent_10">@color/white_half_10</item>
+        <item name="colorOnPrimaryTranslucent_20">@color/white_half_20</item>
+        <item name="colorOnPrimaryTranslucent_30">@color/white_half_30</item>
+        <item name="colorOnPrimaryTranslucent_40">@color/white_half_40</item>
+        <item name="colorOnPrimaryTranslucent_50">@color/white_half_50</item>
+        <item name="colorOnPrimaryTranslucent_60">@color/white_half_60</item>
+        <item name="colorOnPrimaryTranslucent_70">@color/white_half_70</item>
+        <item name="colorOnPrimaryTranslucent_80">@color/white_half_80</item>
+        <item name="colorOnPrimaryTranslucent_90">@color/white_half_90</item>
+
+        <item name="colorOnSecondary">?attr/colorOnPrimary</item>
+        <item name="colorOnSecondaryTranslucent_10">?attr/colorOnPrimaryTranslucent_10</item>
+        <item name="colorOnSecondaryTranslucent_20">?attr/colorOnPrimaryTranslucent_20</item>
+        <item name="colorOnSecondaryTranslucent_30">?attr/colorOnPrimaryTranslucent_30</item>
+        <item name="colorOnSecondaryTranslucent_40">?attr/colorOnPrimaryTranslucent_40</item>
+        <item name="colorOnSecondaryTranslucent_50">?attr/colorOnPrimaryTranslucent_50</item>
+        <item name="colorOnSecondaryTranslucent_60">?attr/colorOnPrimaryTranslucent_60</item>
+        <item name="colorOnSecondaryTranslucent_70">?attr/colorOnPrimaryTranslucent_70</item>
+        <item name="colorOnSecondaryTranslucent_80">?attr/colorOnPrimaryTranslucent_80</item>
+        <item name="colorOnSecondaryTranslucent_90">?attr/colorOnPrimaryTranslucent_90</item>
+
+        <item name="colorAccent">?attr/colorPrimary</item>
+
+        <item name="colorSecondary">?attr/colorPrimary</item>
+        <item name="colorSecondary_80">?attr/colorPrimary_80</item>
+        <item name="colorSecondary_60">?attr/colorPrimary_60</item>
+        <item name="colorSecondary_40">?attr/colorPrimary_40</item>
+        <item name="colorSecondary_20">?attr/colorPrimary_20</item>
+
+        <item name="colorSecondaryNeutral">?attr/colorPrimaryNeutral</item>
+        <item name="colorSecondaryNeutral_80">?attr/colorPrimaryNeutral_80</item>
+        <item name="colorSecondaryNeutral_60">?attr/colorPrimaryNeutral_60</item>
+        <item name="colorSecondaryNeutral_40">?attr/colorPrimaryNeutral_40</item>
+        <item name="colorSecondaryNeutral_20">?attr/colorPrimaryNeutral_20</item>
+
+        <item name="colorSurfacePrimary">?attr/colorPrimaryNeutral_20</item>
+        <item name="colorSurfaceSecondary">?attr/colorSecondaryNeutral_20</item>
+
+        <item name="scrollBarColor">@color/white_half_40</item>
+        <item name="globalTranslationZ">@dimen/translationZ</item>
+        <item name="android:spotShadowAlpha">0.04</item>
+        <item name="android:ambientShadowAlpha">0.06</item>
+
+        <item name="messageInBackgroundColor">#f2f2f2</item>
+        <item name="messageOutBackgroundColor">?attr/colorPrimary</item>
+    </style>
+
+<!-- Base application theme. -->
+    <style name="BaseTheme" parent="LightBaseTheme"/>
+
+    <style name="BlueTheme" parent="BaseTheme">
+        <item name="colorPrimary">@color/skyBlue_500</item>
+        <item name="colorPrimary_80">@color/skyBlue_400</item>
+        <item name="colorPrimary_60">@color/skyBlue_300</item>
+        <item name="colorPrimary_40">@color/skyBlue_200</item>
+        <item name="colorPrimary_20">@color/skyBlue_100</item>
+        <item name="colorPrimaryNeutral">@color/skyBlue_neutral_500</item>
+        <item name="colorPrimaryNeutral_80">@color/skyBlue_neutral_400</item>
+        <item name="colorPrimaryNeutral_60">@color/skyBlue_neutral_300</item>
+        <item name="colorPrimaryNeutral_40">@color/skyBlue_neutral_200</item>
+        <item name="colorPrimaryNeutral_20">@color/skyBlue_neutral_100</item>
+    </style>
+
+    <style name="EmeraldTheme" parent="BaseTheme">
+        <item name="colorPrimary">@color/emerald_500</item>
+        <item name="colorPrimary_80">@color/emerald_400</item>
+        <item name="colorPrimary_60">@color/emerald_300</item>
+        <item name="colorPrimary_40">@color/emerald_200</item>
+        <item name="colorPrimary_20">@color/emerald_100</item>
+        <item name="colorPrimaryNeutral">@color/emerald_neutral_500</item>
+        <item name="colorPrimaryNeutral_80">@color/emerald_neutral_400</item>
+        <item name="colorPrimaryNeutral_60">@color/emerald_neutral_300</item>
+        <item name="colorPrimaryNeutral_40">@color/emerald_neutral_200</item>
+        <item name="colorPrimaryNeutral_20">@color/emerald_neutral_100</item>
+    </style>
+
+    <style name="VioletTheme" parent="BaseTheme">
+        <item name="colorPrimary">@color/violet_500</item>
+        <item name="colorPrimary_80">@color/violet_400</item>
+        <item name="colorPrimary_60">@color/violet_300</item>
+        <item name="colorPrimary_40">@color/violet_200</item>
+        <item name="colorPrimary_20">@color/violet_100</item>
+        <item name="colorPrimaryNeutral">@color/violet_neutral_500</item>
+        <item name="colorPrimaryNeutral_80">@color/violet_neutral_400</item>
+        <item name="colorPrimaryNeutral_60">@color/violet_neutral_300</item>
+        <item name="colorPrimaryNeutral_40">@color/violet_neutral_200</item>
+        <item name="colorPrimaryNeutral_20">@color/violet_neutral_100</item>
+    </style>
+
+    <style name="OrangeTheme" parent="BaseTheme">
+        <item name="colorPrimary">@color/orange_500</item>
+        <item name="colorPrimary_80">@color/orange_400</item>
+        <item name="colorPrimary_60">@color/orange_300</item>
+        <item name="colorPrimary_40">@color/orange_200</item>
+        <item name="colorPrimary_20">@color/orange_100</item>
+        <item name="colorPrimaryNeutral">@color/orange_neutral_500</item>
+        <item name="colorPrimaryNeutral_80">@color/orange_neutral_400</item>
+        <item name="colorPrimaryNeutral_60">@color/orange_neutral_300</item>
+        <item name="colorPrimaryNeutral_40">@color/orange_neutral_200</item>
+        <item name="colorPrimaryNeutral_20">@color/orange_neutral_100</item>
+    </style>
+
+    <style name="CrimsonTheme" parent="BaseTheme">
+        <item name="colorPrimary">@color/crimson_500</item>
+        <item name="colorPrimary_80">@color/crimson_400</item>
+        <item name="colorPrimary_60">@color/crimson_300</item>
+        <item name="colorPrimary_40">@color/crimson_200</item>
+        <item name="colorPrimary_20">@color/crimson_100</item>
+        <item name="colorPrimaryNeutral">@color/crimson_neutral_500</item>
+        <item name="colorPrimaryNeutral_80">@color/crimson_neutral_400</item>
+        <item name="colorPrimaryNeutral_60">@color/crimson_neutral_300</item>
+        <item name="colorPrimaryNeutral_40">@color/crimson_neutral_200</item>
+        <item name="colorPrimaryNeutral_20">@color/crimson_neutral_100</item>
+    </style>
+
+    <style name="CarrotTheme" parent="BaseTheme">
+        <item name="colorPrimary">@color/carrot_500</item>
+        <item name="colorPrimary_80">@color/carrot_400</item>
+        <item name="colorPrimary_60">@color/carrot_300</item>
+        <item name="colorPrimary_40">@color/carrot_200</item>
+        <item name="colorPrimary_20">@color/carrot_100</item>
+        <item name="colorPrimaryNeutral">@color/carrot_neutral_500</item>
+        <item name="colorPrimaryNeutral_80">@color/carrot_neutral_400</item>
+        <item name="colorPrimaryNeutral_60">@color/carrot_neutral_300</item>
+        <item name="colorPrimaryNeutral_40">@color/carrot_neutral_200</item>
+        <item name="colorPrimaryNeutral_20">@color/carrot_neutral_100</item>
+    </style>
+
+    <style name="CyberpunkTheme" parent="BaseTheme">
+        <item name="colorPrimary">@color/v_500</item>
+        <item name="colorPrimary_80">@color/v_400</item>
+        <item name="colorPrimary_60">@color/v_300</item>
+        <item name="colorPrimary_40">@color/v_200</item>
+        <item name="colorPrimary_20">@color/v_100</item>
+        <item name="colorPrimaryNeutral">@color/v_neutral_500</item>
+        <item name="colorPrimaryNeutral_80">@color/v_neutral_400</item>
+        <item name="colorPrimaryNeutral_60">@color/v_neutral_300</item>
+        <item name="colorPrimaryNeutral_40">@color/v_neutral_200</item>
+        <item name="colorPrimaryNeutral_20">@color/v_neutral_100</item>
+        <item name="colorSecondary">@color/aquaDark_500</item>
+        <item name="colorSecondary_80">@color/aquaDark_400</item>
+        <item name="colorSecondary_60">@color/aquaDark_300</item>
+        <item name="colorSecondary_40">@color/aquaDark_200</item>
+        <item name="colorSecondary_20">@color/aquaDark_100</item>
+        <item name="colorSecondaryNeutral">@color/aquaDark_neutral_500</item>
+        <item name="colorSecondaryNeutral_80">@color/aquaDark_neutral_400</item>
+        <item name="colorSecondaryNeutral_60">@color/aquaDark_neutral_300</item>
+        <item name="colorSecondaryNeutral_40">@color/aquaDark_neutral_200</item>
+        <item name="colorSecondaryNeutral_20">@color/aquaDark_neutral_100</item>
+    </style>
+
+    <style name="SunsetTheme" parent="BaseTheme">
+        <item name="colorPrimary">@color/pink_500</item>
+        <item name="colorPrimary_80">@color/pink_400</item>
+        <item name="colorPrimary_60">@color/pink_300</item>
+        <item name="colorPrimary_40">@color/pink_200</item>
+        <item name="colorPrimary_20">@color/pink_100</item>
+        <item name="colorPrimaryNeutral">@color/pink_neutral_500</item>
+        <item name="colorPrimaryNeutral_80">@color/pink_neutral_400</item>
+        <item name="colorPrimaryNeutral_60">@color/pink_neutral_300</item>
+        <item name="colorPrimaryNeutral_40">@color/pink_neutral_200</item>
+        <item name="colorPrimaryNeutral_20">@color/pink_neutral_100</item>
+        <item name="colorSecondary">@color/skyBlue_500</item>
+        <item name="colorSecondary_80">@color/skyBlue_400</item>
+        <item name="colorSecondary_60">@color/skyBlue_300</item>
+        <item name="colorSecondary_40">@color/skyBlue_200</item>
+        <item name="colorSecondary_20">@color/skyBlue_100</item>
+        <item name="colorSecondaryNeutral">@color/skyBlue_neutral_500</item>
+        <item name="colorSecondaryNeutral_80">@color/skyBlue_neutral_400</item>
+        <item name="colorSecondaryNeutral_60">@color/skyBlue_neutral_300</item>
+        <item name="colorSecondaryNeutral_40">@color/skyBlue_neutral_200</item>
+        <item name="colorSecondaryNeutral_20">@color/skyBlue_neutral_100</item>
+    </style>
+
+    <style name="NeonTheme" parent="BaseTheme">
+        <item name="colorPrimary">@color/violet_500</item>
+        <item name="colorPrimary_80">@color/violet_400</item>
+        <item name="colorPrimary_60">@color/violet_300</item>
+        <item name="colorPrimary_40">@color/violet_200</item>
+        <item name="colorPrimary_20">@color/violet_100</item>
+        <item name="colorPrimaryNeutral">@color/violet_neutral_500</item>
+        <item name="colorPrimaryNeutral_80">@color/violet_neutral_400</item>
+        <item name="colorPrimaryNeutral_60">@color/violet_neutral_300</item>
+        <item name="colorPrimaryNeutral_40">@color/violet_neutral_200</item>
+        <item name="colorPrimaryNeutral_20">@color/violet_neutral_100</item>
+        <item name="colorSecondary">@color/crush_500</item>
+        <item name="colorSecondary_80">@color/crush_400</item>
+        <item name="colorSecondary_60">@color/crush_300</item>
+        <item name="colorSecondary_40">@color/crush_200</item>
+        <item name="colorSecondary_20">@color/crush_100</item>
+        <item name="colorSecondaryNeutral">@color/crush_neutral_500</item>
+        <item name="colorSecondaryNeutral_80">@color/crush_neutral_400</item>
+        <item name="colorSecondaryNeutral_60">@color/crush_neutral_300</item>
+        <item name="colorSecondaryNeutral_40">@color/crush_neutral_200</item>
+        <item name="colorSecondaryNeutral_20">@color/crush_neutral_100</item>
+    </style>
+
+    <style name="FijiTheme" parent="BaseTheme">
+        <item name="colorPrimary">@color/fiji_500</item>
+        <item name="colorPrimary_80">@color/fiji_400</item>
+        <item name="colorPrimary_60">@color/fiji_300</item>
+        <item name="colorPrimary_40">@color/fiji_200</item>
+        <item name="colorPrimary_20">@color/fiji_100</item>
+        <item name="colorPrimaryNeutral">@color/fiji_neutral_500</item>
+        <item name="colorPrimaryNeutral_80">@color/fiji_neutral_400</item>
+        <item name="colorPrimaryNeutral_60">@color/fiji_neutral_300</item>
+        <item name="colorPrimaryNeutral_40">@color/fiji_neutral_200</item>
+        <item name="colorPrimaryNeutral_20">@color/fiji_neutral_100</item>
+        <item name="colorSecondary">@color/pink_500</item>
+        <item name="colorSecondary_80">@color/pink_400</item>
+        <item name="colorSecondary_60">@color/pink_300</item>
+        <item name="colorSecondary_40">@color/pink_200</item>
+        <item name="colorSecondary_20">@color/pink_100</item>
+        <item name="colorSecondaryNeutral">@color/pink_neutral_500</item>
+        <item name="colorSecondaryNeutral_80">@color/pink_neutral_400</item>
+        <item name="colorSecondaryNeutral_60">@color/pink_neutral_300</item>
+        <item name="colorSecondaryNeutral_40">@color/pink_neutral_200</item>
+        <item name="colorSecondaryNeutral_20">@color/pink_neutral_100</item>
+    </style>
+
+    <style name="SailorTheme" parent="BaseTheme">
+        <item name="colorPrimary">@color/cyprus_500</item>
+        <item name="colorPrimary_80">@color/cyprus_400</item>
+        <item name="colorPrimary_60">@color/cyprus_300</item>
+        <item name="colorPrimary_40">@color/cyprus_200</item>
+        <item name="colorPrimary_20">@color/cyprus_100</item>
+        <item name="colorPrimaryNeutral">@color/cyprus_neutral_500</item>
+        <item name="colorPrimaryNeutral_80">@color/cyprus_neutral_400</item>
+        <item name="colorPrimaryNeutral_60">@color/cyprus_neutral_300</item>
+        <item name="colorPrimaryNeutral_40">@color/cyprus_neutral_200</item>
+        <item name="colorPrimaryNeutral_20">@color/cyprus_neutral_100</item>
+        <item name="colorSecondary">@color/crush_500</item>
+        <item name="colorSecondary_80">@color/crush_400</item>
+        <item name="colorSecondary_60">@color/crush_300</item>
+        <item name="colorSecondary_40">@color/crush_200</item>
+        <item name="colorSecondary_20">@color/crush_100</item>
+        <item name="colorSecondaryNeutral">@color/crush_neutral_500</item>
+        <item name="colorSecondaryNeutral_80">@color/crush_neutral_400</item>
+        <item name="colorSecondaryNeutral_60">@color/crush_neutral_300</item>
+        <item name="colorSecondaryNeutral_40">@color/crush_neutral_200</item>
+        <item name="colorSecondaryNeutral_20">@color/crush_neutral_100</item>
+    </style>
+
+    <style name="ForestTheme" parent="BaseTheme">
+        <item name="colorPrimary">@color/ate_500</item>
+        <item name="colorPrimary_80">@color/ate_400</item>
+        <item name="colorPrimary_60">@color/ate_300</item>
+        <item name="colorPrimary_40">@color/ate_200</item>
+        <item name="colorPrimary_20">@color/ate_100</item>
+        <item name="colorPrimaryNeutral">@color/ate_neutral_500</item>
+        <item name="colorPrimaryNeutral_80">@color/ate_neutral_400</item>
+        <item name="colorPrimaryNeutral_60">@color/ate_neutral_300</item>
+        <item name="colorPrimaryNeutral_40">@color/ate_neutral_200</item>
+        <item name="colorPrimaryNeutral_20">@color/ate_neutral_100</item>
+        <item name="colorSecondary">@color/orange_500</item>
+        <item name="colorSecondary_80">@color/orange_400</item>
+        <item name="colorSecondary_60">@color/orange_300</item>
+        <item name="colorSecondary_40">@color/orange_200</item>
+        <item name="colorSecondary_20">@color/orange_100</item>
+        <item name="colorSecondaryNeutral">@color/orange_neutral_500</item>
+        <item name="colorSecondaryNeutral_80">@color/orange_neutral_400</item>
+        <item name="colorSecondaryNeutral_60">@color/orange_neutral_300</item>
+        <item name="colorSecondaryNeutral_40">@color/orange_neutral_200</item>
+        <item name="colorSecondaryNeutral_20">@color/orange_neutral_100</item>
+    </style>
+
+    <style name="StarNightTheme" parent="BaseTheme">
+        <item name="colorPrimary">@color/skyBlue_500</item>
+        <item name="colorPrimary_80">@color/skyBlue_400</item>
+        <item name="colorPrimary_60">@color/skyBlue_300</item>
+        <item name="colorPrimary_40">@color/skyBlue_200</item>
+        <item name="colorPrimary_20">@color/skyBlue_100</item>
+        <item name="colorPrimaryNeutral">@color/skyBlue_neutral_500</item>
+        <item name="colorPrimaryNeutral_80">@color/skyBlue_neutral_400</item>
+        <item name="colorPrimaryNeutral_60">@color/skyBlue_neutral_300</item>
+        <item name="colorPrimaryNeutral_40">@color/skyBlue_neutral_200</item>
+        <item name="colorPrimaryNeutral_20">@color/skyBlue_neutral_100</item>
+        <item name="colorSecondary">@color/orange_500</item>
+        <item name="colorSecondary_80">@color/orange_400</item>
+        <item name="colorSecondary_60">@color/orange_300</item>
+        <item name="colorSecondary_40">@color/orange_200</item>
+        <item name="colorSecondary_20">@color/orange_100</item>
+        <item name="colorSecondaryNeutral">@color/orange_neutral_500</item>
+        <item name="colorSecondaryNeutral_80">@color/orange_neutral_400</item>
+        <item name="colorSecondaryNeutral_60">@color/orange_neutral_300</item>
+        <item name="colorSecondaryNeutral_40">@color/orange_neutral_200</item>
+        <item name="colorSecondaryNeutral_20">@color/orange_neutral_100</item>
+    </style>
+
+    <style name="ContrastTheme" parent="BaseTheme">
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimary_80">@color/black_400</item>
+        <item name="colorPrimary_60">@color/black_300</item>
+        <item name="colorPrimary_40">@color/black_200</item>
+        <item name="colorPrimary_20">@color/black_100</item>
+        <item name="colorPrimaryNeutral">@color/gray_neutral_500</item>
+        <item name="colorPrimaryNeutral_80">@color/gray_neutral_400</item>
+        <item name="colorPrimaryNeutral_60">@color/gray_neutral_300</item>
+        <item name="colorPrimaryNeutral_40">@color/gray_neutral_200</item>
+        <item name="colorPrimaryNeutral_20">@color/gray_neutral_100</item>
+    </style>
+
+    <style name="AppThemeStart" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:forceDarkAllowed" tools:targetApi="29">true</item>
+        <item name="android:windowBackground">@drawable/splash_screen_light</item>
+        <item name="android:navigationBarColor">?android:attr/colorBackground</item>
+        <item name="android:statusBarColor">?android:attr/colorBackground</item>
+        <item name="android:colorBackground">@color/skyBlue_500</item>
+    </style>
+
+    <style name="BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/bottomSheetStyleWrapper</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="bottomSheetStyleWrapper" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+</resources>

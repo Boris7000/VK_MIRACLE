@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:id="@+id/post_profile_group_link"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/photo"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:riv_oval="true"
+            android:background="?attr/placeHolderColor"
+            app:riv_border_color="?attr/colorContrast10"
+            app:riv_border_width="@dimen/imageBorderWidth"
+            app:riv_mutate_background="true"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="48dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:isScrollContainer="false">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:fontFamily="sans-serif"
+                    android:textSize="16sp"
+                    android:textColor="?android:attr/textColor"
+                    tools:text="Имя автора"/>
+
+                <ViewStub
+                    android:id="@+id/verifiedStub"
+                    android:inflatedId="@+id/verified"
+                    android:layout_width="12sp"
+                    android:layout_height="12sp"
+                    android:layout_marginTop="0.7sp"
+                    android:layout_marginStart="5sp"
+                    android:layout_weight="0"
+                    android:layout="@layout/view_verified_icon_stub"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?attr/colorContrast50"
+                android:textSize="13sp"
+                tools:text="Сегодня в 0:00" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:scaleType="centerInside"
+        android:layout_gravity="end"
+        app:tint="?attr/colorContrast30"
+        app:srcCompat="@drawable/ic_more_vertical_28"/>
+</merge>

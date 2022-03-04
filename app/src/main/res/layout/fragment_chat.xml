@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/view_loading_circle"/>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:translationZ="?attr/globalTranslationZ"
+        app:elevation="0dp"
+        android:background="?attr/backgroundColor">
+
+        <LinearLayout
+            android:id="@+id/appbarLinear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <include layout="@layout/back_button"/>
+
+            <FrameLayout
+                android:id="@+id/profileLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <FrameLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical">
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/photo"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/placeHolderColor"
+                        app:riv_border_color="?attr/colorContrast10"
+                        app:riv_border_width="@dimen/imageBorderWidth"
+                        app:riv_mutate_background="true"
+                        app:riv_oval="true" />
+
+                    <ViewStub
+                        android:id="@+id/onlineStatusStub"
+                        android:inflatedId="@+id/onlineStatus"
+                        android:layout="@layout/view_online_status_stub"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_gravity="bottom|end"/>
+
+                    <ViewStub
+                        android:id="@+id/imageTextStub"
+                        android:inflatedId="@+id/imageText"
+                        android:layout="@layout/view_image_text_stub_small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"/>
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="8dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:isScrollContainer="false">
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:fontFamily="sans-serif-medium"
+                            android:textSize="16sp"
+                            tools:text="Имя диалога" />
+
+                        <ViewStub
+                            android:id="@+id/verifiedStub"
+                            android:inflatedId="@+id/verified"
+                            android:layout_width="12sp"
+                            android:layout_height="12sp"
+                            android:layout_marginTop="0.7sp"
+                            android:layout_marginStart="5sp"
+                            android:layout_weight="0"
+                            android:layout="@layout/view_verified_icon_stub"/>
+
+                        <ViewStub
+                            android:id="@+id/mutedStub"
+                            android:inflatedId="@+id/muted"
+                            android:layout_width="12sp"
+                            android:layout_height="12sp"
+                            android:layout_marginTop="2sp"
+                            android:layout_marginStart="5sp"
+                            android:layout_weight="0"
+                            android:layout="@layout/view_muted_icon_stub"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:isScrollContainer="false">
+
+                        <TextView
+                            android:id="@+id/chatStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif"
+                            android:singleLine="true"
+                            android:text="Статус"
+                            android:textColor="?attr/colorContrast50"
+                            android:textSize="13sp"
+                            app:drawableTint="?android:attr/colorAccent"
+                            app:drawableTintMode="src_in" />
+
+                        <ViewStub
+                            android:id="@+id/hhhohohoho"
+                            android:inflatedId="@+id/hhhohohohoss"
+                            android:layout_width="12sp"
+                            android:layout_height="12sp"
+                            android:layout_marginTop="0.7sp"
+                            android:layout_marginStart="5sp"
+                            android:layout_weight="0"
+                            android:layout="@layout/view_verified_icon_stub"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="ifContentScrolls"
+            android:scrollbarStyle="insideOverlay"
+            android:scrollbarThumbVertical="@drawable/scroll_bar_drawable"
+            android:scrollbars="vertical"/>
+
+        <FrameLayout
+            android:id="@+id/input_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="4dp"
+            android:background="@drawable/navigation_bar_bg_portrait">
+
+
+            <ImageView
+                android:id="@+id/attachment_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="bottom"
+                android:contentDescription="@string/back"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_attach_outline_28"
+                app:tint="?attr/colorPrimary"/>
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="48dp"
+                android:layout_marginVertical="4dp"
+                android:background="@drawable/rounded_card_child_filled_primary">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/messageEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginVertical="4dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="40dp"
+                    android:background="@android:color/transparent"
+                    android:focusable="true"
+                    android:hint="@string/message"
+                    android:imeOptions="normal|actionNone"
+                    android:inputType="textMultiLine"
+                    android:maxLines="10"
+                    android:minLines="1"
+                    android:scrollbars="vertical"
+                    android:textColorHint="?attr/colorPrimary"
+                    android:textCursorDrawable="@drawable/edit_text_cursor_drawable"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/emoji_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="end|bottom"
+                    android:backgroundTintMode="src_in"
+                    android:contentDescription="@string/back"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_smile_outline_28"
+                    app:tint="?attr/colorPrimary" />
+
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/sendButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="bottom|end"
+                android:contentDescription="@string/back"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_voice_28"
+                app:tint="?attr/colorPrimary" />
+
+        </FrameLayout>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

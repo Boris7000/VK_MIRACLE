@@ -1,0 +1,157 @@
+<resources>
+    <string name="app_name">VK MIRACLE</string>
+    <string name="profile">Профиль</string>
+    <string name="notifications">Уведомления</string>
+    <string name="bookmarks">Закладки</string>
+    <string name="liked">Понравилось</string>
+    <string name="friends">Друзья</string>
+    <string name="photos">Фотографии</string>
+    <string name="albums">Альбомы</string>
+    <string name="playlist">Плейлист</string>
+    <string name="videos">Видеозаписи</string>
+    <string name="groups">Сообщества</string>
+    <string name="group">Сообщество</string>
+    <string name="dialogs">Диалоги</string>
+    <string name="message">Сообщение</string>
+    <string name="feed">Лента</string>
+    <string name="settings">Настройки</string>
+    <string name="sign_out">Выйти из аккаунта</string>
+    <string name="send">Отправить</string>
+    <string name="cancel">Отмена</string>
+    <string name="download">Скачать</string>
+    <string name="delete">Удалить</string>
+    <string name="delete_from_device">Удалить с устройтсва</string>
+    <string name="back">Назад</string>
+    <string name="play_album">Слушать</string>
+    <string name="play_next">Слушать далее</string>
+    <string name="now_playing">Сейчас играет:</string>
+    <string name="add_to_audio">Добавить в мою музыку</string>
+    <string name="go_to_artist">Перейти к исполнителю</string>
+    <string name="go_to_album">Перейти к альбому</string>
+    <string name="delete_from_audio">Удалить из моей музыки</string>
+
+
+    <string name="unknownError">Что-то пошло не так :(</string>
+    <string name="authorization">Авторизация</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="sign_in">Войти</string>
+    <string name="enterCaptcha">Введите код c картинки</string>
+    <string name="captchaNeeded">Требуется ввести каптчу</string>
+    <string name="enterValidationCode">Введите код подтверждения</string>
+    <string name="validationCode">Код подтверждения</string>
+    <string name="validationCodeNeeded">Требуется код подтверждения</string>
+    <string name="validationCodeSMS">Вам был выслан SMS-код подтверждения на номер %s</string>
+    <string name="validationCodeSMSHasAlreadyBennResent">Вам уже был выслан SMS-код подтверждения на номер %s</string>
+    <string name="validationCodeSMSLimit">Превышен лимит запросов на отправку SMS-кода</string>
+    <string name="validationCodeAPP">Требуется код подтверждения из Приложения</string>
+    <string name="forceValidationCodeSMS">Не получиили код?</string>
+    <string name="resendValidationCodeSMS">Отправить код повторно</string>
+    <string name="authentication">Аунтификация</string>
+    <string name="sendingCode">Отправка кода</string>
+    <string name="forceSMS">Запрос SMS-кода</string>
+    <string name="tokenRefresh">Обновление токена</string>
+    <string name="userDataUpdate">Обновление информации о пользователе</string>
+    <string name="registerDevice">Регистрация устройства</string>
+    <string name="missingCode">Отсутствует код</string>
+    <string name="missingValidationCode">Отсутствует код валидации</string>
+    <string name="missingLoginOrPass">Отсутствует логин или пароль</string>
+
+    <string name="settings_content">Контент</string>
+    <string name="settings_interface">Интерфейс</string>
+    <string name="settings_color_scheme">Цветовая схема</string>
+    <string name="settings_user">Пользователь</string>
+
+
+    <string name="audio_channel">Плеер VK AIR</string>
+
+    <string name="last_update">Обновлен %1$s</string>
+
+    <string name="last_seen_sex_male">Был в сети %1$s</string>
+    <string name="last_seen_sex_female">Была в сети %1$s</string>
+    <string name="last_seen_sex_unknown">Был(-а) в сети %1$s</string>
+    <string name="online">Online</string>
+
+    <string name="formatted_date_in">в %1$s</string>
+
+    /////////////////////////
+
+    <string name="formatted_date_sec1">%1$d секунды назад</string>
+    <string name="formatted_date_sec2">%1$d секунд назад</string>
+    <string name="formatted_date_sec3">%1$d секунду назад</string>
+
+    /////////////////////////
+
+    <string name="formatted_date_min1">%1$d минуты назад</string>
+    <string name="formatted_date_min2">%1$d минут назад</string>
+    <string name="formatted_date_min3">%1$d минуту назад</string>
+
+    /////////////////////////
+
+    <string name="formatted_date_today">Сегодня в %1$s</string>
+    <string name="formatted_date_tomorrow">Завтра в %1$s</string>
+    <string name="formatted_date_yesterday">Вчера в %1$s</string>
+
+    <string name="formatted_date_today1">сегодня в %1$s</string>
+    <string name="formatted_date_tomorrow1">завтра в %1$s</string>
+    <string name="formatted_date_yesterday1">вчера в %1$s</string>
+
+    /////////////////////////
+
+    <string name="formatted_year_ago">Год назад</string>
+    <string name="formatted_hour_ago">Час назад</string>
+    <string name="formatted_date_now">Только что</string>
+
+    <string name="formatted_year_ago1">год назад</string>
+    <string name="formatted_hour_ago1">час назад</string>
+    <string name="formatted_date_now1">только что</string>
+
+    <string name="formatted_year_ago2">%1$dг</string>
+    <string name="formatted_hour_ago2">%1$dч</string>
+    <string name="formatted_minute_ago2">%1$dм</string>
+    <string name="formatted_week_ago2">%1$dн</string>
+    <string name="formatted_day_ago2">%1$dд</string>
+
+    /////////////////////////
+
+    <string name="formatted_date_M1">%1$d января </string>
+    <string name="formatted_date_M2">%1$d февраля </string>
+    <string name="formatted_date_M3">%1$d марта </string>
+    <string name="formatted_date_M4">%1$d апреля </string>
+    <string name="formatted_date_M5">%1$d мая </string>
+    <string name="formatted_date_M6">%1$d июня </string>
+    <string name="formatted_date_M7">%1$d июля </string>
+    <string name="formatted_date_M8">%1$d августа </string>
+    <string name="formatted_date_M9">%1$d сентября </string>
+    <string name="formatted_date_M10">%1$d октября </string>
+    <string name="formatted_date_M11">%1$d ноября </string>
+    <string name="formatted_date_M12">%1$d декабря </string>
+
+    <string name="formatted_photo1">%1$d фотографии</string>
+    <string name="formatted_photo2">%1$d фотографий</string>
+    <string name="formatted_photo3">%1$d фотография</string>
+    <string name="formatted_photo4">%1$s фотографий</string>
+
+    <string name="formatted_plays1">%1$d прослушивания</string>
+    <string name="formatted_plays2">%1$d прослушиваний</string>
+    <string name="formatted_plays3">%1$d прослушивание</string>
+    <string name="formatted_plays4">%1$s прослушиваний</string>
+
+    <string name="formatted_audios1">%1$d аудиозаписи</string>
+    <string name="formatted_audios2">%1$d аудиозаписей</string>
+    <string name="formatted_audios3">%1$d аудиозапись</string>
+    <string name="formatted_audios4">%1$s аудиозаписей</string>
+
+    <string name="formatted_members1">%1$d участника</string>
+    <string name="formatted_members2">%1$d участников</string>
+    <string name="formatted_members3">%1$d участник</string>
+    <string name="formatted_members4">%1$s участников</string>
+
+    <string name="formatted_typing1">%1$d человека</string>
+    <string name="formatted_typing2">%1$d человек</string>
+    <string name="formatted_typing3">%1$s и еще %2$s печатают</string>
+    <string name="formatted_typing4">%1$s печатает</string>
+    <string name="formatted_typing5">%1$s записывает аудио</string>
+    <string name="formatted_typing">Печатает</string>
+    <string name="formatted_typing_audio">Записывает аудио</string>
+</resources>

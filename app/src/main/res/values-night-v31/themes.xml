@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Sys1Theme" parent="BaseTheme">
+        <item name="colorPrimary">@android:color/system_accent1_400</item>
+        <item name="colorPrimary_80">@android:color/system_accent1_500</item>
+        <item name="colorPrimary_60">@android:color/system_accent1_600</item>
+        <item name="colorPrimary_40">@android:color/system_accent1_700</item>
+        <item name="colorPrimary_20">@android:color/system_accent1_800</item>
+        <item name="colorPrimaryNeutral">@android:color/system_neutral2_500</item>
+        <item name="colorPrimaryNeutral_80">@android:color/system_neutral2_600</item>
+        <item name="colorPrimaryNeutral_60">@android:color/system_neutral2_700</item>
+        <item name="colorPrimaryNeutral_40">@android:color/system_neutral2_800</item>
+        <item name="colorPrimaryNeutral_20">@android:color/system_neutral2_900</item>
+        <item name="colorSecondary">@android:color/system_accent2_400</item>
+        <item name="colorSecondary_80">@android:color/system_accent2_500</item>
+        <item name="colorSecondary_60">@android:color/system_accent2_600</item>
+        <item name="colorSecondary_40">@android:color/system_accent2_700</item>
+        <item name="colorSecondary_20">@android:color/system_accent2_800</item>
+    </style>
+    <style name="Sys2Theme" parent="BaseTheme">
+        <item name="colorPrimary">@android:color/system_accent1_400</item>
+        <item name="colorPrimary_80">@android:color/system_accent2_500</item>
+        <item name="colorPrimary_60">@android:color/system_accent2_600</item>
+        <item name="colorPrimary_40">@android:color/system_accent2_700</item>
+        <item name="colorPrimary_20">@android:color/system_accent2_800</item>
+        <item name="colorPrimaryNeutral">@android:color/system_neutral2_500</item>
+        <item name="colorPrimaryNeutral_80">@android:color/system_neutral2_600</item>
+        <item name="colorPrimaryNeutral_60">@android:color/system_neutral2_700</item>
+        <item name="colorPrimaryNeutral_40">@android:color/system_neutral2_800</item>
+        <item name="colorPrimaryNeutral_20">@android:color/system_neutral2_900</item>
+        <item name="colorSecondary">@android:color/system_accent3_400</item>
+        <item name="colorSecondary_80">@android:color/system_accent3_500</item>
+        <item name="colorSecondary_60">@android:color/system_accent3_600</item>
+        <item name="colorSecondary_40">@android:color/system_accent3_700</item>
+        <item name="colorSecondary_20">@android:color/system_accent3_800</item>
+    </style>
+
+    <style name="AppThemeStart" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:forceDarkAllowed">true</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_screen_animated_vector_night</item>
+        <item name="android:windowSplashScreenAnimationDuration">500</item>
+        <item name="android:navigationBarColor">?android:attr/colorBackground</item>
+        <item name="android:statusBarColor">?android:attr/colorBackground</item>
+        <item name="android:colorBackground">@color/darkBack</item>
+    </style>
+
+</resources>

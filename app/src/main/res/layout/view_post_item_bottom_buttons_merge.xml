@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/likesHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:minWidth="52dp"
+            android:gravity="center"
+            android:background="@drawable/rounded_card_child_white"
+            android:backgroundTint="?attr/colorContrast10"
+            android:paddingHorizontal="9dp">
+
+            <ImageView
+                android:id="@+id/likesIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/ic_like_24"/>
+
+            <TextView
+                android:id="@+id/likesText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="?attr/colorContrast60"
+                android:textSize="13sp"
+                android:visibility="gone"
+                android:animateLayoutChanges="true"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/commentsHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:minWidth="52dp"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:background="@drawable/rounded_card_child_white"
+            android:backgroundTint="?attr/colorContrast10"
+            android:paddingHorizontal="9dp">
+
+            <ImageView
+                android:id="@+id/commentsIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/ic_comments_24" />
+            <TextView
+                android:id="@+id/commentsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="?attr/colorContrast60"
+                android:textSize="13sp"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/repostsHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:minWidth="52dp"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:background="@drawable/rounded_card_child_white"
+            android:backgroundTint="?attr/colorContrast10"
+            android:paddingHorizontal="9dp">
+
+            <ImageView
+                android:id="@+id/repostsIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/ic_share_24" />
+            <TextView
+                android:id="@+id/repostsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="?attr/colorContrast60"
+                android:textSize="13sp"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/viewsHolder"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_gravity="end"
+        android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/viewsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="?attr/colorContrast30"
+            android:textSize="13sp"/>
+
+        <ImageView
+            android:id="@+id/viewsIcon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            app:srcCompat="@drawable/ic_views_28"
+            app:tint="?attr/colorContrast30" />
+
+    </LinearLayout>
+
+</merge>

@@ -1,0 +1,21 @@
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/splash_screen_vector">
+
+    <target
+        android:name="heart"
+        android:animation="@animator/heartbeat1"/>
+
+    <target
+        android:name="heart"
+        android:animation="@animator/heartbeat2"/>
+
+    <target
+        android:name="heart"
+        android:animation="@animator/heartbeat3"/>
+
+    <target
+        android:name="heart"
+        android:animation="@animator/heartbeat4"/>
+
+</animated-vector>

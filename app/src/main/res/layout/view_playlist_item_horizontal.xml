@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="4.5dp"
+    android:orientation="vertical">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/photo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="?attr/placeHolderColor"
+        app:riv_border_color="?attr/colorContrast10"
+        app:riv_border_width="@dimen/imageBorderWidth"
+        app:riv_mutate_background="true"
+        app:riv_corner_radius="@dimen/round"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginTop="6dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:isScrollContainer="false">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:fontFamily="sans-serif"
+            android:textSize="16sp"
+            tools:text="Title" />
+
+        <ViewStub
+            android:id="@+id/explicitStub"
+            android:inflatedId="@+id/explicit"
+            android:layout_width="16sp"
+            android:layout_height="16sp"
+            android:layout_marginTop="1.1sp"
+            android:layout_marginStart="4.2sp"
+            android:layout_weight="0"
+            android:layout="@layout/view_explicit_icon_stub"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:fontFamily="sans-serif"
+        android:gravity="center_vertical"
+        android:textColor="?attr/colorContrast50"
+        android:textSize="14sp"
+        tools:text="Subtitle" />
+</LinearLayout>

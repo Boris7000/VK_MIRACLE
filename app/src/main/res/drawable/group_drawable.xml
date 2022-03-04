@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque">
+
+    <item android:gravity="center">
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/colorPrimary"/>
+        </shape>
+    </item>
+
+    <item
+        android:width="112px"
+        android:height="112px"
+        android:end="56px"
+        android:bottom="56px"
+        android:start="56px"
+        android:top="56px"
+        android:gravity="center">
+        <bitmap
+            android:src="@drawable/ic_groups_28"
+            android:tint="?attr/colorOnPrimary"/>
+    </item>
+</layer-list>

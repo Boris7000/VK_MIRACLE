@@ -1,0 +1,39 @@
+package com.vkontakte.miracle.engine.dialog;
+
+import android.content.Context;
+import android.view.View;
+import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.vkontakte.miracle.R;
+
+public abstract class MiracleBottomDialog extends BottomSheetDialog {
+
+   public MiracleBottomDialog(@NonNull Context context) {
+      this(context, R.style.BottomSheetDialog);
+   }
+
+   public MiracleBottomDialog(@NonNull Context context, int theme) {
+      super(context, theme);
+   }
+
+   protected MiracleBottomDialog(@NonNull Context context, boolean cancelable, OnCancelListener cancelListener) {
+      super(context, cancelable, cancelListener);
+   }
+
+   public abstract void show(Context context);
+
+   public void expand(){
+      BottomSheetDialog dialog = (BottomSheetDialog) this;
+      FrameLayout bottomSheet = (FrameLayout) dialog.findViewById(R.id.design_bottom_sheet);
+
+      if(bottomSheet!=null) {
+         BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
+         behavior.setSkipCollapsed(true);
+         behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+      }
+   }
+}

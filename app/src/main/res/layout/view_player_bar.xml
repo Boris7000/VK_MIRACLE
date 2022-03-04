@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.vkontakte.miracle.player.view.PlayerBarView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:background="@drawable/navigation_bar_bg_portrait">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/photo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="12dp"
+        android:layout_gravity="center_vertical"
+        android:background="?attr/placeHolderColor"
+        app:riv_border_color="?attr/colorContrast10"
+        app:riv_border_width="@dimen/imageBorderWidth"
+        app:riv_mutate_background="true"
+        app:riv_corner_radius="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:isScrollContainer="false">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:fontFamily="sans-serif"
+                    android:textSize="14sp"
+                    android:text="Titleeeeeeeeeee" />
+
+                <ViewStub
+                    android:id="@+id/explicitStub"
+                    android:inflatedId="@+id/explicit"
+                    android:layout_width="16sp"
+                    android:layout_height="16sp"
+                    android:layout_marginTop="1.1sp"
+                    android:layout_marginStart="4.2sp"
+                    android:layout_weight="0"
+                    android:layout="@layout/view_explicit_icon_stub"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:fontFamily="sans-serif"
+                android:textColor="?attr/colorContrast50"
+                android:textSize="13sp"
+                android:text="Subtitleeeeeeeeeee" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/previousButton"
+            android:layout_width="48dp"
+            android:layout_height="40dp"
+            android:layout_weight="0"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_skip_previous_28"
+            app:tint="?attr/colorSecondaryNeutral_80"
+            android:contentDescription="previous song"/>
+
+        <ImageView
+            android:id="@+id/playButton"
+            android:layout_width="48dp"
+            android:layout_height="40dp"
+            android:layout_weight="0"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_play_28"
+            app:tint="?attr/colorPrimaryNeutral_80"
+            android:contentDescription="pause or play"/>
+
+        <ImageView
+            android:id="@+id/nextButton"
+            android:layout_width="48dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="0"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_skip_next_28"
+            app:tint="?attr/colorSecondaryNeutral_80"
+            android:contentDescription="next song"/>
+    </LinearLayout>
+</com.vkontakte.miracle.player.view.PlayerBarView>

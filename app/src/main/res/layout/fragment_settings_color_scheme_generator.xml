@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:translationZ="0dp"
+        app:elevation="0dp"
+        android:background="?attr/backgroundColor">
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+            app:toolbarId="@+id/appbarLinear">
+            <LinearLayout
+                android:id="@+id/appbarLinear"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <include layout="@layout/back_button"/>
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/product"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    tools:text="title"/>
+            </LinearLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbarThumbVertical="@drawable/scroll_bar_drawable"
+        android:scrollbars="vertical"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </EditText>
+
+            <SeekBar
+                android:id="@+id/HseekBar"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="0dp"
+                android:max="359"
+                tools:progress="0"
+                tools:secondaryProgress="700"/>
+
+            <SeekBar
+                android:id="@+id/SseekBar"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="0dp"
+                android:max="100"
+                tools:progress="0"
+                tools:secondaryProgress="700"/>
+
+            <SeekBar
+                android:id="@+id/VseekBar"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="0dp"
+                android:max="100"
+                tools:progress="0"
+                tools:secondaryProgress="700"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="20dp"/>
+
+            <TextView
+                android:id="@+id/t9"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/t8"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/t7"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/t6"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/t5"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/t4"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/t3"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/t2"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/t1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/black" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="20dp"/>
+
+            <TextView
+                android:id="@+id/t29"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/t28"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/t27"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/t26"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/t25"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/t24"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/t23"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/t22"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/t21"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/player_background"
+                android:gravity="center"
+                android:textColor="@android:color/black" />
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="50dp"/>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="colorContrast10" format="color"/>
+    <attr name="colorContrast20" format="color"/>
+    <attr name="colorContrast30" format="color"/>
+    <attr name="colorContrast40" format="color"/>
+    <attr name="colorContrast50" format="color"/>
+    <attr name="colorContrast60" format="color"/>
+    <attr name="colorContrast70" format="color"/>
+    <attr name="colorContrast80" format="color"/>
+    <attr name="colorContrast90" format="color"/>
+    <attr name="colorContrast100" format="color"/>
+
+    <attr name="colorSurfacePrimary" format="color"/>
+    <attr name="colorSurfaceSecondary" format="color"/>
+    <attr name="placeHolderColor" format="color"/>
+    <attr name="swipeRefreshCircleColor" format="color"/>
+
+    <attr name="colorPrimary_20" format="color"/>
+    <attr name="colorPrimary_40" format="color"/>
+    <attr name="colorPrimary_60" format="color"/>
+    <attr name="colorPrimary_80" format="color"/>
+
+    <attr name="colorPrimaryNeutral_20" format="color"/>
+    <attr name="colorPrimaryNeutral_40" format="color"/>
+    <attr name="colorPrimaryNeutral_60" format="color"/>
+    <attr name="colorPrimaryNeutral_80" format="color"/>
+    <attr name="colorPrimaryNeutral" format="color"/>
+
+    <attr name="colorSecondary_20" format="color"/>
+    <attr name="colorSecondary_40" format="color"/>
+    <attr name="colorSecondary_60" format="color"/>
+    <attr name="colorSecondary_80" format="color"/>
+
+    <attr name="colorSecondaryNeutral_20" format="color"/>
+    <attr name="colorSecondaryNeutral_40" format="color"/>
+    <attr name="colorSecondaryNeutral_60" format="color"/>
+    <attr name="colorSecondaryNeutral_80" format="color"/>
+    <attr name="colorSecondaryNeutral" format="color"/>
+
+    <attr name="colorOnPrimaryTranslucent_10" format="color"/>
+    <attr name="colorOnPrimaryTranslucent_20" format="color"/>
+    <attr name="colorOnPrimaryTranslucent_30" format="color"/>
+    <attr name="colorOnPrimaryTranslucent_40" format="color"/>
+    <attr name="colorOnPrimaryTranslucent_50" format="color"/>
+    <attr name="colorOnPrimaryTranslucent_60" format="color"/>
+    <attr name="colorOnPrimaryTranslucent_70" format="color"/>
+    <attr name="colorOnPrimaryTranslucent_80" format="color"/>
+    <attr name="colorOnPrimaryTranslucent_90" format="color"/>
+
+    <attr name="colorOnSecondaryTranslucent_10" format="color"/>
+    <attr name="colorOnSecondaryTranslucent_20" format="color"/>
+    <attr name="colorOnSecondaryTranslucent_30" format="color"/>
+    <attr name="colorOnSecondaryTranslucent_40" format="color"/>
+    <attr name="colorOnSecondaryTranslucent_50" format="color"/>
+    <attr name="colorOnSecondaryTranslucent_60" format="color"/>
+    <attr name="colorOnSecondaryTranslucent_70" format="color"/>
+    <attr name="colorOnSecondaryTranslucent_80" format="color"/>
+    <attr name="colorOnSecondaryTranslucent_90" format="color"/>
+
+    <attr name="textHighlightColor" format="color"/>
+    <attr name="scrollBarColor" format="color"/>
+    <attr name="globalTranslationZ" format="dimension"/>
+    <attr name="messageOutBackgroundColor" format="color"/>
+    <attr name="messageInBackgroundColor" format="color"/>
+
+    <declare-styleable name="MiracleBottomNavigationView">
+        <attr name="selectedColor" format="color"/>
+        <attr name="defaultColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="SwitchIconViewV2">
+        <attr name="si_tint_color" format="color"/>
+        <attr name="si_background_tint_color" format="color"/>
+        <attr name="si_animation_duration" format="integer"/>
+        <attr name="si_disabled_alpha" format="float"/>
+        <attr name="si_disabled_color" format="color"/>
+        <attr name="si_disabled_background_color" format="color"/>
+        <attr name="si_enabled" format="boolean"/>
+        <attr name="si_no_dash" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="MiracleButton">
+        <attr name="active" format="boolean"/>
+        <attr name="outline" format="boolean"/>
+        <attr name="transparent" format="boolean"/>
+        <attr name="secondary" format="boolean"/>
+        <attr name="activeBackgroundColor" format="color"/>
+        <attr name="disabledBackgroundColor" format="color"/>
+        <attr name="activeTextColor" format="color"/>
+        <attr name="disabledTextColor" format="color"/>
+        <attr name="activeImageColor" format="color"/>
+        <attr name="disabledImageColor" format="color"/>
+        <attr name="text" format="string"/>
+        <attr name="imageResource" format="reference"/>
+        <attr name="imageGravity" format="enum">
+            <enum name="start" value="0"/>
+            <enum name="end" value="1"/>
+        </attr>
+        <attr name="imageSpacing" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="MiracleRadioView">
+        <attr name="CompoundButton_checked" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="MiracleRadioGroup">
+        <attr name="RadioGroup_checkedButton" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="PhotoStackedView">
+        <attr name="itemsSpacing" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="PhotoGridView">
+        <attr name="spacing" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="MessageItemView">
+        <attr name="asChat" format="boolean"/>
+        <attr name="out" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="ActivityRootView">
+        <attr name="type" format="enum">
+            <enum name="portrait" value="0"/>
+            <enum name="land" value="1"/>
+            <enum name="sw600dp" value="2"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="OneToOneSquareView">
+        <attr name="sizeFrom" format="enum">
+            <enum name="width" value="0"/>
+            <enum name="height" value="1"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="MiracleTextView">
+        <attr name="hashTagColor" format="color"/>
+        <attr name="displayHashTags" format="boolean"/>
+        <attr name="displayOwnerLinks" format="boolean"/>
+        <attr name="isPost" format="boolean"/>
+    </declare-styleable>
+
+</resources>

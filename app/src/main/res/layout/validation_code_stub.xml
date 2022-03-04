@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.vkontakte.miracle.login.ValidationCodeFrame xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:background="@drawable/rounded_card_filled_primary">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="12dp"
+        android:text="@string/enterValidationCode"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="20sp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:boxStrokeWidth="2dp"
+        app:boxCornerRadiusBottomEnd="@dimen/child_round"
+        app:boxCornerRadiusTopEnd="@dimen/child_round"
+        app:boxCornerRadiusBottomStart="@dimen/child_round"
+        app:boxCornerRadiusTopStart="@dimen/child_round"
+        app:boxStrokeColor="@color/outlined_text_box_colors"
+        android:textColorHint="?attr/colorSecondaryNeutral_80"
+        app:hintTextColor="?attr/colorSecondary"
+        app:boxBackgroundMode="outline">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/validationCodeField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/validationCode"
+            android:inputType="text"
+            android:autofillHints="validationCode"
+            android:textSize="16sp"
+            android:includeFontPadding="false"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="15dp"
+            android:textCursorDrawable="@drawable/edit_text_cursor_drawable"
+            android:background="@null" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.vkontakte.miracle.engine.view.MiracleButton
+        android:id="@+id/validationCodeButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="12dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:active="false"
+        app:disabledTextColor="?attr/colorSurfacePrimary"
+        app:disabledBackgroundColor="?attr/colorPrimaryNeutral_60"
+        app:text="@string/send" />
+
+    <com.vkontakte.miracle.engine.view.MiracleButton
+        android:id="@+id/validationCodeCancelButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:activeBackgroundColor="?attr/colorSecondaryNeutral"
+        app:outline="false"
+        app:secondary="true"
+        app:text="@string/cancel" />
+
+    <LinearLayout
+        android:id="@+id/validationCodeForceSMSHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/validationCodeForceSMSTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="9dp"
+            tools:text="00:00"
+            android:textColor="?attr/colorSecondary_80"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+        <com.vkontakte.miracle.engine.view.MiracleButton
+            android:id="@+id/validationCodeForceSMSButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:active="true"
+            app:transparent="true"
+            app:text="@string/forceValidationCodeSMS"/>
+
+    </LinearLayout>
+
+</com.vkontakte.miracle.login.ValidationCodeFrame>

@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="8dp"
+    android:orientation="vertical"
+    android:background="@drawable/rounded_card"
+    android:translationZ="?attr/globalTranslationZ"
+    android:padding="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/photo"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:adjustViewBounds="true"
+                    android:background="?attr/placeHolderColor"
+                    app:riv_border_color="?attr/colorContrast10"
+                    app:riv_border_width="@dimen/imageBorderWidth"
+                    app:riv_mutate_background="true"
+                    app:riv_oval="true" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:isScrollContainer="false">
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:fontFamily="sans-serif"
+                            android:textSize="16sp"
+                            android:textColor="?android:attr/textColor"
+                            tools:text="Имя Фамилия"/>
+
+                        <ViewStub
+                            android:id="@+id/verifiedStub"
+                            android:inflatedId="@+id/verified"
+                            android:layout_width="12sp"
+                            android:layout_height="12sp"
+                            android:layout_marginTop="0.7sp"
+                            android:layout_marginStart="5sp"
+                            android:layout_weight="0"
+                            android:layout="@layout/view_verified_icon_stub"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/subtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center_vertical"
+                        android:maxLines="2"
+                        tools:text="Status" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:isScrollContainer="false">
+
+                        <TextView
+                            android:id="@+id/subtitle2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:fontFamily="sans-serif"
+                            android:textSize="14sp"
+                            android:textColor="?attr/colorContrast40"
+                            tools:text="Online"/>
+
+                        <ViewStub
+                            android:id="@+id/onlineStatusStub"
+                            android:inflatedId="@+id/onlineStatus"
+                            android:layout_width="16sp"
+                            android:layout_height="16sp"
+                            android:layout_marginTop="0.7sp"
+                            android:layout_marginStart="2sp"
+                            android:layout_weight="0"
+                            android:layout="@layout/view_online_status_large_stub"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="18dp"
+                android:orientation="horizontal">
+                <com.vkontakte.miracle.engine.view.MiracleButton
+                    android:id="@+id/playButton"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:active="true"
+                    app:text="@string/message"/>
+                <Space
+                    android:layout_width="12dp"
+                    android:layout_height="0dp"/>
+                <com.vkontakte.miracle.engine.view.MiracleButton
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:secondary="true"
+                    app:active="false"
+                    app:imageResource="@drawable/ic_add_28"/>
+                <Space
+                    android:layout_width="12dp"
+                    android:layout_height="0dp"/>
+                <com.vkontakte.miracle.engine.view.MiracleButton
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:secondary="true"
+                    app:active="false"
+                    app:imageResource="@drawable/ic_more_vertical_28" />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:id="@+id/friends_counter_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        app:srcCompat="@drawable/ic_friends_28"
+                        app:tint="?attr/colorAccent" />
+
+                    <TextView
+                        android:id="@+id/friends_counter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="256"
+                        android:textColor="?android:attr/textColor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="друзья"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="10sp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/follows_counter_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        app:srcCompat="@drawable/ic_groups_28"
+                        app:tint="?attr/colorAccent" />
+
+                    <TextView
+                        android:id="@+id/follows_counter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="256"
+                        android:textColor="?android:attr/textColor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="сообщества"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/photos_counter_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        app:srcCompat="@drawable/ic_photos_28"
+                        app:tint="?attr/colorAccent" />
+
+                    <TextView
+                        android:id="@+id/photos_counter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="256"
+                        android:textColor="?android:attr/textColor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="фото"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/videos_counter_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:adjustViewBounds="true"
+                        app:srcCompat="@drawable/ic_videos_28"
+                        app:tint="?attr/colorAccent" />
+
+                    <TextView
+                        android:id="@+id/videos_counter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="256"
+                        android:textColor="?android:attr/textColor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="видео"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/audios_counter_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:adjustViewBounds="true"
+                        app:srcCompat="@drawable/ic_music_28"
+                        app:tint="?attr/colorAccent" />
+
+                    <TextView
+                        android:id="@+id/audios_counter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="256"
+                        android:textColor="?android:attr/textColor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="аудио"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginBottom="16dp"
+                android:background="?attr/colorContrast10"/>
+
+            <TextView
+                android:id="@+id/show_more_info_button"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:paddingHorizontal="8dp"
+                android:gravity="center_vertical"
+                android:textColor="?attr/colorAccent"
+                android:fontFamily="sans-serif-medium"
+                android:text="Подробнее"
+                android:drawablePadding="8dp"
+                app:drawableStartCompat="@drawable/ic_like_filled_28"
+                app:drawableTint="?attr/colorAccent" />
+
+</LinearLayout>
+

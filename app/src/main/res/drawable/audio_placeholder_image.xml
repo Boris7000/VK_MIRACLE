@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque">
+
+    <item android:gravity="center">
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/colorPrimary"/>
+        </shape>
+    </item>
+
+    <item
+        android:end="28dp"
+        android:bottom="28dp"
+        android:start="28dp"
+        android:top="28dp"
+        android:gravity="center">
+        <bitmap
+            android:src="@drawable/ic_music_28"
+            android:tint="?attr/colorPrimary_20"/>
+    </item>
+</layer-list>

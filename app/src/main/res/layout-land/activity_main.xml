@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.vkontakte.miracle.engine.view.ActivityRootView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:type="land">
+
+    <com.vkontakte.miracle.engine.view.fragmentContainer.FragmentContainer
+        android:id="@+id/frameContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.vkontakte.miracle.engine.view.bottomNavigation.MiracleBottomNavigationMenu
+        android:id="@+id/bottomNavigationMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/navigation_bar_bg_land"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.vkontakte.miracle.engine.view.bottomNavigation.SimpleMiracleBottomNavigationItem
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_user_28" />
+
+        <com.vkontakte.miracle.engine.view.bottomNavigation.SimpleMiracleBottomNavigationItem
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_feed_28" />
+
+        <com.vkontakte.miracle.engine.view.bottomNavigation.SimpleMiracleBottomNavigationItem
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_messages_28" />
+
+        <com.vkontakte.miracle.engine.view.bottomNavigation.MusicMiracleBottomNavigationItem
+            android:layout_width="56dp"
+            android:layout_height="wrap_content">
+            <com.vkontakte.miracle.engine.view.bottomNavigation.SimpleMiracleBottomNavigationItem
+                android:id="@+id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_music_28"
+                android:layout_gravity="center"/>
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="28dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="17dp"
+                android:layout_gravity="center"
+                android:alpha="0"
+                android:visibility="gone"
+                tools:alpha="1"
+                tools:visibility="visible"
+                android:padding="0dp"
+                android:progress="50"
+                android:progressBackgroundTint="?attr/colorSecondary"
+                android:progressBackgroundTintMode="src_in"
+                android:progressDrawable="@drawable/mini_progress_bar_drawable"
+                android:progressTint="?attr/colorSecondary"
+                android:progressTintMode="src_in"
+                android:secondaryProgress="0"
+                android:secondaryProgressTint="@android:color/transparent"/>
+        </com.vkontakte.miracle.engine.view.bottomNavigation.MusicMiracleBottomNavigationItem>
+    </com.vkontakte.miracle.engine.view.bottomNavigation.MiracleBottomNavigationMenu>
+
+    <ViewStub
+        android:id="@+id/playerBottomSheetStub"
+        android:inflatedId="@+id/playerBottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/view_player_bottom_sheet_stub"
+        app:layout_behavior=".engine.view.LockableSheetBehavior"
+        app:behavior_hideable="false"/>
+
+</com.vkontakte.miracle.engine.view.ActivityRootView>

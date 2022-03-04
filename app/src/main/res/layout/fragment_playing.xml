@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@drawable/player_background"
+    tools:backgroundTint="@color/black">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="12dp"
+        android:fontFamily="@font/product"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:text="@string/now_playing"/>
+
+    <com.vkontakte.miracle.engine.view.BSBNestedRecyclerView
+        android:layout_marginTop="56dp"
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="ifContentScrolls"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbarThumbVertical="@drawable/scroll_bar_drawable_mono"
+        android:scrollbars="vertical"
+        android:fadingEdgeLength="30dp"
+        android:requiresFadingEdge="vertical" />
+
+</FrameLayout>

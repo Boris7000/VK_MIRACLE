@@ -1,0 +1,72 @@
+package com.vkontakte.miracle.engine.view.photoGridView;
+
+import androidx.collection.ArrayMap;
+
+import com.vkontakte.miracle.model.photos.fields.Size;
+
+public abstract class MediaItem {
+
+    private ArrayMap<String,Size> sizes;
+
+    public ArrayMap<String, Size> getSizes(){
+        return sizes;
+    }
+
+    public void setSizes(ArrayMap<String, Size> sizes) {
+        this.sizes = sizes;
+    }
+
+    public Size getSizeForWidth(int width, boolean need3x2) {
+        if(width<=75){
+            return sizes.get("s");
+        } else {
+            if(width<=130){
+                if(need3x2){
+                    return findFor("o", 75, need3x2);
+                } else {
+                    return findFor("m", 75, need3x2);
+                }
+            } else {
+                if(need3x2){
+                    if(width<=200){
+                        return findFor("p", 130, need3x2);
+                    } else {
+                        if(width<=320){
+                            return findFor("q", 200, need3x2);
+                        } else {
+                            if(width<=510){
+                                return findFor("r", 320, need3x2);
+                            }
+                        }
+                    }
+                } else {
+                    if(width<=604){
+                        return findFor("x", 130, need3x2);
+                    } else {
+                        if(width<=807){
+                            return findFor("y", 604, need3x2);
+                        } else {
+                            if(width<=1024){
+                                return findFor("z", 807, need3x2);
+                            }else {
+                                if(width<=2048){
+                                    return findFor("w", 1024, need3x2);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return sizes.get("s");
+    }
+
+    private Size findFor(String type, int reserveWidth, boolean need3x2){
+        Size size = sizes.get(type);
+        if(size==null){
+            return getSizeForWidth(reserveWidth, need3x2);
+        } else {
+            return size;
+        }
+    }
+}
