@@ -78,6 +78,7 @@
 
         <item name="messageInBackgroundColor">#2c2d2e</item>
         <item name="messageOutBackgroundColor">?attr/colorPrimary</item>
+        <item name="likeHolderColor">#3e2626</item>
     </style>
 
     <!-- Base application theme. -->

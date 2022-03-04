@@ -7,18 +7,23 @@ import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 import static com.vkontakte.miracle.engine.util.StringsUtil.reduceTheNumber;
 
 import android.animation.LayoutTransition;
+import android.animation.ValueAnimator;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.transition.AutoTransition;
 import android.transition.ChangeBounds;
 import android.transition.Explode;
+import android.transition.Fade;
 import android.transition.Scene;
+import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -72,6 +77,8 @@ public class PostViewHolder extends MiracleViewHolder {
 
     private PostItem postItem;
 
+    private int color;
+
     public PostViewHolder(@NonNull View itemView) {
         super(itemView);
         imageView = itemView.findViewById(R.id.photo);
@@ -95,62 +102,33 @@ public class PostViewHolder extends MiracleViewHolder {
         likesHolder.setOnClickListener(v -> {
             if(postItem!=null){
                 final PostItem finalPostItem = PostViewHolder.this.postItem;
-                if(postItem.getUserLikes()){
-                    postItem.setUserLikes(false);
-                    colorLikesButton(true);
-                    postItem.setLikesCount(Math.max(0,postItem.getLikesCount()-1));
-                    updateLikesCount(true);
-                    new AsyncExecutor<Integer>(){
-                        @Override
-                        public Integer inBackground() {
-                            try {
-                                ProfileItem profileItem = getMiracleActivity().getUserItem();
-                                Response<JSONObject> response =  Likes.delete("post", postItem.getId(),
-                                        postItem.getOwner().getId(),profileItem.getAccessToken()).execute();
-                                JSONObject jsonObject = validateBody(response).getJSONObject("response");
-                                return jsonObject.getInt("likes");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            return -1;
+                postItem.setUserLikes(!postItem.getUserLikes());
+                colorLikesButton(true);
+                new AsyncExecutor<Integer>(){
+                    @Override
+                    public Integer inBackground() {
+                        try {
+                            ProfileItem profileItem = getMiracleActivity().getUserItem();
+                            Response<JSONObject> response =  (postItem.getUserLikes() ?
+                                    Likes.add("post", postItem.getId(),
+                                            postItem.getOwner().getId(),profileItem.getAccessToken())
+                            :Likes.delete("post", postItem.getId(),
+                                    postItem.getOwner().getId(),profileItem.getAccessToken())).execute();
+                            JSONObject jsonObject = validateBody(response).getJSONObject("response");
+                            return jsonObject.getInt("likes");
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        @Override
-                        public void onExecute(Integer object) {
-                            if(finalPostItem.getId().equals(postItem.getId())){
-                                postItem.setLikesCount(object);
-                                updateLikesCount(true);
-                            }
+                        return -1;
+                    }
+                    @Override
+                    public void onExecute(Integer object) {
+                        if(finalPostItem.getId().equals(postItem.getId())){
+                            postItem.setLikesCount(object);
+                            updateLikesCount(true);
                         }
-                    }.start();
-                } else {
-                    postItem.setUserLikes(true);
-                    colorLikesButton(true);
-                    postItem.setLikesCount(postItem.getLikesCount()+1);
-                    updateLikesCount(true);
-                    new AsyncExecutor<Integer>(){
-                        final PostItem finalPostItem = PostViewHolder.this.postItem;
-                        @Override
-                        public Integer inBackground() {
-                            try {
-                                ProfileItem profileItem = getMiracleActivity().getUserItem();
-                                Response<JSONObject> response =  Likes.add("post", postItem.getId(),
-                                        postItem.getOwner().getId(),profileItem.getAccessToken()).execute();
-                                JSONObject jsonObject = validateBody(response).getJSONObject("response");
-                                return jsonObject.getInt("likes");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            return -1;
-                        }
-                        @Override
-                        public void onExecute(Integer object) {
-                            if(finalPostItem.getId().equals(postItem.getId())){
-                                postItem.setLikesCount(object);
-                                updateLikesCount(true);
-                            }
-                        }
-                    }.start();
-                }
+                    }
+                }.start();
             }
         });
 
@@ -242,7 +220,7 @@ public class PostViewHolder extends MiracleViewHolder {
 
         updateLikesCount();
 
-        colorLikesButton(false);
+        colorLikesButton();
 
         if(postItem.getCommentsCount()>0){
             if(commentsHolder.getVisibility()!=VISIBLE){
@@ -287,15 +265,19 @@ public class PostViewHolder extends MiracleViewHolder {
 
     private void updateLikesCount(boolean animate){
 
-
         if(animate){
-            //LayoutTransition layoutTransition = new LayoutTransition();
-            //layoutTransition.setDuration(200);
-            //layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
-            //((ViewGroup)likesHolder.getParent()).setLayoutTransition(layoutTransition);
-            Transition transition = new android.transition.Slide();
+            Transition transition = new Slide();
             transition.setDuration(200);
-            TransitionManager.beginDelayedTransition((ViewGroup)likesHolder.getParent().getParent(), transition);
+            transition.addTarget(likesText);
+            TransitionManager.beginDelayedTransition(likesHolder, transition);
+            transition = new AutoTransition();
+            transition.setDuration(200);
+            transition.addTarget(likesIcon);
+            transition.addTarget(likesHolder);
+            transition.addTarget(commentsHolder);
+            transition.addTarget(repostsHolder);
+            transition.addTarget((View) likesHolder.getParent());
+            TransitionManager.beginDelayedTransition((ViewGroup) likesHolder.getParent().getParent(), transition);
         }
 
         if(postItem.getLikesCount()>0){
@@ -318,22 +300,50 @@ public class PostViewHolder extends MiracleViewHolder {
         if(postItem.getUserLikes()){
             likesIcon.setImageDrawable(ResourcesCompat.getDrawable(getMiracleApp().getResources(),
                     R.drawable.ic_like_filled_24, getMiracleApp().getTheme()));
-            int color = ResourcesCompat.getColor(getMiracleApp().getResources(),
-                    R.color.like_half,itemView.getContext().getTheme());
-            PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN);
-            likesHolder.getBackground().setColorFilter(colorFilter);
+
+            int color = getColorByAttributeId(itemView.getContext(),R.attr.likeHolderColor);
+
+            if(animate) {
+                animateToColor(color);
+            } else {
+                this.color = color;
+                PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN);
+                likesHolder.getBackground().setColorFilter(colorFilter);
+            }
             color = ResourcesCompat.getColor(getMiracleApp().getResources(),
                     R.color.like,itemView.getContext().getTheme());
             likesText.setTextColor(color);
         } else {
             likesIcon.setImageDrawable(ResourcesCompat.getDrawable(getMiracleApp().getResources(),
                     R.drawable.ic_like_24, getMiracleApp().getTheme()));
+
             int color = getColorByAttributeId(itemView.getContext(),R.attr.colorContrast10);
-            PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN);
-            likesHolder.getBackground().setColorFilter(colorFilter);
+
+            if(animate) {
+                animateToColor(color);
+            } else {
+                this.color = color;
+                PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN);
+                likesHolder.getBackground().setColorFilter(colorFilter);
+            }
+
             color = getColorByAttributeId(itemView.getContext(),R.attr.colorContrast60);
             likesText.setTextColor(color);
         }
+    }
+
+    private void animateToColor(int toColor){
+        int old = color;
+
+        ValueAnimator animator = ValueAnimator.ofArgb(old, toColor);
+        animator.addUpdateListener(animation -> {
+            color = (int) animation.getAnimatedValue();
+            PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN);
+            likesHolder.getBackground().setColorFilter(colorFilter);
+        });
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+        animator.setDuration(200);
+        animator.start();
     }
 
     public static class Fabric implements ViewHolderFabric {
@@ -343,7 +353,4 @@ public class PostViewHolder extends MiracleViewHolder {
         }
     }
 
-    public PostItem getPostItem() {
-        return postItem;
-    }
 }

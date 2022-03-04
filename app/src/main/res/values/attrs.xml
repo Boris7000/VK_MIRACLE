@@ -64,6 +64,7 @@
     <attr name="globalTranslationZ" format="dimension"/>
     <attr name="messageOutBackgroundColor" format="color"/>
     <attr name="messageInBackgroundColor" format="color"/>
+    <attr name="likeHolderColor" format="color"/>
 
     <declare-styleable name="MiracleBottomNavigationView">
         <attr name="selectedColor" format="color"/>

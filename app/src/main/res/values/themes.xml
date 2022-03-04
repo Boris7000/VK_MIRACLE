@@ -79,6 +79,7 @@
 
         <item name="messageInBackgroundColor">#f2f2f2</item>
         <item name="messageOutBackgroundColor">?attr/colorPrimary</item>
+        <item name="likeHolderColor">#ffeeee</item>
     </style>
 
 <!-- Base application theme. -->
