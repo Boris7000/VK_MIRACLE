@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,10 @@ public class ProfileLargeViewHolder extends PlaylistHorizontalViewHolder {
     private ImageView onlineStatus;
     private final ViewStub verifiedStub;
     private ImageView verified;
+    private final ViewStub profileButtonsStub;
+    private LinearLayout profileButtonsHolder;
+    private final ViewStub userButtonsStub;
+    private LinearLayout userButtonsHolder;
 
     public ProfileLargeViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -41,6 +46,8 @@ public class ProfileLargeViewHolder extends PlaylistHorizontalViewHolder {
         subtitle2 = itemView.findViewById(R.id.subtitle2);
         onlineStatusStub = itemView.findViewById(R.id.onlineStatusStub);
         verifiedStub = itemView.findViewById(R.id.verifiedStub);
+        profileButtonsStub = itemView.findViewById(R.id.profileButtonsStub);
+        userButtonsStub = itemView.findViewById(R.id.userButtonsStub);
     }
 
     @Override
@@ -98,6 +105,36 @@ public class ProfileLargeViewHolder extends PlaylistHorizontalViewHolder {
             imageView.setImageDrawable(null);
         } else {
             Picasso.get().load(profileItem.getPhotoMax()).noFade().into(imageView);
+        }
+
+        if(profileItem.getId().equals(getMiracleActivity().getUserItem().getId())){
+            if(profileButtonsHolder!=null&&profileButtonsHolder.getVisibility()!=GONE) {
+                profileButtonsHolder.setVisibility(GONE);
+            }
+            if(userButtonsHolder==null) {
+                if(userButtonsStub!=null) {
+                    userButtonsHolder = (LinearLayout) userButtonsStub.inflate();
+                } else {
+                    userButtonsHolder = itemView.findViewById(R.id.userButtonsHolder);
+                }
+            }
+            if(userButtonsHolder.getVisibility()!=VISIBLE) {
+                userButtonsHolder.setVisibility(VISIBLE);
+            }
+        } else {
+            if(userButtonsHolder!=null&&userButtonsHolder.getVisibility()!=GONE) {
+                userButtonsHolder.setVisibility(GONE);
+            }
+            if(profileButtonsHolder==null) {
+                if(profileButtonsStub!=null) {
+                    profileButtonsHolder = (LinearLayout) profileButtonsStub.inflate();
+                } else {
+                    profileButtonsHolder = itemView.findViewById(R.id.userButtonsHolder);
+                }
+            }
+            if(profileButtonsHolder.getVisibility()!=VISIBLE) {
+                profileButtonsHolder.setVisibility(VISIBLE);
+            }
         }
 
     }

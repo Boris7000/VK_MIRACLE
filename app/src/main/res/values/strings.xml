@@ -19,6 +19,7 @@
     <string name="send">Отправить</string>
     <string name="cancel">Отмена</string>
     <string name="download">Скачать</string>
+    <string name="edit">Редактировать</string>
     <string name="delete">Удалить</string>
     <string name="delete_from_device">Удалить с устройтсва</string>
     <string name="back">Назад</string>

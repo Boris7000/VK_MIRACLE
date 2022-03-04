@@ -48,9 +48,6 @@ public class Size {
     public double getAspectRatio(){
         return (double) width/(double) height;
     }
-    public double getAspectRatioTransposed(){
-        return (double) height/(double) width;
-    }
 }
     /*
         s — пропорциональная копия изображения с максимальной стороной 75px;
