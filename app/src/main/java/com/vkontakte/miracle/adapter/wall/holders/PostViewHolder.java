@@ -6,16 +6,10 @@ import static com.vkontakte.miracle.engine.util.ColorUtil.getColorByAttributeId;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 import static com.vkontakte.miracle.engine.util.StringsUtil.reduceTheNumber;
 
-import android.animation.LayoutTransition;
 import android.animation.ValueAnimator;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.transition.AutoTransition;
-import android.transition.ChangeBounds;
-import android.transition.Explode;
-import android.transition.Fade;
-import android.transition.Scene;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionManager;
@@ -24,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,7 +27,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.transition.ChangeTransform;
 
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
@@ -305,6 +300,8 @@ public class PostViewHolder extends MiracleViewHolder {
 
             if(animate) {
                 animateToColor(color);
+                Animation bounceAnimation = AnimationUtils.loadAnimation(getMiracleActivity(), R.anim.like_bounce);
+                likesIcon.startAnimation(bounceAnimation);
             } else {
                 this.color = color;
                 PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN);
@@ -321,6 +318,8 @@ public class PostViewHolder extends MiracleViewHolder {
 
             if(animate) {
                 animateToColor(color);
+                Animation bounceAnimation = AnimationUtils.loadAnimation(getMiracleActivity(), R.anim.like_bounce);
+                likesIcon.startAnimation(bounceAnimation);
             } else {
                 this.color = color;
                 PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN);
