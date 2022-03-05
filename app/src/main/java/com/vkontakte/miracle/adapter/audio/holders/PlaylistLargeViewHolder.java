@@ -3,8 +3,10 @@ package com.vkontakte.miracle.adapter.audio.holders;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 import static com.vkontakte.miracle.engine.util.TimeUtil.getUpdatedDateString;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
@@ -22,12 +25,22 @@ import com.vkontakte.miracle.dialog.audio.PlaylistDialogActionListener;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StringsUtil;
 import com.vkontakte.miracle.engine.view.MiracleButton;
+import com.vkontakte.miracle.engine.view.switchIcon.SwitchIconViewV2;
 import com.vkontakte.miracle.fragment.catalog.FragmentCatalogArtist;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
+import com.vkontakte.miracle.model.audio.fields.Followed;
 import com.vkontakte.miracle.model.audio.fields.Photo;
+import com.vkontakte.miracle.model.users.ProfileItem;
+import com.vkontakte.miracle.network.methods.Audio;
+import com.vkontakte.miracle.network.methods.Likes;
 import com.vkontakte.miracle.player.AudioPlayerData;
+
+import org.json.JSONObject;
+
+import retrofit2.Response;
 
 public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
     private final MiracleButton playButton;
@@ -39,6 +52,9 @@ public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
     private ImageView explicit;
     private final TextView subtitle2;
     private final TextView subtitle3;
+    private final SwitchIconViewV2 addButton;
+
+    private PlaylistItem playlistItem;
 
     public PlaylistLargeViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -50,11 +66,12 @@ public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
         explicitStub = itemView.findViewById(R.id.explicitStub);
         subtitle2 = itemView.findViewById(R.id.subtitle2);
         subtitle3 = itemView.findViewById(R.id.subtitle3);
+        addButton = itemView.findViewById(R.id.addButton);
     }
 
     @Override
     public void bind(ItemDataHolder itemDataHolder) {
-        PlaylistItem playlistItem = (PlaylistItem) itemDataHolder;
+        playlistItem = (PlaylistItem) itemDataHolder;
 
         title.setText(playlistItem.getTitle());
         subtitle.setText(playlistItem.getSubtitle());
@@ -130,6 +147,51 @@ public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
         playButton.setOnClickListener(view -> getMiracleApp().getPlayerServiceController().
                 playNewAudio(new AudioPlayerData(playlistItem.getItems().get(0))));
 
+        if(playlistItem.getOriginal()==null){
+            if(addButton.getVisibility()!=GONE) {
+                addButton.setVisibility(GONE);
+            }
+        } else {
+            if(addButton.getVisibility()!=VISIBLE) {
+                addButton.setVisibility(VISIBLE);
+            }
+
+            switchAddButtonState(playlistItem.isFollowing());
+        }
+
+        addButton.setOnClickListener(v -> {
+            playlistItem.setFollowing(!playlistItem.isFollowing());
+            switchAddButtonState(playlistItem.isFollowing(), true);
+            new AsyncExecutor<Integer>(){
+                @Override
+                public Integer inBackground() {
+                    try {
+                        ProfileItem profileItem = getMiracleActivity().getUserItem();
+                        Response<JSONObject> response =  (playlistItem.isFollowing() ?
+                                Audio.followPlaylist(playlistItem.getOriginal().getId(), playlistItem.getOriginal().getOwnerId(),
+                                        playlistItem.getOriginal().getAccessKey(), profileItem.getAccessToken())
+                                :Audio.deletePlaylist(playlistItem.getFollowed().getPlaylistId(), playlistItem.getFollowed().getOwnerId(),
+                                playlistItem.getAccessKey(), profileItem.getAccessToken())).execute();
+                        if(playlistItem.isFollowing()){
+                            JSONObject jsonObject = validateBody(response);
+                            Followed followed = new Followed(jsonObject.getJSONObject("response"));
+                            playlistItem.setFollowed(followed);
+                        } else {
+                            playlistItem.setFollowed(null);
+                        }
+                        return 1;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return -1;
+                }
+                @Override
+                public void onExecute(Integer object) {
+                }
+            }.start();
+
+        });
+
         optionsButton.setOnClickListener(view -> {
             PlaylistDialog playlistDialog = new PlaylistDialog(getMiracleActivity(), playlistItem,
                     getMiracleActivity().getUserItem());
@@ -169,6 +231,23 @@ public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
             });
             playlistDialog.show(view.getContext());
         });
+
+    }
+
+    private void switchAddButtonState(boolean added){
+        switchAddButtonState(added, false);
+    }
+
+    private void switchAddButtonState(boolean added, boolean animate){
+        if(added){
+            addButton.setImageDrawable(ResourcesCompat.getDrawable(getMiracleApp().getResources(),
+                    R.drawable.ic_done_28, getMiracleApp().getTheme()));
+            addButton.setIconEnabled(true,animate);
+        } else {
+            addButton.setIconEnabled(false,animate);
+            addButton.setImageDrawable(ResourcesCompat.getDrawable(getMiracleApp().getResources(),
+                    R.drawable.ic_add_28, getMiracleApp().getTheme()));
+        }
     }
 
     public static class Fabric implements ViewHolderFabric {

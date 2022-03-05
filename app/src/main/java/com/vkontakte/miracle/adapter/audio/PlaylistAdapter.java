@@ -46,9 +46,9 @@ public class PlaylistAdapter extends MiracleLoadableAdapter {
 
 
     public PlaylistAdapter(PlaylistItem playlistItem){
-        playlistId = playlistItem.getId();
-        accessKey = playlistItem.getAccessKey();
-        ownerId = playlistItem.getOwnerId();
+        playlistId = playlistItem.getOriginal().getId();
+        accessKey = playlistItem.getOriginal().getAccessKey();
+        ownerId = playlistItem.getOriginal().getOwnerId();
         this.playlistItem = new PlaylistItem(playlistItem);
 
     }

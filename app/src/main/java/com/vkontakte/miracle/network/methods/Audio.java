@@ -25,6 +25,14 @@ public class Audio {
         return audio().getPlaylistById(id,owner_id,access_token,1,access_key, latest_api_v, defaultHeaders());
     }
 
+    public static Call<JSONObject> followPlaylist(String id, String owner_id, String access_key, String access_token){
+        return audio().followPlaylist(id,owner_id,access_key,access_token, latest_api_v, defaultHeaders());
+    }
+
+    public static Call<JSONObject> deletePlaylist(String id, String owner_id, String access_key, String access_token){
+        return audio().deletePlaylist(id,owner_id,access_key,access_token, latest_api_v, defaultHeaders());
+    }
+
     public static Call<JSONObject> get(String owner_id, String playlist_id, String access_key, int extended, int count, int offset, String access_token){
         return audio().get(owner_id, playlist_id, count, offset, access_key, extended, access_token, latest_api_v, defaultHeaders());
     }

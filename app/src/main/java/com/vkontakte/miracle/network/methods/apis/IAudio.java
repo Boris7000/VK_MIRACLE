@@ -81,8 +81,8 @@ public interface IAudio {
 
     @FormUrlEncoded
     @POST("audio.followPlaylist")
-    Call<JSONObject> addPlaylist(@Field("owner_id") String owner_id,
-                                 @Field("playlist_id") String playlist_id,
+    Call<JSONObject> followPlaylist(@Field("playlist_id") String owner_id,
+                                 @Field("owner_id") String playlist_id,
                                  @Field("access_key") String access_key,
                                  @Field("access_token") String access_token,
                                  @Field("v") String v,
@@ -90,8 +90,8 @@ public interface IAudio {
 
     @FormUrlEncoded
     @POST("audio.deletePlaylist")
-    Call<JSONObject> deletePlaylist(@Field("owner_id") String owner_id,
-                                    @Field("playlist_id") String playlist_id,
+    Call<JSONObject> deletePlaylist(@Field("playlist_id") String owner_id,
+                                    @Field("owner_id") String playlist_id,
                                     @Field("access_key") String access_key,
                                     @Field("access_token") String access_token,
                                     @Field("v") String v,

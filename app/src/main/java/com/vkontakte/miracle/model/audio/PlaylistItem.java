@@ -156,6 +156,14 @@ public class PlaylistItem implements ItemDataHolder {
         return items;
     }
 
+    public void setFollowing(boolean following) {
+        isFollowing = following;
+    }
+
+    public void setFollowed(Followed followed) {
+        this.followed = followed;
+    }
+
     public PlaylistItem(JSONObject jsonObject, ArrayMap<String, ProfileItem> profilesMap, ArrayMap<String, GroupItem> groupsMap) throws JSONException {
 
         id = jsonObject.getString("id");

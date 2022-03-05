@@ -105,26 +105,30 @@
             android:id="@+id/playButton"
             android:layout_width="0dp"
             android:layout_height="48dp"
+            android:layout_marginEnd="12dp"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="horizontal"
             app:active="true"
             app:text="@string/play_album"
             app:imageResource="@drawable/ic_play_16"/>
-        <Space
-            android:layout_width="12dp"
-            android:layout_height="0dp"/>
-        <com.vkontakte.miracle.engine.view.MiracleButton
+
+        <com.vkontakte.miracle.engine.view.switchIcon.SwitchIconViewV2
+            android:id="@+id/addButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:secondary="true"
-            app:active="false"
-            app:imageResource="@drawable/ic_add_28"/>
-        <Space
-            android:layout_width="12dp"
-            android:layout_height="0dp"/>
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/rounded_button_bg_white"
+            android:scaleType="centerInside"
+            app:si_disabled_alpha="1"
+            app:si_background_tint_color="?attr/colorPrimary"
+            app:si_disabled_background_color="?attr/colorSurfacePrimary"
+            app:si_disabled_color="?attr/colorPrimary"
+            app:si_tint_color="?attr/colorOnSecondary"
+            app:si_enabled="false"
+            app:si_no_dash="true"
+            android:src="@drawable/ic_add_28"/>
+
         <com.vkontakte.miracle.engine.view.MiracleButton
             android:id="@+id/optionsButton"
             android:layout_width="48dp"
