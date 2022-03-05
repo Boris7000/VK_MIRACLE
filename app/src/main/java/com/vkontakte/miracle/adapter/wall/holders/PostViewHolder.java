@@ -109,8 +109,13 @@ public class PostViewHolder extends MiracleViewHolder {
                                             postItem.getOwner().getId(),profileItem.getAccessToken())
                             :Likes.delete("post", postItem.getId(),
                                     postItem.getOwner().getId(),profileItem.getAccessToken())).execute();
-                            JSONObject jsonObject = validateBody(response).getJSONObject("response");
-                            return jsonObject.getInt("likes");
+
+                            JSONObject jsonObject = validateBody(response);
+
+                            if(jsonObject.has("response")) {
+                                jsonObject = validateBody(response).getJSONObject("response");
+                                return jsonObject.getInt("likes");
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -119,8 +124,10 @@ public class PostViewHolder extends MiracleViewHolder {
                     @Override
                     public void onExecute(Integer object) {
                         if(finalPostItem.getId().equals(postItem.getId())){
-                            postItem.setLikesCount(object);
-                            updateLikesCount(true);
+                            if (object > -1) {
+                                postItem.setLikesCount(object);
+                                updateLikesCount(true);
+                            }
                         }
                     }
                 }.start();
