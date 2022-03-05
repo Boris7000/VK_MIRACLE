@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.vkontakte.miracle.adapter.messages.ConversationsAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
@@ -25,13 +26,14 @@ public abstract class MiracleLoadableAdapter extends MiracleAdapter implements I
 
     private ArrayList<ItemDataHolder> itemDataHolders = new ArrayList<>();
     public  ArrayMap<Integer, ViewHolderFabric> viewHolderFabricMap;
+    private final ArrayList<Task> tasks = new ArrayList<>();
     private boolean finallyLoaded = false;
     private boolean hasData = false;
     private boolean hasError = false;
     private boolean detached = false;
     private String error = "";
     private String nextFrom = "";
-    private long endTime = 0;
+    private long timeStump = 0;
     private int addedCount = 0;
     private int totalCount = 0;
     private int loadedCount = 0;
@@ -159,8 +161,12 @@ public abstract class MiracleLoadableAdapter extends MiracleAdapter implements I
         return totalCount;
     }
     //////////////////////////////////////////////////
-    public long getEndTime() { return endTime; }
-    public void setEndTime(long endTime) { this.endTime = endTime; }
+    public void setTimeStump(long timeStump) {
+        this.timeStump = timeStump;
+    }
+    public long getTimeStump() {
+        return timeStump;
+    }
     //////////////////////////////////////////////////
     public ArrayList<ItemDataHolder> getItemDataHolders() {
         return itemDataHolders;
@@ -237,6 +243,11 @@ public abstract class MiracleLoadableAdapter extends MiracleAdapter implements I
             hasData = true;
             notifyData();
             getMiracleFragment().show();
+
+            if (!tasks.isEmpty()) {
+                tasks.get(0).func();
+            }
+
         }else {
             notifyData();
         }
@@ -266,4 +277,27 @@ public abstract class MiracleLoadableAdapter extends MiracleAdapter implements I
     public ArrayMap<Integer, ViewHolderFabric> getViewHolderFabricMap(){
         return ViewHolderTypes.getCatalogFabrics();
     }
+
+    public void addTask(Task task){
+        tasks.add(task);
+        if(hasData()) {
+            if (tasks.size() == 1) {
+                task.func();
+            }
+        }
+    }
+
+    public abstract class Task{
+        public abstract void func();
+        public void onComplete(){
+            tasks.remove(this);
+            if(!tasks.isEmpty()){
+                Task task = tasks.get(0);
+                if(task!=null&&task!=this) {
+                    task.func();
+                }
+            }
+        }
+    }
+
 }

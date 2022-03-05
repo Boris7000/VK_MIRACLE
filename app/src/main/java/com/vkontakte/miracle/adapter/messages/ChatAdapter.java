@@ -5,10 +5,12 @@ import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_L
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_MESSAGE_IN;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_MESSAGE_OUT;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.createOwnersMap;
+import static com.vkontakte.miracle.engine.util.NetworkUtil.loadOwners;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 import static com.vkontakte.miracle.engine.util.StringsUtil.stringFromArrayList;
 
 import android.util.ArrayMap;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -23,7 +25,10 @@ import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.adapter.holder.error.ErrorViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.loading.LoadingViewHolder;
+import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
+import com.vkontakte.miracle.fragment.messages.FragmentChat;
+import com.vkontakte.miracle.longpoll.listeners.OnMessageAddedUpdateListener;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageReadUpdateListener;
 import com.vkontakte.miracle.longpoll.model.MessageAddedUpdate;
 import com.vkontakte.miracle.longpoll.model.MessageReadUpdate;
@@ -45,12 +50,14 @@ public class ChatAdapter extends MiracleLoadableAdapter {
 
     private final ConversationItem conversationItem;
     private OnMessageReadUpdateListener onMessageReadUpdateListener;
+    private OnMessageAddedUpdateListener onMessageAddedUpdateListener;
+    private OnMessageAddedListener messageAddedListener;
 
     public ChatAdapter(ConversationItem conversationItem){
         this.conversationItem = conversationItem;
     }
 
-    ArrayList<MessageOutViewHolder> messageOutViewHolders = new ArrayList<>();
+    private final ArrayList<MessageOutViewHolder> messageOutViewHolders = new ArrayList<>();
 
     @Override
     public void onLoading() throws Exception {
@@ -60,6 +67,8 @@ public class ChatAdapter extends MiracleLoadableAdapter {
 
         MessageItem messageItem = conversationItem.getLastMessage();
         Peer peer = conversationItem.getPeer();
+
+        setTimeStump(System.currentTimeMillis()/1000);
 
         Response<JSONObject> response =  Message.getHistory(peer.getId(), messageItem!=null?messageItem.getId():"-1",
                 holders.size(), getStep(), profileItem.getAccessToken()).execute();
@@ -78,45 +87,45 @@ public class ChatAdapter extends MiracleLoadableAdapter {
             messageItems.add(new MessageItem(jsonArray.getJSONObject(i), ownerArrayMap));
         }
 
-        if(!hasData()){
-            ArrayList<MessageAddedUpdate> messageAddedUpdates = StorageUtil.loadMessageAddedLongPollUpdates(getMiracleApp());
-            ArrayList<String> messageAddedUpdatesId = new ArrayList<>();
-
-            long ts = 0;
-
-            if(!messageItems.isEmpty()){
-                ts = messageItems.get(0).getDate();
-            }
-
-            for (MessageAddedUpdate messageAddedUpdate:messageAddedUpdates) {
-                if(messageAddedUpdate.getPeerId().equals(conversationItem.getPeer().getLocalId())) {
-                    if(messageAddedUpdate.getTs()>ts) {
-                        messageAddedUpdatesId.add(messageAddedUpdate.getMessageId());
-                    }
-                }
-            }
-
-            if(!messageAddedUpdates.isEmpty()){
-                String idsString = stringFromArrayList(messageAddedUpdatesId,",");
-                if(!idsString.isEmpty()) {
-                    response = Message.getById(idsString, profileItem.getAccessToken()).execute();
-                    jsonObject = validateBody(response).getJSONObject("response");
-                    ownerArrayMap = createOwnersMap(jsonObject);
-                    jsonArray = jsonObject.getJSONArray("items");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        messageItems.add(0, new MessageItem(jsonArray.getJSONObject(i), ownerArrayMap));
-                    }
-                }
-            }
-
-        }
-
         setAddedCount(messageItems.size());
         holders.addAll(messageItems);
 
-
         if (holders.size()==getTotalCount()||jsonArray.length()<getStep()) {
             setFinallyLoaded(true);
+        }
+
+    }
+
+    @Override
+    public void onComplete() {
+
+        if(!hasData()) {
+            ArrayList<MessageAddedUpdate> messageAddedUpdates = StorageUtil.loadMessageAddedLongPollUpdates(getMiracleApp());
+            ArrayList<MessageAddedUpdate> missedMessageAddedUpdates = new ArrayList<>();
+
+            androidx.collection.ArrayMap<String,MessageItem> messageItemArrayMap = new androidx.collection.ArrayMap<>();
+
+            for (ItemDataHolder itemDataHolder : getItemDataHolders()) {
+                if(itemDataHolder instanceof MessageItem){
+                    MessageItem messageItem = (MessageItem) itemDataHolder;
+                    messageItemArrayMap.put(messageItem.getId(),messageItem);
+                }
+            }
+
+            for (MessageAddedUpdate messageAddedUpdate : messageAddedUpdates) {
+                if (messageAddedUpdate.getTs() > getTimeStump() &&
+                        !messageItemArrayMap.containsKey(messageAddedUpdate.getMessageId())) {
+                    missedMessageAddedUpdates.add(messageAddedUpdate);
+                }
+            }
+
+            super.onComplete();
+
+            if (!missedMessageAddedUpdates.isEmpty()) {
+                onMessageAddedUpdateListener.onMessageAddedUpdate(missedMessageAddedUpdates);
+            }
+        } else {
+            super.onComplete();
         }
 
     }
@@ -195,6 +204,74 @@ public class ChatAdapter extends MiracleLoadableAdapter {
             }
         };
         getMiracleApp().getLongPollServiceController().addOnMessageReadUpdateListener(onMessageReadUpdateListener);
+
+        onMessageAddedUpdateListener = messageAddedUpdates -> {
+
+            if(hasData()) {
+                ArrayList<String> newMessagesIds = new ArrayList<>();
+
+                for (MessageAddedUpdate messageAddedUpdate : messageAddedUpdates) {
+                    if (messageAddedUpdate.getPeerId().equals(conversationItem.getPeer().getLocalId())) {
+                        newMessagesIds.add(messageAddedUpdate.getMessageId());
+                    }
+                }
+
+                if (!newMessagesIds.isEmpty()) {
+                    addTask(new Task() {
+                        @Override
+                        public void func() {
+                            new AsyncExecutor<ArrayList<MessageItem>>() {
+                                @Override
+                                public ArrayList<MessageItem> inBackground() {
+                                    try {
+                                        ProfileItem userItem = getUserItem();
+                                        Response<JSONObject> response = Message.getById(stringFromArrayList(newMessagesIds, ","),
+                                                userItem.getAccessToken()).execute();
+                                        JSONObject jo_response = validateBody(response).getJSONObject("response");
+                                        ArrayMap<String, Owner> ownerArrayMap = createOwnersMap(jo_response);
+                                        JSONArray items = jo_response.getJSONArray("items");
+
+                                        ArrayList<MessageItem> messageItems = new ArrayList<>();
+
+                                        for (int i = 0; i < items.length(); i++) {
+                                            messageItems.add(new MessageItem(items.getJSONObject(i), ownerArrayMap));
+                                        }
+
+                                        return messageItems;
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    return null;
+                                }
+
+                                @Override
+                                public void onExecute(ArrayList<MessageItem> messageItems) {
+
+                                    if(!messageItems.isEmpty()){
+                                        for (MessageItem messageItem:messageItems){
+                                            addNewMessage(messageItem);
+                                        }
+                                    }
+
+                                    onComplete();
+                                }
+                            }.start();
+                        }
+                    });
+                }
+            }
+        };
+        getMiracleApp().getLongPollServiceController().addOnMessageAddedUpdateListener(onMessageAddedUpdateListener);
+
+    }
+
+    private void addNewMessage(MessageItem messageItem){
+        getItemDataHolders().add(0, messageItem);
+        setAddedCount(1);
+        notifyItemInserted(0);
+        if(messageAddedListener!=null){
+            messageAddedListener.onMessageAdded(messageItem);
+        }
     }
 
     @NonNull
@@ -217,6 +294,7 @@ public class ChatAdapter extends MiracleLoadableAdapter {
     public void setDetached(boolean detached) {
         if(detached){
             getMiracleApp().getLongPollServiceController().removeOnMessageReadUpdateListener(onMessageReadUpdateListener);
+            getMiracleApp().getLongPollServiceController().removeOnMessageAddedUpdateListener(onMessageAddedUpdateListener);
         }
         super.setDetached(detached);
     }
@@ -234,5 +312,9 @@ public class ChatAdapter extends MiracleLoadableAdapter {
         }
 
         return arrayMap;
+    }
+
+    public void setMessageAddedListener(OnMessageAddedListener messageAddedListener) {
+        this.messageAddedListener = messageAddedListener;
     }
 }

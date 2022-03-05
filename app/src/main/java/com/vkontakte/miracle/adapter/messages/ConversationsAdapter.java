@@ -88,6 +88,8 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
             setFinallyLoaded(true);
         }
 
+
+
     }
 
     @Override
@@ -648,29 +650,6 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
         }
         return null;
     }
-
-    private final ArrayList<Task> tasks = new ArrayList<>();
-
-    private void addTask(Task task){
-        tasks.add(task);
-        if(tasks.size()==1){
-            task.func();
-        }
-    }
-
-    private abstract class Task{
-        public abstract void func();
-        public void onComplete(){
-            tasks.remove(this);
-            if(!tasks.isEmpty()){
-                Task task = tasks.get(0);
-                if(task!=null&&task!=this) {
-                    task.func();
-                }
-            }
-        }
-    }
-
 }
 
 

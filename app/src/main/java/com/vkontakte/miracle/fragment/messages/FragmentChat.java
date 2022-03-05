@@ -43,6 +43,7 @@ import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.messages.ChatAdapter;
 import com.vkontakte.miracle.adapter.messages.ConversationsAdapter;
+import com.vkontakte.miracle.adapter.messages.OnMessageAddedListener;
 import com.vkontakte.miracle.adapter.messages.ReplySwipeCallback;
 import com.vkontakte.miracle.engine.adapter.MiracleAdapter;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
@@ -99,7 +100,6 @@ public class FragmentChat extends SimpleMiracleFragment {
     private ConversationItem conversationItem;
 
     private MessageTypingUpdates executor;
-    private OnMessageAddedUpdateListener onMessageAddedUpdateListener;
     private OnMessageTypingUpdateListener onMessageTypingUpdateListener;
     private OnUserOnlineUpdateListener onUserOnlineUpdateListener;
     private final ArrayMap<String,Owner> ownerArrayMap = new ArrayMap<>();
@@ -379,9 +379,10 @@ public class FragmentChat extends SimpleMiracleFragment {
             ChatAdapter chatAdapter = (ChatAdapter) getRecyclerView().getAdapter();
 
             if(chatAdapter!=null){
-                addNewMessage(chatAdapter,messageItem);
+                if (!chatAdapter.getRecyclerView().canScrollVertically(1)) {
+                    chatAdapter.getRecyclerView().scrollToPosition(0);
+                }
             }
-
         }
     }
 
@@ -669,7 +670,6 @@ public class FragmentChat extends SimpleMiracleFragment {
     @Override
     public void onDestroy() {
         miracleActivity.showNavigationBars();
-        miracleApp.getLongPollServiceController().removeOnMessageAddedUpdateListener(onMessageAddedUpdateListener);
         miracleApp.getLongPollServiceController().removeOnMessageTypingListener(onMessageTypingUpdateListener);
         if(onUserOnlineUpdateListener!=null){
             miracleApp.getLongPollServiceController().removeOnUserOnlineListener(onUserOnlineUpdateListener);
@@ -718,137 +718,18 @@ public class FragmentChat extends SimpleMiracleFragment {
 
         ChatAdapter chatAdapter = (ChatAdapter) adapter;
 
-        onMessageAddedUpdateListener = messageAddedUpdates -> {
-            if(chatAdapter.hasData()){
-                ArrayList<ArrayList<MessageAddedUpdate>> arrayLists = new ArrayList<>();
-                if(messageAddedUpdates.size()>1) {
-                    ArrayMap<String, String> arrayMap = new ArrayMap<>();
-                    for (int j = 0; j < messageAddedUpdates.size(); j++) {
-                        MessageAddedUpdate messageAddedUpdate = messageAddedUpdates.get(j);
-                        if (!arrayMap.containsKey(messageAddedUpdate.getPeerId())) {
-                            arrayMap.put(messageAddedUpdate.getPeerId(), messageAddedUpdate.getPeerId());
-                            ArrayList<MessageAddedUpdate> arrayList = new ArrayList<>();
-                            arrayList.add(messageAddedUpdate);
-                            for (int i = j + 1; i < messageAddedUpdates.size(); i++) {
-                                MessageAddedUpdate messageAddedUpdate1 = messageAddedUpdates.get(i);
-                                if (messageAddedUpdate1.getPeerId().equals(messageAddedUpdate.getPeerId())) {
-                                    arrayList.add(messageAddedUpdate1);
-                                }
-                            }
-                            arrayLists.add(arrayList);
-                        }
+        chatAdapter.setMessageAddedListener(new OnMessageAddedListener() {
+            @Override
+            public void onMessageAdded(MessageItem messageItem) {
+                addTask(new Task() {
+                    @Override
+                    public void func() {
+                        updateConversationLastMessage(messageItem);
+                        onComplete();
                     }
-                } else {
-                    if(messageAddedUpdates.size()==1){
-                        ArrayList<MessageAddedUpdate> arrayList = new ArrayList<>();
-                        arrayList.add(messageAddedUpdates.get(0));
-                        arrayLists.add(arrayList);
-                    }
-                }
-                for (ArrayList<MessageAddedUpdate> list:arrayLists) {
-                    int count = list.size();
-
-                    MessageAddedUpdate messageAddedUpdate = list.get(list.size()-1);
-                    if(messageAddedUpdate.getPeerId().equals(conversationItem.getPeer().getLocalId())){
-                        conversationItem.setUnreadCount(conversationItem.getUnreadCount()+count);
-                        if(messageAddedUpdate.hasAttachments()){
-                            addTask(new Task() {
-                                @Override
-                                public void func() {
-                                    new AsyncExecutor<MessageItem>() {
-                                        @Override
-                                        public MessageItem inBackground() {
-                                            try {
-                                                Response<JSONObject> response = Message.getById(messageAddedUpdate.getMessageId(),
-                                                        userItem.getAccessToken()).execute();
-                                                JSONObject jo_response = validateBody(response).getJSONObject("response");
-                                                ArrayMap<String, Owner> ownerArrayMap = createOwnersMap(jo_response);
-                                                JSONArray items = jo_response.getJSONArray("items");
-                                                MessageItem messageItem = new MessageItem(items.getJSONObject(0), ownerArrayMap);
-                                                FragmentChat.this.ownerArrayMap.putAll(ownerArrayMap);
-                                                return messageItem;
-                                            } catch (Exception e) {
-                                                Log.d("eifiejfiejfi",e.getMessage());
-                                                e.printStackTrace();
-                                            }
-                                            return null;
-                                        }
-                                        @Override
-                                        public void onExecute(MessageItem messageItem) {
-                                            if (messageItem != null) {
-                                                updateConversationLastMessage(messageItem);
-                                            }
-                                            onComplete();
-                                        }
-                                    }.start();
-                                }
-                            });
-                        } else {
-                            Owner owner;
-                            if (messageAddedUpdate.isOut()) {
-                                owner = ownerArrayMap.get(messageAddedUpdate.getFromId());
-                            } else {
-                                if (conversationItem.getPeer().getType().equals("chat")) {
-                                    owner = ownerArrayMap.get(messageAddedUpdate.getFromId());
-                                } else {
-                                    owner = conversationItem.getOwner();
-                                }
-                            }
-                            if(owner==null){
-                                addTask(new Task() {
-                                    @Override
-                                    public void func() {
-                                        new AsyncExecutor<Owner>() {
-                                            @Override
-                                            public Owner inBackground() {
-                                                try {
-                                                    ArrayList<String> arrayList = new ArrayList<>();
-                                                    arrayList.add(messageAddedUpdate.getFromId());
-                                                    ArrayMap<String, Owner> ownerArrayMap = loadOwners(arrayList, userItem.getAccessToken());
-                                                    FragmentChat.this.ownerArrayMap.putAll(ownerArrayMap);
-                                                    return ownerArrayMap.get(messageAddedUpdate.getFromId());
-                                                } catch (Exception e) {
-                                                    Log.d("eifiejfiejfi",e.getMessage());
-                                                    e.printStackTrace();
-                                                }
-                                                return null;
-                                            }
-                                            @Override
-                                            public void onExecute(Owner object) {
-                                                if (object != null) {
-                                                    updateConversationLastMessage(new MessageItem(messageAddedUpdate, object));
-                                                }
-                                                onComplete();
-                                            }
-                                        }.start();
-                                    }
-                                });
-                            } else {
-                                addTask(new Task() {
-                                    @Override
-                                    public void func() {
-                                        updateConversationLastMessage(new MessageItem(messageAddedUpdate, owner));
-                                        onComplete();
-                                    }
-                                });
-                            }
-                        }
-                    }
-                }
+                });
             }
-        };
-
-        getMiracleApp().getLongPollServiceController().addOnMessageAddedUpdateListener(onMessageAddedUpdateListener);
-    }
-
-    private void addNewMessage(ChatAdapter chatAdapter, MessageItem messageItem){
-        conversationItem.setLastMessage(messageItem);
-        chatAdapter.getItemDataHolders().add(0, messageItem);
-        chatAdapter.setAddedCount(1);
-        chatAdapter.notifyItemInserted(0);
-        if (!chatAdapter.getRecyclerView().canScrollVertically(1)) {
-            chatAdapter.getRecyclerView().scrollToPosition(0);
-        }
+        });
     }
 
     private class MessageTypingUpdates extends AsyncExecutor<Boolean> {
