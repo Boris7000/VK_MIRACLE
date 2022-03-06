@@ -15,6 +15,7 @@ import com.vkontakte.miracle.adapter.messages.holders.ConversationViewHolder;
 import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageAddedUpdateListener;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageReadUpdateListener;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageTypingUpdateListener;
@@ -55,6 +56,8 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
 
         ArrayList<ItemDataHolder> holders = getItemDataHolders();
 
+        setTimeStump(System.currentTimeMillis()/1000);
+
         Response<JSONObject> response =  Message.getConversations(holders.size(), getStep(),
                 "all", getUserItem().getAccessToken()).execute();
 
@@ -87,9 +90,43 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
         if (holders.size()==getTotalCount()||jsonArray.length()<getStep()) {
             setFinallyLoaded(true);
         }
+    }
 
+    @Override
+    public void onComplete() {
 
+        if(!hasData()) {
+            ArrayList<MessageAddedUpdate> storageMessageAddedUpdates = StorageUtil.loadMessageAddedLongPollUpdates(getMiracleApp());
+            ArrayList<MessageAddedUpdate> missedMessageAddedUpdates = new ArrayList<>();
 
+            androidx.collection.ArrayMap<String,MessageItem> messageItemArrayMap = new androidx.collection.ArrayMap<>();
+
+            for (ItemDataHolder itemDataHolder : getItemDataHolders()) {
+                if(itemDataHolder instanceof ConversationItem){
+                    ConversationItem conversationItem = (ConversationItem) itemDataHolder;
+                    messageItemArrayMap.put(conversationItem.getLastMessage().getId(),conversationItem.getLastMessage());
+                }
+            }
+
+            for (int j = 0; j < storageMessageAddedUpdates.size(); j++) {
+                MessageAddedUpdate messageAddedUpdate = storageMessageAddedUpdates.get(j);
+                if (messageAddedUpdate.getTs() > getTimeStump()){
+                    if(!messageItemArrayMap.containsKey(messageAddedUpdate.getMessageId())) {
+                        missedMessageAddedUpdates.add(messageAddedUpdate);
+                    }
+                } else {
+                    break;
+                }
+            }
+
+            super.onComplete();
+
+            if (!missedMessageAddedUpdates.isEmpty()) {
+                onMessageAddedUpdateListener.onMessageAddedUpdate(missedMessageAddedUpdates);
+            }
+        } else {
+            super.onComplete();
+        }
     }
 
     @Override
@@ -99,6 +136,7 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
         setStep(50);
 
         onMessageAddedUpdateListener = messageAddedUpdates -> {
+
             if(hasData()){
                 ArrayList<ArrayList<MessageAddedUpdate>> arrayLists = new ArrayList<>();
                 if(messageAddedUpdates.size()>1) {

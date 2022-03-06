@@ -113,9 +113,12 @@ public class ChatAdapter extends MiracleLoadableAdapter {
             }
 
             for (MessageAddedUpdate messageAddedUpdate : messageAddedUpdates) {
-                if (messageAddedUpdate.getTs() > getTimeStump() &&
-                        !messageItemArrayMap.containsKey(messageAddedUpdate.getMessageId())) {
-                    missedMessageAddedUpdates.add(messageAddedUpdate);
+                if (messageAddedUpdate.getTs() > getTimeStump()){
+                    if(!messageItemArrayMap.containsKey(messageAddedUpdate.getMessageId())) {
+                        missedMessageAddedUpdates.add(messageAddedUpdate);
+                    }
+                } else {
+                    break;
                 }
             }
 
@@ -127,7 +130,6 @@ public class ChatAdapter extends MiracleLoadableAdapter {
         } else {
             super.onComplete();
         }
-
     }
 
     @Override
@@ -206,7 +208,6 @@ public class ChatAdapter extends MiracleLoadableAdapter {
         getMiracleApp().getLongPollServiceController().addOnMessageReadUpdateListener(onMessageReadUpdateListener);
 
         onMessageAddedUpdateListener = messageAddedUpdates -> {
-
             if(hasData()) {
                 ArrayList<String> newMessagesIds = new ArrayList<>();
 

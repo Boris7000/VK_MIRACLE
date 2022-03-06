@@ -25,7 +25,7 @@ public class MessageInViewHolder extends MessageViewHolder {
     public static class Fabric implements ViewHolderFabric {
         @Override
         public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
-            return new MessageOutViewHolder(inflater.inflate(R.layout.view_message_item_in, viewGroup, false));
+            return new MessageInViewHolder(inflater.inflate(R.layout.view_message_item_in, viewGroup, false));
         }
     }
 }
