@@ -1,8 +1,10 @@
 package com.vkontakte.miracle.adapter.messages.holders;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.view.View;
 import android.view.ViewStub;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,9 +17,6 @@ import com.vkontakte.miracle.engine.view.photoGridView.PhotoGridView;
 import com.vkontakte.miracle.model.Attachments;
 import com.vkontakte.miracle.model.messages.ConversationItem;
 import com.vkontakte.miracle.model.messages.MessageItem;
-
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 
 public class MessageViewHolder extends MiracleViewHolder {
 

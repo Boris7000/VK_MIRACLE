@@ -5,12 +5,10 @@ import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_L
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_MESSAGE_IN;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_MESSAGE_OUT;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.createOwnersMap;
-import static com.vkontakte.miracle.engine.util.NetworkUtil.loadOwners;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 import static com.vkontakte.miracle.engine.util.StringsUtil.stringFromArrayList;
 
 import android.util.ArrayMap;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -27,7 +25,6 @@ import com.vkontakte.miracle.engine.adapter.holder.error.ErrorViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.loading.LoadingViewHolder;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.fragment.messages.FragmentChat;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageAddedUpdateListener;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageReadUpdateListener;
 import com.vkontakte.miracle.longpoll.model.MessageAddedUpdate;

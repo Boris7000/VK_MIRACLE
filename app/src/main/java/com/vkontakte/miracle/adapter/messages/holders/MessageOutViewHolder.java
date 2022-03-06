@@ -3,7 +3,6 @@ package com.vkontakte.miracle.adapter.messages.holders;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +45,6 @@ public class MessageOutViewHolder extends MessageViewHolder {
     }
 
     public void showReadIcon(){
-
         if(readIcon==null) {
             if(readIconStub!=null) {
                 readIcon = (ImageView) readIconStub.inflate();
