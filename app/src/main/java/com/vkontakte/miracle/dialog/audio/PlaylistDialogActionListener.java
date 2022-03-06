@@ -1,8 +1,8 @@
 package com.vkontakte.miracle.dialog.audio;
 
 public interface PlaylistDialogActionListener {
-    void add();
-    void remove();
+    void follow();
+    void delete();
     void playNext();
     void goToArtist();
 }

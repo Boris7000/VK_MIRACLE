@@ -86,12 +86,12 @@ public class PlaylistHorizontalViewHolder extends MiracleViewHolder {
                     getMiracleActivity().getUserItem());
             playlistDialog.setDialogActionListener(new PlaylistDialogActionListener() {
                 @Override
-                public void add() {
+                public void follow() {
 
                 }
 
                 @Override
-                public void remove() {
+                public void delete() {
 
                 }
 

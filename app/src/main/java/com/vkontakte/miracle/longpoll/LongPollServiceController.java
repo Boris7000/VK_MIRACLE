@@ -5,20 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.collection.ArrayMap;
 
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageAddedUpdateListener;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageReadUpdateListener;
-import com.vkontakte.miracle.longpoll.model.MessageAddedUpdate;
-import com.vkontakte.miracle.longpoll.model.MessageReadUpdate;
-import com.vkontakte.miracle.longpoll.model.UserOnlineUpdate;
-import com.vkontakte.miracle.longpoll.model.MessageTypingUpdate;
+import com.vkontakte.miracle.longpoll.listeners.OnMessageTypingUpdateListener;
 import com.vkontakte.miracle.longpoll.listeners.OnNewUpdatesListener;
 import com.vkontakte.miracle.longpoll.listeners.OnUserOnlineUpdateListener;
-import com.vkontakte.miracle.longpoll.listeners.OnMessageTypingUpdateListener;
+import com.vkontakte.miracle.longpoll.model.MessageAddedUpdate;
+import com.vkontakte.miracle.longpoll.model.MessageReadUpdate;
+import com.vkontakte.miracle.longpoll.model.MessageTypingUpdate;
+import com.vkontakte.miracle.longpoll.model.UserOnlineUpdate;
 
 import java.util.ArrayList;
 

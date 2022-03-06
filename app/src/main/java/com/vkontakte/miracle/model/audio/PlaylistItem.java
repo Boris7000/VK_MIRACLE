@@ -1,6 +1,7 @@
 package com.vkontakte.miracle.model.audio;
 
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PLAYLIST;
+import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
 import android.util.ArrayMap;
 import androidx.annotation.Nullable;
@@ -14,12 +15,17 @@ import com.vkontakte.miracle.model.audio.fields.Original;
 import com.vkontakte.miracle.model.audio.fields.Photo;
 import com.vkontakte.miracle.model.groups.GroupItem;
 import com.vkontakte.miracle.model.users.ProfileItem;
+import com.vkontakte.miracle.network.methods.Audio;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class PlaylistItem implements ItemDataHolder {
 
@@ -395,6 +401,39 @@ public class PlaylistItem implements ItemDataHolder {
             }
         }
         return false;
+    }
+
+    public void follow(ProfileItem userItem) throws Exception {
+        Call<JSONObject> call;
+
+        if(getOriginal()==null){
+            call = Audio.followPlaylist(getId(), getOwnerId(), getAccessKey(), userItem.getAccessToken());
+        } else {
+            call = Audio.followPlaylist(getOriginal().getId(), getOriginal().getOwnerId(),
+                    getOriginal().getAccessKey(), userItem.getAccessToken());
+        }
+
+        Response<JSONObject> response = call.execute();
+
+        JSONObject jsonObject = validateBody(response);
+        Followed followed = new Followed(jsonObject.getJSONObject("response"));
+        setFollowed(followed);
+
+    }
+
+    public void delete(ProfileItem userItem) throws Exception {
+
+        Call<JSONObject> call;
+
+        call = Audio.deletePlaylist(getFollowed().getPlaylistId(), getFollowed().getOwnerId(),
+                getAccessKey(), userItem.getAccessToken());
+
+        Response<JSONObject> response = call.execute();
+
+        JSONObject jsonObject = validateBody(response);
+
+        setFollowed(null);
+
     }
 
 }

@@ -44,11 +44,16 @@ public class PlaylistAdapter extends MiracleLoadableAdapter {
         ownerId = album.getOwnerId();
     }
 
-
     public PlaylistAdapter(PlaylistItem playlistItem){
-        playlistId = playlistItem.getOriginal().getId();
-        accessKey = playlistItem.getOriginal().getAccessKey();
-        ownerId = playlistItem.getOriginal().getOwnerId();
+        if(playlistItem.getOriginal()!=null) {
+            playlistId = playlistItem.getOriginal().getId();
+            accessKey = playlistItem.getOriginal().getAccessKey();
+            ownerId = playlistItem.getOriginal().getOwnerId();
+        } else {
+            playlistId = playlistItem.getId();
+            accessKey = playlistItem.getAccessKey();
+            ownerId = playlistItem.getOwnerId();
+        }
         this.playlistItem = new PlaylistItem(playlistItem);
 
     }

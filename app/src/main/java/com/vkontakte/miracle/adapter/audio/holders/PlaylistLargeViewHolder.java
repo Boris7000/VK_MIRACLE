@@ -40,6 +40,7 @@ import com.vkontakte.miracle.player.AudioPlayerData;
 
 import org.json.JSONObject;
 
+import retrofit2.Call;
 import retrofit2.Response;
 
 public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
@@ -53,11 +54,13 @@ public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
     private final TextView subtitle2;
     private final TextView subtitle3;
     private final SwitchIconViewV2 addButton;
+    private final ProfileItem userItem;
 
     private PlaylistItem playlistItem;
 
     public PlaylistLargeViewHolder(@NonNull View itemView) {
         super(itemView);
+        userItem = getMiracleActivity().getUserItem();
         playButton = itemView.findViewById(R.id.playButton);
         optionsButton = itemView.findViewById(R.id.optionsButton);
         imageView = itemView.findViewById(R.id.photo);
@@ -147,7 +150,8 @@ public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
         playButton.setOnClickListener(view -> getMiracleApp().getPlayerServiceController().
                 playNewAudio(new AudioPlayerData(playlistItem.getItems().get(0))));
 
-        if(playlistItem.getOriginal()==null){
+        if((playlistItem.getOriginal()==null&&playlistItem.getOwnerId().equals(userItem.getId()))
+                ||(playlistItem.getOriginal()!=null&&playlistItem.getOriginal().getOwnerId().equals(userItem.getId()))){
             if(addButton.getVisibility()!=GONE) {
                 addButton.setVisibility(GONE);
             }
@@ -155,7 +159,6 @@ public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
             if(addButton.getVisibility()!=VISIBLE) {
                 addButton.setVisibility(VISIBLE);
             }
-
             switchAddButtonState(playlistItem.isFollowing());
         }
 
@@ -166,18 +169,10 @@ public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
                 @Override
                 public Integer inBackground() {
                     try {
-                        ProfileItem profileItem = getMiracleActivity().getUserItem();
-                        Response<JSONObject> response =  (playlistItem.isFollowing() ?
-                                Audio.followPlaylist(playlistItem.getOriginal().getId(), playlistItem.getOriginal().getOwnerId(),
-                                        playlistItem.getOriginal().getAccessKey(), profileItem.getAccessToken())
-                                :Audio.deletePlaylist(playlistItem.getFollowed().getPlaylistId(), playlistItem.getFollowed().getOwnerId(),
-                                playlistItem.getAccessKey(), profileItem.getAccessToken())).execute();
                         if(playlistItem.isFollowing()){
-                            JSONObject jsonObject = validateBody(response);
-                            Followed followed = new Followed(jsonObject.getJSONObject("response"));
-                            playlistItem.setFollowed(followed);
+                            playlistItem.follow(userItem);
                         } else {
-                            playlistItem.setFollowed(null);
+                            playlistItem.delete(userItem);
                         }
                         return 1;
                     } catch (Exception e) {
@@ -186,24 +181,52 @@ public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
                     return -1;
                 }
                 @Override
-                public void onExecute(Integer object) {
-                }
+                public void onExecute(Integer object) { }
             }.start();
 
         });
 
         optionsButton.setOnClickListener(view -> {
-            PlaylistDialog playlistDialog = new PlaylistDialog(getMiracleActivity(), playlistItem,
-                    getMiracleActivity().getUserItem());
+            PlaylistDialog playlistDialog = new PlaylistDialog(getMiracleActivity(), playlistItem, userItem);
             playlistDialog.setDialogActionListener(new PlaylistDialogActionListener() {
                 @Override
-                public void add() {
-
+                public void follow() {
+                    playlistItem.setFollowing(true);
+                    switchAddButtonState(true, true);
+                    new AsyncExecutor<Integer>(){
+                        @Override
+                        public Integer inBackground() {
+                            try {
+                                playlistItem.follow(userItem);
+                                return 1;
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            return -1;
+                        }
+                        @Override
+                        public void onExecute(Integer object) { }
+                    }.start();
                 }
 
                 @Override
-                public void remove() {
-
+                public void delete() {
+                    playlistItem.setFollowing(false);
+                    switchAddButtonState(false, true);
+                    new AsyncExecutor<Integer>(){
+                        @Override
+                        public Integer inBackground() {
+                            try {
+                                playlistItem.delete(userItem);
+                                return 1;
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            return -1;
+                        }
+                        @Override
+                        public void onExecute(Integer object) { }
+                    }.start();
                 }
 
                 @Override

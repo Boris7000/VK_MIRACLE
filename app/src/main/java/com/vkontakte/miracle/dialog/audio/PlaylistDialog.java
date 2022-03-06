@@ -36,7 +36,7 @@ public class PlaylistDialog extends MiracleBottomDialog {
 
     private View rootView;
     private final PlaylistItem playlistItem;
-    private final ProfileItem profileItem;
+    private final ProfileItem userItem;
     private PlaylistDialogActionListener dialogActionListener;
     private int color;
     private ImageView imageView;
@@ -74,10 +74,10 @@ public class PlaylistDialog extends MiracleBottomDialog {
         }
     };
 
-    public PlaylistDialog(@NonNull Context context, PlaylistItem playlistItem, ProfileItem profileItem) {
+    public PlaylistDialog(@NonNull Context context, PlaylistItem playlistItem, ProfileItem userItem) {
         super(context);
         this.playlistItem = playlistItem;
-        this.profileItem = profileItem;
+        this.userItem = userItem;
     }
 
     @Override
@@ -131,20 +131,31 @@ public class PlaylistDialog extends MiracleBottomDialog {
         linearLayout.addView(miracleButton);
 
 
-        if(playlistItem.getOwnerId().equals(profileItem.getId())){
-            miracleButton = (MiracleButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
-            miracleButton.setText(context.getString(R.string.delete_from_audio));
-            miracleButton.setImageResource(R.drawable.ic_cancel_28);
-            linearLayout.addView(miracleButton);
-        } else {
-            miracleButton = (MiracleButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
-            miracleButton.setText(context.getString(R.string.add_to_audio));
-            miracleButton.setImageResource(R.drawable.ic_list_add_28);
-            linearLayout.addView(miracleButton);
+        if(!((playlistItem.getOriginal()==null&&playlistItem.getOwnerId().equals(userItem.getId()))
+                ||(playlistItem.getOriginal()!=null&&playlistItem.getOriginal().getOwnerId().equals(userItem.getId())))){
+            if(playlistItem.isFollowing()){
+                miracleButton = (MiracleButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
+                miracleButton.setText(context.getString(R.string.delete_from_audio));
+                miracleButton.setImageResource(R.drawable.ic_cancel_28);
+                linearLayout.addView(miracleButton);
+            } else {
+                miracleButton = (MiracleButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
+                miracleButton.setText(context.getString(R.string.add_to_audio));
+                miracleButton.setImageResource(R.drawable.ic_list_add_28);
+                linearLayout.addView(miracleButton);
+            }
         }
 
+        miracleButton.setOnClickListener(v -> {
+            if(playlistItem.isFollowing()){
+                dialogActionListener.delete();
+            } else {
+                dialogActionListener.follow();
+            }
+            hide();
+        });
 
-        if(playlistItem.getOwnerId().equals(profileItem.getId())){
+        if(playlistItem.getOwnerId().equals(userItem.getId())){
             miracleButton = (MiracleButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
             miracleButton.setText(context.getString(R.string.delete_from_device));
             miracleButton.setImageResource(R.drawable.ic_delete_28);
