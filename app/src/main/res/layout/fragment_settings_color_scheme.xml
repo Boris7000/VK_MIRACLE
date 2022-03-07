@@ -67,35 +67,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Стандартный"
-                            android:layout_marginBottom="9dp" />
+                            android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                app:riv_oval="true"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                android:src="@color/skyBlue_500"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                app:riv_oval="true"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                android:src="@color/skyBlue_300"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"/>
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                app:riv_oval="true"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                android:src="@color/skyBlue_neutral_100"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"/>
+                            android:orientation="horizontal"
+                            android:theme="@style/BlueTheme">
+                            <include layout="@layout/view_settings_color_scheme_circles1_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                     <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
@@ -111,35 +89,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Изумрудный"
-                            android:layout_marginBottom="9dp" />
+                            android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                app:riv_oval="true"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                android:src="@color/emerald_500"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"/>
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                app:riv_oval="true"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                android:src="@color/emerald_300"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"/>
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                app:riv_oval="true"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                android:src="@color/emerald_neutral_100"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"/>
+                            android:orientation="horizontal"
+                            android:theme="@style/EmeraldTheme">
+                            <include layout="@layout/view_settings_color_scheme_circles1_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                 </LinearLayout>
@@ -161,35 +117,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Солнечный"
-                            android:layout_marginBottom="9dp" />
+                            android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/orange_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/orange_300"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/orange_neutral_100"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
+                            android:orientation="horizontal"
+                            android:theme="@style/OrangeTheme">
+                            <include layout="@layout/view_settings_color_scheme_circles1_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                     <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
@@ -205,35 +139,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Малиновый"
-                            android:layout_marginBottom="9dp" />
+                            android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/crimson_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/crimson_300"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/crimson_neutral_100"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
+                            android:orientation="horizontal"
+                            android:theme="@style/CrimsonTheme">
+                            <include layout="@layout/view_settings_color_scheme_circles1_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                 </LinearLayout>
@@ -255,35 +167,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Лавандовый"
-                            android:layout_marginBottom="9dp" />
+                            android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/violet_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/violet_300"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/violet_neutral_100"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
+                            android:orientation="horizontal"
+                            android:theme="@style/VioletTheme">
+                            <include layout="@layout/view_settings_color_scheme_circles1_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                     <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
@@ -299,35 +189,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Морковный"
-                            android:layout_marginBottom="9dp" />
+                            android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/carrot_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/carrot_300"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/carrot_neutral_100"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
+                            android:orientation="horizontal"
+                            android:theme="@style/CarrotTheme">
+                            <include layout="@layout/view_settings_color_scheme_circles1_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                 </LinearLayout>
@@ -349,35 +217,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="2077"
-                            android:layout_marginBottom="9dp" />
+                            android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/aquaDark_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/v_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/v_neutral_100"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
+                            android:orientation="horizontal"
+                            android:theme="@style/CyberpunkTheme">
+                            <include layout="@layout/view_settings_color_scheme_circles2_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                     <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
@@ -393,35 +239,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Контрастный"
-                            android:layout_marginBottom="9dp" />
+                            android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/black"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/black_300"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/black_100"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
+                            android:orientation="horizontal"
+                            android:theme="@style/ContrastTheme">
+                            <include layout="@layout/view_settings_color_scheme_circles1_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                 </LinearLayout>
@@ -443,35 +267,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Звездная ночь"
-                            android:layout_marginBottom="9dp" />
+                            android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/orange_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/skyBlue_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/skyBlue_neutral_100"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
+                            android:orientation="horizontal"
+                            android:theme="@style/StarNightTheme">
+                            <include layout="@layout/view_settings_color_scheme_circles2_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                     <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
@@ -487,35 +289,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Фиджи"
-                            android:layout_marginBottom="9dp" />
+                            android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/pink_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/fiji_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/fiji_neutral_100"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
+                            android:orientation="horizontal"
+                            android:theme="@style/FijiTheme">
+                            <include layout="@layout/view_settings_color_scheme_circles2_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                 </LinearLayout>
@@ -537,35 +317,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Лес"
-                            android:layout_marginBottom="9dp" />
+                            android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/orange_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/ate_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/ate_neutral_100"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
+                            android:orientation="horizontal"
+                            android:theme="@style/ForestTheme">
+                            <include layout="@layout/view_settings_color_scheme_circles2_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                     <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
@@ -581,35 +339,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Сэйлор"
-                            android:layout_marginBottom="9dp" />
+                            android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/crush_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/cyprus_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/cyprus_neutral_100"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
+                            android:orientation="horizontal"
+                            android:theme="@style/SailorTheme">
+                            <include layout="@layout/view_settings_color_scheme_circles2_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                 </LinearLayout>
@@ -631,38 +367,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Закат"
-                            android:layout_marginBottom="9dp" />
+                            android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/skyBlue_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/pink_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/pink_neutral_100"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
+                            android:orientation="horizontal"
+                            android:theme="@style/SunsetTheme">
+                            <include layout="@layout/view_settings_color_scheme_circles2_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                     <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
@@ -678,35 +389,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Неон"
-                            android:layout_marginBottom="9dp" />
+                            android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/crush_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/violet_500"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
-                            <com.makeramen.roundedimageview.RoundedImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:src="@color/violet_neutral_100"
-                                app:riv_border_color="?attr/colorContrast20"
-                                app:riv_border_width="@dimen/imageBorderWidth"
-                                app:riv_oval="true" />
+                            android:orientation="horizontal"
+                            android:theme="@style/NeonTheme">
+                            <include layout="@layout/view_settings_color_scheme_circles2_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                 </LinearLayout>

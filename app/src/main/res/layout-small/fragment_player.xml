@@ -27,8 +27,7 @@
                 android:foreground="@drawable/blur"
                 tools:foregroundTint="@color/black"
                 tools:srcCompat="@tools:sample/avatars"/>
-
-            <com.makeramen.roundedimageview.RoundedImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/photo"
                 android:layout_width="110dp"
                 android:layout_height="110dp"
@@ -36,9 +35,8 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:background="@color/white_half_20"
-                app:riv_mutate_background="true"
-                app:riv_corner_radius="@dimen/round"
-                tools:src="@tools:sample/avatars[0]" />
+                app:shapeAppearanceOverlay="@style/ShapeAppearance"
+                tools:src="@tools:sample/avatars[0]"/>
         </FrameLayout>
 
         <LinearLayout

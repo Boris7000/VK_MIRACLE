@@ -23,7 +23,7 @@
             android:foreground="@drawable/blur"
             tools:foregroundTint="@color/black"
             tools:srcCompat="@tools:sample/avatars[0]"/>
-        <com.makeramen.roundedimageview.RoundedImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/photo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -32,9 +32,8 @@
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:background="@color/white_half_20"
-            app:riv_mutate_background="true"
-            app:riv_corner_radius="@dimen/round"
-            tools:src="@tools:sample/avatars[0]" />
+            app:shapeAppearanceOverlay="@style/ShapeAppearance"
+            tools:src="@tools:sample/avatars[0]"/>
     </com.vkontakte.miracle.engine.view.OneToOneSquareView>
 
     <Space

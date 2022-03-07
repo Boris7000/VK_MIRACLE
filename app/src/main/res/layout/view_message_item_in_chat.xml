@@ -29,15 +29,15 @@
                 android:layout_marginBottom="9dp"
                 android:orientation="horizontal">
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/photo"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
+                    android:padding="@dimen/imageBorderWidth"
                     android:background="?attr/placeHolderColor"
-                    app:riv_border_color="?attr/colorContrast10"
-                    app:riv_border_width="@dimen/imageBorderWidth"
-                    app:riv_mutate_background="true"
-                    app:riv_oval="true" />
+                    app:shapeAppearanceOverlay="@style/CircleShapeAppearance"
+                    app:strokeColor="?attr/colorContrast20"
+                    app:strokeWidth="@dimen/imageBorderWidth"/>
 
                 <TextView
                     android:id="@+id/title"

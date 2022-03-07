@@ -207,7 +207,7 @@ public class ConversationViewHolder extends MiracleViewHolder {
             if(imageText !=null&& imageText.getVisibility()!=GONE){
                 imageText.setVisibility(GONE);
             }
-            Picasso.get().load(chatSettings.getPhoto200()).noFade().into(imageView);
+            Picasso.get().load(chatSettings.getPhoto200()).into(imageView);
         }
 
         if(onlineStatus !=null&& onlineStatus.getVisibility()!=GONE){
@@ -268,7 +268,7 @@ public class ConversationViewHolder extends MiracleViewHolder {
         title.setText(owner.getName());
 
         if(!owner.getPhoto200().isEmpty()) {
-            Picasso.get().load(owner.getPhoto200()).noFade().into(imageView);
+            Picasso.get().load(owner.getPhoto200()).into(imageView);
         }
 
         if(owner.isVerified()){

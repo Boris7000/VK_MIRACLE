@@ -76,16 +76,18 @@
                         android:layout_gravity="center_vertical"
                         android:layout_width="52dp"
                         android:layout_height="52dp">
-                        <com.makeramen.roundedimageview.RoundedImageView
+
+                        <com.google.android.material.imageview.ShapeableImageView
                             android:id="@+id/photo"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:padding="2dp"
                             android:background="?attr/placeHolderColor"
                             android:scaleType="centerCrop"
-                            app:riv_border_color="?attr/colorOnSecondary"
-                            app:riv_border_width="2dp"
-                            app:riv_mutate_background="true"
-                            app:riv_oval="true"/>
+                            app:shapeAppearanceOverlay="@style/CircleShapeAppearance"
+                            app:strokeColor="?attr/colorOnSecondary"
+                            app:strokeWidth="2dp"/>
+
                         <ImageView
                             android:id="@+id/onlineStatus"
                             android:layout_width="wrap_content"

@@ -8,15 +8,16 @@
     android:layout_marginHorizontal="4.5dp"
     android:orientation="vertical">
 
-    <com.makeramen.roundedimageview.RoundedImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/photo"
         android:layout_width="150dp"
         android:layout_height="150dp"
+        android:padding="@dimen/imageBorderWidth"
+        android:layout_gravity="center_vertical"
         android:background="?attr/placeHolderColor"
-        app:riv_border_color="?attr/colorContrast10"
-        app:riv_border_width="@dimen/imageBorderWidth"
-        app:riv_mutate_background="true"
-        app:riv_corner_radius="@dimen/round"/>
+        app:shapeAppearanceOverlay="@style/ShapeAppearance"
+        app:strokeColor="?attr/colorContrast10"
+        app:strokeWidth="@dimen/imageBorderWidth"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

@@ -73,7 +73,7 @@ public class GroupLargeViewHolder extends PlaylistHorizontalViewHolder {
         if(groupItem.getPhotoMax().isEmpty()){
             imageView.setImageDrawable(null);
         } else {
-            Picasso.get().load(groupItem.getPhotoMax()).noFade().into(imageView);
+            Picasso.get().load(groupItem.getPhotoMax()).into(imageView);
         }
 
     }

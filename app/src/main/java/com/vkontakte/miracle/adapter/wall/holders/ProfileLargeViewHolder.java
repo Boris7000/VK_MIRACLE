@@ -104,7 +104,7 @@ public class ProfileLargeViewHolder extends PlaylistHorizontalViewHolder {
         if(profileItem.getPhotoMax().isEmpty()){
             imageView.setImageDrawable(null);
         } else {
-            Picasso.get().load(profileItem.getPhotoMax()).noFade().into(imageView);
+            Picasso.get().load(profileItem.getPhotoMax()).into(imageView);
         }
 
         if(profileItem.getId().equals(getMiracleActivity().getUserItem().getId())){

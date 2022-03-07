@@ -1,10 +1,6 @@
 package com.vkontakte.miracle.engine.util;
 
-import static com.makeramen.roundedimageview.RoundedImageView.DEFAULT_BORDER_WIDTH;
-import static com.makeramen.roundedimageview.RoundedImageView.DEFAULT_RADIUS;
-
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,14 +9,8 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.util.Log;
 
-import androidx.collection.ArrayMap;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.ColorUtils;
-
-import com.makeramen.roundedimageview.Corner;
-import com.makeramen.roundedimageview.RoundedDrawable;
-import com.squareup.picasso.Transformation;
-import com.vkontakte.miracle.R;
 
 public class ImageUtil {
 

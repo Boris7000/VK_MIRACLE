@@ -52,7 +52,7 @@ public class PlaylistHorizontalViewHolder extends MiracleViewHolder {
         if(playlistItem.getPhoto()!=null){
             Photo photo = playlistItem.getPhoto();
             if(photo.getPhoto300()!=null){
-                Picasso.get().load(photo.getPhoto300()).noFade().into(imageView);
+                Picasso.get().load(photo.getPhoto300()).into(imageView);
             }
         } else {
             imageView.setImageDrawable(null);

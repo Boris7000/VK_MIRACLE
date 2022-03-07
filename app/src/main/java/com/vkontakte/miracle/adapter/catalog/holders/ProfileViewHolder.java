@@ -60,7 +60,7 @@ public class ProfileViewHolder extends MiracleViewHolder {
         Picasso.get().cancelRequest(photo);
 
         if(!profileItem.getPhoto200().isEmpty()) {
-            Picasso.get().load(profileItem.getPhoto200()).noFade().into(photo);
+            Picasso.get().load(profileItem.getPhoto200()).into(photo);
         }
 
         if(profileItem.isOnline()) {

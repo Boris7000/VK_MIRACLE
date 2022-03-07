@@ -8,16 +8,16 @@
     android:paddingHorizontal="12dp"
     android:paddingVertical="9dp">
 
-    <com.makeramen.roundedimageview.RoundedImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/photo"
         android:layout_width="72dp"
         android:layout_height="72dp"
+        android:padding="@dimen/imageBorderWidth"
         android:layout_gravity="center_vertical"
         android:background="?attr/placeHolderColor"
-        app:riv_border_color="?attr/colorContrast10"
-        app:riv_border_width="@dimen/imageBorderWidth"
-        app:riv_mutate_background="true"
-        app:riv_corner_radius="@dimen/child_round"/>
+        app:shapeAppearanceOverlay="@style/ChildShapeAppearance"
+        app:strokeColor="?attr/colorContrast10"
+        app:strokeWidth="@dimen/imageBorderWidth"/>
 
     <LinearLayout
         android:layout_width="match_parent"

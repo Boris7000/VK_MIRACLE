@@ -2,6 +2,7 @@ package com.vkontakte.miracle.dialog.audio;
 
 import static com.vkontakte.miracle.engine.util.ImageUtil.bitmapFromLayerDrawable;
 import static com.vkontakte.miracle.engine.util.ImageUtil.getAverageHSLFromBitmap;
+import static com.vkontakte.miracle.engine.view.PicassoDrawableCopy.setBitmap;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -58,7 +59,7 @@ public class PlaylistDialog extends MiracleBottomDialog {
                 }
                 @Override
                 public void onExecute(Boolean object) {
-                    imageView.setImageBitmap(bitmap);
+                    setBitmap(imageView, getContext(), bitmap,false);
                     animateToColor(averageColor);
                 }
             }.start();

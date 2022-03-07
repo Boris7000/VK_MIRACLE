@@ -71,7 +71,7 @@ public class CatalogUserViewHolder extends MiracleViewHolder {
         Picasso.get().cancelRequest(imageView);
 
         if(!profileItem.getPhoto200().isEmpty()) {
-            Picasso.get().load(profileItem.getPhoto200()).noFade().into(imageView);
+            Picasso.get().load(profileItem.getPhoto200()).into(imageView);
         }
 
         if(profileItem.isOnline()) {

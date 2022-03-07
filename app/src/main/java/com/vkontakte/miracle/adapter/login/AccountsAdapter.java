@@ -6,12 +6,12 @@ import static com.vkontakte.miracle.network.Constants.fake_receipt;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.makeramen.roundedimageview.RoundedImageView;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.dialog.login.AccountDialog;
 import com.vkontakte.miracle.login.AuthState;
@@ -54,7 +54,7 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.UserVi
     public class UserViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView name;
-        private final RoundedImageView imageView;
+        private final ImageView imageView;
         private ProfileItem profileItem;
 
         public UserViewHolder(@NonNull View itemView) {

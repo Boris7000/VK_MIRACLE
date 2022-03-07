@@ -25,5 +25,5 @@
         android:orientation="horizontal"
         app:secondary="true"
         app:active="false"
-        app:imageResource="@drawable/ic_more_vertical_28" />
+        app:imageResource="@drawable/ic_more_vertical_28"/>
 </LinearLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ChildShapeAppearance" parent="">
+        <item name="cornerSize">@dimen/child_round</item>
+    </style>
+    <style name="Child2ShapeAppearance" parent="">
+        <item name="cornerSize">@dimen/child_round2</item>
+    </style>
+    <style name="CircleShapeAppearance" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+    <style name="ShapeAppearance" parent="">
+        <item name="cornerSize">@dimen/round</item>
+    </style>
+</resources>

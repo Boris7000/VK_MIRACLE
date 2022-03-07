@@ -10,17 +10,16 @@
     android:gravity="center"
     android:background="@drawable/rounded_card_filled_primary">
 
-    <com.makeramen.roundedimageview.RoundedImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/photo"
         android:layout_width="68dp"
         android:layout_height="68dp"
         android:layout_marginBottom="4dp"
+        android:padding="2dp"
         android:background="?attr/placeHolderColor"
-        android:scaleType="centerCrop"
-        app:riv_border_color="?attr/colorPrimary"
-        app:riv_border_width="2dp"
-        app:riv_mutate_background="true"
-        app:riv_oval="true"/>
+        app:shapeAppearanceOverlay="@style/CircleShapeAppearance"
+        app:strokeColor="?attr/colorPrimary"
+        app:strokeWidth="2dp"/>
 
     <TextView
         android:id="@+id/title"

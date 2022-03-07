@@ -1,9 +1,11 @@
 package com.vkontakte.miracle.fragment.player;
 
+import static com.squareup.picasso.Picasso.LoadedFrom.MEMORY;
 import static com.vkontakte.miracle.engine.util.ColorUtil.getColorByResId;
 import static com.vkontakte.miracle.engine.util.ImageUtil.bitmapFromLayerDrawable;
 import static com.vkontakte.miracle.engine.util.ImageUtil.fastBlur;
 import static com.vkontakte.miracle.engine.util.ImageUtil.getAverageHSLFromBitmap;
+import static com.vkontakte.miracle.engine.view.PicassoDrawableCopy.setBitmap;
 
 import android.animation.ValueAnimator;
 import android.graphics.Bitmap;
@@ -101,7 +103,7 @@ public class FragmentPlayer extends NestedMiracleFragment {
                 @Override
                 public void onExecute(Boolean object) {
                     blur.setImageBitmap(blurBitmap);
-                    image.setImageBitmap(bitmap);
+                    setBitmap(image, getMiracleActivity(), bitmap,false);
                     animateToColor(averageColor);
                 }
             }.start();

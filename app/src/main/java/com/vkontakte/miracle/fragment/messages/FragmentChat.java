@@ -457,7 +457,7 @@ public class FragmentChat extends SimpleMiracleFragment {
             if(imageText !=null&& imageText.getVisibility()!=GONE){
                 imageText.setVisibility(GONE);
             }
-            Picasso.get().load(chatSettings.getPhoto200()).noFade().into(imageView);
+            Picasso.get().load(chatSettings.getPhoto200()).into(imageView);
         }
     }
 
@@ -559,9 +559,11 @@ public class FragmentChat extends SimpleMiracleFragment {
         if(profileItem.isOnline()){
             setStatus(miracleActivity.getString(R.string.online));
         } else {
-            LastSeen lastSeen = profileItem.getLastSeen();
-            setStatus(TimeUtil.getOnlineDateString(lastSeen.getTime(),
-                    profileItem.getSex(), miracleActivity));
+            if(profileItem.getLastSeen()!=null) {
+                LastSeen lastSeen = profileItem.getLastSeen();
+                setStatus(TimeUtil.getOnlineDateString(lastSeen.getTime(),
+                        profileItem.getSex(), miracleActivity));
+            }
         }
     }
 
@@ -595,7 +597,7 @@ public class FragmentChat extends SimpleMiracleFragment {
         title.setText(owner.getName());
 
         if(!owner.getPhoto200().isEmpty()) {
-            Picasso.get().load(owner.getPhoto200()).noFade().into(imageView);
+            Picasso.get().load(owner.getPhoto200()).into(imageView);
         }
 
         if(owner.isVerified()){

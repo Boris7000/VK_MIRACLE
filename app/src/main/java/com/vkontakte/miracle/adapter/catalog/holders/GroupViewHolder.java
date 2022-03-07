@@ -56,7 +56,7 @@ public class GroupViewHolder extends MiracleViewHolder {
         Picasso.get().cancelRequest(photo);
 
         if(!groupItem.getPhoto200().isEmpty()) {
-            Picasso.get().load(groupItem.getPhoto200()).noFade().into(photo);
+            Picasso.get().load(groupItem.getPhoto200()).into(photo);
         }
 
         if(groupItem.isVerified()){

@@ -84,7 +84,7 @@ public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
         if(playlistItem.getPhoto()!=null){
             Photo photo = playlistItem.getPhoto();
             if(photo.getPhoto270()!=null){
-                Picasso.get().load(photo.getPhoto600()).noFade().into(imageView);
+                Picasso.get().load(photo.getPhoto600()).into(imageView);
             }
         } else {
             imageView.setImageDrawable(null);

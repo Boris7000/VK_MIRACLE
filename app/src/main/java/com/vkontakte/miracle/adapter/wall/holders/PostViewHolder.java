@@ -148,7 +148,7 @@ public class PostViewHolder extends MiracleViewHolder {
         date.setText(TimeUtil.getPostDateString(postItem.getDate(),itemView.getContext()));
 
         if(!owner.getPhoto200().isEmpty()) {
-            Picasso.get().load(owner.getPhoto200()).noFade().into(imageView);
+            Picasso.get().load(owner.getPhoto200()).into(imageView);
         }
 
         if(owner.isVerified()){

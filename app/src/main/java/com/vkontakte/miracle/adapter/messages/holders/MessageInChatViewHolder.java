@@ -39,7 +39,7 @@ public class MessageInChatViewHolder extends MessageViewHolder {
         Picasso.get().cancelRequest(photo);
 
         if(!owner.getPhoto100().isEmpty()) {
-            Picasso.get().load(owner.getPhoto100()).noFade().into(photo);
+            Picasso.get().load(owner.getPhoto100()).into(photo);
         }
     }
 

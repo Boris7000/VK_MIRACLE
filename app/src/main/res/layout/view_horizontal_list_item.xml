@@ -7,20 +7,16 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="5dp"
     android:orientation="vertical">
-    <androidx.cardview.widget.CardView
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/photo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/round"
-        app:cardBackgroundColor="?attr/placeHolderColor"
-        app:cardElevation="0dp">
-        <ImageView
-            android:id="@+id/photo"
-            android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:adjustViewBounds="true"
-            android:background="?attr/placeHolderColor"
-            android:scaleType="centerCrop" />
-    </androidx.cardview.widget.CardView>
+        android:layout_height="130dp"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:background="?attr/placeHolderColor"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance" />
 
     <TextView
         android:id="@+id/title"
