@@ -229,7 +229,7 @@
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout-v31/fragment_settings_color_scheme.xml" value="0.20471014492753623" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/activity_login.xml" value="0.16304347826086957" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/dialog_account.xml" value="0.29720670391061454" />
-        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/dialog_audio.xml" value="0.625" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/dialog_audio.xml" value="0.335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/dialog_button_stub.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/dialog_go_to_artist.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_chat.xml" value="0.75" />
@@ -273,6 +273,7 @@
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_profile_item_large_profile_buttons_stub.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_profile_item_large_user_buttons_stub.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_settings_color_scheme_circles1.xml" value="0.26927083333333335" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_settings_color_scheme_circles1_merge.xml" value="0.14010416666666667" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_settings_color_scheme_circles2_merge.xml" value="0.26927083333333335" />
       </map>
     </option>

@@ -22,7 +22,7 @@
             android:layout_marginBottom="8dp"
             android:padding="16dp"
             android:background="@drawable/rounded_card_child_white"
-            tools:backgroundTint="@color/black">
+            tools:backgroundTint="#363636">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/photo"

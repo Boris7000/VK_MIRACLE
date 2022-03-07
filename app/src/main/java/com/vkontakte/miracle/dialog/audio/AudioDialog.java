@@ -91,7 +91,7 @@ public class AudioDialog extends MiracleBottomDialog {
 
         container = rootView.findViewById(R.id.container);
 
-        applyColor(color = ColorUtils.HSLToColor(new float[]{0,0,0.13f}));
+        applyColor(color = ColorUtils.HSLToColor(new float[]{0,0,0.25f}));
 
         imageView = container.findViewById(R.id.photo);
         TextView title = container.findViewById(R.id.title);
