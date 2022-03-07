@@ -1,6 +1,7 @@
 package com.vkontakte.miracle.player.view;
 
 import static com.vkontakte.miracle.engine.util.ImageUtil.bitmapFromLayerDrawable;
+import static com.vkontakte.miracle.engine.view.PicassoDrawableCopy.setBitmap;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -76,21 +77,6 @@ public class PlayerBarView extends FrameLayout {
         public void onPlayerClose() {
         }
     };
-    private final Target target = new Target() {
-        @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            image.setImageBitmap(bitmap);
-        }
-
-        @Override
-        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-        }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-        }
-    };
 
 
     public PlayerBarView(@NonNull Context context) {
@@ -110,7 +96,7 @@ public class PlayerBarView extends FrameLayout {
 
 
     private void createTarget(AudioItem audioItem){
-        Picasso.get().cancelRequest(target);
+        Picasso.get().cancelRequest(image);
         if(audioItem.getAlbum()!=null){
             Album album = audioItem.getAlbum();
             if(album.getThumb()!=null){
@@ -118,7 +104,7 @@ public class PlayerBarView extends FrameLayout {
                 if(thumb.getPhoto135()!=null){
                     if(!thumb.getPhoto135().equals(previousImageUrl)) {
                         previousImageUrl = thumb.getPhoto135();
-                        Picasso.get().load(thumb.getPhoto135()).into(target);
+                        Picasso.get().load(thumb.getPhoto135()).into(image);
                     }
                     return;
                 }
@@ -126,7 +112,7 @@ public class PlayerBarView extends FrameLayout {
         }
         if(!previousImageUrl.equals("")) {
             previousImageUrl = "";
-            target.onBitmapLoaded(placeholderImage, null);
+            setBitmap(image, getContext(), placeholderImage);
         }
     }
 
@@ -136,7 +122,6 @@ public class PlayerBarView extends FrameLayout {
         title = findViewById(R.id.title);
         subtitle = findViewById(R.id.subtitle);
         image = findViewById(R.id.photo);
-        image.setTag(target);
         int size = (int) DimensionsUtil.dpToPx(40,getContext());
         placeholderImage = bitmapFromLayerDrawable(R.drawable.audio_placeholder_image_small, getContext(),size,size);
 
