@@ -101,7 +101,7 @@ public class FragmentPlayer extends NestedMiracleFragment {
                 }
                 @Override
                 public void onExecute(Boolean object) {
-                    setBitmap(blur, getMiracleActivity(), blurBitmap, 500f);
+                    setBitmap(blur, getMiracleActivity(), blurBitmap);
                     setBitmap(image, getMiracleActivity(), bitmap);
                     animateToColor(averageColor);
                 }
