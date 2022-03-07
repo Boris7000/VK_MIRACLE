@@ -59,7 +59,7 @@ public class AudioDialog extends MiracleBottomDialog {
                 }
                 @Override
                 public void onExecute(Boolean object) {
-                    setBitmap(imageView, getContext(), bitmap,false);
+                    setBitmap(imageView, getContext(), bitmap);
                     animateToColor(averageColor);
                 }
             }.start();

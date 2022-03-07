@@ -13,19 +13,23 @@ import android.widget.ImageView;
 
 public class PicassoDrawableCopy  extends BitmapDrawable {
     // Only accessed from main thread.
-    private static final float FADE_DURATION = 200f; //ms
+    private float fadeDuration = 200f; //ms
 
     /**
      * Create or update the drawable on the target {@link ImageView} to display the supplied bitmap
      * image.
      */
-    public static void setBitmap(ImageView target, Context context, Bitmap bitmap, boolean noFade) {
+    public static void setBitmap(ImageView target, Context context, Bitmap bitmap) {
+        setBitmap(target,context,bitmap,200f);
+    }
+
+    public static void setBitmap(ImageView target, Context context, Bitmap bitmap, float fadeDuration) {
         Drawable placeholder = target.getDrawable();
         if (placeholder instanceof Animatable) {
             ((Animatable) placeholder).stop();
         }
         PicassoDrawableCopy drawable =
-                new PicassoDrawableCopy(context, bitmap, placeholder, noFade);
+                new PicassoDrawableCopy(context, bitmap, placeholder, fadeDuration);
         target.setImageDrawable(drawable);
     }
 
@@ -47,11 +51,12 @@ public class PicassoDrawableCopy  extends BitmapDrawable {
     boolean animating;
     int alpha = 0xFF;
 
-    PicassoDrawableCopy(Context context, Bitmap bitmap, Drawable placeholder, boolean noFade) {
+    PicassoDrawableCopy(Context context, Bitmap bitmap, Drawable placeholder, float fadeDuration) {
         super(context.getResources(), bitmap);
 
-        boolean fade = !noFade;
+        boolean fade = fadeDuration>0;
         if (fade) {
+            this.fadeDuration = fadeDuration;
             this.placeholder = placeholder;
             animating = true;
             startTimeMillis = SystemClock.uptimeMillis();
@@ -62,7 +67,7 @@ public class PicassoDrawableCopy  extends BitmapDrawable {
         if (!animating) {
             super.draw(canvas);
         } else {
-            float normalized = (SystemClock.uptimeMillis() - startTimeMillis) / FADE_DURATION;
+            float normalized = (SystemClock.uptimeMillis() - startTimeMillis) / fadeDuration;
             if (normalized >= 1f) {
                 animating = false;
                 placeholder = null;
