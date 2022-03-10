@@ -42,7 +42,7 @@
             <ViewStub
                 android:id="@+id/audiosViewStub"
                 android:inflatedId="@+id/audiosView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout="@layout/view_message_item_audios_in_stub"/>
 
