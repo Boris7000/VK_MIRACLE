@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.vkontakte.miracle.model.audio.view.AudioItemView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingBottom="9dp"
     android:paddingEnd="12dp"
-    android:paddingStart="0dp">
+    android:paddingStart="0dp"
+    app:placeHolderDrawable="@drawable/audio_placeholder_image_small">
     <include layout="@layout/view_audio_item_message_out_merge"/>
 </com.vkontakte.miracle.model.audio.view.AudioItemView>

@@ -174,7 +174,6 @@ public class PostItem implements ItemDataHolder {
         }
         if(jsonObject.has("comments")){
             JSONObject jo_comments = jsonObject.getJSONObject("comments");
-            Log.d("AAADIEJdi",jo_comments.toString());
             commentsCount = jo_comments.getInt("count");
             canPostComments = jo_comments.getInt("can_post")==1;
             canViewComments = jo_comments.getInt("can_view")==1;

@@ -59,8 +59,6 @@ public class LongPollService extends Service {
 
                             jsonObject = validateBody(response);
 
-                            Log.d("rgiirhgirgrg", jsonObject.toString());
-
                             LongPollUpdates longPollUpdates = new LongPollUpdates(jsonObject.getJSONArray("updates"));
 
                             ts = jsonObject.getString("ts");
@@ -74,7 +72,6 @@ public class LongPollService extends Service {
                             return new LongPollUpdates();
                         }
                     } catch (Exception exception) {
-                        Log.d("rgiirhgirgrg", exception.getMessage());
                         exception.printStackTrace();
                     }
                     return new LongPollUpdates();
@@ -114,7 +111,6 @@ public class LongPollService extends Service {
         MiracleApp miracleApp = (MiracleApp) getApplication();
         longPollServiceController = miracleApp.getLongPollServiceController();
         profileItem = StorageUtil.loadUsers(miracleApp).get(0);
-        Log.d("rgiirhgirgrg","created");
     }
 
     @Override
@@ -127,8 +123,6 @@ public class LongPollService extends Service {
             executor.interrupt();
             executor = null;
         }
-
-        Log.d("rgiirhgirgrg","destroyed");
     }
 
     public boolean isDestroyed() {

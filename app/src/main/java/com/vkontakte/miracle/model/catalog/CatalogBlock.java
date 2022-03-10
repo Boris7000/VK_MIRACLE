@@ -1,5 +1,6 @@
 package com.vkontakte.miracle.model.catalog;
 
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_ARTIST_BANNER;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_HEADER;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_SEPARATOR;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_SLIDER;
@@ -10,6 +11,7 @@ import android.util.ArrayMap;
 import androidx.annotation.Nullable;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.vkontakte.miracle.model.audio.ArtistItem;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.model.catalog.fields.CatalogAction;
@@ -163,6 +165,17 @@ public class CatalogBlock implements ItemDataHolder {
                 }
                 break;
             }
+            case "artist": {
+                JSONArray artists_ids = jsonObject.getJSONArray("artists_ids");
+                ArrayMap<String, ArtistItem> artistsMap = catalogExtendedArrays.getArtistsMap();
+                for (int i = 0; i < artists_ids.length(); i++) {
+                    ArtistItem artistItem = artistsMap.get(artists_ids.getString(i));
+                    if(artistItem!=null) {
+                        catalogBlockItemDataHolders.add(artistItem);
+                    }
+                }
+                break;
+            }
 
         }
         return catalogBlockItemDataHolders;
@@ -188,6 +201,16 @@ public class CatalogBlock implements ItemDataHolder {
             case "triple_stacked_slider":
             case "music_chart_triple_stacked_slider":{
                 return TYPE_CATALOG_TRIPLE_STACKED_SLIDER;
+            }
+            case "banner":{
+                switch (dataType){
+                    default:{
+                        return TYPE_LOADING;
+                    }
+                    case "artist":{
+                        return TYPE_ARTIST_BANNER;
+                    }
+                }
             }
         }
     }

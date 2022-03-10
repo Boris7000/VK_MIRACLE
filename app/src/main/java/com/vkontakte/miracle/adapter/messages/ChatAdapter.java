@@ -4,7 +4,7 @@ import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_E
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_LOADING;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_MESSAGE_IN;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_MESSAGE_OUT;
-import static com.vkontakte.miracle.engine.util.NetworkUtil.createOwnersMap;
+import static com.vkontakte.miracle.engine.util.APIUtil.createOwnersMap;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 import static com.vkontakte.miracle.engine.util.StringsUtil.stringFromArrayList;
 

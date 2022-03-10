@@ -42,8 +42,6 @@ public class PhotoAlbumAdapter extends MiracleLoadableAdapter {
 
         JSONObject jsonObject = validateBody(response).getJSONObject("response");
 
-        Log.d("ABOBA", jsonObject.toString());
-
         setTotalCount(jsonObject.getInt("count"));
 
         JSONArray jsonArray = jsonObject.getJSONArray("items");

@@ -48,7 +48,7 @@ public class CatalogButton {
         //TODO сделать строки из ресурсов
         switch (actionType){
             default:{
-                Log.d("ABOBUS", jsonObject.toString());
+                //Log.d("ABOBUS", jsonObject.toString());
                 if(title==null){
                     title = actionType;
                 }

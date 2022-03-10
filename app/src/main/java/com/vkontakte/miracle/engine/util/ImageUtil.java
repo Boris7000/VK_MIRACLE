@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.ColorUtils;
 
@@ -53,6 +54,7 @@ public class ImageUtil {
         return bitmap;
     }
 
+    @NonNull
     public static Bitmap fastBlur(Bitmap sentBitmap, float scale, int radius) {
 
         if(scale!=1) {

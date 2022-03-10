@@ -62,9 +62,6 @@ public class CatalogAction {
 
     public CatalogAction(JSONObject jsonObject) throws JSONException {
 
-        Log.d("rigjrijgrijg",jsonObject.toString());
-
-
         if(jsonObject.has("action")) {
             JSONObject action = jsonObject.getJSONObject("action");
 

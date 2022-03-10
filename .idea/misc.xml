@@ -214,8 +214,13 @@
         <entry key="..\:/VKMIRACLE/app/src/main/res/menu/navigation_items.xml" value="0.536" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/audio_no_license_image.xml" value="0.2712962962962963" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/audio_placeholder_image.xml" value="0.2712962962962963" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/audio_placeholder_image_large.xml" value="0.2712962962962963" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/audio_placeholder_image_mono_small.xml" value="0.2712962962962963" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/audio_placeholder_image_mono_translucent_small.xml" value="0.2712962962962963" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/audio_placeholder_image_small.xml" value="0.2712962962962963" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/message_item_out_bg.xml" value="0.2712962962962963" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/rounded_button_bg_white.xml" value="0.2712962962962963" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/rounded_button_bg_white_with_stroke.xml" value="0.2712962962962963" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/rounded_card_child_white.xml" value="0.28102564102564104" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/splash_screen_animated_vector.xml" value="0.26296296296296295" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/splash_screen_animated_vector_night.xml" value="0.26296296296296295" />
@@ -232,6 +237,7 @@
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout-sw600dp/view_playlist_item_large.xml" value="0.25" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout-v31/fragment_settings_color_scheme.xml" value="0.20471014492753623" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/activity_login.xml" value="0.16304347826086957" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/catalog_slider.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/dialog_account.xml" value="0.29720670391061454" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/dialog_audio.xml" value="0.335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/dialog_button_stub.xml" value="0.26927083333333335" />
@@ -245,15 +251,18 @@
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_settings_color_scheme_generator.xml" value="0.19519927536231885" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_teleport.xml" value="0.335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragmnet_statistics.xml" value="0.19519927536231885" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/miracle_button_image.xml" value="0.26927083333333335" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/miracle_button_text.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/test_view.xml" value="2.0" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_account_item.xml" value="0.55" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_artist_item_banner.xml" value="0.45" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_audio_item.xml" value="0.335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_audio_item_info_merge.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_audio_item_merge.xml" value="0.45" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_audio_item_message_in.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_audio_item_message_in_merge.xml" value="0.45" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_audio_item_message_out.xml" value="0.45" />
-        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_audio_item_message_out_merge.xml" value="0.165" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_audio_item_message_out_merge.xml" value="0.12959076600209862" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_audio_item_post.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_audio_item_sheet.xml" value="0.165" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_audio_item_sheet_merge.xml" value="0.26927083333333335" />

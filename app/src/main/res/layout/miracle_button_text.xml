@@ -10,4 +10,4 @@
     android:singleLine="true"
     android:textSize="14sp"
     android:visibility="gone"
-    tools:visibility="visible" />
+    tools:visibility="visible"/>

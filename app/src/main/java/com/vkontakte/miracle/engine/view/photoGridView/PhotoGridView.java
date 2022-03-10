@@ -82,8 +82,6 @@ public class PhotoGridView extends RelativeLayout {
             params.topMargin = position.marginY;
             params.leftMargin = position.marginX;
 
-            Log.d("irjfirjfir","m"+position.sizeX+" "+position.sizeY);
-
             child.measure(widthMeasureSpec, heightMeasureSpec);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -113,8 +111,6 @@ public class PhotoGridView extends RelativeLayout {
             params.height = position.sizeY;
             params.topMargin = position.marginY;
             params.leftMargin = position.marginX;
-
-            Log.d("irjfirjfir","l"+position.sizeX+" "+position.sizeY);
 
             child.layout(position.marginX, position.marginY, params.rightMargin, params.bottomMargin);
         }

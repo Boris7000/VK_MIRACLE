@@ -3,6 +3,7 @@ package com.vkontakte.miracle.engine.adapter.holder;
 import android.util.ArrayMap;
 
 import com.vkontakte.miracle.adapter.audio.holders.AudioViewHolder;
+import com.vkontakte.miracle.adapter.catalog.holders.ArtistBannerViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.CatalogUserViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.GroupViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.HeaderViewHolder;
@@ -42,6 +43,7 @@ public class ViewHolderTypes {
     public static final int TYPE_CATALOG_TRIPLE_STACKED_SLIDER = 17;
     public static final int TYPE_TRIPLE_STACKED = 18;
     public static final int TYPE_PLAYLIST_DESCRIPTION = 19;
+    public static final int TYPE_ARTIST_BANNER = 20;
 
     public static ArrayMap<Integer, ViewHolderFabric> getCatalogFabrics(){
         ArrayMap<Integer, ViewHolderFabric> arrayMap = new ArrayMap<>();
@@ -57,6 +59,7 @@ public class ViewHolderTypes {
         arrayMap.put(TYPE_AUDIO, new AudioViewHolder.Fabric());
         arrayMap.put(TYPE_PLAYLIST, new PlaylistViewHolder.Fabric());
         arrayMap.put(TYPE_CATALOG_TRIPLE_STACKED_SLIDER, new TripleStackedSliderViewHolder.Fabric());
+        arrayMap.put(TYPE_ARTIST_BANNER, new ArtistBannerViewHolder.Fabric());
         return arrayMap;
     }
 

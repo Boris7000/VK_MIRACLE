@@ -1,7 +1,7 @@
 package com.vkontakte.miracle.adapter.messages;
 
-import static com.vkontakte.miracle.engine.util.NetworkUtil.createOwnersMap;
-import static com.vkontakte.miracle.engine.util.NetworkUtil.loadOwners;
+import static com.vkontakte.miracle.engine.util.APIUtil.createOwnersMap;
+import static com.vkontakte.miracle.engine.util.APIUtil.loadOwners;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 import static com.vkontakte.miracle.engine.util.StringsUtil.getMessageTypingDeclensions;
 
@@ -193,7 +193,6 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
                                                 ConversationsAdapter.this.ownerArrayMap.putAll(ownerArrayMap);
                                                 return messageItem;
                                             } catch (Exception e) {
-                                                Log.d("eifiejfiejfi",e.getMessage());
                                                 e.printStackTrace();
                                             }
                                             return null;
@@ -457,7 +456,6 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
                                             return new ProfileItem(profiles.getJSONObject(0));
                                         }
                                     } catch (Exception e) {
-                                        Log.d("eifiejfiejfi",e.getMessage());
                                         e.printStackTrace();
                                     }
                                     return null;
@@ -598,7 +596,6 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
                     try {
                         Thread.sleep(sleepTime);
                     } catch (InterruptedException e) {
-                        Log.d("eifiejfiejfi",e.getMessage());
                         e.printStackTrace();
                         return false;
                     }

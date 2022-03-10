@@ -87,7 +87,7 @@ public class AudioDialog extends MiracleBottomDialog {
         setContentView(rootView =  View.inflate(context, R.layout.dialog_audio, null));
 
         int size = (int) DimensionsUtil.dpToPx(52, context);
-        placeholderImage = bitmapFromLayerDrawable(R.drawable.audio_placeholder_image, context, size, size);
+        placeholderImage = bitmapFromLayerDrawable(R.drawable.audio_placeholder_image_mono_translucent_small, context, size, size);
 
         container = rootView.findViewById(R.id.container);
 

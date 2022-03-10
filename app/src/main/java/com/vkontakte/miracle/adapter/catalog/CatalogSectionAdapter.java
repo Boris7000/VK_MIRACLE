@@ -75,8 +75,6 @@ public class CatalogSectionAdapter extends MiracleLoadableAdapter {
 
             JSONObject jo_catalogBlock = blocks.getJSONObject(i);
 
-            Log.d("rijgirjgijr",jo_catalogBlock.toString());
-
             String catalogId = jo_catalogBlock.getString("id");
             CatalogBlock previousCatalogBlock = listCatalogBlocksMap.get(catalogId);
             if(previousCatalogBlock!=null){

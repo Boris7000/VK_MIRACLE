@@ -1,4 +1,4 @@
-package com.vkontakte.miracle.fragment.player;
+package com.vkontakte.miracle.player.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -4,7 +4,7 @@
 
     <item android:gravity="center">
         <shape android:shape="rectangle">
-            <solid android:color="?attr/colorError"/>
+            <solid android:color="?attr/placeHolderColor"/>
         </shape>
     </item>
 
@@ -15,7 +15,7 @@
         android:top="14dp"
         android:gravity="center">
         <bitmap
-            android:src="@drawable/ic_error_outline_28"
-            android:tint="?attr/colorOnError"/>
+            android:src="@drawable/ic_music_28"
+            android:tint="?attr/colorContrast40"/>
     </item>
 </layer-list>

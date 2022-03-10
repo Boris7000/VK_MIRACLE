@@ -1,8 +1,16 @@
 package com.vkontakte.miracle.model.catalog;
 
+import static com.vkontakte.miracle.engine.util.APIUtil.createArtistsMap;
+import static com.vkontakte.miracle.engine.util.APIUtil.createAudiosMap;
+import static com.vkontakte.miracle.engine.util.APIUtil.createCatalogUsersMap;
+import static com.vkontakte.miracle.engine.util.APIUtil.createGroupsMap;
+import static com.vkontakte.miracle.engine.util.APIUtil.createPlaylistsMap;
+import static com.vkontakte.miracle.engine.util.APIUtil.createProfilesMap;
+
 import android.util.ArrayMap;
 import android.util.Log;
 
+import com.vkontakte.miracle.model.audio.ArtistItem;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.model.groups.GroupItem;
@@ -11,11 +19,6 @@ import com.vkontakte.miracle.model.users.ProfileItem;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.vkontakte.miracle.engine.util.NetworkUtil.createAudiosMap;
-import static com.vkontakte.miracle.engine.util.NetworkUtil.createCatalogUsersMap;
-import static com.vkontakte.miracle.engine.util.NetworkUtil.createGroupsMap;
-import static com.vkontakte.miracle.engine.util.NetworkUtil.createPlaylistsMap;
-import static com.vkontakte.miracle.engine.util.NetworkUtil.createProfilesMap;
 
 public class CatalogExtendedArrays {
 
@@ -24,6 +27,7 @@ public class CatalogExtendedArrays {
     private ArrayMap<String, GroupItem> groupsMap;
     private ArrayMap<String, AudioItem> audiosMap;
     private ArrayMap<String, PlaylistItem> playlistsMap;
+    private ArrayMap<String, ArtistItem> artistsMap;
 
     public ArrayMap<String, ProfileItem> getProfilesMap() {
         return profilesMap;
@@ -43,6 +47,10 @@ public class CatalogExtendedArrays {
 
     public ArrayMap<String, PlaylistItem> getPlaylistsMap() {
         return playlistsMap;
+    }
+
+    public ArrayMap<String, ArtistItem> getArtistsMap() {
+        return artistsMap;
     }
 
     public CatalogExtendedArrays(JSONObject response) throws JSONException {
@@ -68,8 +76,7 @@ public class CatalogExtendedArrays {
         }
 
         if(response.has("artists")){
-            Log.d("rijgirjgijr",response.getJSONArray("artists").toString());
-            //playlistsMap = createPlaylistsMap(response.getJSONArray("playlists"), profilesMap, groupsMap);
+            artistsMap = createArtistsMap(response.getJSONArray("artists"));
         }
     }
 }

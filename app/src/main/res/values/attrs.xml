@@ -129,4 +129,8 @@
         <attr name="listItemLayout" format="reference"/>
     </declare-styleable>
 
+    <declare-styleable name="AudioItemView">
+        <attr name="placeHolderDrawable" format="reference"/>
+    </declare-styleable>
+
 </resources>

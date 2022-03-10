@@ -1,6 +1,7 @@
 package com.vkontakte.miracle.model.audio.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.ViewStub;
 import android.widget.FrameLayout;
@@ -24,14 +25,22 @@ public class AudioItemView extends FrameLayout {
     private TextView duration;
     private ViewStub explicitStub;
     private ImageView explicit;
+    int placeholderDrawableId;
 
 
     public AudioItemView(@NonNull Context context) {
-        super(context);
+        this(context,null);
     }
 
     public AudioItemView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        if(attrs!=null){
+            TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.AudioItemView, 0, 0);
+            placeholderDrawableId = attributes.getResourceId(R.styleable.AudioItemView_placeHolderDrawable, R.drawable.audio_placeholder_image_mono_small);
+            attributes.recycle();
+        } else {
+            placeholderDrawableId = R.drawable.audio_placeholder_image_mono_small;
+        }
     }
 
     @Override
@@ -51,24 +60,30 @@ public class AudioItemView extends FrameLayout {
 
         Picasso.get().cancelRequest(imageView);
 
-        if(audioItem.isLicensed()) {
-            if (audioItem.getAlbum() != null) {
-                Album album = audioItem.getAlbum();
-                if (album.getThumb() != null) {
-                    Photo thumb = album.getThumb();
-                    if (thumb.getPhoto135() != null) {
-                        Picasso.get().load(thumb.getPhoto135()).noFade().into(imageView);
-                    } else {
-                        imageView.setImageResource(R.drawable.audio_placeholder_image_small);
-                    }
+        if (audioItem.getAlbum() != null) {
+            Album album = audioItem.getAlbum();
+            if (album.getThumb() != null) {
+                Photo thumb = album.getThumb();
+                if (thumb.getPhoto135() != null) {
+                    Picasso.get().load(thumb.getPhoto135()).noFade().into(imageView);
                 } else {
-                    imageView.setImageResource(R.drawable.audio_placeholder_image_small);
+                    imageView.setImageResource(placeholderDrawableId);
                 }
             } else {
-                imageView.setImageResource(R.drawable.audio_placeholder_image_small);
+                imageView.setImageResource(placeholderDrawableId);
             }
         } else {
-            imageView.setImageResource(R.drawable.audio_no_license_image_small);
+            imageView.setImageResource(placeholderDrawableId);
+        }
+
+        if(audioItem.isLicensed()) {
+            if(getAlpha()<1) {
+                setAlpha(1f);
+            }
+        } else {
+            if(getAlpha()>0.6f) {
+                setAlpha(0.6f);
+            }
         }
 
         if(audioItem.isExplicit()){

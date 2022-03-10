@@ -50,8 +50,6 @@ public class MessageItem implements ItemDataHolder {
 
     public MessageItem(JSONObject jsonObject, ArrayMap<String,Owner> ownerArrayMap) throws JSONException {
 
-      Log.d("ABOBA", jsonObject.toString());
-
         if(jsonObject.has("id")) {
             id = jsonObject.getString("id");
         } else {

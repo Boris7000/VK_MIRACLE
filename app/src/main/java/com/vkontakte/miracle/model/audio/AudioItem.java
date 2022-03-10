@@ -115,7 +115,7 @@ public class AudioItem implements ItemDataHolder{
     }
 
     public AudioItem(JSONObject jsonObject) throws JSONException {
-        Log.d("ABOBUSsjfjsf", jsonObject.toString());
+
         id = jsonObject.getString("id");
         ownerId = jsonObject.getString("owner_id");
         title = jsonObject.getString("title");

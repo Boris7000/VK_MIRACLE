@@ -2,10 +2,9 @@ package com.vkontakte.miracle.fragment.messages;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.vkontakte.miracle.engine.util.APIUtil.createOwnersMap;
 import static com.vkontakte.miracle.engine.util.AdapterUtil.getVerticalLayoutManager;
 import static com.vkontakte.miracle.engine.util.ColorUtil.getColorByAttributeId;
-import static com.vkontakte.miracle.engine.util.NetworkUtil.createOwnersMap;
-import static com.vkontakte.miracle.engine.util.NetworkUtil.loadOwners;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 import static com.vkontakte.miracle.engine.util.StringsUtil.getMembersDeclensions;
 import static com.vkontakte.miracle.engine.util.StringsUtil.getMessageTypingDeclensions;
@@ -316,7 +315,6 @@ public class FragmentChat extends SimpleMiracleFragment {
                                             return new ProfileItem(profiles.getJSONObject(0));
                                         }
                                     } catch (Exception e) {
-                                        Log.d("eifiejfiejfi",e.getMessage());
                                         e.printStackTrace();
                                     }
                                     return null;
@@ -758,7 +756,6 @@ public class FragmentChat extends SimpleMiracleFragment {
                     try {
                         Thread.sleep(sleepTime);
                     } catch (InterruptedException e) {
-                        Log.d("eifiejfiejfi",e.getMessage());
                         e.printStackTrace();
                         return false;
                     }

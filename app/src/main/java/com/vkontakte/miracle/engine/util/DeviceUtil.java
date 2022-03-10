@@ -62,6 +62,13 @@ public class DeviceUtil {
         return outMetrics.heightPixels;
     }
 
+    public static int getDisplayWidth(Context context) {
+        Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getRealMetrics(outMetrics);
+        return outMetrics.widthPixels;
+    }
+
     public static int getStatusBarHeight(Context context){
 
         Resources resources = Objects.requireNonNull(context).getResources();

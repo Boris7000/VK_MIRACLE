@@ -1,4 +1,4 @@
-package com.vkontakte.miracle.fragment.player;
+package com.vkontakte.miracle.player.fragment;
 
 import static com.vkontakte.miracle.engine.util.ColorUtil.getColorByResId;
 import static com.vkontakte.miracle.engine.util.ImageUtil.bitmapFromLayerDrawable;
