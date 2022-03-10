@@ -1,6 +1,7 @@
 package com.vkontakte.miracle.model.catalog;
 
 import android.util.ArrayMap;
+import android.util.Log;
 
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
@@ -64,6 +65,11 @@ public class CatalogExtendedArrays {
 
         if(response.has("playlists")){
             playlistsMap = createPlaylistsMap(response.getJSONArray("playlists"), profilesMap, groupsMap);
+        }
+
+        if(response.has("artists")){
+            Log.d("rijgirjgijr",response.getJSONArray("artists").toString());
+            //playlistsMap = createPlaylistsMap(response.getJSONArray("playlists"), profilesMap, groupsMap);
         }
     }
 }

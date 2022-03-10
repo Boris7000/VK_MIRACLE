@@ -35,8 +35,12 @@ public class AudioViewHolder extends MiracleViewHolder {
 
         audioItemView.setValues(audioItem);
 
-        audioItemView.setOnClickListener(view -> getMiracleApp().getPlayerServiceController().
-                playNewAudio(new AudioPlayerData(itemDataHolder)));
+        if(audioItem.isLicensed()) {
+            audioItemView.setOnClickListener(view -> getMiracleApp().getPlayerServiceController().
+                    playNewAudio(new AudioPlayerData(itemDataHolder)));
+        } else {
+            audioItemView.setOnClickListener(null);
+        }
 
         audioItemView.setOnLongClickListener(view -> {
             AudioDialog audioDialog = new AudioDialog(getMiracleActivity(), audioItem,

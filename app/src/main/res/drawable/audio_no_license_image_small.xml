@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque">
+
+    <item android:gravity="center">
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/colorError"/>
+        </shape>
+    </item>
+
+    <item
+        android:end="14dp"
+        android:bottom="14dp"
+        android:start="14dp"
+        android:top="14dp"
+        android:gravity="center">
+        <bitmap
+            android:src="@drawable/ic_error_outline_28"
+            android:tint="?attr/colorOnError"/>
+    </item>
+</layer-list>

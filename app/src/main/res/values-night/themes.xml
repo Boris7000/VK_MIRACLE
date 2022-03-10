@@ -2,6 +2,7 @@
 
     <style name="NightBaseTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorError">@color/error</item>
+        <item name="colorOnError">?attr/backgroundColor</item>
         <item name="backgroundColor">@color/darkBack</item>
         <item name="cardBackgroundColor">@color/darkFront</item>
         <item name="android:windowBackground">?attr/backgroundColor</item>

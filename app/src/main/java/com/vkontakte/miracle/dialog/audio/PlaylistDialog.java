@@ -116,7 +116,7 @@ public class PlaylistDialog extends MiracleBottomDialog {
             miracleButton.setImageResource(R.drawable.ic_microphone_28);
             miracleButton.setOnClickListener(view -> {
                 dialogActionListener.goToArtist();
-                hide();
+                cancel();
             });
             linearLayout.addView(miracleButton);
         }
@@ -127,7 +127,7 @@ public class PlaylistDialog extends MiracleBottomDialog {
         miracleButton.setImageResource(R.drawable.ic_play_next_28);
         miracleButton.setOnClickListener(view -> {
             dialogActionListener.playNext();
-            hide();
+            cancel();
         });
         linearLayout.addView(miracleButton);
 
@@ -153,7 +153,7 @@ public class PlaylistDialog extends MiracleBottomDialog {
             } else {
                 dialogActionListener.follow();
             }
-            hide();
+            cancel();
         });
 
         if(playlistItem.getOwnerId().equals(userItem.getId())){
@@ -170,7 +170,7 @@ public class PlaylistDialog extends MiracleBottomDialog {
 
 
         MiracleButton cancelButton = rootView.findViewById(R.id.cancel_button);
-        cancelButton.setOnClickListener(view -> hide());
+        cancelButton.setOnClickListener(view -> cancel());
 
         show();
         expand();

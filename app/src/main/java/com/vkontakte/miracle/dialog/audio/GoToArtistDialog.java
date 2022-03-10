@@ -39,13 +39,13 @@ public class GoToArtistDialog extends MiracleBottomDialog {
             miracleButton.setImageResource(R.drawable.ic_microphone_28);
             miracleButton.setOnClickListener(view -> {
                 dialogActionListener.onSelect(artist);
-                hide();
+                cancel();
             });
             linearLayout.addView(miracleButton);
         }
 
         MiracleButton cancelButton = rootView.findViewById(R.id.cancel_button);
-        cancelButton.setOnClickListener(view -> hide());
+        cancelButton.setOnClickListener(view -> cancel());
 
         show();
         expand();

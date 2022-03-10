@@ -118,9 +118,12 @@ public class AudioListView extends LinearLayout{
 
             audioItemView.setValues(audioItem);
 
-            audioItemView.setOnClickListener(view -> miracleApp.getPlayerServiceController().
-                    playNewAudio(new AudioPlayerData(audioItem)));
-
+            if(audioItem.isLicensed()){
+                audioItemView.setOnClickListener(view -> miracleApp.getPlayerServiceController().
+                        playNewAudio(new AudioPlayerData(audioItem)));
+            } else {
+                audioItemView.setOnClickListener(null);
+            }
 
             audioItemView.setOnLongClickListener(view -> {
                 AudioDialog audioDialog = new AudioDialog(miracleActivity, audioItem, miracleActivity.getUserItem());

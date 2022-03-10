@@ -46,7 +46,12 @@ public class AudioPlayerData {
     }
 
     public void reset(int currentItemIndex){
-        currentItem = (AudioItem) items.get(currentItemIndex);
+        AudioItem audioItem = (AudioItem) items.get(currentItemIndex);
+        boolean directOrder = currentItemIndex>this.currentItemIndex;
+        while (!audioItem.isLicensed()&&currentItemIndex>-1&&currentItemIndex<items.size()){
+            audioItem = (AudioItem) items.get(currentItemIndex+(directOrder?1:-1));
+        }
+        currentItem = audioItem;
         this.currentItemIndex = currentItemIndex;
         duration = currentItem.getDuration()*1000L;
         currentPosition = 0;

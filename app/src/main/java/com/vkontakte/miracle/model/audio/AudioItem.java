@@ -30,6 +30,7 @@ public class AudioItem implements ItemDataHolder{
     private final String durationString;
     private final int duration;
     private final boolean isExplicit;
+    private final boolean isLicensed;
     private final ArrayList<Artist> mainArtists = new ArrayList<>();
     private final ArrayList<Artist> featuredArtists = new ArrayList<>();
     private ArrayList<Artist> artists = new ArrayList<>();
@@ -69,6 +70,10 @@ public class AudioItem implements ItemDataHolder{
 
     public boolean isExplicit() {
         return isExplicit;
+    }
+
+    public boolean isLicensed() {
+        return isLicensed;
     }
 
     public ArrayList<Artist> getMainArtists() {
@@ -118,6 +123,7 @@ public class AudioItem implements ItemDataHolder{
         url = jsonObject.getString("url");
         duration = jsonObject.getInt("duration");
         isExplicit = jsonObject.getBoolean("is_explicit");
+        isLicensed = jsonObject.getBoolean("is_licensed");
 
         durationString = TimeUtil.getDurationStringSecs(Locale.getDefault(),duration);
 

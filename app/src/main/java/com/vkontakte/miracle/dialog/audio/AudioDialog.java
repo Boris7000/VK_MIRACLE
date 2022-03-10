@@ -117,7 +117,7 @@ public class AudioDialog extends MiracleBottomDialog {
             miracleButton.setImageResource(R.drawable.ic_microphone_28);
             miracleButton.setOnClickListener(view -> {
                 dialogActionListener.goToArtist();
-                hide();
+                cancel();
             });
             linearLayout.addView(miracleButton);
         }
@@ -128,20 +128,22 @@ public class AudioDialog extends MiracleBottomDialog {
             miracleButton.setImageResource(R.drawable.ic_playlist_28);
             miracleButton.setOnClickListener(view -> {
                 dialogActionListener.goToAlbum();
-                hide();
+                cancel();
             });
             linearLayout.addView(miracleButton);
         }
 
 
-        miracleButton = (MiracleButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
-        miracleButton.setText(context.getString(R.string.play_next));
-        miracleButton.setImageResource(R.drawable.ic_play_next_28);
-        miracleButton.setOnClickListener(view -> {
-            dialogActionListener.playNext();
-            hide();
-        });
-        linearLayout.addView(miracleButton);
+        if(audioItem.isLicensed()) {
+            miracleButton = (MiracleButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
+            miracleButton.setText(context.getString(R.string.play_next));
+            miracleButton.setImageResource(R.drawable.ic_play_next_28);
+            miracleButton.setOnClickListener(view -> {
+                dialogActionListener.playNext();
+                cancel();
+            });
+            linearLayout.addView(miracleButton);
+        }
 
 
         if(audioItem.getOwnerId().equals(profileItem.getId())){
@@ -169,7 +171,7 @@ public class AudioDialog extends MiracleBottomDialog {
         }
 
         MiracleButton cancelButton = rootView.findViewById(R.id.cancel_button);
-        cancelButton.setOnClickListener(view -> hide());
+        cancelButton.setOnClickListener(view -> cancel());
 
         show();
         expand();

@@ -1,6 +1,9 @@
 package com.vkontakte.miracle.adapter.catalog;
 
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
+
+import android.util.Log;
+
 import androidx.collection.ArrayMap;
 
 import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
@@ -71,6 +74,8 @@ public class CatalogSectionAdapter extends MiracleLoadableAdapter {
         for(int i=0; i<blocks.length();i++){
 
             JSONObject jo_catalogBlock = blocks.getJSONObject(i);
+
+            Log.d("rijgirjgijr",jo_catalogBlock.toString());
 
             String catalogId = jo_catalogBlock.getString("id");
             CatalogBlock previousCatalogBlock = listCatalogBlocksMap.get(catalogId);

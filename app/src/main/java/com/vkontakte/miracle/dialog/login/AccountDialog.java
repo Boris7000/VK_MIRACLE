@@ -35,7 +35,7 @@ public class AccountDialog extends MiracleBottomDialog {
         imageView.setImageBitmap(loadBitmap(profileItem.getId()+"_200.png", context));
 
         MiracleButton cancelButton = rootView.findViewById(R.id.cancel_button);
-        cancelButton.setOnClickListener(view -> hide());
+        cancelButton.setOnClickListener(view -> cancel());
 
         MiracleButton deleteButton = rootView.findViewById(R.id.delete_button);
         deleteButton.setOnClickListener(view -> {
@@ -43,7 +43,7 @@ public class AccountDialog extends MiracleBottomDialog {
             if(dialogActionListener!=null){
                 dialogActionListener.remove();
             }
-            hide();
+            cancel();
         });
 
         show();

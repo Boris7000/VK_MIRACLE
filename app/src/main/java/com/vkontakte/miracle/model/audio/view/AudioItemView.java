@@ -51,20 +51,24 @@ public class AudioItemView extends FrameLayout {
 
         Picasso.get().cancelRequest(imageView);
 
-        if(audioItem.getAlbum()!=null){
-            Album album = audioItem.getAlbum();
-            if(album.getThumb()!=null){
-                Photo thumb = album.getThumb();
-                if(thumb.getPhoto135()!=null){
-                    Picasso.get().load(thumb.getPhoto135()).noFade().into(imageView);
+        if(audioItem.isLicensed()) {
+            if (audioItem.getAlbum() != null) {
+                Album album = audioItem.getAlbum();
+                if (album.getThumb() != null) {
+                    Photo thumb = album.getThumb();
+                    if (thumb.getPhoto135() != null) {
+                        Picasso.get().load(thumb.getPhoto135()).noFade().into(imageView);
+                    } else {
+                        imageView.setImageResource(R.drawable.audio_placeholder_image_small);
+                    }
                 } else {
-                    imageView.setImageDrawable(null);
+                    imageView.setImageResource(R.drawable.audio_placeholder_image_small);
                 }
             } else {
-                imageView.setImageDrawable(null);
+                imageView.setImageResource(R.drawable.audio_placeholder_image_small);
             }
         } else {
-            imageView.setImageDrawable(null);
+            imageView.setImageResource(R.drawable.audio_no_license_image_small);
         }
 
         if(audioItem.isExplicit()){
