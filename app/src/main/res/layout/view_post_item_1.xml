@@ -33,7 +33,16 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="12dp"
         android:layout_marginBottom="12dp"
-        android:layout="@layout/view_message_item_photos_stub"/>
+        android:layout="@layout/view_post_item_photos_stub_1"/>
+
+    <ViewStub
+        android:id="@+id/audiosViewStub"
+        android:inflatedId="@+id/audiosView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginBottom="3dp"
+        android:layout="@layout/view_post_item_audios_stub"/>
 
     <FrameLayout
         android:layout_width="match_parent"

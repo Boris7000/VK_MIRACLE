@@ -70,6 +70,13 @@
                 android:layout_marginBottom="9dp"
                 android:layout="@layout/view_message_item_photos_stub"/>
 
+            <ViewStub
+                android:id="@+id/audiosViewStub"
+                android:inflatedId="@+id/audiosView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout="@layout/view_message_item_audios_in_stub"/>
+
         </LinearLayout>
 
         <TextView

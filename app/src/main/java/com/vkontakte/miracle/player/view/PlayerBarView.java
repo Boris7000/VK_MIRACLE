@@ -103,8 +103,7 @@ public class PlayerBarView extends FrameLayout {
                 Photo thumb = album.getThumb();
                 if(thumb.getPhoto135()!=null){
                     if(!thumb.getPhoto135().equals(previousImageUrl)) {
-                        previousImageUrl = thumb.getPhoto135();
-                        Picasso.get().load(thumb.getPhoto135()).into(image);
+                        Picasso.get().load(previousImageUrl = thumb.getPhoto135()).into(image);
                     }
                     return;
                 }
@@ -112,7 +111,7 @@ public class PlayerBarView extends FrameLayout {
         }
         if(!previousImageUrl.equals("")) {
             previousImageUrl = "";
-            setBitmap(image, getContext(), placeholderImage);
+            image.setImageBitmap(placeholderImage);
         }
     }
 

@@ -19,10 +19,10 @@
     </style>
     <style name="Sys2Theme" parent="BaseTheme">
         <item name="colorPrimary">@android:color/system_accent1_500</item>
-        <item name="colorPrimary_80">@android:color/system_accent2_400</item>
-        <item name="colorPrimary_60">@android:color/system_accent2_300</item>
-        <item name="colorPrimary_40">@android:color/system_accent2_200</item>
-        <item name="colorPrimary_20">@android:color/system_accent2_100</item>
+        <item name="colorPrimary_80">@android:color/system_accent1_400</item>
+        <item name="colorPrimary_60">@android:color/system_accent1_300</item>
+        <item name="colorPrimary_40">@android:color/system_accent1_200</item>
+        <item name="colorPrimary_20">@android:color/system_accent1_100</item>
         <item name="colorPrimaryNeutral">@android:color/system_neutral2_500</item>
         <item name="colorPrimaryNeutral_80">@android:color/system_neutral2_400</item>
         <item name="colorPrimaryNeutral_60">@android:color/system_neutral2_300</item>

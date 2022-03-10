@@ -34,26 +34,7 @@
         <item name="colorOnBackground">?attr/colorContrast100</item>
 
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorOnPrimaryTranslucent_10">@color/white_half_10</item>
-        <item name="colorOnPrimaryTranslucent_20">@color/white_half_20</item>
-        <item name="colorOnPrimaryTranslucent_30">@color/white_half_30</item>
-        <item name="colorOnPrimaryTranslucent_40">@color/white_half_40</item>
-        <item name="colorOnPrimaryTranslucent_50">@color/white_half_50</item>
-        <item name="colorOnPrimaryTranslucent_60">@color/white_half_60</item>
-        <item name="colorOnPrimaryTranslucent_70">@color/white_half_70</item>
-        <item name="colorOnPrimaryTranslucent_80">@color/white_half_80</item>
-        <item name="colorOnPrimaryTranslucent_90">@color/white_half_90</item>
-
         <item name="colorOnSecondary">?attr/colorOnPrimary</item>
-        <item name="colorOnSecondaryTranslucent_10">?attr/colorOnPrimaryTranslucent_10</item>
-        <item name="colorOnSecondaryTranslucent_20">?attr/colorOnPrimaryTranslucent_20</item>
-        <item name="colorOnSecondaryTranslucent_30">?attr/colorOnPrimaryTranslucent_30</item>
-        <item name="colorOnSecondaryTranslucent_40">?attr/colorOnPrimaryTranslucent_40</item>
-        <item name="colorOnSecondaryTranslucent_50">?attr/colorOnPrimaryTranslucent_50</item>
-        <item name="colorOnSecondaryTranslucent_60">?attr/colorOnPrimaryTranslucent_60</item>
-        <item name="colorOnSecondaryTranslucent_70">?attr/colorOnPrimaryTranslucent_70</item>
-        <item name="colorOnSecondaryTranslucent_80">?attr/colorOnPrimaryTranslucent_80</item>
-        <item name="colorOnSecondaryTranslucent_90">?attr/colorOnPrimaryTranslucent_90</item>
 
         <item name="colorAccent">?attr/colorPrimary</item>
 
@@ -78,7 +59,7 @@
         <item name="android:ambientShadowAlpha">0.06</item>
 
         <item name="messageInBackgroundColor">#f2f2f2</item>
-        <item name="messageOutBackgroundColor">?attr/colorPrimary</item>
+        <!--<item name="messageOutBackgroundColor">?attr/colorPrimary</item>-->
         <item name="likeHolderColor">#ffeeee</item>
     </style>
 

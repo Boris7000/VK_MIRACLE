@@ -36,7 +36,6 @@ public class CatalogTripleStackedSliderAdapter  extends MiracleNestedLoadableAda
     }
 
     @Override
-    public void onLoading() throws Exception {
-    }
+    public void onLoading() throws Exception { }
 
 }

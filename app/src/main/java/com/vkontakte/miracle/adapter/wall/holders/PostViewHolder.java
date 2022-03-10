@@ -35,6 +35,7 @@ import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.TimeUtil;
+import com.vkontakte.miracle.engine.view.AudioListView;
 import com.vkontakte.miracle.engine.view.PostTextView;
 import com.vkontakte.miracle.engine.view.photoGridView.PhotoGridView;
 import com.vkontakte.miracle.model.Attachments;
@@ -58,6 +59,8 @@ public class PostViewHolder extends MiracleViewHolder {
     private PhotoGridView photoGridView;
     private CardView photoGridViewHolder;
     private final ViewStub photosViewStub;
+    private AudioListView audiosView;
+    private final ViewStub audiosViewStub;
     private ImageView verified;
 
     private final LinearLayout likesHolder;
@@ -82,6 +85,7 @@ public class PostViewHolder extends MiracleViewHolder {
         verifiedStub = itemView.findViewById(R.id.verifiedStub);
         textStub = itemView.findViewById(R.id.textStub);
         photosViewStub = itemView.findViewById(R.id.photosViewStub);
+        audiosViewStub = itemView.findViewById(R.id.audiosViewStub);
 
         likesHolder = itemView.findViewById(R.id.likesHolder);
         commentsHolder = itemView.findViewById(R.id.commentsHolder);
@@ -208,9 +212,32 @@ public class PostViewHolder extends MiracleViewHolder {
                     photoGridViewHolder.setVisibility(GONE);
                 }
             }
+
+            if(!attachments.getAudios().isEmpty()){
+                if(audiosView==null) {
+                    if(photosViewStub!=null) {
+                        audiosView = (AudioListView) audiosViewStub.inflate();
+                    } else {
+                        audiosView = itemView.findViewById(R.id.audiosView);
+                    }
+                }
+
+                if(audiosView.getVisibility()!=VISIBLE) {
+                    audiosView.setVisibility(VISIBLE);
+                }
+                audiosView.setItems(getMiracleActivity(),attachments.getAudios());
+            }else {
+                if(audiosView!=null&&audiosView.getVisibility()!=GONE){
+                    audiosView.setVisibility(GONE);
+                }
+            }
+
         } else {
             if(photoGridViewHolder!=null&&photoGridViewHolder.getVisibility()!=GONE){
                 photoGridViewHolder.setVisibility(GONE);
+            }
+            if(audiosView!=null&&audiosView.getVisibility()!=GONE){
+                audiosView.setVisibility(GONE);
             }
         }
 

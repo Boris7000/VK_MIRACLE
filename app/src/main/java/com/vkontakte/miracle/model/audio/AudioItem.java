@@ -37,6 +37,7 @@ public class AudioItem implements ItemDataHolder{
 
     private CatalogBlock catalogBlock;
     private PlaylistItem playlistItem;
+    private ArrayList<ItemDataHolder> audios;
 
     public String getId() {
         return id;
@@ -92,12 +93,20 @@ public class AudioItem implements ItemDataHolder{
         return playlistItem;
     }
 
+    public ArrayList<ItemDataHolder> getAudios() {
+        return audios;
+    }
+
     public void setCatalogBlock(CatalogBlock catalogBlock) {
         this.catalogBlock = catalogBlock;
     }
 
     public void setPlaylistItem(PlaylistItem playlistItem) {
         this.playlistItem = playlistItem;
+    }
+
+    public void setAudios(ArrayList<ItemDataHolder> audios) {
+        this.audios = audios;
     }
 
     public AudioItem(JSONObject jsonObject) throws JSONException {

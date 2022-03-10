@@ -36,6 +36,11 @@ public class AudioPlayerData {
                 playlistItem = currentItem.getPlaylistItem();
                 items = new ArrayList<>(playlistItem.getItems());
                 currentItemIndex = items.indexOf(itemDataHolder);
+            } else {
+                if(currentItem.getAudios()!=null){
+                    items = new ArrayList<>(currentItem.getAudios());
+                    currentItemIndex = items.indexOf(itemDataHolder);
+                }
             }
         }
     }
@@ -136,6 +141,10 @@ public class AudioPlayerData {
                     if(playlistItem!=null){
                         if(audioPlayerData.playlistItem!=null){
                             return playlistItem.equals(audioPlayerData.playlistItem);
+                        }
+                    } else {
+                        if(items!=null){
+                            return items.equals(audioPlayerData.items);
                         }
                     }
                 }

@@ -39,30 +39,10 @@
     <attr name="colorSecondaryNeutral_80" format="color"/>
     <attr name="colorSecondaryNeutral" format="color"/>
 
-    <attr name="colorOnPrimaryTranslucent_10" format="color"/>
-    <attr name="colorOnPrimaryTranslucent_20" format="color"/>
-    <attr name="colorOnPrimaryTranslucent_30" format="color"/>
-    <attr name="colorOnPrimaryTranslucent_40" format="color"/>
-    <attr name="colorOnPrimaryTranslucent_50" format="color"/>
-    <attr name="colorOnPrimaryTranslucent_60" format="color"/>
-    <attr name="colorOnPrimaryTranslucent_70" format="color"/>
-    <attr name="colorOnPrimaryTranslucent_80" format="color"/>
-    <attr name="colorOnPrimaryTranslucent_90" format="color"/>
-
-    <attr name="colorOnSecondaryTranslucent_10" format="color"/>
-    <attr name="colorOnSecondaryTranslucent_20" format="color"/>
-    <attr name="colorOnSecondaryTranslucent_30" format="color"/>
-    <attr name="colorOnSecondaryTranslucent_40" format="color"/>
-    <attr name="colorOnSecondaryTranslucent_50" format="color"/>
-    <attr name="colorOnSecondaryTranslucent_60" format="color"/>
-    <attr name="colorOnSecondaryTranslucent_70" format="color"/>
-    <attr name="colorOnSecondaryTranslucent_80" format="color"/>
-    <attr name="colorOnSecondaryTranslucent_90" format="color"/>
-
     <attr name="textHighlightColor" format="color"/>
     <attr name="scrollBarColor" format="color"/>
     <attr name="globalTranslationZ" format="dimension"/>
-    <attr name="messageOutBackgroundColor" format="color"/>
+    <!--<attr name="messageOutBackgroundColor" format="color"/>-->
     <attr name="messageInBackgroundColor" format="color"/>
     <attr name="likeHolderColor" format="color"/>
 
@@ -143,6 +123,10 @@
         <attr name="displayHashTags" format="boolean"/>
         <attr name="displayOwnerLinks" format="boolean"/>
         <attr name="isPost" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="AudioListView">
+        <attr name="listItemLayout" format="reference"/>
     </declare-styleable>
 
 </resources>

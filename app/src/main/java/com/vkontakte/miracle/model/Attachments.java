@@ -1,6 +1,8 @@
 package com.vkontakte.miracle.model;
 
+import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.view.photoGridView.MediaItem;
+import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.photos.PhotoItem;
 import com.vkontakte.miracle.model.wall.LinkItem;
 
@@ -11,6 +13,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Attachments {
+
+    private final ArrayList<ItemDataHolder> audios = new ArrayList<>();
+
+    public ArrayList<ItemDataHolder> getAudios() {
+        return audios;
+    }
 
     private final ArrayList<LinkItem> links = new ArrayList<>();
 
@@ -44,6 +52,12 @@ public class Attachments {
                 }
                 case "link":{
                     links.add(new LinkItem(jsonObject.getJSONObject("link")));
+                    break;
+                }
+                case "audio":{
+                    AudioItem audioItem = new AudioItem(jsonObject.getJSONObject("audio"));
+                    audioItem.setAudios(audios);
+                    audios.add(audioItem);
                     break;
                 }
             }
