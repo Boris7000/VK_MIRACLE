@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/photo"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="@dimen/imageBorderWidth"
+        android:layout_gravity="center_vertical"
+        android:background="?attr/placeHolderColor"
+        app:shapeAppearanceOverlay="@style/ChildShapeAppearance"
+        app:strokeColor="?attr/colorContrast10"
+        app:strokeWidth="@dimen/imageBorderWidth"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:isScrollContainer="false">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:fontFamily="sans-serif"
+                    android:textSize="16sp"
+                    tools:text="Title" />
+
+                <ViewStub
+                    android:id="@+id/explicitStub"
+                    android:inflatedId="@+id/explicit"
+                    android:layout_width="16sp"
+                    android:layout_height="16sp"
+                    android:layout_marginTop="1.1sp"
+                    android:layout_marginStart="4.2sp"
+                    android:layout_weight="0"
+                    android:layout="@layout/view_explicit_icon_stub"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:fontFamily="sans-serif"
+                android:textColor="?attr/colorContrast50"
+                android:textSize="15sp"
+                tools:text="Subtitle" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:singleLine="true"
+            android:textColor="?attr/colorContrast50"
+            android:textSize="13sp"
+            tools:text="00:00" />
+    </LinearLayout>
+</merge>

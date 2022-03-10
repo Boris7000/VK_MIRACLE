@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.vkontakte.miracle.model.audio.view.AudioItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="9dp">
+    <include layout="@layout/view_audio_item_merge"/>
+</com.vkontakte.miracle.model.audio.view.AudioItemView>
