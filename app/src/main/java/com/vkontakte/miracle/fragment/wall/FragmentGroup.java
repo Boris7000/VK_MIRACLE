@@ -13,11 +13,9 @@ import com.vkontakte.miracle.MiracleActivity;
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.wall.GroupAdapter;
-import com.vkontakte.miracle.adapter.wall.ProfileAdapter;
 import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
 import com.vkontakte.miracle.engine.util.LargeDataStorage;
 import com.vkontakte.miracle.model.groups.GroupItem;
-import com.vkontakte.miracle.model.users.ProfileItem;
 
 public class FragmentGroup  extends SimpleMiracleFragment {
 

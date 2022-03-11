@@ -36,15 +36,13 @@ import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.dialog.audio.AudioDialog;
 import com.vkontakte.miracle.dialog.audio.AudioDialogActionListener;
-import com.vkontakte.miracle.dialog.audio.GoToArtistDialog;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.fragment.tabs.NestedMiracleFragment;
 import com.vkontakte.miracle.engine.fragment.tabs.NestedMiracleFragmentFabric;
 import com.vkontakte.miracle.engine.util.DimensionsUtil;
+import com.vkontakte.miracle.engine.util.FragmentUtil;
 import com.vkontakte.miracle.engine.util.SettingsUtil;
 import com.vkontakte.miracle.engine.util.TimeUtil;
-import com.vkontakte.miracle.fragment.audio.FragmentPlaylist;
-import com.vkontakte.miracle.fragment.catalog.FragmentCatalogArtist;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.fields.Album;
 import com.vkontakte.miracle.model.audio.fields.Photo;
@@ -142,6 +140,9 @@ public class FragmentPlayer extends NestedMiracleFragment {
 
             title.setText(audioItem.getTitle());
             subtitle.setText(audioItem.getArtist());
+
+            //TODO добавить переход к исполнителю
+
             if(audioItem.isExplicit()){
                 if(explicit.getVisibility()!=View.VISIBLE){
                     explicit.setVisibility(View.VISIBLE);
@@ -179,27 +180,12 @@ public class FragmentPlayer extends NestedMiracleFragment {
 
                     @Override
                     public void goToAlbum() {
-                        FragmentPlaylist fragmentPlaylist = new FragmentPlaylist();
-                        fragmentPlaylist.setAlbum(audioItem.getAlbum());
-                        getMiracleActivity().addFragment(fragmentPlaylist);
+                        FragmentUtil.goToAlbum(audioItem,miracleActivity);
                     }
 
                     @Override
                     public void goToArtist() {
-
-                        if(audioItem.getArtists().size()==1){
-                            FragmentCatalogArtist fragmentCatalogArtist = new FragmentCatalogArtist();
-                            fragmentCatalogArtist.setArtistId(audioItem.getArtists().get(0));
-                            getMiracleActivity().addFragment(fragmentCatalogArtist);
-                        } else {
-                            GoToArtistDialog goToArtistDialog = new GoToArtistDialog(view.getContext(), audioItem.getArtists());
-                            goToArtistDialog.setDialogActionListener(artist -> {
-                                FragmentCatalogArtist fragmentCatalogArtist = new FragmentCatalogArtist();
-                                fragmentCatalogArtist.setArtistId(artist);
-                                getMiracleActivity().addFragment(fragmentCatalogArtist);
-                            });
-                            goToArtistDialog.show(view.getContext());
-                        }
+                        FragmentUtil.goToArtist(audioItem,miracleActivity);
                     }
                 });
                 audioDialog.show(view.getContext());

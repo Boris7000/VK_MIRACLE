@@ -2,6 +2,7 @@ package com.vkontakte.miracle.adapter.audio.holders;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.vkontakte.miracle.engine.util.FragmentUtil.goToPlaylist;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +15,16 @@ import androidx.annotation.NonNull;
 
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.dialog.audio.GoToArtistDialog;
 import com.vkontakte.miracle.dialog.audio.PlaylistDialog;
 import com.vkontakte.miracle.dialog.audio.PlaylistDialogActionListener;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.fragment.audio.FragmentPlaylist;
-import com.vkontakte.miracle.fragment.catalog.FragmentCatalogArtist;
+import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.vkontakte.miracle.engine.util.FragmentUtil;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.model.audio.fields.Photo;
+import com.vkontakte.miracle.model.users.ProfileItem;
 
 public class PlaylistHorizontalViewHolder extends MiracleViewHolder {
 
@@ -31,10 +32,12 @@ public class PlaylistHorizontalViewHolder extends MiracleViewHolder {
     private final TextView title;
     private final TextView subtitle;
     private final ViewStub explicitStub;
+    private final ProfileItem userItem;
     private ImageView explicit;
 
     public PlaylistHorizontalViewHolder(@NonNull View itemView) {
         super(itemView);
+        userItem = getMiracleActivity().getUserItem();
         imageView = itemView.findViewById(R.id.photo);
         title = itemView.findViewById(R.id.title);
         subtitle = itemView.findViewById(R.id.subtitle);
@@ -75,24 +78,47 @@ public class PlaylistHorizontalViewHolder extends MiracleViewHolder {
             }
         }
 
-        itemView.setOnClickListener(view -> {
-            FragmentPlaylist fragmentPlaylist = new FragmentPlaylist();
-            fragmentPlaylist.setPlaylistItem(playlistItem);
-            getMiracleActivity().addFragment(fragmentPlaylist);
-        });
+        itemView.setOnClickListener(view -> goToPlaylist(playlistItem,getMiracleActivity()));
 
         itemView.setOnLongClickListener(view -> {
-            PlaylistDialog playlistDialog = new PlaylistDialog(getMiracleActivity(), playlistItem,
-                    getMiracleActivity().getUserItem());
+            PlaylistDialog playlistDialog = new PlaylistDialog(getMiracleActivity(),playlistItem,userItem);
             playlistDialog.setDialogActionListener(new PlaylistDialogActionListener() {
                 @Override
                 public void follow() {
-
+                    playlistItem.setFollowing(true);
+                    new AsyncExecutor<Integer>(){
+                        @Override
+                        public Integer inBackground() {
+                            try {
+                                playlistItem.follow(userItem);
+                                return 1;
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            return -1;
+                        }
+                        @Override
+                        public void onExecute(Integer object) { }
+                    }.start();
                 }
 
                 @Override
                 public void delete() {
-
+                    playlistItem.setFollowing(false);
+                    new AsyncExecutor<Integer>(){
+                        @Override
+                        public Integer inBackground() {
+                            try {
+                                playlistItem.delete(userItem);
+                                return 1;
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            return -1;
+                        }
+                        @Override
+                        public void onExecute(Integer object) { }
+                    }.start();
                 }
 
                 @Override
@@ -102,20 +128,12 @@ public class PlaylistHorizontalViewHolder extends MiracleViewHolder {
 
                 @Override
                 public void goToArtist() {
+                    FragmentUtil.goToArtist(playlistItem,getMiracleActivity());
+                }
 
-                    if(playlistItem.getArtists().size()==1){
-                        FragmentCatalogArtist fragmentCatalogArtist = new FragmentCatalogArtist();
-                        fragmentCatalogArtist.setArtistId(playlistItem.getArtists().get(0));
-                        getMiracleActivity().addFragment(fragmentCatalogArtist);
-                    } else {
-                        GoToArtistDialog goToArtistDialog = new GoToArtistDialog(view.getContext(), playlistItem.getArtists());
-                        goToArtistDialog.setDialogActionListener(artist -> {
-                            FragmentCatalogArtist fragmentCatalogArtist = new FragmentCatalogArtist();
-                            fragmentCatalogArtist.setArtistId(artist);
-                            getMiracleActivity().addFragment(fragmentCatalogArtist);
-                        });
-                        goToArtistDialog.show(view.getContext());
-                    }
+                @Override
+                public void goToOwner() {
+                    FragmentUtil.goToOwner(playlistItem,getMiracleActivity());
                 }
             });
             playlistDialog.show(view.getContext());

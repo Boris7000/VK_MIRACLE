@@ -41,7 +41,7 @@ public class TripleStackedAdapter extends MiracleNestedLoadableAdapter {
     public ArrayMap<Integer, ViewHolderFabric> getViewHolderFabricMap() {
         ArrayMap<Integer, ViewHolderFabric> arrayMap = new ArrayMap<>();
         arrayMap.put(TYPE_GROUP, new GroupViewHolder.Fabric());
-        arrayMap.put(TYPE_LOADING, new LoadingViewHolder.FabricSlider());
+        arrayMap.put(TYPE_LOADING, new LoadingViewHolder.FabricHorizontal());
         arrayMap.put(TYPE_ERROR, new ErrorViewHolder.Fabric());
         arrayMap.put(TYPE_AUDIO, new AudioViewHolder.Fabric());
         return arrayMap;

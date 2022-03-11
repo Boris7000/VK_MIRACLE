@@ -3,7 +3,6 @@ package com.vkontakte.miracle.model.wall;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_POST;
 
 import android.util.ArrayMap;
-import android.util.Log;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.Attachments;

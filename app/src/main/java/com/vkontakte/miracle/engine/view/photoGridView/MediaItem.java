@@ -22,35 +22,35 @@ public abstract class MediaItem {
         } else {
             if(width<=130){
                 if(need3x2){
-                    return findFor("o", 75, need3x2);
+                    return findFor("o", 75, true);
                 } else {
-                    return findFor("m", 75, need3x2);
+                    return findFor("m", 75, false);
                 }
             } else {
                 if(need3x2){
                     if(width<=200){
-                        return findFor("p", 130, need3x2);
+                        return findFor("p", 130, true);
                     } else {
                         if(width<=320){
-                            return findFor("q", 200, need3x2);
+                            return findFor("q", 200, true);
                         } else {
                             if(width<=510){
-                                return findFor("r", 320, need3x2);
+                                return findFor("r", 320, true);
                             }
                         }
                     }
                 } else {
                     if(width<=604){
-                        return findFor("x", 130, need3x2);
+                        return findFor("x", 130, false);
                     } else {
                         if(width<=807){
-                            return findFor("y", 604, need3x2);
+                            return findFor("y", 604, false);
                         } else {
                             if(width<=1024){
-                                return findFor("z", 807, need3x2);
+                                return findFor("z", 807, false);
                             }else {
                                 if(width<=2048){
-                                    return findFor("w", 1024, need3x2);
+                                    return findFor("w", 1024, false);
                                 }
                             }
                         }

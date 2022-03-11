@@ -2,8 +2,6 @@ package com.vkontakte.miracle.longpoll.model;
 
 import static com.vkontakte.miracle.engine.util.NetworkUtil.parseStringArrayList;
 import static com.vkontakte.miracle.longpoll.model.LongPollUpdateStorageTypes.ACTION_MESSAGE_TYPING;
-import static com.vkontakte.miracle.longpoll.model.LongPollUpdateTypes.ACTION_USER_WRITE_TEXT_IN_DIALOG;
-import static com.vkontakte.miracle.longpoll.model.LongPollUpdateTypes.ACTION_USERS_WRITE_AUDIO_IN_CHAT;
 
 import org.json.JSONArray;
 import org.json.JSONException;

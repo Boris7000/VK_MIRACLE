@@ -8,13 +8,12 @@ import static com.vkontakte.miracle.network.Creator.message;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.longpoll.listeners.OnNewUpdatesListener;
+import com.vkontakte.miracle.model.users.ProfileItem;
 
 import org.json.JSONObject;
 

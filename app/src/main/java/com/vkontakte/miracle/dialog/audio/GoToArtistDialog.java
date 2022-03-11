@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 public class GoToArtistDialog extends MiracleBottomDialog {
 
-    private View rootView;
     private final ArrayList<Artist> artists;
     private GoToArtistDialogActionListener dialogActionListener;
 
@@ -27,7 +26,8 @@ public class GoToArtistDialog extends MiracleBottomDialog {
 
     @Override
     public void show(Context context) {
-        setContentView(rootView =  View.inflate(context, R.layout.dialog_go_to_artist, null));
+        View rootView = View.inflate(context, R.layout.dialog_go_to_artist, null);
+        setContentView(rootView);
 
         LayoutInflater inflater = LayoutInflater.from(context);
         LinearLayout linearLayout = rootView.findViewById(R.id.buttonsContainer);

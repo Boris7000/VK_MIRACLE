@@ -2,6 +2,7 @@ package com.vkontakte.miracle.adapter.catalog.holders;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.vkontakte.miracle.engine.util.FragmentUtil.goToProfile;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,8 @@ import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.fragment.wall.FragmentProfile;
-import com.vkontakte.miracle.model.catalog.fields.CatalogDescription;
 import com.vkontakte.miracle.model.catalog.CatalogUser;
+import com.vkontakte.miracle.model.catalog.fields.CatalogDescription;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.model.users.fields.OnlineInfo;
 
@@ -88,7 +88,7 @@ public class CatalogUserViewHolder extends MiracleViewHolder {
 
             OnlineInfo onlineInfo = profileItem.getOnlineInfo();
             onlineStatus.setImageResource(onlineInfo.isMobile()?R.drawable.ic_online_mobile_16:R.drawable.ic_online_16);
-            onlineStatus.setBackgroundResource(onlineInfo.isMobile()?R.drawable.ic_online_mobile_substract_16:R.drawable.ic_online_substract_16);
+            onlineStatus.setBackgroundResource(onlineInfo.isMobile()?R.drawable.ic_online_mobile_subtract_16 :R.drawable.ic_online_subtract_16);
 
         } else {
             if(onlineStatus !=null&& onlineStatus.getVisibility()!=GONE){
@@ -113,11 +113,7 @@ public class CatalogUserViewHolder extends MiracleViewHolder {
             }
         }
 
-        itemView.setOnClickListener(view -> {
-            FragmentProfile fragmentProfile = new FragmentProfile();
-            fragmentProfile.setProfileItem(profileItem);
-            getMiracleActivity().addFragment(fragmentProfile);
-        });
+        itemView.setOnClickListener(view -> goToProfile(profileItem,getMiracleActivity()));
 
     }
 

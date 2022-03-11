@@ -17,7 +17,7 @@ public class Groups {
     }
 
     public static Call<JSONObject> get(String user_ids, String access_token){
-        return groups().get(user_ids, groups_all_fields, access_token, latest_api_v);
+        return groups().get(user_ids ,groups_all_fields, access_token, latest_api_v);
     }
 
     public static Call<JSONObject> get(int count, int offset, String user_id, String access_token){

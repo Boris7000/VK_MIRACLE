@@ -22,11 +22,11 @@ public class Constants {
 
     public static final String groups_min_fields = base_fields + ",screen_name,activity,verified";
     public static final String groups_all_fields = groups_min_fields +
-            ",photo_max,description,counters,cover,links,members_count,contacts";
+            ",status,photo_max,description,counters,cover,links,members_count,contacts";
 
-    public static final String users_min_fields = base_fields + ",screen_name,status,verified,online,last_seen,friend_status";
+    public static final String users_min_fields = base_fields + ",screen_name,verified,online,last_seen,friend_status";
     public static final String users_all_fields = users_min_fields +
-            ",photo_max,bdate,counters,home_town,sex";
+            ",status,photo_max,bdate,counters,home_town,sex";
 
     public static final String wall_fields = "video_files,photo_100,photo_200,sex,verified";
     public static final String message_fields = wall_fields+",online,last_seen";

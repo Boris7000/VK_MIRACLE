@@ -1,7 +1,8 @@
 package com.vkontakte.miracle.adapter.photos;
 
+import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
+
 import android.util.ArrayMap;
-import android.util.Log;
 
 import com.vkontakte.miracle.adapter.photos.holders.StackedPhotoItem;
 import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
@@ -19,8 +20,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import retrofit2.Response;
-
-import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
 public class PhotoAlbumAdapter extends MiracleLoadableAdapter {
 

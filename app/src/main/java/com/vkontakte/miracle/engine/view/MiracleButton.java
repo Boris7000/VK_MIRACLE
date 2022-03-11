@@ -49,7 +49,7 @@ public class MiracleButton extends LinearLayout {
     private ImageView imageView;
 
     @FloatRange(from = 0f, to = 1f)
-    private float fraction = 0f;
+    private float fraction;
     private final ArgbEvaluator colorEvaluator = new ArgbEvaluator();
 
     public MiracleButton(Context context) {

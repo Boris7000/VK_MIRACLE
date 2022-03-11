@@ -5,4 +5,5 @@ public interface PlaylistDialogActionListener {
     void delete();
     void playNext();
     void goToArtist();
+    void goToOwner();
 }

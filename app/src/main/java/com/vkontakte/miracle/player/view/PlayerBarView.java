@@ -1,7 +1,6 @@
 package com.vkontakte.miracle.player.view;
 
 import static com.vkontakte.miracle.engine.util.ImageUtil.bitmapFromLayerDrawable;
-import static com.vkontakte.miracle.engine.view.PicassoDrawableCopy.setBitmap;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.util.DimensionsUtil;
@@ -121,7 +119,7 @@ public class PlayerBarView extends FrameLayout {
         title = findViewById(R.id.title);
         subtitle = findViewById(R.id.subtitle);
         image = findViewById(R.id.photo);
-        int size = (int) DimensionsUtil.dpToPx(40,getContext());
+        int size = (int) DimensionsUtil.dpToPx(56,getContext());
         placeholderImage = bitmapFromLayerDrawable(R.drawable.audio_placeholder_image_mono_small, getContext(),size,size);
 
         ImageView previousButton = findViewById(R.id.previousButton);

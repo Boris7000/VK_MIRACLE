@@ -9,14 +9,12 @@ import androidx.annotation.NonNull;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.dialog.audio.AudioDialog;
 import com.vkontakte.miracle.dialog.audio.AudioDialogActionListener;
-import com.vkontakte.miracle.dialog.audio.GoToArtistDialog;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.model.audio.view.AudioItemView;
-import com.vkontakte.miracle.fragment.audio.FragmentPlaylist;
-import com.vkontakte.miracle.fragment.catalog.FragmentCatalogArtist;
+import com.vkontakte.miracle.engine.util.FragmentUtil;
 import com.vkontakte.miracle.model.audio.AudioItem;
+import com.vkontakte.miracle.model.audio.view.AudioItemView;
 import com.vkontakte.miracle.player.AudioPlayerData;
 
 public class AudioViewHolder extends MiracleViewHolder {
@@ -69,27 +67,12 @@ public class AudioViewHolder extends MiracleViewHolder {
 
                 @Override
                 public void goToAlbum() {
-                    FragmentPlaylist fragmentPlaylist = new FragmentPlaylist();
-                    fragmentPlaylist.setAlbum(audioItem.getAlbum());
-                    getMiracleActivity().addFragment(fragmentPlaylist);
+                    FragmentUtil.goToAlbum(audioItem,getMiracleActivity());
                 }
 
                 @Override
                 public void goToArtist() {
-
-                    if(audioItem.getArtists().size()==1){
-                        FragmentCatalogArtist fragmentCatalogArtist = new FragmentCatalogArtist();
-                        fragmentCatalogArtist.setArtistId(audioItem.getArtists().get(0));
-                        getMiracleActivity().addFragment(fragmentCatalogArtist);
-                    } else {
-                        GoToArtistDialog goToArtistDialog = new GoToArtistDialog(view.getContext(), audioItem.getArtists());
-                        goToArtistDialog.setDialogActionListener(artist -> {
-                            FragmentCatalogArtist fragmentCatalogArtist = new FragmentCatalogArtist();
-                            fragmentCatalogArtist.setArtistId(artist);
-                            getMiracleActivity().addFragment(fragmentCatalogArtist);
-                        });
-                        goToArtistDialog.show(view.getContext());
-                    }
+                    FragmentUtil.goToArtist(audioItem,getMiracleActivity());
                 }
             });
             audioDialog.show(view.getContext());

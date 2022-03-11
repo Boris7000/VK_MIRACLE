@@ -14,6 +14,6 @@ public class JSONRequestBodyConverter<T> implements Converter<T, RequestBody> {
     }
 
     @Override public RequestBody convert(@NonNull T value) {
-        return RequestBody.create(MEDIA_TYPE, String.valueOf(value));
+        return RequestBody.create(String.valueOf(value), MEDIA_TYPE);
     }
 }

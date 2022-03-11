@@ -8,7 +8,6 @@ import static com.vkontakte.miracle.engine.util.APIUtil.createPlaylistsMap;
 import static com.vkontakte.miracle.engine.util.APIUtil.createProfilesMap;
 
 import android.util.ArrayMap;
-import android.util.Log;
 
 import com.vkontakte.miracle.model.audio.ArtistItem;
 import com.vkontakte.miracle.model.audio.AudioItem;

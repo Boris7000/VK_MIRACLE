@@ -6,6 +6,7 @@ import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_L
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO_ALBUM;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PLAYLIST;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_TRIPLE_STACKED;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.getCatalogSliderFabrics;
 import static com.vkontakte.miracle.engine.util.LogTags.ADAPTER_TAG;
 
 import android.util.ArrayMap;
@@ -262,14 +263,7 @@ public abstract class MiracleNestedLoadableAdapter extends MiracleAdapter implem
     }
 
     public ArrayMap<Integer, ViewHolderFabric> getViewHolderFabricMap(){
-        ArrayMap<Integer, ViewHolderFabric> arrayMap = new ArrayMap<>();
-        arrayMap.put(TYPE_GROUP, new GroupViewHolder.Fabric());
-        arrayMap.put(TYPE_LOADING, new LoadingViewHolder.FabricSlider());
-        arrayMap.put(TYPE_ERROR, new ErrorViewHolder.Fabric());
-        arrayMap.put(TYPE_PHOTO_ALBUM, new PhotoAlbumViewHolder.Fabric());
-        arrayMap.put(TYPE_PLAYLIST, new PlaylistHorizontalViewHolder.Fabric());
-        arrayMap.put(TYPE_TRIPLE_STACKED, new TripleStackedViewHolder.Fabric());
-        return arrayMap;
+        return getCatalogSliderFabrics();
     }
 
 }
