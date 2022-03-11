@@ -27,8 +27,6 @@
             android:layout="@layout/view_verified_icon_overlay_stub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
-            android:layout_marginBottom="3dp"
             android:layout_gravity="bottom|end"/>
     </FrameLayout>
 

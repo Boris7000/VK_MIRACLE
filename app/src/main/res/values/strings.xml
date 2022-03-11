@@ -33,6 +33,7 @@
     <string name="delete_from_audio">Удалить из моей музыки</string>
 
 
+    <string name="error">Ошибка</string>
     <string name="unknownError">Что-то пошло не так :(</string>
     <string name="authorization">Авторизация</string>
     <string name="login">Логин</string>

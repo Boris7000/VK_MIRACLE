@@ -27,6 +27,7 @@ public class FragmentCatalogGroups extends TabsMiracleFragment {
         setBackClick(rootView.findViewById(R.id.backButton));
         setViewPager(rootView.findViewById(R.id.viewPager));
         setTabLayout(rootView.findViewById(R.id.tabLayout));
+        setProgressBar(rootView.findViewById(R.id.progressCircle));
 
         ProfileItem profileItem = miracleActivity.getUserItem();
 

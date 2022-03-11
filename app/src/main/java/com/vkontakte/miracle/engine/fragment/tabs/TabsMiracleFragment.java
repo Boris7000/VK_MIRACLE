@@ -1,12 +1,16 @@
 package com.vkontakte.miracle.engine.fragment.tabs;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -36,10 +40,45 @@ public class TabsMiracleFragment extends MiracleFragment {
     private MiracleTabLayout tabLayout;
     private LinearLayout topBar;
     private AppBarLayout appBarLayout;
+    private ProgressBar progressBar;
     private boolean scrollAndElevate = true;
+
+    public void show(boolean animate){
+        if(animate){
+            tabLayout.setAlpha(0);
+            tabLayout.animate().alpha(1f).setDuration(200).start();
+        }else {
+            tabLayout.setAlpha(1f);
+        }
+        if (progressBar != null){
+            progressBar.setVisibility(GONE);
+        }
+    }
+
+    public void show() {
+        show(true);
+    }
+
+    public void hide(boolean animate) {
+        if(animate){
+            tabLayout.setAlpha(1);
+            tabLayout.animate().alpha(0f).setDuration(200).start();
+        }else {
+            tabLayout.setAlpha(0f);
+        }
+        if(progressBar != null){
+            progressBar.setVisibility(VISIBLE);
+        }
+    }
+
+    public void hide() {
+        hide(true);
+    }
 
     public void setAdapter(TabsAdapter tabsAdapter){
         this.tabsAdapter = tabsAdapter;
+
+        show();
 
         viewPager.setAdapter(tabsAdapter);
 
@@ -115,6 +154,16 @@ public class TabsMiracleFragment extends MiracleFragment {
 
     public MiracleTabLayout getTabLayout() {
         return tabLayout;
+    }
+
+    //////////////////////////////////////////////////
+
+    public void setProgressBar(ProgressBar progressBar) {
+        this.progressBar = progressBar;
+    }
+
+    public ProgressBar getProgressBar() {
+        return progressBar;
     }
 
     //////////////////////////////////////////////////
@@ -223,6 +272,8 @@ public class TabsMiracleFragment extends MiracleFragment {
 
         new AsyncExecutor<Boolean>() {
 
+            private String exString="";
+
             private final ArrayList<NestedMiracleFragmentFabric> fabrics = new ArrayList<>();
 
             @Override
@@ -242,13 +293,25 @@ public class TabsMiracleFragment extends MiracleFragment {
                     return true;
 
                 }catch (Exception e){
+                    if(e.getMessage()==null){
+                        exString = e.toString();
+                    } else {
+                        exString = e.getMessage();
+                    }
                     return false;
                 }
             }
 
             @Override
             public void onExecute(Boolean object) {
-                if(object){
+
+                if(!object){
+                    if(fabrics.isEmpty()){
+                        fabrics.add(new FragmentError.Fabric(exString, getMiracleActivity().getString(R.string.error),-1));
+                    }
+                }
+
+                if(!fabrics.isEmpty()) {
                     setAdapter(new TabsAdapter(TabsMiracleFragment.this, fabrics));
                 }
             }

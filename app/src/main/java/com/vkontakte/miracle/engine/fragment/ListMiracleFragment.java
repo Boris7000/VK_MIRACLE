@@ -88,7 +88,6 @@ public class ListMiracleFragment extends MiracleFragment{
         }else {
             recyclerView.setAlpha(1f);
         }
-
         if (progressBar != null){
             progressBar.setVisibility(GONE);
         }

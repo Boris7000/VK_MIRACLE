@@ -244,6 +244,7 @@
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/dialog_go_to_artist.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_chat.xml" value="0.75" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_dialogs.xml" value="0.26927083333333335" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_error.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_menu.xml" value="0.625" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_player.xml" value="0.335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_settings.xml" value="0.375" />
@@ -251,6 +252,8 @@
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_settings_color_scheme_generator.xml" value="0.19519927536231885" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_teleport.xml" value="0.335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_with_recycleview.xml" value="0.26927083333333335" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_with_recycleview_nested.xml" value="0.26927083333333335" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_with_tabs.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragmnet_statistics.xml" value="0.19519927536231885" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/miracle_button_image.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/miracle_button_text.xml" value="0.26927083333333335" />
@@ -268,6 +271,7 @@
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_audio_item_sheet.xml" value="0.165" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_audio_item_sheet_merge.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_conversation_item.xml" value="0.75" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_error_item.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_explicit_icon_stub.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_explicit_icon_stub_message_out.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/view_explicit_icon_stub_sheet.xml" value="0.26927083333333335" />
