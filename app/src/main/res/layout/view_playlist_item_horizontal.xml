@@ -13,7 +13,6 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:padding="@dimen/imageBorderWidth"
-        android:layout_gravity="center_vertical"
         android:background="?attr/placeHolderColor"
         app:shapeAppearanceOverlay="@style/ShapeAppearance"
         app:strokeColor="?attr/colorContrast10"

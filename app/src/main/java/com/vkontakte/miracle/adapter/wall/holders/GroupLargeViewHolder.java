@@ -18,10 +18,7 @@ import com.vkontakte.miracle.adapter.audio.holders.PlaylistHorizontalViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.util.TimeUtil;
 import com.vkontakte.miracle.model.groups.GroupItem;
-import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.model.users.fields.LastSeen;
 
 public class GroupLargeViewHolder extends PlaylistHorizontalViewHolder {
 

@@ -41,7 +41,6 @@ import com.vkontakte.miracle.MiracleActivity;
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.messages.ChatAdapter;
-import com.vkontakte.miracle.adapter.messages.ConversationsAdapter;
 import com.vkontakte.miracle.adapter.messages.OnMessageAddedListener;
 import com.vkontakte.miracle.adapter.messages.ReplySwipeCallback;
 import com.vkontakte.miracle.engine.adapter.MiracleAdapter;
@@ -50,10 +49,8 @@ import com.vkontakte.miracle.engine.async.ExecutorConveyor;
 import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
 import com.vkontakte.miracle.engine.util.LargeDataStorage;
 import com.vkontakte.miracle.engine.util.TimeUtil;
-import com.vkontakte.miracle.longpoll.listeners.OnMessageAddedUpdateListener;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageTypingUpdateListener;
 import com.vkontakte.miracle.longpoll.listeners.OnUserOnlineUpdateListener;
-import com.vkontakte.miracle.longpoll.model.MessageAddedUpdate;
 import com.vkontakte.miracle.longpoll.model.MessageTypingUpdate;
 import com.vkontakte.miracle.longpoll.model.UserOnlineUpdate;
 import com.vkontakte.miracle.model.Owner;
@@ -582,8 +579,8 @@ public class FragmentChat extends SimpleMiracleFragment {
 
             onlineStatus.setImageResource(platform==7?R.drawable.ic_online_16
                     :R.drawable.ic_online_mobile_16);
-            onlineStatus.setBackgroundResource(platform==7?R.drawable.ic_online_substract_16
-                    :R.drawable.ic_online_mobile_substract_16);
+            onlineStatus.setBackgroundResource(platform==7?R.drawable.ic_online_subtract_16
+                    :R.drawable.ic_online_mobile_subtract_16);
         } else {
             if(onlineStatus!=null&&onlineStatus.getVisibility()!=GONE){
                 onlineStatus.setVisibility(GONE);

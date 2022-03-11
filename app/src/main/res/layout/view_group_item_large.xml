@@ -103,7 +103,7 @@
                     android:layout_marginTop="0.7sp"
                     android:layout_marginStart="2sp"
                     android:layout_weight="0"
-                    android:layout="@layout/view_online_status_large_stub"/>
+                    android:layout="@layout/view_online_status_stub"/>
             </LinearLayout>
 
         </LinearLayout>

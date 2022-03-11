@@ -2,8 +2,6 @@ package com.vkontakte.miracle.adapter.catalog;
 
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
-import android.util.Log;
-
 import androidx.collection.ArrayMap;
 
 import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;

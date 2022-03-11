@@ -1,20 +1,5 @@
 package com.vkontakte.miracle.fragment.settings;
 
-import android.os.Bundle;
-import android.util.ArrayMap;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.vkontakte.miracle.MiracleActivity;
-import com.vkontakte.miracle.MiracleApp;
-import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
-import com.vkontakte.miracle.engine.util.SettingsUtil;
-import com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioGroup;
-import com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView;
-import com.vkontakte.miracle.engine.view.radioGroup.OnRadioCheckedListener;
-
 import static com.vkontakte.miracle.engine.fragment.ScrollAndElevate.scrollAndElevate;
 import static com.vkontakte.miracle.engine.util.UIUtil.THEME_BLUE;
 import static com.vkontakte.miracle.engine.util.UIUtil.THEME_CARROT;
@@ -32,6 +17,19 @@ import static com.vkontakte.miracle.engine.util.UIUtil.THEME_SUNSET;
 import static com.vkontakte.miracle.engine.util.UIUtil.THEME_SYSTEM1;
 import static com.vkontakte.miracle.engine.util.UIUtil.THEME_SYSTEM2;
 import static com.vkontakte.miracle.engine.util.UIUtil.THEME_VIOLET;
+
+import android.os.Bundle;
+import android.util.ArrayMap;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.vkontakte.miracle.MiracleActivity;
+import com.vkontakte.miracle.MiracleApp;
+import com.vkontakte.miracle.R;
+import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
+import com.vkontakte.miracle.engine.util.SettingsUtil;
+import com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioGroup;
 
 public class FragmentColorSchemeSettings extends SimpleMiracleFragment {
     private View rootView;

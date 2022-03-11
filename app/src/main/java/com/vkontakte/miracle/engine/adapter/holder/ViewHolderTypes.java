@@ -3,8 +3,10 @@ package com.vkontakte.miracle.engine.adapter.holder;
 import android.util.ArrayMap;
 
 import com.vkontakte.miracle.adapter.audio.holders.AudioViewHolder;
+import com.vkontakte.miracle.adapter.audio.holders.PlaylistHorizontalViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.ArtistBannerViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.CatalogUserViewHolder;
+import com.vkontakte.miracle.adapter.catalog.holders.GroupHorizontalViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.GroupViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.HeaderViewHolder;
 import com.vkontakte.miracle.adapter.audio.holders.PlaylistViewHolder;
@@ -12,8 +14,10 @@ import com.vkontakte.miracle.adapter.catalog.holders.ProfileViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.SeparatorViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.SliderViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.TripleStackedSliderViewHolder;
+import com.vkontakte.miracle.adapter.catalog.holders.TripleStackedViewHolder;
 import com.vkontakte.miracle.adapter.messages.holders.ConversationViewHolder;
 import com.vkontakte.miracle.adapter.photos.holders.HorizontalListPhotoAlbumViewHolder;
+import com.vkontakte.miracle.adapter.photos.holders.PhotoAlbumViewHolder;
 import com.vkontakte.miracle.adapter.photos.holders.StackedPhotoViewHolder;
 import com.vkontakte.miracle.adapter.wall.holders.GroupLargeViewHolder;
 import com.vkontakte.miracle.adapter.wall.holders.PostViewHolder;
@@ -60,6 +64,17 @@ public class ViewHolderTypes {
         arrayMap.put(TYPE_PLAYLIST, new PlaylistViewHolder.Fabric());
         arrayMap.put(TYPE_CATALOG_TRIPLE_STACKED_SLIDER, new TripleStackedSliderViewHolder.Fabric());
         arrayMap.put(TYPE_ARTIST_BANNER, new ArtistBannerViewHolder.Fabric());
+        return arrayMap;
+    }
+
+    public static ArrayMap<Integer, ViewHolderFabric> getCatalogSliderFabrics(){
+        ArrayMap<Integer, ViewHolderFabric> arrayMap = new ArrayMap<>();
+        arrayMap.put(TYPE_GROUP, new GroupHorizontalViewHolder.Fabric());
+        arrayMap.put(TYPE_LOADING, new LoadingViewHolder.FabricHorizontal());
+        arrayMap.put(TYPE_ERROR, new ErrorViewHolder.Fabric());
+        arrayMap.put(TYPE_PHOTO_ALBUM, new PhotoAlbumViewHolder.Fabric());
+        arrayMap.put(TYPE_PLAYLIST, new PlaylistHorizontalViewHolder.Fabric());
+        arrayMap.put(TYPE_TRIPLE_STACKED, new TripleStackedViewHolder.Fabric());
         return arrayMap;
     }
 

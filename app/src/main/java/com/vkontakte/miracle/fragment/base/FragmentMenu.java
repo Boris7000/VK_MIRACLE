@@ -2,6 +2,7 @@ package com.vkontakte.miracle.fragment.base;
 
 import static android.view.View.VISIBLE;
 import static com.vkontakte.miracle.engine.fragment.ScrollAndElevate.scrollAndElevate;
+import static com.vkontakte.miracle.engine.util.FragmentUtil.goToProfile;
 import static com.vkontakte.miracle.engine.util.StorageUtil.loadBitmap;
 
 import android.os.Bundle;
@@ -28,7 +29,6 @@ import com.vkontakte.miracle.fragment.catalog.FragmentCatalogFriends;
 import com.vkontakte.miracle.fragment.catalog.FragmentCatalogGroups;
 import com.vkontakte.miracle.fragment.photos.FragmentUserPhotos;
 import com.vkontakte.miracle.fragment.settings.FragmentSettings;
-import com.vkontakte.miracle.fragment.wall.FragmentProfile;
 import com.vkontakte.miracle.login.UpdateCurrentUserData;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.model.users.fields.LastSeen;
@@ -102,11 +102,7 @@ public class FragmentMenu extends SimpleMiracleFragment {
         ProfileItem profileItem = miracleActivity.getUserItem();
         FrameLayout frameLayout = rootView.findViewById(R.id.profileLink);
 
-        frameLayout.setOnClickListener(view -> {
-            FragmentProfile fragmentProfile = new FragmentProfile();
-            fragmentProfile.setProfileItem(profileItem);
-            getMiracleActivity().addFragment(fragmentProfile);
-        });
+        frameLayout.setOnClickListener(view -> goToProfile(profileItem,getMiracleActivity()));
 
         TextView username = frameLayout.findViewById(R.id.current_user_name);
         username.setText(profileItem.getFullName());
@@ -122,7 +118,7 @@ public class FragmentMenu extends SimpleMiracleFragment {
             }
             LastSeen lastSeen = profileItem.getLastSeen();
             online_status.setImageResource(lastSeen.getPlatform()==7?R.drawable.ic_online_16:R.drawable.ic_online_mobile_16);
-            online_status.setBackgroundResource(lastSeen.getPlatform()==7?R.drawable.ic_online_substract_16:R.drawable.ic_online_mobile_substract_16);
+            online_status.setBackgroundResource(lastSeen.getPlatform()==7?R.drawable.ic_online_subtract_16 :R.drawable.ic_online_mobile_subtract_16);
         } else {
             online_status.setVisibility(View.GONE);
         }

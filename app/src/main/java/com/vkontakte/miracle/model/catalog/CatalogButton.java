@@ -1,7 +1,5 @@
 package com.vkontakte.miracle.model.catalog;
 
-import android.util.Log;
-
 import com.vkontakte.miracle.model.catalog.fields.CatalogOption;
 
 import org.json.JSONArray;

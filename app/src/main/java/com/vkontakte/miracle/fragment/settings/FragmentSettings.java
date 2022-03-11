@@ -1,5 +1,7 @@
 package com.vkontakte.miracle.fragment.settings;
 
+import static com.vkontakte.miracle.engine.fragment.ScrollAndElevate.scrollAndElevate;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +10,6 @@ import android.view.ViewGroup;
 import com.vkontakte.miracle.MiracleActivity;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
-import com.vkontakte.miracle.fragment.base.FragmentTest;
-
-import static com.vkontakte.miracle.engine.fragment.ScrollAndElevate.scrollAndElevate;
 
 public class FragmentSettings extends SimpleMiracleFragment {
 

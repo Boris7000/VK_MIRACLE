@@ -1,10 +1,12 @@
 package com.vkontakte.miracle.engine.view.photoGridView;
 
+import static com.vkontakte.miracle.engine.util.DeviceUtil.getDisplayHeight;
+import static com.vkontakte.miracle.engine.util.DimensionsUtil.dpToPx;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -14,9 +16,6 @@ import androidx.annotation.Nullable;
 import com.vkontakte.miracle.R;
 
 import java.util.ArrayList;
-
-import static com.vkontakte.miracle.engine.util.DeviceUtil.getDisplayHeight;
-import static com.vkontakte.miracle.engine.util.DimensionsUtil.dpToPx;
 
 public class PhotoGridView extends RelativeLayout {
 

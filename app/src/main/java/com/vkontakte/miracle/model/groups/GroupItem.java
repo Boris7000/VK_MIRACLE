@@ -2,6 +2,8 @@ package com.vkontakte.miracle.model.groups;
 
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_GROUP;
 
+import android.util.Log;
+
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.users.fields.Counters;
 
@@ -91,6 +93,8 @@ public class GroupItem implements ItemDataHolder {
     }
 
     public GroupItem(JSONObject jsonObject)throws JSONException {
+
+        Log.d("roorkgorkg",jsonObject.toString());
 
         String id = jsonObject.getString("id");
         if(id.charAt(0)!='-'){

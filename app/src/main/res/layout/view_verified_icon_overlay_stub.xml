@@ -4,6 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@drawable/ic_verified_subtract_20"
     android:backgroundTint="?android:attr/windowBackground"
-    app:tint="?attr/colorContrast40"/>
+    android:src="@drawable/ic_verified_filled_20"
+    app:tint="?attr/colorPrimary"/>
+
 

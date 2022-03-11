@@ -47,7 +47,7 @@
                     <ViewStub
                         android:id="@+id/onlineStatusStub"
                         android:inflatedId="@+id/onlineStatus"
-                        android:layout="@layout/view_online_status_stub"
+                        android:layout="@layout/view_online_status_overlay_stub"
                         android:layout_width="14dp"
                         android:layout_height="14dp"
                         android:layout_gravity="bottom|end"/>

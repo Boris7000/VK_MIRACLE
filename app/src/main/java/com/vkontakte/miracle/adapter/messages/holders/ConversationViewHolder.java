@@ -7,7 +7,6 @@ import static com.vkontakte.miracle.engine.util.StringsUtil.getWordFirstChar;
 import static com.vkontakte.miracle.engine.util.TimeUtil.getMessageDateString;
 
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -251,7 +250,7 @@ public class ConversationViewHolder extends MiracleViewHolder {
             onlineStatus.setImageResource(lastSeen.getPlatform()==7?
                     R.drawable.ic_online_16:R.drawable.ic_online_mobile_16);
             onlineStatus.setBackgroundResource(lastSeen.getPlatform()==7?
-                    R.drawable.ic_online_substract_16:R.drawable.ic_online_mobile_substract_16);
+                    R.drawable.ic_online_subtract_16 :R.drawable.ic_online_mobile_subtract_16);
 
         } else {
             if(onlineStatus !=null&& onlineStatus.getVisibility()!=GONE){

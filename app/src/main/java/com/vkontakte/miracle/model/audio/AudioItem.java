@@ -2,11 +2,8 @@ package com.vkontakte.miracle.model.audio;
 
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_AUDIO;
 
-import android.util.Log;
-
 import androidx.annotation.Nullable;
 
-import com.google.android.exoplayer2.MediaItem;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.util.TimeUtil;
 import com.vkontakte.miracle.model.audio.fields.Album;

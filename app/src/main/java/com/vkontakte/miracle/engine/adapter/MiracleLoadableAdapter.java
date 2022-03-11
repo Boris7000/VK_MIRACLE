@@ -1,5 +1,8 @@
 package com.vkontakte.miracle.engine.adapter;
 
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_LOADING;
+import static com.vkontakte.miracle.engine.util.LogTags.ADAPTER_TAG;
+
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -7,7 +10,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.vkontakte.miracle.adapter.messages.ConversationsAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
@@ -18,9 +20,6 @@ import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
 
 import java.util.ArrayList;
-
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_LOADING;
-import static com.vkontakte.miracle.engine.util.LogTags.ADAPTER_TAG;
 
 public abstract class MiracleLoadableAdapter extends MiracleAdapter implements ILoadableAdapter {
 

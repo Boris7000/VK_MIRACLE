@@ -1,12 +1,10 @@
 package com.vkontakte.miracle.engine.util;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.EditText;
 
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.model.Owner;
-import com.vkontakte.miracle.model.users.ProfileItem;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

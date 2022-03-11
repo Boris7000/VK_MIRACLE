@@ -2,11 +2,8 @@ package com.vkontakte.miracle.longpoll.model;
 
 import static com.vkontakte.miracle.longpoll.model.LongPollUpdateStorageTypes.ACTION_SET_INPUT_MESSAGES_AS_READ;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.Serializable;
 

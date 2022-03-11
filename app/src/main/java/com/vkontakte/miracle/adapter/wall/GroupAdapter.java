@@ -4,7 +4,6 @@ import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.getWal
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
 import android.util.ArrayMap;
-import android.util.Log;
 
 import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;

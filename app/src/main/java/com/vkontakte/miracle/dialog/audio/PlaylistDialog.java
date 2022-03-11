@@ -121,6 +121,17 @@ public class PlaylistDialog extends MiracleBottomDialog {
             linearLayout.addView(miracleButton);
         }
 
+        if(playlistItem.getOwner()!=null){
+            miracleButton = (MiracleButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
+            miracleButton.setText(context.getString(R.string.go_to_owner));
+            miracleButton.setImageResource(R.drawable.ic_link_28);
+            miracleButton.setOnClickListener(view -> {
+                dialogActionListener.goToOwner();
+                cancel();
+            });
+            linearLayout.addView(miracleButton);
+        }
+
 
         miracleButton = (MiracleButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
         miracleButton.setText(context.getString(R.string.play_next));

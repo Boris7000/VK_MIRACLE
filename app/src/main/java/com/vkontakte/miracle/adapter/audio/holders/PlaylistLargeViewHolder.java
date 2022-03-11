@@ -2,11 +2,10 @@ package com.vkontakte.miracle.adapter.audio.holders;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-
-import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
+import static com.vkontakte.miracle.engine.util.FragmentUtil.goToArtist;
+import static com.vkontakte.miracle.engine.util.FragmentUtil.goToOwner;
 import static com.vkontakte.miracle.engine.util.TimeUtil.getUpdatedDateString;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,29 +18,20 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.dialog.audio.GoToArtistDialog;
 import com.vkontakte.miracle.dialog.audio.PlaylistDialog;
 import com.vkontakte.miracle.dialog.audio.PlaylistDialogActionListener;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.vkontakte.miracle.engine.util.FragmentUtil;
 import com.vkontakte.miracle.engine.util.StringsUtil;
 import com.vkontakte.miracle.engine.view.MiracleButton;
 import com.vkontakte.miracle.engine.view.switchIcon.SwitchIconViewV2;
-import com.vkontakte.miracle.fragment.catalog.FragmentCatalogArtist;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
-import com.vkontakte.miracle.model.audio.fields.Followed;
 import com.vkontakte.miracle.model.audio.fields.Photo;
 import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Audio;
-import com.vkontakte.miracle.network.methods.Likes;
 import com.vkontakte.miracle.player.AudioPlayerData;
-
-import org.json.JSONObject;
-
-import retrofit2.Call;
-import retrofit2.Response;
 
 public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
     private final MiracleButton playButton;
@@ -78,6 +68,14 @@ public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
 
         title.setText(playlistItem.getTitle());
         subtitle.setText(playlistItem.getSubtitle());
+
+
+        if(playlistItem.getType()==1){
+            subtitle.setOnClickListener(v -> goToArtist(playlistItem,getMiracleActivity()));
+        } else {
+            subtitle.setOnClickListener(v -> goToOwner(playlistItem,getMiracleActivity()));
+        }
+
 
         Picasso.get().cancelRequest(imageView);
 
@@ -236,20 +234,12 @@ public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
 
                 @Override
                 public void goToArtist() {
+                    FragmentUtil.goToArtist(playlistItem,getMiracleActivity());
+                }
 
-                    if(playlistItem.getArtists().size()==1){
-                        FragmentCatalogArtist fragmentCatalogArtist = new FragmentCatalogArtist();
-                        fragmentCatalogArtist.setArtistId(playlistItem.getArtists().get(0));
-                        getMiracleActivity().addFragment(fragmentCatalogArtist);
-                    } else {
-                        GoToArtistDialog goToArtistDialog = new GoToArtistDialog(view.getContext(), playlistItem.getArtists());
-                        goToArtistDialog.setDialogActionListener(artist -> {
-                            FragmentCatalogArtist fragmentCatalogArtist = new FragmentCatalogArtist();
-                            fragmentCatalogArtist.setArtistId(artist);
-                            getMiracleActivity().addFragment(fragmentCatalogArtist);
-                        });
-                        goToArtistDialog.show(view.getContext());
-                    }
+                @Override
+                public void goToOwner() {
+                    FragmentUtil.goToOwner(playlistItem,getMiracleActivity());
                 }
             });
             playlistDialog.show(view.getContext());

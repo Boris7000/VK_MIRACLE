@@ -1,7 +1,9 @@
 package com.vkontakte.miracle.model.messages;
 
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_MESSAGE_IN;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_MESSAGE_OUT;
+
 import android.util.ArrayMap;
-import android.util.Log;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.longpoll.model.MessageAddedUpdate;
@@ -10,9 +12,6 @@ import com.vkontakte.miracle.model.Owner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_MESSAGE_IN;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_MESSAGE_OUT;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;

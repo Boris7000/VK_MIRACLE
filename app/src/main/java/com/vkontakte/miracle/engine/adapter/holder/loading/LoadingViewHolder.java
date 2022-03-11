@@ -28,10 +28,10 @@ public class LoadingViewHolder extends MiracleViewHolder {
         }
     }
 
-    public static class FabricSlider implements ViewHolderFabric {
+    public static class FabricHorizontal implements ViewHolderFabric {
         @Override
         public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
-            return new LoadingViewHolder(inflater.inflate(R.layout.view_loading_item_slider, viewGroup, false));
+            return new LoadingViewHolder(inflater.inflate(R.layout.view_loading_item_horizontal, viewGroup, false));
         }
     }
 

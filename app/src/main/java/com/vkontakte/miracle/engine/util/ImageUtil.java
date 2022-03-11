@@ -66,7 +66,7 @@ public class ImageUtil {
         Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
 
         if (radius < 1) {
-            return (null);
+            return bitmap;
         }
 
         int w = bitmap.getWidth();
