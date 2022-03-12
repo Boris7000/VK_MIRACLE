@@ -43,7 +43,7 @@ public class MiracleApp extends Application {
 
         int currentNightMode = settingsUtil.nightMode();
 
-        nightMode = currentNightMode!=MODE_NIGHT_NO;
+        nightMode = currentNightMode==MODE_NIGHT_NO;
 
         AppCompatDelegate.setDefaultNightMode(currentNightMode);
 
@@ -92,7 +92,7 @@ public class MiracleApp extends Application {
     }
 
     public void changeNightMode(boolean nightMode){
-        if(this.nightMode !=nightMode) {
+        if(this.nightMode!=nightMode) {
             int MODE_NIGHT = nightMode?MODE_NIGHT_YES:MODE_NIGHT_NO;
             SettingsUtil.get().storeNightMode(MODE_NIGHT);
             this.nightMode = nightMode;

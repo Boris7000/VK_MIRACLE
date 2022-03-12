@@ -25,7 +25,7 @@ public class FragmentFeed  extends SimpleMiracleFragment {
 
         MiracleActivity miracleActivity = getMiracleActivity();
 
-        View rootView = inflater.inflate(R.layout.fragment_dialogs, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_feed, container, false);
 
         setTopBar(rootView.findViewById(R.id.appbarLinear));
         setAppBarLayout(rootView.findViewById(R.id.appbar));

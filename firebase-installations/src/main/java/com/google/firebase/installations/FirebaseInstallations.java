@@ -292,12 +292,9 @@ public class FirebaseInstallations implements FirebaseInstallationsApi {
     @Override
     public synchronized FidListenerHandle registerFidListener(@NonNull FidListener listener) {
         fidListeners.add(listener);
-        return new FidListenerHandle() {
-            @Override
-            public void unregister() {
-                synchronized (FirebaseInstallations.this) {
-                    fidListeners.remove(listener);
-                }
+        return () -> {
+            synchronized (FirebaseInstallations.this) {
+                fidListeners.remove(listener);
             }
         };
     }
