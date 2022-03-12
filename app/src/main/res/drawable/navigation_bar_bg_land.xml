@@ -14,9 +14,9 @@
         android:width="2dp">
         <shape  android:shape="rectangle">
             <gradient
-                android:startColor="@android:color/transparent"
+                android:startColor="?attr/backgroundColor"
                 android:centerColor="?attr/colorContrast10"
-                android:endColor="@android:color/transparent"
+                android:endColor="?attr/backgroundColor"
                 android:angle="90"/>
         </shape>
     </item>
