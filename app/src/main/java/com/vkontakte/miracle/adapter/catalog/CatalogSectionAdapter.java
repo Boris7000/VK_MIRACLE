@@ -2,6 +2,9 @@ package com.vkontakte.miracle.adapter.catalog;
 
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import androidx.collection.ArrayMap;
 
 import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
@@ -13,6 +16,7 @@ import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.network.methods.Catalog;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -26,6 +30,7 @@ public class CatalogSectionAdapter extends MiracleLoadableAdapter {
     private Call<JSONObject> call;
     private final ArrayMap<String,CatalogBlock> listCatalogBlocksMap = new ArrayMap<>();
 
+    private CatalogSection catalogSection;
     private OnSectionLoadedListener onSectionLoadedListener;
 
     public CatalogSectionAdapter(String sectionId){
@@ -59,11 +64,7 @@ public class CatalogSectionAdapter extends MiracleLoadableAdapter {
             section = jo_response.getJSONObject("section");
         }
 
-        if(!hasData()){
-            if(onSectionLoadedListener!=null){
-                onSectionLoadedListener.onSectionLoaded(new CatalogSection(section));
-            }
-        }
+        catalogSection = new CatalogSection(section);
 
         JSONArray blocks = section.getJSONArray("blocks");
 
@@ -109,6 +110,17 @@ public class CatalogSectionAdapter extends MiracleLoadableAdapter {
             setNextFrom("");
             setFinallyLoaded(true);
         }
+    }
+
+    @Override
+    public void onComplete() {
+        super.onComplete();
+        if(!hasData()){
+            if(onSectionLoadedListener!=null){
+                onSectionLoadedListener.onSectionLoaded(catalogSection);
+            }
+        }
+
     }
 
     public void setOnSectionLoadedListener(OnSectionLoadedListener onSectionLoadedListener) {
