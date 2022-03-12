@@ -119,10 +119,8 @@
     </declare-styleable>
 
     <declare-styleable name="MiracleTextView">
-        <attr name="hashTagColor" format="color"/>
-        <attr name="displayHashTags" format="boolean"/>
-        <attr name="displayOwnerLinks" format="boolean"/>
-        <attr name="isPost" format="boolean"/>
+        <attr name="highlightColor" format="color"/>
+        <attr name="enableClicking" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="AudioListView">

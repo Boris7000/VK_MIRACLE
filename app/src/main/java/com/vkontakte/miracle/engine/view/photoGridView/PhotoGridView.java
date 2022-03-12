@@ -9,7 +9,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 
@@ -17,7 +17,7 @@ import com.vkontakte.miracle.R;
 
 import java.util.ArrayList;
 
-public class PhotoGridView extends RelativeLayout {
+public class PhotoGridView extends FrameLayout {
 
     private final int spacing;
     private int measuredWidth = -1;
@@ -74,7 +74,7 @@ public class PhotoGridView extends RelativeLayout {
             PhotoGridItemView child = (PhotoGridItemView) getChildAt(p);
             child.set(photoGridItem, false);
 
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) child.getLayoutParams();
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) child.getLayoutParams();
 
             params.width = position.sizeX;
             params.height = position.sizeY;
@@ -104,7 +104,7 @@ public class PhotoGridView extends RelativeLayout {
             PhotoGridItemView child = (PhotoGridItemView) getChildAt(p);
             child.set(photoGridItem, false);
 
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) child.getLayoutParams();
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) child.getLayoutParams();
 
             params.width = position.sizeX;
             params.height = position.sizeY;

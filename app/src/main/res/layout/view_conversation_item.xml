@@ -113,7 +113,7 @@
                     android:textSize="15sp"
                     tools:text="Кто: " />
 
-                <TextView
+                <com.vkontakte.miracle.engine.view.textView.MiracleTextView
                     android:id="@+id/body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -124,7 +124,9 @@
                     android:gravity="center_vertical"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="15sp"
+                    app:highlightColor="?attr/colorAccent"
                     tools:text="Текст" />
+
                 <TextView
                     android:id="@+id/date"
                     android:layout_width="wrap_content"

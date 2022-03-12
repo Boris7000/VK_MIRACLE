@@ -19,8 +19,7 @@
         android:textSize="15sp"
         android:includeFontPadding="false"
         android:autoLink="web"
-        app:displayHashTags="true"
-        app:displayOwnerLinks="true"
-        app:hashTagColor="?attr/colorAccent"
+        app:highlightColor="?attr/colorAccent"
+        app:enableClicking="true"
         tools:text="Описание"/>
 </FrameLayout>

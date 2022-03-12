@@ -14,15 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autoLink="web"
-        app:displayHashTags="true"
-        app:displayOwnerLinks="true"
-        app:hashTagColor="?attr/colorAccent"
+        app:highlightColor="?attr/colorAccent"
+        app:enableClicking="true"
         tools:text="https://fdffr\n[id158|jope]\n#rgrgrg" />
     <TextView
         android:id="@+id/post_more_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Больше"
+        android:text="@string/show_more"
         android:textColor="?android:attr/colorButtonNormal"
         android:visibility="gone"
         tools:visibility="visible" />
