@@ -8,7 +8,6 @@ com/google/firebase/installations/FirebaseInstallations.java
  com.google.firebase.installations.FirebaseInstallations
  com.google.firebase.installations.FirebaseInstallations$1
  com.google.firebase.installations.FirebaseInstallations$2
- com.google.firebase.installations.FirebaseInstallations$3
 com/google/firebase/installations/Utils.java
  com.google.firebase.installations.Utils
 com/google/firebase/installations/CrossProcessLock.java

@@ -3,9 +3,9 @@
 3    package="com.google.firebase.installations" >
 4
 5    <uses-sdk
-6        android:minSdkVersion="24"
+6        android:minSdkVersion="23"
 6-->D:\project\VKMIRACLE\firebase-installations\src\main\AndroidManifest.xml
-7        android:targetSdkVersion="31" />
+7        android:targetSdkVersion="32" />
 7-->D:\project\VKMIRACLE\firebase-installations\src\main\AndroidManifest.xml
 8
 9    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

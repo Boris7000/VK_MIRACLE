@@ -18,6 +18,7 @@ import android.view.View;
 import com.vkontakte.miracle.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -125,9 +126,18 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
             all.addAll(othersLinks);
 
 
+            /*
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 all.sort(Comparator.comparingInt(link -> link.start));
-            }
+            } else {
+                Collections.sort(all, (element, element1) -> {
+                    if(element.start > element1.start) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                });
+            }*/
 
             spannable = Spannable.Factory.getInstance().newSpannable(replace(spannable, all));
 
