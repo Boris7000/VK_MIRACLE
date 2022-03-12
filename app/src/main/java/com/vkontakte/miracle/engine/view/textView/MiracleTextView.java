@@ -4,6 +4,7 @@ import static com.vkontakte.miracle.engine.util.ColorUtil.getColorByAttributeId;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -123,7 +124,10 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
             all.addAll(topicLinks);
             all.addAll(othersLinks);
 
-            all.sort(LINK_COMPARATOR);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                all.sort(Comparator.comparingInt(link -> link.start));
+            }
 
             spannable = Spannable.Factory.getInstance().newSpannable(replace(spannable, all));
 
@@ -244,11 +248,8 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
             // we didn't find non-letter. We are at the end of text
             nonLetterDigitCharIndex = text.length();
         }
-
         return nonLetterDigitCharIndex;
     }
-
-    private static final Comparator<AbsInternalLink> LINK_COMPARATOR = Comparator.comparingInt(link -> link.start);
 
     private static CharSequence replace(CharSequence input, List<? extends AbsInternalLink> links) {
         if (links == null || links.isEmpty()) {

@@ -110,9 +110,9 @@ public class FragmentColorSchemeGenerator  extends SimpleMiracleFragment {
                     try {
                         int color = Integer.parseInt(editText.getText().toString(), 16);
                         Color.colorToHSV(color,hsv);
-                        hSeekBar.setProgress((int) hsv[0],false);
-                        sSeekBar.setProgress((int) (hsv[1]*100),false);
-                        vSeekBar.setProgress((int) (hsv[2]*100),false);
+                        hSeekBar.setProgress((int) hsv[0]);
+                        sSeekBar.setProgress((int) (hsv[1]*100));
+                        vSeekBar.setProgress((int) (hsv[2]*100));
                         generateColors(hsv,linearLayout);
                     }catch (Exception e){
                     }
