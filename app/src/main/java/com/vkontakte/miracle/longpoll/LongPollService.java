@@ -8,8 +8,8 @@ import static com.vkontakte.miracle.network.Creator.message;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
-import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.longpoll.listeners.OnNewUpdatesListener;
@@ -25,8 +25,8 @@ import retrofit2.Response;
 public class LongPollService extends Service {
 
     private final IBinder iBinder = new LongPollServiceBinder(this);
-    private LongPollServiceController longPollServiceController;
-    private ProfileItem profileItem;
+    private final LongPollServiceController longPollServiceController = LongPollServiceController.get();
+    private final StorageUtil storageUtil = StorageUtil.get();
     private AsyncExecutor<LongPollUpdates> executor;
     private boolean destroyed = false;
 
@@ -41,6 +41,10 @@ public class LongPollService extends Service {
                 public LongPollUpdates inBackground() {
                     try {
                         try {
+
+                            ProfileItem profileItem = storageUtil.currentUser();
+                            Log.d("iejfijeifjei",profileItem.getId());
+
                             Response<JSONObject> response;
                             JSONObject jsonObject;
 
@@ -62,11 +66,13 @@ public class LongPollService extends Service {
 
                             ts = jsonObject.getString("ts");
 
-                            StorageUtil.writeMessageAddedLongPollUpdates(longPollUpdates.getMessageAddedUpdates(),getApplicationContext());
+                            storageUtil.writeMessageAddedLongPollUpdates(longPollUpdates.getMessageAddedUpdates(), profileItem);
 
-                            StorageUtil.writeMessageReadLongPollUpdates(longPollUpdates.getMessageReadUpdates(),getApplicationContext());
+                            storageUtil.writeMessageReadLongPollUpdates(longPollUpdates.getMessageReadUpdates(), profileItem);
 
-                            return longPollUpdates;
+                            if(profileItem.equals(storageUtil.currentUser())) {
+                                return longPollUpdates;
+                            }
                         } catch (InterruptedIOException ignore){
                             return new LongPollUpdates();
                         }
@@ -106,14 +112,15 @@ public class LongPollService extends Service {
 
     @Override
     public void onCreate() {
+        Log.d("iejfijeifjei","created");
         super.onCreate();
-        MiracleApp miracleApp = (MiracleApp) getApplication();
-        longPollServiceController = miracleApp.getLongPollServiceController();
-        profileItem = StorageUtil.loadUsers(miracleApp).get(0);
     }
 
     @Override
     public void onDestroy() {
+
+        Log.d("iejfijeifjei","destroyed");
+
         super.onDestroy();
 
         destroyed = true;

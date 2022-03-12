@@ -35,7 +35,7 @@ public class UpdateCurrentUserData extends AsyncExecutor<Boolean> {
 
             CheckConnection(3500);
 
-            ArrayList<ProfileItem> profileItems = StorageUtil.loadUsers(context);
+            ArrayList<ProfileItem> profileItems = StorageUtil.get().loadUsers();
 
             ProfileItem profileItemOld = profileItems.get(0);
 
@@ -49,7 +49,7 @@ public class UpdateCurrentUserData extends AsyncExecutor<Boolean> {
                     profileItemNew.getLastSeen().getTime()!=profileItemOld.getLastSeen().getTime();
 
             if(hasChanges){
-                UserDataUtil.updateUserData(profileItemNew, context);
+                UserDataUtil.updateUserData(profileItemNew);
             }
 
             return hasChanges;

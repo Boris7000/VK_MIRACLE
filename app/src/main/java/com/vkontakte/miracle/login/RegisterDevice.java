@@ -14,7 +14,9 @@ import android.view.View;
 import com.vkontakte.miracle.MiracleActivity;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.vkontakte.miracle.engine.util.SettingsUtil;
 import com.vkontakte.miracle.engine.util.UserDataUtil;
+import com.vkontakte.miracle.longpoll.LongPollServiceController;
 import com.vkontakte.miracle.model.users.ProfileItem;
 
 public class RegisterDevice extends AsyncExecutor<Boolean> {
@@ -37,7 +39,7 @@ public class RegisterDevice extends AsyncExecutor<Boolean> {
                     null, authState.getToken(), defaultRegisterDeviceFields(), defaultHeaders()).execute();
             loginActivity.setText(loginActivity.getString(R.string.userDataUpdate));
             ProfileItem profileItem = UserDataUtil.downloadUserData(authState.getUserId(), authState.getToken());
-            UserDataUtil.updateUserData(profileItem, loginActivity);
+            UserDataUtil.updateUserData(profileItem);
             return true;
         } catch (Exception e) {
             String eString = e.toString();
@@ -51,7 +53,8 @@ public class RegisterDevice extends AsyncExecutor<Boolean> {
     @Override
     public void onExecute(Boolean object) {
         if(object){
-            loginActivity.getMiracleApp().getSettingsUtil().storeAuthorized(true);
+            SettingsUtil.get().storeAuthorized(true);
+            LongPollServiceController.get().startExecuting();
             Intent intent = new Intent(loginActivity, MiracleActivity.class);
             loginActivity.startActivity(intent);
             loginActivity.finish();

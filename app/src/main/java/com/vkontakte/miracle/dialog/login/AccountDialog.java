@@ -9,10 +9,10 @@ import androidx.annotation.NonNull;
 
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.dialog.MiracleBottomDialog;
+import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.engine.view.MiracleButton;
 import com.vkontakte.miracle.model.users.ProfileItem;
 
-import static com.vkontakte.miracle.engine.util.StorageUtil.loadBitmap;
 import static com.vkontakte.miracle.engine.util.UserDataUtil.removeUserData;
 
 public class AccountDialog extends MiracleBottomDialog {
@@ -32,14 +32,14 @@ public class AccountDialog extends MiracleBottomDialog {
         TextView name = rootView.findViewById(R.id.title);
         ImageView imageView = rootView.findViewById(R.id.photo);
         name.setText(profileItem.getFullName());
-        imageView.setImageBitmap(loadBitmap(profileItem.getId()+"_200.png", context));
+        StorageUtil storageUtil = StorageUtil.get();
+        imageView.setImageBitmap(storageUtil.loadBitmap("profileImage200.png",storageUtil.getUserCachesDir(profileItem)));
 
         MiracleButton cancelButton = rootView.findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(view -> cancel());
 
         MiracleButton deleteButton = rootView.findViewById(R.id.delete_button);
         deleteButton.setOnClickListener(view -> {
-            removeUserData(profileItem.getId(), context);
             if(dialogActionListener!=null){
                 dialogActionListener.remove();
             }

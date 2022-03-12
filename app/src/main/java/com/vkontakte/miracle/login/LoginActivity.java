@@ -133,8 +133,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        StorageUtil.initializeDirectories(this);
-        ArrayList<ProfileItem> accounts = StorageUtil.loadUsers(this);
+        StorageUtil storageUtil = StorageUtil.get();
+        storageUtil.initializePublicDirectories();
+        ArrayList<ProfileItem> accounts = storageUtil.loadUsers();
         AccountsAdapter accountsAdapter = new AccountsAdapter(accounts, this);
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(getHorizontalLayoutManager(this));

@@ -33,6 +33,5 @@ public class UnregisterDevice extends AsyncExecutor<Boolean> {
         return false;
     }
     @Override
-    public void onExecute(Boolean object) {
-    }
+    public void onExecute(Boolean object) { }
 }

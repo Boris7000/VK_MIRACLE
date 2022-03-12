@@ -1,6 +1,6 @@
 package com.vkontakte.miracle.adapter.login;
 
-import static com.vkontakte.miracle.engine.util.StorageUtil.loadBitmap;
+import static com.vkontakte.miracle.engine.util.UserDataUtil.removeUserData;
 import static com.vkontakte.miracle.network.Constants.fake_receipt;
 
 import android.view.LayoutInflater;
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.dialog.login.AccountDialog;
+import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.login.AuthState;
 import com.vkontakte.miracle.login.LoginActivity;
 import com.vkontakte.miracle.login.RegisterDevice;
@@ -64,6 +65,7 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.UserVi
             itemView.setOnLongClickListener(view -> {
                 AccountDialog accountDialog = new AccountDialog(view.getContext(),profileItem);
                 accountDialog.setDialogActionListener(() -> {
+                    removeUserData(profileItem);
                     int pos = accounts.indexOf(profileItem);
                     accounts.remove(pos);
                     notifyItemRemoved(pos);
@@ -95,7 +97,8 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.UserVi
         public void bind(int position){
             profileItem = accounts.get(position);
             name.setText(profileItem.getFirstName());
-            imageView.setImageBitmap(loadBitmap(profileItem.getId()+"_200.png", loginActivity));
+            StorageUtil storageUtil = StorageUtil.get();
+            imageView.setImageBitmap(storageUtil.loadBitmap("profileImage200.png",storageUtil.getUserCachesDir(profileItem)));
         }
     }
 
