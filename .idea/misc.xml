@@ -219,6 +219,7 @@
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/audio_placeholder_image_mono_translucent_small.xml" value="0.2712962962962963" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/audio_placeholder_image_small.xml" value="0.2712962962962963" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/message_item_out_bg.xml" value="0.2712962962962963" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/navigation_bar_bg_land.xml" value="0.28102564102564104" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/rounded_button_bg_white.xml" value="0.2712962962962963" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/rounded_button_bg_white_with_stroke.xml" value="0.2712962962962963" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/rounded_card_child_white.xml" value="0.28102564102564104" />
@@ -226,6 +227,7 @@
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/splash_screen_animated_vector_night.xml" value="0.26296296296296295" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/splash_screen_vector.xml" value="0.75" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/splash_screen_vector_night.xml" value="0.5" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout-land/activity_main.xml" value="0.1" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout-land/fragment_player.xml" value="0.1" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout-land/view_playlist_item_large.xml" value="0.25" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout-night-v31/fragment_settings_color_scheme.xml" value="0.20471014492753623" />
