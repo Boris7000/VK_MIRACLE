@@ -49,11 +49,8 @@ public class PhotoAlbumViewHolder extends MiracleViewHolder {
 
         itemView.setOnClickListener(view -> {
             FragmentPhotoAlbum fragmentPhotoAlbum = new FragmentPhotoAlbum();
-            LargeDataStorage largeDataStorage = getMiracleApp().getLargeDataStorage();
-            String key = largeDataStorage.createUniqueKey();
-            largeDataStorage.storeLargeData(photoAlbumItem,key);
             Bundle bundle = new Bundle();
-            bundle.putString("photoAlbumItem", key);
+            bundle.putString("photoAlbumItem", LargeDataStorage.get().storeLargeData(photoAlbumItem));
             fragmentPhotoAlbum.setArguments(bundle);
             getMiracleActivity().addFragment(fragmentPhotoAlbum);
         });

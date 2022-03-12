@@ -49,8 +49,7 @@ public class FragmentGroup  extends SimpleMiracleFragment {
         if(savedInstanceState!=null&&!savedInstanceState.isEmpty()){
             String key = savedInstanceState.getString("groupItem");
             if(key!=null){
-                LargeDataStorage largeDataStorage = miracleApp.getLargeDataStorage();
-                groupItem = (GroupItem) largeDataStorage.getLargeData(key);
+                groupItem = (GroupItem) LargeDataStorage.get().getLargeData(key);
                 savedInstanceState.remove("groupItem");
             }
         }
@@ -71,10 +70,7 @@ public class FragmentGroup  extends SimpleMiracleFragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
 
         if(groupItem !=null){
-            LargeDataStorage largeDataStorage = miracleApp.getLargeDataStorage();
-            String key = largeDataStorage.createUniqueKey();
-            largeDataStorage.storeLargeData(groupItem,key);
-            outState.putString("groupItem", key);
+            outState.putString("groupItem", LargeDataStorage.get().storeLargeData(groupItem));
         }
 
         super.onSaveInstanceState(outState);

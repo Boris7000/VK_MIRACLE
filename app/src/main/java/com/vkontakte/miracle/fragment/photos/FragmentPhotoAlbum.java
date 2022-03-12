@@ -46,8 +46,7 @@ public class FragmentPhotoAlbum extends SimpleMiracleFragment {
         if(savedInstanceState!=null&&!savedInstanceState.isEmpty()){
             String key = savedInstanceState.getString("photoAlbumItem");
             if(key!=null){
-                LargeDataStorage largeDataStorage = miracleApp.getLargeDataStorage();
-                photoAlbumItem = (PhotoAlbumItem) largeDataStorage.getLargeData(key);
+                photoAlbumItem = (PhotoAlbumItem) LargeDataStorage.get().getLargeData(key);
                 savedInstanceState.remove("photoAlbumItem");
             }
         } else {
@@ -55,8 +54,7 @@ public class FragmentPhotoAlbum extends SimpleMiracleFragment {
             if(arguments!=null&&!arguments.isEmpty()){
                 String key = arguments.getString("photoAlbumItem");
                 if(key!=null){
-                    LargeDataStorage largeDataStorage = miracleApp.getLargeDataStorage();
-                    photoAlbumItem = (PhotoAlbumItem) largeDataStorage.getLargeData(key);
+                    photoAlbumItem = (PhotoAlbumItem) LargeDataStorage.get().getLargeData(key);
                     arguments.remove("photoAlbumItem");
                 }
             }
@@ -76,10 +74,7 @@ public class FragmentPhotoAlbum extends SimpleMiracleFragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         if(photoAlbumItem!=null){
-            LargeDataStorage largeDataStorage = miracleApp.getLargeDataStorage();
-            String key = largeDataStorage.createUniqueKey();
-            largeDataStorage.storeLargeData(photoAlbumItem,key);
-            outState.putString("photoAlbumItem", key);
+            outState.putString("photoAlbumItem", LargeDataStorage.get().storeLargeData(photoAlbumItem));
         }
         super.onSaveInstanceState(outState);
     }

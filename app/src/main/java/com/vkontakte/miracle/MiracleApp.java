@@ -1,39 +1,45 @@
 package com.vkontakte.miracle;
 
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
+
 import android.app.Application;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.vkontakte.miracle.engine.util.LargeDataStorage;
 import com.vkontakte.miracle.engine.util.SettingsUtil;
+import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.engine.util.UIUtil;
 import com.vkontakte.miracle.longpoll.LongPollServiceController;
 import com.vkontakte.miracle.player.PlayerServiceController;
 
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
-
 public class MiracleApp extends Application {
 
     private FirebaseApp firebaseApp;
-    private LargeDataStorage largeDataStorage;
-    private SettingsUtil settingsUtil;
-    private PlayerServiceController playerServiceController;
-    private LongPollServiceController longPollServiceController;
     private boolean nightMode;
     private int themeRecourseId;
+    private static MiracleApp instance;
 
     @Override
     public void onCreate() {
 
+        instance = this;
+
         iniFirebaseApp();
 
-        largeDataStorage = new LargeDataStorage();
+        StorageUtil.getInstance();
 
-        settingsUtil = new SettingsUtil(this);
+        SettingsUtil settingsUtil = SettingsUtil.getInstance();
+
+        LargeDataStorage.getInstance();
 
         int currentNightMode = settingsUtil.nightMode();
 
@@ -44,9 +50,23 @@ public class MiracleApp extends Application {
         themeRecourseId = UIUtil.getThemeRecourseId(settingsUtil.themeId());
         setTheme(themeRecourseId);
 
-        playerServiceController = new PlayerServiceController(this);
+        PlayerServiceController.getInstance();
 
-        longPollServiceController = new LongPollServiceController(this);
+        LongPollServiceController.getInstance();
+
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(new DefaultLifecycleObserver(){
+            @Override
+            public void onResume(@NonNull LifecycleOwner owner) {
+                if(settingsUtil.authorized()) {
+                    LongPollServiceController.get().startExecuting();
+                }
+            }
+
+            @Override
+            public void onPause(@NonNull LifecycleOwner owner) {
+                LongPollServiceController.get().actionStop();
+            }
+        });
 
         super.onCreate();
     }
@@ -74,32 +94,27 @@ public class MiracleApp extends Application {
     public void changeNightMode(boolean nightMode){
         if(this.nightMode !=nightMode) {
             int MODE_NIGHT = nightMode?MODE_NIGHT_YES:MODE_NIGHT_NO;
-            settingsUtil.storeNightMode(MODE_NIGHT);
+            SettingsUtil.get().storeNightMode(MODE_NIGHT);
             this.nightMode = nightMode;
             AppCompatDelegate.setDefaultNightMode(MODE_NIGHT);
         }
     }
-
-    public SettingsUtil getSettingsUtil() {
-        return settingsUtil;
-    }
-
-    public LargeDataStorage getLargeDataStorage(){ return largeDataStorage; }
 
     public int getThemeRecourseId() {
         return themeRecourseId;
     }
 
     public void updateThemeRecourseId(int themeId){
+        SettingsUtil.get().storeThemeId(themeId);
         themeRecourseId = UIUtil.getThemeRecourseId(themeId);
         setTheme(themeRecourseId);
     }
 
-    public PlayerServiceController getPlayerServiceController(){
-        return playerServiceController;
+    public static MiracleApp getInstance(){
+        if (null == instance){
+            instance = new MiracleApp();
+        }
+        return instance;
     }
 
-    public LongPollServiceController getLongPollServiceController() {
-        return longPollServiceController;
-    }
 }

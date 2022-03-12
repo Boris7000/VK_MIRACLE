@@ -49,8 +49,7 @@ public class FragmentProfile extends SimpleMiracleFragment {
         if(savedInstanceState!=null&&!savedInstanceState.isEmpty()){
             String key = savedInstanceState.getString("profileItem");
             if(key!=null){
-                LargeDataStorage largeDataStorage = miracleApp.getLargeDataStorage();
-                profileItem = (ProfileItem) largeDataStorage.getLargeData(key);
+                profileItem = (ProfileItem) LargeDataStorage.get().getLargeData(key);
                 savedInstanceState.remove("profileItem");
             }
         }
@@ -71,10 +70,7 @@ public class FragmentProfile extends SimpleMiracleFragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
 
         if(profileItem !=null){
-            LargeDataStorage largeDataStorage = miracleApp.getLargeDataStorage();
-            String key = largeDataStorage.createUniqueKey();
-            largeDataStorage.storeLargeData(profileItem,key);
-            outState.putString("profileItem", key);
+            outState.putString("profileItem", LargeDataStorage.get().storeLargeData(profileItem));
         }
 
         super.onSaveInstanceState(outState);

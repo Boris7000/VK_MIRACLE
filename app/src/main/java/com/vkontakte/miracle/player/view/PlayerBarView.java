@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.squareup.picasso.Picasso;
-import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.util.DimensionsUtil;
 import com.vkontakte.miracle.model.audio.AudioItem;
@@ -23,9 +22,11 @@ import com.vkontakte.miracle.model.audio.fields.Album;
 import com.vkontakte.miracle.model.audio.fields.Photo;
 import com.vkontakte.miracle.player.AudioPlayerData;
 import com.vkontakte.miracle.player.OnPlayerEventListener;
+import com.vkontakte.miracle.player.PlayerServiceController;
 
 public class PlayerBarView extends FrameLayout {
 
+    private final PlayerServiceController playerServiceController = PlayerServiceController.get();
     private TextView title;
     private TextView subtitle;
     private ImageView image;
@@ -34,7 +35,6 @@ public class PlayerBarView extends FrameLayout {
     private Bitmap placeholderImage;
     private String previousImageUrl = " ";
     private ImageView pausePlayButton;
-    private final MiracleApp miracleApp;
     private final OnPlayerEventListener onPlayerEventListener = new OnPlayerEventListener() {
         @Override
         public void onBufferChange(AudioPlayerData playerData) {
@@ -62,8 +62,8 @@ public class PlayerBarView extends FrameLayout {
                     pause_drawable_28:play_drawable_28);
 
             pausePlayButton.setOnClickListener(playerData.getPlayWhenReady()?
-                    view -> miracleApp.getPlayerServiceController().actionPause() :
-                    view -> miracleApp.getPlayerServiceController().actionResume());
+                    view -> playerServiceController.actionPause() :
+                    view -> playerServiceController.actionResume());
         }
 
         @Override
@@ -89,7 +89,6 @@ public class PlayerBarView extends FrameLayout {
         super(context, attrs, defStyleAttr);
         pause_drawable_28 = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_pause_28,null);
         play_drawable_28 = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_play_28,null);
-        miracleApp = (MiracleApp)getContext().getApplicationContext();
     }
 
 
@@ -125,14 +124,14 @@ public class PlayerBarView extends FrameLayout {
         ImageView previousButton = findViewById(R.id.previousButton);
         pausePlayButton = findViewById(R.id.playButton);
         ImageView nextButton = findViewById(R.id.nextButton);
-        previousButton.setOnClickListener(view -> miracleApp.getPlayerServiceController().actionPrevious());
-        nextButton.setOnClickListener(view -> miracleApp.getPlayerServiceController().actionNext());
-        miracleApp.getPlayerServiceController().addOnPlayerEventListener(onPlayerEventListener);
+        previousButton.setOnClickListener(view -> playerServiceController.actionPrevious());
+        nextButton.setOnClickListener(view -> playerServiceController.actionNext());
+        playerServiceController.addOnPlayerEventListener(onPlayerEventListener);
     }
 
     @Override
     protected void onDetachedFromWindow() {
-        miracleApp.getPlayerServiceController().removeOnPlayerEventListener(onPlayerEventListener);
+        playerServiceController.removeOnPlayerEventListener(onPlayerEventListener);
         super.onDetachedFromWindow();
     }
 }

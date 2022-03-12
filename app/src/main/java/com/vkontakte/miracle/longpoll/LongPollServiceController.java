@@ -23,7 +23,6 @@ import java.util.ArrayList;
 
 public class LongPollServiceController {
 
-    private final MiracleApp miracleApp;
     private LongPollService longPollService;
     private final OnNewUpdatesListener onNewUpdatesListener = new OnNewUpdatesListener() {
         @Override
@@ -64,12 +63,19 @@ public class LongPollServiceController {
         return onNewUpdatesListener;
     }
 
-    public LongPollServiceController(MiracleApp miracleApp){
-        this.miracleApp = miracleApp;
+    private static LongPollServiceController instance;
+
+    public LongPollServiceController(){
+        instance = this;
+    }
+
+    public static LongPollServiceController getInstance(){
+        return new LongPollServiceController();
     }
 
     public void startExecuting(){
         if (longPollService==null||longPollService.isDestroyed()) {
+            MiracleApp miracleApp = MiracleApp.getInstance();
             Intent intent = new Intent(miracleApp, LongPollService.class);
             //Check is service is active
             miracleApp.startService(intent);
@@ -136,5 +142,11 @@ public class LongPollServiceController {
         onMessageReadUpdateListeners.remove(onMessageReadUpdateListener);
     }
 
+    public static LongPollServiceController get(){
+        if (null == instance){
+            instance = LongPollServiceController.getInstance();
+        }
+        return instance;
+    }
 
 }

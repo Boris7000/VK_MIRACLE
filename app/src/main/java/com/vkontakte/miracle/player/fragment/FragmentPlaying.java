@@ -18,6 +18,7 @@ import com.vkontakte.miracle.engine.fragment.tabs.NestedMiracleFragment;
 import com.vkontakte.miracle.engine.fragment.tabs.NestedMiracleFragmentFabric;
 import com.vkontakte.miracle.player.AudioPlayerData;
 import com.vkontakte.miracle.player.OnPlayerEventListener;
+import com.vkontakte.miracle.player.PlayerServiceController;
 
 public class FragmentPlaying extends NestedMiracleFragment {
     private View rootView;
@@ -82,15 +83,14 @@ public class FragmentPlaying extends NestedMiracleFragment {
     @Override
     public void onDestroy() {
         miracleActivity.removeOnApplyWindowInsetsListener(onApplyWindowInsetsListener);
-        getMiracleApp().getPlayerServiceController().removeOnPlayerEventListener(onPlayerEventListener);
+        PlayerServiceController.get().removeOnPlayerEventListener(onPlayerEventListener);
         super.onDestroy();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getMiracleApp().getPlayerServiceController().
-                addOnPlayerEventListener(onPlayerEventListener);
+        PlayerServiceController.get().addOnPlayerEventListener(onPlayerEventListener);
     }
 
     public static class Fabric extends NestedMiracleFragmentFabric {

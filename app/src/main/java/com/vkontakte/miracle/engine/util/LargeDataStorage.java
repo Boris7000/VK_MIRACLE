@@ -7,8 +7,23 @@ import java.util.concurrent.ThreadLocalRandom;
 public class LargeDataStorage {
 
     private final ArrayMap<String,Object> sparseArray = new ArrayMap<>();
+    private static LargeDataStorage instance;
+
+    public LargeDataStorage(){
+        instance = this;
+    }
+
+    public static LargeDataStorage getInstance(){
+        return new LargeDataStorage();
+    }
 
     public String storeLargeData(Object data, String key){
+        sparseArray.put(key,data);
+        return key;
+    }
+
+    public String storeLargeData(Object data){
+        String key = createUniqueKey();
         sparseArray.put(key,data);
         return key;
     }
@@ -30,4 +45,12 @@ public class LargeDataStorage {
         if(sparseArray.get(key1)==null) return key1;
         else return createUniqueKey();
     }
+
+    public static LargeDataStorage get(){
+        if (null == instance){
+            instance = LargeDataStorage.getInstance();
+        }
+        return instance;
+    }
+
 }

@@ -49,6 +49,7 @@ import com.vkontakte.miracle.engine.async.ExecutorConveyor;
 import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
 import com.vkontakte.miracle.engine.util.LargeDataStorage;
 import com.vkontakte.miracle.engine.util.TimeUtil;
+import com.vkontakte.miracle.longpoll.LongPollServiceController;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageTypingUpdateListener;
 import com.vkontakte.miracle.longpoll.listeners.OnUserOnlineUpdateListener;
 import com.vkontakte.miracle.longpoll.model.MessageTypingUpdate;
@@ -143,8 +144,7 @@ public class FragmentChat extends SimpleMiracleFragment {
         if(savedInstanceState!=null&&!savedInstanceState.isEmpty()){
             String key = savedInstanceState.getString("conversationItem");
             if(key!=null){
-                LargeDataStorage largeDataStorage = miracleApp.getLargeDataStorage();
-                conversationItem = (ConversationItem) largeDataStorage.getLargeData(key);
+                conversationItem = (ConversationItem) LargeDataStorage.get().getLargeData(key);
                 savedInstanceState.remove("conversationItem");
             }
         }
@@ -269,7 +269,8 @@ public class FragmentChat extends SimpleMiracleFragment {
             }
 
         };
-        miracleApp.getLongPollServiceController().addOnMessageTypingListener(onMessageTypingUpdateListener);
+
+        LongPollServiceController.get().addOnMessageTypingListener(onMessageTypingUpdateListener);
 
         return rootView;
     }
@@ -546,7 +547,7 @@ public class FragmentChat extends SimpleMiracleFragment {
                 }
             }
         };
-        miracleApp.getLongPollServiceController().addOnUserOnlineListener(onUserOnlineUpdateListener);
+        LongPollServiceController.get().addOnUserOnlineListener(onUserOnlineUpdateListener);
 
     }
 
@@ -667,9 +668,10 @@ public class FragmentChat extends SimpleMiracleFragment {
     @Override
     public void onDestroy() {
         miracleActivity.showNavigationBars();
-        miracleApp.getLongPollServiceController().removeOnMessageTypingListener(onMessageTypingUpdateListener);
+        LongPollServiceController longPollServiceController = LongPollServiceController.get();
+        longPollServiceController.removeOnMessageTypingListener(onMessageTypingUpdateListener);
         if(onUserOnlineUpdateListener!=null){
-            miracleApp.getLongPollServiceController().removeOnUserOnlineListener(onUserOnlineUpdateListener);
+            longPollServiceController.removeOnUserOnlineListener(onUserOnlineUpdateListener);
         }
         if(executor!=null){
             executor.cancel();
@@ -681,10 +683,7 @@ public class FragmentChat extends SimpleMiracleFragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         if(conversationItem !=null){
-            LargeDataStorage largeDataStorage = miracleApp.getLargeDataStorage();
-            String key = largeDataStorage.createUniqueKey();
-            largeDataStorage.storeLargeData(conversationItem,key);
-            outState.putString("conversationItem", key);
+            outState.putString("conversationItem", LargeDataStorage.get().storeLargeData(conversationItem));
         }
 
         super.onSaveInstanceState(outState);

@@ -30,10 +30,14 @@ import com.vkontakte.miracle.engine.fragment.MiracleFragment;
 import com.vkontakte.miracle.engine.fragment.tabs.NestedMiracleFragmentFabric;
 import com.vkontakte.miracle.engine.fragment.tabs.TabsAdapter;
 import com.vkontakte.miracle.engine.util.DimensionsUtil;
+import com.vkontakte.miracle.engine.util.LargeDataStorage;
+import com.vkontakte.miracle.engine.util.SettingsUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.engine.view.ActivityRootView;
 import com.vkontakte.miracle.engine.view.bottomNavigation.MiracleBottomNavigationMenu;
 import com.vkontakte.miracle.engine.view.fragmentContainer.FragmentContainer;
+import com.vkontakte.miracle.longpoll.LongPollServiceController;
+import com.vkontakte.miracle.player.PlayerServiceController;
 import com.vkontakte.miracle.player.fragment.FragmentPlayer;
 import com.vkontakte.miracle.fragment.base.*;
 import com.vkontakte.miracle.player.fragment.FragmentPlaying;
@@ -97,6 +101,8 @@ public class MiracleActivity extends AppCompatActivity {
     private WindowInsetsCompat windowInsets;
     private boolean showingPlayer = false;
 
+    private final PlayerServiceController playerServiceController = PlayerServiceController.get();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -112,15 +118,16 @@ public class MiracleActivity extends AppCompatActivity {
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
-        ArrayList<ProfileItem> profileItems = StorageUtil.loadUsers(miracleApp);
+        StorageUtil storageUtil = StorageUtil.get();
+        ArrayList<ProfileItem> profileItems = storageUtil.loadUsers();
         if(profileItems.isEmpty()) {
-            miracleApp.getSettingsUtil().storeAuthorized(false);
+            SettingsUtil.get().storeAuthorized(false);
             Intent intent = new Intent(miracleApp, LoginActivity.class);
             startActivity(intent);
             this.finish();
             return;
         } else {
-            userItem = StorageUtil.loadUsers(miracleApp).get(0);
+            userItem = storageUtil.currentUser();
         }
 
         setContentView(R.layout.activity_main);
@@ -136,8 +143,6 @@ public class MiracleActivity extends AppCompatActivity {
         iniPlayerThings(savedInstanceState);
 
         iniFragmentController(savedInstanceState);
-
-        miracleApp.getLongPollServiceController().startExecuting();
     }
 
     private void iniWindowInsets(){
@@ -231,7 +236,7 @@ public class MiracleActivity extends AppCompatActivity {
             if(!savedInstanceState.isEmpty()){
                 String key = savedInstanceState.getString("ControllerSavedData","");
                 FragmentContainer.ControllerSavedData controllerSavedData =
-                        (FragmentContainer.ControllerSavedData) miracleApp.getLargeDataStorage().getLargeData(key);
+                        (FragmentContainer.ControllerSavedData) LargeDataStorage.get().getLargeData(key);
 
                 fragmentContainer.setController(new FragmentContainer.TabsFragmentController(getSupportFragmentManager(),controllerSavedData,savedInstanceState));
                 bottomNavigationMenu.setupWithFragmentContainer(fragmentContainer);
@@ -403,9 +408,7 @@ public class MiracleActivity extends AppCompatActivity {
 
         FragmentContainer.ControllerSavedData controllerSavedData = fragmentContainer.saveState(outState);
         if(controllerSavedData!=null){
-            outState.putString("ControllerSavedData",
-                    miracleApp.getLargeDataStorage().storeLargeData(controllerSavedData,
-                            miracleApp.getLargeDataStorage().createUniqueKey()));
+            outState.putString("ControllerSavedData", LargeDataStorage.get().storeLargeData(controllerSavedData));
         }
 
         super.onSaveInstanceState(outState);
@@ -529,12 +532,12 @@ public class MiracleActivity extends AppCompatActivity {
             }
         }
 
-        miracleApp.getPlayerServiceController().addOnPlayerEventListener(onPlayerEventListener);
+        playerServiceController.addOnPlayerEventListener(onPlayerEventListener);
     }
 
     @Override
     protected void onDestroy() {
-        miracleApp.getPlayerServiceController().removeOnPlayerEventListener(onPlayerEventListener);
+        playerServiceController.removeOnPlayerEventListener(onPlayerEventListener);
         super.onDestroy();
     }
 
@@ -547,16 +550,10 @@ public class MiracleActivity extends AppCompatActivity {
         intent.removeExtra("PlayerBottomSheetExpanded");
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        miracleApp.getLongPollServiceController().startExecuting();
-    }
-
     public void exitFromAccount(){
-        miracleApp.getPlayerServiceController().actionStop();
-        miracleApp.getLongPollServiceController().actionStop();
-        miracleApp.getSettingsUtil().storeAuthorized(false);//сброс индекса текущего пользователя
+        LongPollServiceController.get().actionStop();
+        playerServiceController.actionStop();
+        SettingsUtil.get().storeAuthorized(false);//сброс индекса текущего пользователя
         new UnregisterDevice(userItem.getAccessToken(),miracleApp).start();
         Intent intent = new Intent(miracleApp, LoginActivity.class);
         startActivity(intent);

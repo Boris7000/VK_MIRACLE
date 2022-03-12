@@ -8,15 +8,22 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 import static com.vkontakte.miracle.engine.util.UIUtil.THEME_BLUE;
 
 import com.google.android.exoplayer2.Player;
+import com.vkontakte.miracle.MiracleApp;
 
 
 public class SettingsUtil {
 
     private final SharedPreferences preferences;
+    private static SettingsUtil instance;
 
-    public SettingsUtil(Context context) {
+    public SettingsUtil(Context context){
+        instance = this;
         String STORAGE = "com.example.vk_air.music.STORAGE";
         preferences =context.getSharedPreferences(STORAGE,MODE_PRIVATE);
+    }
+
+    public static SettingsUtil getInstance(){
+        return new SettingsUtil(MiracleApp.getInstance());
     }
 
     public void storeNightMode(int nightMode){
@@ -57,6 +64,13 @@ public class SettingsUtil {
 
     public int playerChangeWallpapers(){
         return preferences.getInt("playerChangeWallpapers", 0);
+    }
+
+    public static SettingsUtil get(){
+        if (null == instance){
+            instance = SettingsUtil.getInstance();
+        }
+        return instance;
     }
 
 }

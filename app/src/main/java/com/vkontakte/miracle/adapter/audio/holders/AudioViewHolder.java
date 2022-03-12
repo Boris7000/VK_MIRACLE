@@ -16,6 +16,7 @@ import com.vkontakte.miracle.engine.util.FragmentUtil;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.view.AudioItemView;
 import com.vkontakte.miracle.player.AudioPlayerData;
+import com.vkontakte.miracle.player.PlayerServiceController;
 
 public class AudioViewHolder extends MiracleViewHolder {
 
@@ -34,7 +35,7 @@ public class AudioViewHolder extends MiracleViewHolder {
         audioItemView.setValues(audioItem);
 
         if(audioItem.isLicensed()) {
-            audioItemView.setOnClickListener(view -> getMiracleApp().getPlayerServiceController().
+            audioItemView.setOnClickListener(view -> PlayerServiceController.get().
                     playNewAudio(new AudioPlayerData(itemDataHolder)));
         } else {
             audioItemView.setOnClickListener(null);
@@ -56,8 +57,7 @@ public class AudioViewHolder extends MiracleViewHolder {
 
                 @Override
                 public void playNext() {
-                    getMiracleApp().getPlayerServiceController().
-                            setPlayNext(new AudioPlayerData(itemDataHolder));
+                    PlayerServiceController.get().setPlayNext(new AudioPlayerData(itemDataHolder));
                 }
 
                 @Override

@@ -25,6 +25,7 @@ import com.vkontakte.miracle.engine.util.FragmentUtil;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.model.audio.fields.Photo;
 import com.vkontakte.miracle.model.users.ProfileItem;
+import com.vkontakte.miracle.player.PlayerServiceController;
 
 public class PlaylistHorizontalViewHolder extends MiracleViewHolder {
 
@@ -123,7 +124,7 @@ public class PlaylistHorizontalViewHolder extends MiracleViewHolder {
 
                 @Override
                 public void playNext() {
-                    getMiracleApp().getPlayerServiceController().loadAndSetPlayNext(playlistItem);
+                    PlayerServiceController.get().loadAndSetPlayNext(playlistItem);
                 }
 
                 @Override

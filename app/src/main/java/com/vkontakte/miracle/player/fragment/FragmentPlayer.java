@@ -48,11 +48,14 @@ import com.vkontakte.miracle.model.audio.fields.Album;
 import com.vkontakte.miracle.model.audio.fields.Photo;
 import com.vkontakte.miracle.player.AudioPlayerData;
 import com.vkontakte.miracle.player.OnPlayerEventListener;
+import com.vkontakte.miracle.player.PlayerServiceController;
 
 import java.util.Locale;
 
 public class FragmentPlayer extends NestedMiracleFragment {
 
+
+    private final PlayerServiceController playerServiceController = PlayerServiceController.get();
     private int color;
     private String previousImageUrl = " ";
 
@@ -169,8 +172,7 @@ public class FragmentPlayer extends NestedMiracleFragment {
 
                     @Override
                     public void playNext() {
-                        getMiracleApp().getPlayerServiceController().
-                                setPlayNext(new AudioPlayerData(playerData.getCurrentItem()));
+                        playerServiceController.setPlayNext(new AudioPlayerData(playerData.getCurrentItem()));
                     }
 
                     @Override
@@ -200,8 +202,8 @@ public class FragmentPlayer extends NestedMiracleFragment {
                     pause_drawable_48:play_drawable_48);
 
             pausePlayButton.setOnClickListener(playerData.getPlayWhenReady()?
-                    view -> miracleApp.getPlayerServiceController().actionPause() :
-                    view -> miracleApp.getPlayerServiceController().actionResume());
+                    view -> playerServiceController.actionPause() :
+                    view -> playerServiceController.actionResume());
         }
 
         @Override
@@ -229,7 +231,7 @@ public class FragmentPlayer extends NestedMiracleFragment {
         miracleApp = getMiracleApp();
         rootView = inflater.inflate(R.layout.fragment_player, container, false);
 
-        SettingsUtil settingsUtil = miracleApp.getSettingsUtil();
+        SettingsUtil settingsUtil = SettingsUtil.get();
 
         pause_drawable_48 = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_pause_48,null);
         play_drawable_48 = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_play_48,null);
@@ -254,8 +256,8 @@ public class FragmentPlayer extends NestedMiracleFragment {
 
         miracleActivity.addOnApplyWindowInsetsListener(onApplyWindowInsetsListener);
 
-        previousButton.setOnClickListener(view -> miracleApp.getPlayerServiceController().actionPrevious());
-        nextButton.setOnClickListener(view -> miracleApp.getPlayerServiceController().actionNext());
+        previousButton.setOnClickListener(view -> playerServiceController.actionPrevious());
+        nextButton.setOnClickListener(view -> playerServiceController.actionNext());
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -268,8 +270,7 @@ public class FragmentPlayer extends NestedMiracleFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                miracleApp.getPlayerServiceController()
-                        .actionSeekToPercent(((float)seekBar.getProgress())/1000f);
+                playerServiceController.actionSeekToPercent(((float)seekBar.getProgress())/1000f);
                 seekBarDragging=false;
             }
         });
@@ -279,15 +280,15 @@ public class FragmentPlayer extends NestedMiracleFragment {
         repeatButton.setOnClickListener(view -> {
             switch (settingsUtil.playerRepeatMode()){
                 case Player.REPEAT_MODE_OFF:{
-                    miracleApp.getPlayerServiceController().actionChangeRepeatMode(Player.REPEAT_MODE_ONE);
+                    playerServiceController.actionChangeRepeatMode(Player.REPEAT_MODE_ONE);
                     break;
                 }
                 case Player.REPEAT_MODE_ONE:{
-                    miracleApp.getPlayerServiceController().actionChangeRepeatMode(Player.REPEAT_MODE_ALL);
+                    playerServiceController.actionChangeRepeatMode(Player.REPEAT_MODE_ALL);
                     break;
                 }
                 case Player.REPEAT_MODE_ALL:{
-                    miracleApp.getPlayerServiceController().actionChangeRepeatMode(Player.REPEAT_MODE_OFF);
+                    playerServiceController.actionChangeRepeatMode(Player.REPEAT_MODE_OFF);
                     break;
                 }
             }
@@ -297,9 +298,9 @@ public class FragmentPlayer extends NestedMiracleFragment {
 
         applyColor(color = ColorUtils.HSLToColor(new float[]{0,0,0.13f}));
 
-        getMiracleApp().getPlayerServiceController().addOnPlayerEventListener(onPlayerEventListener);
+        playerServiceController.addOnPlayerEventListener(onPlayerEventListener);
 
-       return rootView;
+        return rootView;
     }
 
     private void animateToColor(int toColor) {
@@ -367,7 +368,7 @@ public class FragmentPlayer extends NestedMiracleFragment {
     @Override
     public void onDestroy() {
         miracleActivity.removeOnApplyWindowInsetsListener(onApplyWindowInsetsListener);
-        getMiracleApp().getPlayerServiceController().removeOnPlayerEventListener(onPlayerEventListener);
+        playerServiceController.removeOnPlayerEventListener(onPlayerEventListener);
         super.onDestroy();
     }
 

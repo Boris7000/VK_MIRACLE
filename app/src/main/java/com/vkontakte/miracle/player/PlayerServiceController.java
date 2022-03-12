@@ -27,7 +27,6 @@ import retrofit2.Response;
 
 public class PlayerServiceController {
 
-    private final MiracleApp miracleApp;
     private AudioPlayerService audioPLayerService;
     private AudioPlayerData playerData;
     private final ArrayList<OnPlayerEventListener> onPlayerEventListeners = new ArrayList<>();
@@ -83,8 +82,14 @@ public class PlayerServiceController {
         }
     };
 
-    public PlayerServiceController(MiracleApp miracleApp){
-        this.miracleApp = miracleApp;
+    private static PlayerServiceController instance;
+
+    public PlayerServiceController(){
+        instance = this;
+    }
+
+    public static PlayerServiceController getInstance(){
+        return new PlayerServiceController();
     }
 
     public void addOnPlayerEventListener(OnPlayerEventListener onPlayerEventListener){
@@ -107,6 +112,9 @@ public class PlayerServiceController {
     }
 
     private void startAndPlay(AudioPlayerData audioPlayerData){
+
+        MiracleApp miracleApp = MiracleApp.getInstance();
+
         Intent playerIntent = new Intent(miracleApp, AudioPlayerService.class);
 
         //Check is service is active
@@ -173,7 +181,7 @@ public class PlayerServiceController {
             public AudioPlayerData inBackground() {
                 try {
                     PlaylistItem playlistItem1 = new PlaylistItem(audioPlayerData.getPlaylistItem());
-                    loadAudios(playlistItem1);
+                    loadAudiosToPlaylist(playlistItem1);
                     return new AudioPlayerData(playlistItem1.getItems().get(audioPlayerData.getCurrentItemIndex()));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -195,7 +203,7 @@ public class PlayerServiceController {
             public AudioPlayerData inBackground() {
                 try {
                     PlaylistItem playlistItem1 = new PlaylistItem(audioPlayerData.getPlaylistItem());
-                    loadAudios(playlistItem1);
+                    loadAudiosToPlaylist(playlistItem1);
                     return new AudioPlayerData(playlistItem1.getItems().get(audioPlayerData.getCurrentItemIndex()));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -218,7 +226,7 @@ public class PlayerServiceController {
                 public AudioPlayerData inBackground() {
                     try {
                         PlaylistItem playlistItem1 = new PlaylistItem(playlistItem);
-                        loadAudios(playlistItem1);
+                        loadAudiosToPlaylist(playlistItem1);
                         return new AudioPlayerData(playlistItem1.getItems().get(0));
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -243,7 +251,7 @@ public class PlayerServiceController {
                 public AudioPlayerData inBackground() {
                     try {
                         PlaylistItem playlistItem1 = new PlaylistItem(playlistItem);
-                        loadAudios(playlistItem1);
+                        loadAudiosToPlaylist(playlistItem1);
                         return new AudioPlayerData(playlistItem1.getItems().get(0));
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -261,9 +269,8 @@ public class PlayerServiceController {
         }
     }
 
-    private ArrayList<ItemDataHolder> loadAudios(PlaylistItem playlistItem) throws Exception{
-
-        ProfileItem profileItem = StorageUtil.loadUsers(miracleApp).get(0);
+    private void loadAudiosToPlaylist(PlaylistItem playlistItem) throws Exception{
+        ProfileItem profileItem = StorageUtil.get().currentUser();
         Response<JSONObject> response = Execute.getPlaylist(playlistItem.getOwnerId(),
                 playlistItem.getId(), false, playlistItem.getItems().size(),
                 Math.min(25,playlistItem.getCount()), playlistItem.getAccessKey(),
@@ -280,7 +287,6 @@ public class PlayerServiceController {
             audioItems.add(audioItem);
         }
         playlistItem.getItems().addAll(audioItems);
-        return audioItems;
     }
 
     public void actionPrevious(){
@@ -329,6 +335,13 @@ public class PlayerServiceController {
         if(audioPLayerService!=null){
             audioPLayerService.changeRepeatMode(repeatMode);
         }
+    }
+
+    public static PlayerServiceController get(){
+        if (null == instance){
+            instance = PlayerServiceController.getInstance();
+        }
+        return instance;
     }
 
 }

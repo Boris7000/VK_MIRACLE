@@ -15,16 +15,12 @@ public class StartActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        MiracleApp miracleApp = (MiracleApp) getApplication();
-
-        SettingsUtil settingsUtil = miracleApp.getSettingsUtil();
-
-        if(settingsUtil.authorized()) {
-            Intent intent = new Intent(miracleApp, MiracleActivity.class);
+        if(SettingsUtil.get().authorized()) {
+            Intent intent = new Intent(this, MiracleActivity.class);
             startActivity(intent);
             this.finish();
         } else {
-            Intent intent = new Intent(miracleApp, LoginActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             this.finish();
         }

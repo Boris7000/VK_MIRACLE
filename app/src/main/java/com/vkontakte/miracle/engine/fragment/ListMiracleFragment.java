@@ -185,7 +185,7 @@ public class ListMiracleFragment extends MiracleFragment{
         if(savedInstanceState!=null) {
             if (savedInstanceState.getString("adapter") != null) {
                 MiracleLoadableAdapter adapter = (MiracleLoadableAdapter)
-                        getMiracleApp().getLargeDataStorage().getLargeData(savedInstanceState.getString("adapter"));
+                        LargeDataStorage.get().getLargeData(savedInstanceState.getString("adapter"));
                 savedInstanceState.remove(savedInstanceState.getString("adapter"));
                 if (adapter != null) {
                     adapter.setDetached(true);
@@ -205,8 +205,7 @@ public class ListMiracleFragment extends MiracleFragment{
                 if (object instanceof MiracleLoadableAdapter) {
                     MiracleLoadableAdapter loadableAdapter = (MiracleLoadableAdapter) object;
                     if (loadableAdapter.hasData()) {
-                        LargeDataStorage largeDataStorage = getMiracleApp().getLargeDataStorage();
-                        outState.putString("adapter", largeDataStorage.storeLargeData(loadableAdapter, largeDataStorage.createUniqueKey()));
+                        outState.putString("adapter", LargeDataStorage.get().storeLargeData(loadableAdapter));
                     }
                 }
             }

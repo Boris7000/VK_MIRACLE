@@ -32,9 +32,7 @@ import com.vkontakte.miracle.engine.util.SettingsUtil;
 import com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioGroup;
 
 public class FragmentColorSchemeSettings extends SimpleMiracleFragment {
-    private View rootView;
     private MiracleActivity miracleActivity;
-    private MiracleApp miracleApp;
     private final ArrayMap<Integer, Integer> themes = new ArrayMap<>();
     private final ArrayMap<Integer, Integer> buttons = new ArrayMap<>();
 
@@ -78,10 +76,8 @@ public class FragmentColorSchemeSettings extends SimpleMiracleFragment {
         iniContext();
 
         miracleActivity = getMiracleActivity();
-        miracleApp = miracleActivity.getMiracleApp();
-        SettingsUtil settingsUtil = miracleApp.getSettingsUtil();
 
-        rootView = inflater.inflate(R.layout.fragment_settings_color_scheme, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_settings_color_scheme, container, false);
 
         setTopBar(rootView.findViewById(R.id.appbarLinear));
         setAppBarLayout(rootView.findViewById(R.id.appbar));
@@ -92,7 +88,7 @@ public class FragmentColorSchemeSettings extends SimpleMiracleFragment {
 
         MiracleRadioGroup radioGroup1 = rootView.findViewById(R.id.light_r);
 
-        Integer rbId = buttons.get(settingsUtil.themeId());
+        Integer rbId = buttons.get(SettingsUtil.get().themeId());
         if(rbId==null){
             rbId = R.id.rb_blue;
         }
@@ -104,8 +100,7 @@ public class FragmentColorSchemeSettings extends SimpleMiracleFragment {
             if (themeId == null) {
                 themeId = THEME_BLUE;
             }
-            miracleApp.getSettingsUtil().storeThemeId(themeId);
-            miracleApp.updateThemeRecourseId(themeId);
+            MiracleApp.getInstance().updateThemeRecourseId(themeId);
             miracleActivity.recreate();
         });
 

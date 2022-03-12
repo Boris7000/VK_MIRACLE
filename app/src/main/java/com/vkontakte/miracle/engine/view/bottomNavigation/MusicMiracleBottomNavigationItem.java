@@ -13,6 +13,7 @@ import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.player.AudioPlayerData;
 import com.vkontakte.miracle.player.OnPlayerEventListener;
+import com.vkontakte.miracle.player.PlayerServiceController;
 
 public class MusicMiracleBottomNavigationItem extends FrameLayout implements MiracleBottomNavigationItem {
 
@@ -71,7 +72,7 @@ public class MusicMiracleBottomNavigationItem extends FrameLayout implements Mir
         super.onFinishInflate();
         progressBar = findViewById(R.id.progressBar);
         simpleMiracleBottomNavigationItem = findViewById(R.id.icon);
-        miracleApp.getPlayerServiceController().addOnPlayerEventListener(onPlayerEventListener);
+        PlayerServiceController.get().addOnPlayerEventListener(onPlayerEventListener);
     }
 
     @Override
@@ -138,7 +139,7 @@ public class MusicMiracleBottomNavigationItem extends FrameLayout implements Mir
 
     @Override
     protected void onDetachedFromWindow() {
-        miracleApp.getPlayerServiceController().removeOnPlayerEventListener(onPlayerEventListener);
+        PlayerServiceController.get().removeOnPlayerEventListener(onPlayerEventListener);
         super.onDetachedFromWindow();
     }
 }

@@ -50,8 +50,7 @@ public class FragmentCatalogArtist extends SimpleMiracleFragment {
         if(savedInstanceState!=null&&!savedInstanceState.isEmpty()){
             String key = savedInstanceState.getString("artist");
             if(key!=null){
-                LargeDataStorage largeDataStorage = miracleApp.getLargeDataStorage();
-                artist = (Artist) largeDataStorage.getLargeData(key);
+                artist = (Artist) LargeDataStorage.get().getLargeData(key);
                 savedInstanceState.remove("artist");
             }
         }
@@ -70,10 +69,7 @@ public class FragmentCatalogArtist extends SimpleMiracleFragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         if(artist !=null){
-            LargeDataStorage largeDataStorage = miracleApp.getLargeDataStorage();
-            String key = largeDataStorage.createUniqueKey();
-            largeDataStorage.storeLargeData(artist,key);
-            outState.putString("artist", key);
+            outState.putString("artist", LargeDataStorage.get().storeLargeData(artist));
         }
 
         super.onSaveInstanceState(outState);

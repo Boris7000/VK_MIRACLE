@@ -53,14 +53,12 @@ public class FragmentPlaylist extends SimpleMiracleFragment {
         if(savedInstanceState!=null&&!savedInstanceState.isEmpty()){
             String key = savedInstanceState.getString("playlistItem");
             if(key!=null){
-                LargeDataStorage largeDataStorage = miracleApp.getLargeDataStorage();
-                playlistItem = (PlaylistItem) largeDataStorage.getLargeData(key);
+                playlistItem = (PlaylistItem) LargeDataStorage.get().getLargeData(key);
                 savedInstanceState.remove("playlistItem");
             } else {
                 key = savedInstanceState.getString("album");
                 if(key!=null){
-                    LargeDataStorage largeDataStorage = miracleApp.getLargeDataStorage();
-                    album = (Album) largeDataStorage.getLargeData(key);
+                    album = (Album) LargeDataStorage.get().getLargeData(key);
                     savedInstanceState.remove("album");
                 }
             }
@@ -91,16 +89,10 @@ public class FragmentPlaylist extends SimpleMiracleFragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
 
         if(playlistItem !=null){
-            LargeDataStorage largeDataStorage = miracleApp.getLargeDataStorage();
-            String key = largeDataStorage.createUniqueKey();
-            largeDataStorage.storeLargeData(playlistItem,key);
-            outState.putString("playlistItem", key);
+            outState.putString("playlistItem", LargeDataStorage.get().storeLargeData(playlistItem));
         } else {
             if(album !=null){
-                LargeDataStorage largeDataStorage = miracleApp.getLargeDataStorage();
-                String key = largeDataStorage.createUniqueKey();
-                largeDataStorage.storeLargeData(album,key);
-                outState.putString("album", key);
+                outState.putString("album", LargeDataStorage.get().storeLargeData(album));
             }
         }
 

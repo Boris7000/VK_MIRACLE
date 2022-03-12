@@ -32,6 +32,7 @@ import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.model.audio.fields.Photo;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.player.AudioPlayerData;
+import com.vkontakte.miracle.player.PlayerServiceController;
 
 public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
     private final MiracleButton playButton;
@@ -145,7 +146,7 @@ public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
         subtitle3Text.append(StringsUtil.getAudiosDeclensions(playlistItem.getCount(), getMiracleActivity()));
         subtitle3.setText(subtitle3Text.toString());
 
-        playButton.setOnClickListener(view -> getMiracleApp().getPlayerServiceController().
+        playButton.setOnClickListener(view -> PlayerServiceController.get().
                 playNewAudio(new AudioPlayerData(playlistItem.getItems().get(0))));
 
         if((playlistItem.getOriginal()==null&&playlistItem.getOwnerId().equals(userItem.getId()))
@@ -229,7 +230,7 @@ public class PlaylistLargeViewHolder extends PlaylistHorizontalViewHolder {
 
                 @Override
                 public void playNext() {
-                    getMiracleApp().getPlayerServiceController().loadAndSetPlayNext(playlistItem);
+                    PlayerServiceController.get().loadAndSetPlayNext(playlistItem);
                 }
 
                 @Override

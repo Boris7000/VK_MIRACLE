@@ -16,6 +16,7 @@ import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
+import com.vkontakte.miracle.longpoll.LongPollServiceController;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageAddedUpdateListener;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageReadUpdateListener;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageTypingUpdateListener;
@@ -96,7 +97,7 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
     public void onComplete() {
 
         if(!hasData()) {
-            ArrayList<MessageAddedUpdate> storageMessageAddedUpdates = StorageUtil.loadMessageAddedLongPollUpdates(getMiracleApp());
+            ArrayList<MessageAddedUpdate> storageMessageAddedUpdates = StorageUtil.get().loadMessageAddedLongPollUpdates();
             ArrayList<MessageAddedUpdate> missedMessageAddedUpdates = new ArrayList<>();
 
             androidx.collection.ArrayMap<String,MessageItem> messageItemArrayMap = new androidx.collection.ArrayMap<>();
@@ -405,10 +406,11 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
             }
         };
 
-        getMiracleApp().getLongPollServiceController().addOnMessageAddedUpdateListener(onMessageAddedUpdateListener);
-        getMiracleApp().getLongPollServiceController().addOnMessageReadUpdateListener(onMessageReadUpdateListener);
-        getMiracleApp().getLongPollServiceController().addOnMessageTypingListener(onMessageTypingUpdateListener);
-        getMiracleApp().getLongPollServiceController().addOnUserOnlineListener(onUserOnlineUpdateListener);
+        LongPollServiceController longPollServiceController = LongPollServiceController.get();
+        longPollServiceController.addOnMessageAddedUpdateListener(onMessageAddedUpdateListener);
+        longPollServiceController.addOnMessageReadUpdateListener(onMessageReadUpdateListener);
+        longPollServiceController.addOnMessageTypingListener(onMessageTypingUpdateListener);
+        longPollServiceController.addOnUserOnlineListener(onUserOnlineUpdateListener);
 
     }
 
@@ -559,10 +561,11 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
     @Override
     public void setDetached(boolean detached) {
         if(detached){
-            getMiracleApp().getLongPollServiceController().removeOnMessageAddedUpdateListener(onMessageAddedUpdateListener);
-            getMiracleApp().getLongPollServiceController().removeOnMessageReadUpdateListener(onMessageReadUpdateListener);
-            getMiracleApp().getLongPollServiceController().removeOnMessageTypingListener(onMessageTypingUpdateListener);
-            getMiracleApp().getLongPollServiceController().removeOnUserOnlineListener(onUserOnlineUpdateListener);
+            LongPollServiceController longPollServiceController = LongPollServiceController.get();
+            longPollServiceController.removeOnMessageAddedUpdateListener(onMessageAddedUpdateListener);
+            longPollServiceController.removeOnMessageReadUpdateListener(onMessageReadUpdateListener);
+            longPollServiceController.removeOnMessageTypingListener(onMessageTypingUpdateListener);
+            longPollServiceController.removeOnUserOnlineListener(onUserOnlineUpdateListener);
             for (Map.Entry<String, MessageTypingUpdates> etr: messageTypingUpdatesArrayMap.entrySet()) {
                 etr.getValue().cancel();
             }

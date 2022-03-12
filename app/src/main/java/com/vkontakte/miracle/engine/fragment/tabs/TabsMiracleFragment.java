@@ -242,7 +242,7 @@ public class TabsMiracleFragment extends MiracleFragment {
         if(savedInstanceState!=null) {
             if (savedInstanceState.getString("adapter") != null) {
                 TabsAdapter tabsAdapter = (TabsAdapter)
-                        getMiracleApp().getLargeDataStorage().getLargeData(savedInstanceState.getString("adapter"));
+                        LargeDataStorage.get().getLargeData(savedInstanceState.getString("adapter"));
                 savedInstanceState.remove(savedInstanceState.getString("adapter"));
 
                 setAdapter(new TabsAdapter(this, tabsAdapter.getFabrics()));
@@ -260,8 +260,7 @@ public class TabsMiracleFragment extends MiracleFragment {
             if(object!=null) {
                 if (object instanceof TabsAdapter) {
                     TabsAdapter adapter = (TabsAdapter) object;
-                    LargeDataStorage largeDataStorage = getMiracleApp().getLargeDataStorage();
-                    outState.putString("adapter", largeDataStorage.storeLargeData(adapter, largeDataStorage.createUniqueKey()));
+                    outState.putString("adapter", LargeDataStorage.get().storeLargeData(adapter));
                 }
             }
         }

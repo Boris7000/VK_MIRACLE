@@ -19,6 +19,7 @@ import com.vkontakte.miracle.engine.util.FragmentUtil;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.view.AudioItemView;
 import com.vkontakte.miracle.player.AudioPlayerData;
+import com.vkontakte.miracle.player.PlayerServiceController;
 
 import java.util.ArrayList;
 
@@ -112,7 +113,7 @@ public class AudioListView extends LinearLayout{
             audioItemView.setValues(audioItem);
 
             if(audioItem.isLicensed()){
-                audioItemView.setOnClickListener(view -> miracleApp.getPlayerServiceController().
+                audioItemView.setOnClickListener(view -> PlayerServiceController.get().
                         playNewAudio(new AudioPlayerData(audioItem)));
             } else {
                 audioItemView.setOnClickListener(null);
@@ -133,7 +134,7 @@ public class AudioListView extends LinearLayout{
 
                     @Override
                     public void playNext() {
-                        miracleApp.getPlayerServiceController().setPlayNext(new AudioPlayerData(audioItem));
+                        PlayerServiceController.get().setPlayNext(new AudioPlayerData(audioItem));
                     }
 
                     @Override

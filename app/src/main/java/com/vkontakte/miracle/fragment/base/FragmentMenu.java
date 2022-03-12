@@ -3,7 +3,6 @@ package com.vkontakte.miracle.fragment.base;
 import static android.view.View.VISIBLE;
 import static com.vkontakte.miracle.engine.fragment.ScrollAndElevate.scrollAndElevate;
 import static com.vkontakte.miracle.engine.util.FragmentUtil.goToProfile;
-import static com.vkontakte.miracle.engine.util.StorageUtil.loadBitmap;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +23,7 @@ import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.fragment.FragmentFabric;
 import com.vkontakte.miracle.engine.fragment.MiracleFragment;
 import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
+import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.engine.view.switchIcon.SwitchIconViewV2;
 import com.vkontakte.miracle.fragment.catalog.FragmentCatalogFriends;
 import com.vkontakte.miracle.fragment.catalog.FragmentCatalogGroups;
@@ -108,7 +108,7 @@ public class FragmentMenu extends SimpleMiracleFragment {
         username.setText(profileItem.getFullName());
 
         ImageView avatar = frameLayout.findViewById(R.id.photo);
-        avatar.setImageBitmap(loadBitmap(profileItem.getId()+"_200.png", miracleApp));
+        avatar.setImageBitmap(StorageUtil.get().loadBitmap("profileImage200.png"));
 
         ImageView online_status =  frameLayout.findViewById(R.id.onlineStatus);
 

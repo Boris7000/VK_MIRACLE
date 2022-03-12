@@ -64,14 +64,14 @@ import com.vkontakte.miracle.notification.AppNotificationChannels;
 
 public class AudioPlayerService extends Service implements ExoPlayer.Listener, AnalyticsListener {
 
-    private MiracleApp miracleApp;
+    private final MiracleApp miracleApp = MiracleApp.getInstance();
     private final IBinder iBinder = new PlayerServiceBinder(this);
+    private final PlayerServiceController playerServiceController = PlayerServiceController.get();
+    private final ProfileItem profileItem = StorageUtil.get().currentUser();
+    private final SettingsUtil settingsUtil = SettingsUtil.get();
     private AudioPlayerData playerData;
     private AudioPlayerData nextPlayerData;
     private ExoPlayer player;
-    private PlayerServiceController playerServiceController;
-    private SettingsUtil settingsUtil;
-    private ProfileItem profileItem;
     private Handler handler;
     private boolean destroyed = false;
     private boolean repeatOnePlayed = false;
@@ -238,19 +238,11 @@ public class AudioPlayerService extends Service implements ExoPlayer.Listener, A
     public void onCreate() {
         super.onCreate();
 
-        miracleApp = (MiracleApp) getApplication();
-
         setTheme(miracleApp.getThemeRecourseId());
-
-        profileItem = StorageUtil.loadUsers(miracleApp).get(0);
 
         handler = new Handler(Looper.getMainLooper());
 
-        settingsUtil = miracleApp.getSettingsUtil();
-
-        playerServiceController = miracleApp.getPlayerServiceController();
-
-        notificationManager = (NotificationManager)miracleApp.getSystemService(NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) miracleApp.getSystemService(NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel notificationChannel = AppNotificationChannels.getAudioChannel(this);

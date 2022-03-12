@@ -42,7 +42,7 @@ public class FragmentCatalogSectionNested extends NestedMiracleFragment {
         if(savedInstanceState!=null) {
             if (savedInstanceState.getString("catalogSection") != null) {
                 CatalogSection catalogSection = (CatalogSection)
-                        getMiracleApp().getLargeDataStorage().getLargeData(savedInstanceState.getString("catalogSection"));
+                        LargeDataStorage.get().getLargeData(savedInstanceState.getString("catalogSection"));
                 savedInstanceState.remove(savedInstanceState.getString("catalogSection"));
                 if (catalogSection != null) {
                     setCatalogSection(catalogSection);
@@ -64,8 +64,7 @@ public class FragmentCatalogSectionNested extends NestedMiracleFragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         if(catalogSection!=null) {
-            LargeDataStorage largeDataStorage = getMiracleApp().getLargeDataStorage();
-            outState.putString("catalogSection", largeDataStorage.storeLargeData(catalogSection, largeDataStorage.createUniqueKey()));
+            outState.putString("catalogSection", LargeDataStorage.get().storeLargeData(catalogSection));
         }
         super.onSaveInstanceState(outState);
     }

@@ -25,6 +25,7 @@ import com.vkontakte.miracle.engine.adapter.holder.error.ErrorViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.loading.LoadingViewHolder;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
+import com.vkontakte.miracle.longpoll.LongPollServiceController;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageAddedUpdateListener;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageReadUpdateListener;
 import com.vkontakte.miracle.longpoll.model.MessageAddedUpdate;
@@ -97,7 +98,7 @@ public class ChatAdapter extends MiracleLoadableAdapter {
     public void onComplete() {
 
         if(!hasData()) {
-            ArrayList<MessageAddedUpdate> messageAddedUpdates = StorageUtil.loadMessageAddedLongPollUpdates(getMiracleApp());
+            ArrayList<MessageAddedUpdate> messageAddedUpdates = StorageUtil.get().loadMessageAddedLongPollUpdates();
             ArrayList<MessageAddedUpdate> missedMessageAddedUpdates = new ArrayList<>();
 
             androidx.collection.ArrayMap<String,MessageItem> messageItemArrayMap = new androidx.collection.ArrayMap<>();
@@ -133,6 +134,8 @@ public class ChatAdapter extends MiracleLoadableAdapter {
     public void ini() {
         super.ini();
         setStep(75);
+
+        LongPollServiceController longPollServiceController = LongPollServiceController.get();
 
         onMessageReadUpdateListener = messageReadUpdates -> {
             if(hasData()){
@@ -202,7 +205,7 @@ public class ChatAdapter extends MiracleLoadableAdapter {
                 }
             }
         };
-        getMiracleApp().getLongPollServiceController().addOnMessageReadUpdateListener(onMessageReadUpdateListener);
+        longPollServiceController.addOnMessageReadUpdateListener(onMessageReadUpdateListener);
 
         onMessageAddedUpdateListener = messageAddedUpdates -> {
             if(hasData()) {
@@ -259,7 +262,7 @@ public class ChatAdapter extends MiracleLoadableAdapter {
                 }
             }
         };
-        getMiracleApp().getLongPollServiceController().addOnMessageAddedUpdateListener(onMessageAddedUpdateListener);
+        longPollServiceController.addOnMessageAddedUpdateListener(onMessageAddedUpdateListener);
 
     }
 
@@ -291,8 +294,9 @@ public class ChatAdapter extends MiracleLoadableAdapter {
     @Override
     public void setDetached(boolean detached) {
         if(detached){
-            getMiracleApp().getLongPollServiceController().removeOnMessageReadUpdateListener(onMessageReadUpdateListener);
-            getMiracleApp().getLongPollServiceController().removeOnMessageAddedUpdateListener(onMessageAddedUpdateListener);
+            LongPollServiceController longPollServiceController = LongPollServiceController.get();
+            longPollServiceController.removeOnMessageReadUpdateListener(onMessageReadUpdateListener);
+            longPollServiceController.removeOnMessageAddedUpdateListener(onMessageAddedUpdateListener);
         }
         super.setDetached(detached);
     }
