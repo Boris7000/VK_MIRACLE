@@ -46,7 +46,7 @@ public class FragmentTest extends SimpleMiracleFragment {
             public String inBackground() {
                 try {
                     ProfileItem profileItem = getMiracleActivity().getUserItem();
-                    Response<JSONObject> response = message().getLongpollServer(1,3,profileItem.getAccessToken(),latest_api_v).execute();
+                    Response<JSONObject> response = message().getLongPollServer(1,3,profileItem.getAccessToken(),latest_api_v).execute();
                     JSONObject jsonObject = validateBody(response).getJSONObject("response");
 
                     String server = jsonObject.getString("server");

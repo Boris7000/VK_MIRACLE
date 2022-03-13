@@ -26,7 +26,7 @@ public class PhotoAlbumViewHolder extends MiracleViewHolder {
 
     private final TextView title;
     private final TextView subtitle;
-    private ImageView image;
+    private final ImageView image;
 
     public PhotoAlbumViewHolder(@NonNull View itemView) {
         super(itemView);

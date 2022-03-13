@@ -30,7 +30,7 @@ public class AudioItem implements ItemDataHolder{
     private final boolean isLicensed;
     private final ArrayList<Artist> mainArtists = new ArrayList<>();
     private final ArrayList<Artist> featuredArtists = new ArrayList<>();
-    private ArrayList<Artist> artists = new ArrayList<>();
+    private final ArrayList<Artist> artists = new ArrayList<>();
     private Album album;
 
     private CatalogBlock catalogBlock;

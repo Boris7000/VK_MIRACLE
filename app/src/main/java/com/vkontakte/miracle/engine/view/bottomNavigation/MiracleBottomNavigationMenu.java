@@ -62,8 +62,8 @@ public class MiracleBottomNavigationMenu extends LinearLayout {
 
             view.setOnLongClickListener(view1 -> {
                 if(!onTabSelectListeners.isEmpty()){
-                    for(OnTabSelectListener otsl: onTabSelectListeners){
-                        otsl.onLongClick(fi);
+                    for(OnTabSelectListener listener: onTabSelectListeners){
+                        listener.onLongClick(fi);
                     }
                 }
                 return true;
@@ -74,8 +74,8 @@ public class MiracleBottomNavigationMenu extends LinearLayout {
                     select(fi);
                 }else {
                     if(!onTabSelectListeners.isEmpty()){
-                        for(OnTabSelectListener otsl: onTabSelectListeners){
-                            otsl.onReselect(fi);
+                        for(OnTabSelectListener listener: onTabSelectListeners){
+                            listener.onReselect(fi);
                         }
                     }
                 }

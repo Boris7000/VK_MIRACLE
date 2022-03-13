@@ -15,7 +15,6 @@ import android.view.View;
 
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
-import com.vkontakte.miracle.engine.util.StorageUtil;
 
 import org.json.JSONObject;
 

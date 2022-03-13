@@ -9,8 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.util.LargeDataStorage;
-import com.vkontakte.miracle.model.audio.fields.Artist;
 
 public class FragmentError extends NestedMiracleFragment {
 

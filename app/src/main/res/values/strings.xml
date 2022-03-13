@@ -32,7 +32,7 @@
     <string name="go_to_owner">Перейти к владельцу</string>
     <string name="delete_from_audio">Удалить из моей музыки</string>
     <string name="show_more">Больше</string>
-
+    <string name="default_timer">0:00</string>
 
     <string name="error">Ошибка</string>
     <string name="unknownError">Что-то пошло не так :(</string>

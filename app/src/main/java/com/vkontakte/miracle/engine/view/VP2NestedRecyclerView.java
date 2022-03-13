@@ -36,6 +36,7 @@ public class VP2NestedRecyclerView extends RecyclerView {
         super(context, attrs);
 
         if (attrs != null){
+            @SuppressLint("CustomViewStyleable")
             final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RecyclerView, 0, 0);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

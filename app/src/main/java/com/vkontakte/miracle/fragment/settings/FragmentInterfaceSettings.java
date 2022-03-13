@@ -12,17 +12,14 @@ import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
 import static com.vkontakte.miracle.engine.fragment.ScrollAndElevate.scrollAndElevate;
 
 public class FragmentInterfaceSettings extends SimpleMiracleFragment {
-    private View rootView;
-    private MiracleActivity miracleActivity;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         iniContext();
 
-        miracleActivity = getMiracleActivity();
+        MiracleActivity miracleActivity = getMiracleActivity();
 
-        rootView = inflater.inflate(R.layout.fragment_settings_interface, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_settings_interface, container, false);
 
         setTopBar(rootView.findViewById(R.id.appbarLinear));
         setAppBarLayout(rootView.findViewById(R.id.appbar));
@@ -35,5 +32,4 @@ public class FragmentInterfaceSettings extends SimpleMiracleFragment {
 
         return rootView;
     }
-
 }

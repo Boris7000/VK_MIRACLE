@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.player.AudioPlayerData;
 import com.vkontakte.miracle.player.OnPlayerEventListener;
@@ -17,7 +16,6 @@ import com.vkontakte.miracle.player.PlayerServiceController;
 
 public class MusicMiracleBottomNavigationItem extends FrameLayout implements MiracleBottomNavigationItem {
 
-    private final MiracleApp miracleApp;
     private final OnPlayerEventListener onPlayerEventListener = new OnPlayerEventListener() {
         @Override
         public void onBufferChange(AudioPlayerData playerData) {
@@ -63,7 +61,6 @@ public class MusicMiracleBottomNavigationItem extends FrameLayout implements Mir
 
     public MusicMiracleBottomNavigationItem(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        miracleApp = (MiracleApp)getContext().getApplicationContext();
     }
 
 

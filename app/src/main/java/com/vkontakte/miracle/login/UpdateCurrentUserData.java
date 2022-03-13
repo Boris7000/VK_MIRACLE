@@ -1,6 +1,8 @@
 package com.vkontakte.miracle.login;
 
-import android.content.Context;
+import static com.vkontakte.miracle.engine.util.LogTags.LOGIN_TAG;
+import static com.vkontakte.miracle.engine.util.NetworkUtil.CheckConnection;
+
 import android.util.Log;
 
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
@@ -10,21 +12,16 @@ import com.vkontakte.miracle.model.users.ProfileItem;
 
 import java.util.ArrayList;
 
-import static com.vkontakte.miracle.engine.util.LogTags.LOGIN_TAG;
-import static com.vkontakte.miracle.engine.util.NetworkUtil.CheckConnection;
-
 public class UpdateCurrentUserData extends AsyncExecutor<Boolean> {
 
     private ProfileItem profileItemNew;
-    private final Context context;
     private final onCompleteListener onCompleteListener;
 
-    public UpdateCurrentUserData(Context context){
-        this(context, null);
+    public UpdateCurrentUserData(){
+        this(null);
     }
 
-    public UpdateCurrentUserData(Context context, onCompleteListener onCompleteListener){
-        this.context = context;
+    public UpdateCurrentUserData(onCompleteListener onCompleteListener){
         this.onCompleteListener = onCompleteListener;
     }
 

@@ -49,7 +49,7 @@ public class LongPollService extends Service {
                             JSONObject jsonObject;
 
                             if(server==null){
-                                response = message().getLongpollServer(1,3,profileItem.getAccessToken(),latest_api_v).execute();
+                                response = message().getLongPollServer(1,3,profileItem.getAccessToken(),latest_api_v).execute();
                                 jsonObject = validateBody(response).getJSONObject("response");
                                 server = jsonObject.getString("server").substring(11);
                                 key = jsonObject.getString("key");

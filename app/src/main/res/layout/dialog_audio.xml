@@ -98,7 +98,7 @@
                     android:layout_weight="0"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_share_28"
-                    app:tint="@color/white_half_40" />
+                    app:tint="@color/white_half_60" />
             </LinearLayout>
         </FrameLayout>
 

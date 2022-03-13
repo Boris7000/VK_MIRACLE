@@ -13,11 +13,8 @@ import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.engine.view.MiracleButton;
 import com.vkontakte.miracle.model.users.ProfileItem;
 
-import static com.vkontakte.miracle.engine.util.UserDataUtil.removeUserData;
-
 public class AccountDialog extends MiracleBottomDialog {
 
-    private View rootView;
     private final ProfileItem profileItem;
     private AccountDialogActionListener dialogActionListener;
 
@@ -28,6 +25,7 @@ public class AccountDialog extends MiracleBottomDialog {
 
     @Override
     public void show(Context context) {
+        View rootView;
         setContentView(rootView =  View.inflate(context, R.layout.dialog_account, null));
         TextView name = rootView.findViewById(R.id.title);
         ImageView imageView = rootView.findViewById(R.id.photo);

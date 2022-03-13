@@ -174,7 +174,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white_half_50"
-            android:text="0:00"/>
+            android:text="@string/default_timer"/>
 
         <SeekBar
             android:id="@+id/seekBar"
@@ -196,7 +196,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white_half_50"
-            android:text="0:00"/>
+            android:text="@string/default_timer"/>
 
     </LinearLayout>
 

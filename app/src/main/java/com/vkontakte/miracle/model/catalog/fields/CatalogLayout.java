@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 public class CatalogLayout {
 
-    private String name;
+    private final String name;
     private String title;
 
     public String getTitle() {

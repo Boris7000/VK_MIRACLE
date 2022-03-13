@@ -27,29 +27,32 @@ android {
 }
 
 dependencies {
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.core:core:1.7.0'
     implementation 'androidx.media:media:1.5.0'
-    implementation 'com.google.android.material:material:1.6.0-alpha03'
     implementation "androidx.lifecycle:lifecycle-process:2.4.1"
     implementation "androidx.lifecycle:lifecycle-common:2.4.1"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation 'com.makeramen:roundedimageview:2.3.0'
+    implementation 'androidx.palette:palette:1.0.0'
+    implementation 'com.google.android.material:material:1.6.0-alpha03'
+    implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
     //noinspection GradleDependency
     implementation 'com.squareup.picasso:picasso:2.8'
-    implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation project(path: ':firebase-installations')
+    //noinspection GradleDependency
+    implementation 'com.google.android.gms:play-services-auth:20.0.1'
+    //noinspection GradleDependency
+    implementation 'com.google.android.exoplayer:exoplayer:2.16.1'
+    //noinspection GradleDependency
     implementation ('com.google.firebase:firebase-messaging:23.0.0') {
         exclude group: "com.google.firebase", module: "firebase-installations"
     }
-    implementation project(path: ':firebase-installations')
-    implementation 'com.google.android.gms:play-services-auth:20.0.1'
-    implementation 'com.google.android.exoplayer:exoplayer:2.16.1'
-    implementation 'androidx.palette:palette:1.0.0'
+
 }
 repositories {
     mavenCentral()

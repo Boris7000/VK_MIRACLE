@@ -34,8 +34,8 @@ public class SettingsUtil {
         return preferences.getInt("nightMode", MODE_NIGHT_FOLLOW_SYSTEM);
     }
 
-    public void storeThemeId(int resid){
-        preferences.edit().putInt("themeId",resid).apply();
+    public void storeThemeId(int resId){
+        preferences.edit().putInt("themeId",resId).apply();
     }
 
     public int themeId(){

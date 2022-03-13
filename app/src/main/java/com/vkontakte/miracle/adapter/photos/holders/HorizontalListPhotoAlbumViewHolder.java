@@ -26,7 +26,7 @@ public class HorizontalListPhotoAlbumViewHolder extends MiracleViewHolder {
     private TextView badge;
     private final TextView button;
     private final ViewStub badgeStub;
-    private RecyclerView recyclerView;
+    private final RecyclerView recyclerView;
 
     public HorizontalListPhotoAlbumViewHolder(@NonNull View itemView) {
         super(itemView);

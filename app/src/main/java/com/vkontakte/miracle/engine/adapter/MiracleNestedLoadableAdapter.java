@@ -1,11 +1,6 @@
 package com.vkontakte.miracle.engine.adapter;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_ERROR;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_GROUP;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_LOADING;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO_ALBUM;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PLAYLIST;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_TRIPLE_STACKED;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.getCatalogSliderFabrics;
 import static com.vkontakte.miracle.engine.util.LogTags.ADAPTER_TAG;
 
@@ -16,16 +11,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.vkontakte.miracle.adapter.catalog.holders.GroupViewHolder;
-import com.vkontakte.miracle.adapter.audio.holders.PlaylistHorizontalViewHolder;
-import com.vkontakte.miracle.adapter.catalog.holders.TripleStackedViewHolder;
-import com.vkontakte.miracle.adapter.photos.holders.PhotoAlbumViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.adapter.holder.error.ErrorDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.error.ErrorViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.loading.LoadingViewHolder;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 
 import java.util.ArrayList;

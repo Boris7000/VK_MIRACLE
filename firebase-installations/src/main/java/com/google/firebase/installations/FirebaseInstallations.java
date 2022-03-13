@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -80,7 +81,7 @@ public class FirebaseInstallations implements FirebaseInstallationsApi {
                 @Override
                 public Thread newThread(Runnable r) {
                     return new Thread(
-                            r, String.format("firebase-installations-executor-%d", mCount.getAndIncrement()));
+                            r, String.format(Locale.getDefault(),"firebase-installations-executor-%d", mCount.getAndIncrement()));
                 }
             };
     private static final String API_KEY_VALIDATION_MSG =

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import com.vkontakte.miracle.MiracleActivity;
-import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.catalog.CatalogSectionAdapter;
 import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
@@ -21,7 +20,6 @@ import com.vkontakte.miracle.network.methods.Catalog;
 
 public class FragmentCatalogArtist extends SimpleMiracleFragment {
 
-    private MiracleApp miracleApp;
     private Artist artist;
 
     public void setArtistId(Artist artist) {
@@ -34,7 +32,6 @@ public class FragmentCatalogArtist extends SimpleMiracleFragment {
         iniContext();
 
         MiracleActivity miracleActivity = getMiracleActivity();
-        miracleApp = getMiracleApp();
 
         View rootView = inflater.inflate(R.layout.fragment_with_recycleview, container, false);
 

@@ -71,7 +71,18 @@
     <color name="gray_neutral_200">#cccccc</color>
     <color name="gray_neutral_100">#e8e8e8</color>
 
-    <color name="skyBlue_900">#004487</color>
+
+    <color name="skyBlue_900">#003366</color>
+    <color name="skyBlue_800">#00458c</color>
+    <color name="skyBlue_700">#0055ab</color>
+    <color name="skyBlue_600">#0061c5</color>
+    <color name="skyBlue_500">#2882de</color>
+    <color name="skyBlue_400">#489ff8</color>
+    <color name="skyBlue_300">#66b2ff</color>
+    <color name="skyBlue_200">#82c0ff</color>
+    <color name="skyBlue_100">#9eceff</color>
+
+    <!--<color name="skyBlue_900">#004487</color>
     <color name="skyBlue_800">#0058ad</color>
     <color name="skyBlue_700">#0067cc</color>
     <color name="skyBlue_600">#2586e6</color>
@@ -79,7 +90,7 @@
     <color name="skyBlue_400">#73baff</color>
     <color name="skyBlue_300">#8fc8ff</color>
     <color name="skyBlue_200"> #abd6ff</color>
-    <color name="skyBlue_100">#c7e3ff</color>
+    <color name="skyBlue_100">#c7e3ff</color>-->
     <color name="skyBlue_neutral_900">#111f2b</color>
     <color name="skyBlue_neutral_800">#253340</color>
     <color name="skyBlue_neutral_700">#3d4b59</color>

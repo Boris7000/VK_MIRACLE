@@ -2,6 +2,7 @@
 <com.vkontakte.miracle.player.view.PlayerBarView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="56dp"
     android:background="@drawable/navigation_bar_bg_portrait">
@@ -50,7 +51,7 @@
                     android:singleLine="true"
                     android:fontFamily="sans-serif"
                     android:textSize="14sp"
-                    android:text="Titleeeeeeeeeee" />
+                    tools:text="Title" />
 
                 <ViewStub
                     android:id="@+id/explicitStub"
@@ -73,7 +74,7 @@
                 android:fontFamily="sans-serif"
                 android:textColor="?attr/colorContrast50"
                 android:textSize="13sp"
-                android:text="Subtitleeeeeeeeeee" />
+                tools:text="Subtitle" />
         </LinearLayout>
 
         <ImageView

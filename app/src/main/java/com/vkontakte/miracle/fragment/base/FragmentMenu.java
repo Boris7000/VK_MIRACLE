@@ -55,7 +55,7 @@ public class FragmentMenu extends SimpleMiracleFragment {
         setAppBarLayout(rootView.findViewById(R.id.appbar));
         setScrollView(rootView.findViewById(R.id.scrollView));
         scrollAndElevate(getScrollView(),getAppBarLayout(),miracleActivity);
-        blockScreen = rootView.findViewById(R.id.menucontainer);
+        blockScreen = rootView.findViewById(R.id.fragmentMenuContainer);
 
         UpdateCurrentUserData.onCompleteListener onCompleteListener = (profileItem, hasChanges) -> {
             getSwipeRefreshLayout().setRefreshing(false);
@@ -66,11 +66,11 @@ public class FragmentMenu extends SimpleMiracleFragment {
             }
         };
         if(savedInstanceState==null){
-            (updateCurrentUserData = new UpdateCurrentUserData(miracleApp,onCompleteListener)).start();
+            (updateCurrentUserData = new UpdateCurrentUserData(onCompleteListener)).start();
         }
         setSwipeRefreshLayout(rootView.findViewById(R.id.refreshLayout),() ->{
             if(updateCurrentUserData == null || updateCurrentUserData.workIsDone()){
-                (updateCurrentUserData = new UpdateCurrentUserData(miracleApp,onCompleteListener)).start();
+                (updateCurrentUserData = new UpdateCurrentUserData(onCompleteListener)).start();
             }
         });
 

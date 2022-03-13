@@ -22,7 +22,7 @@ public interface IAudio {
 
     @FormUrlEncoded
     @POST("audio.getCatalog")
-    Call<JSONObject> getCatalog(@Field("fields") String fileds,
+    Call<JSONObject> getCatalog(@Field("fields") String fields,
                                 @Field("extended") int extended,
                                 @Field("access_token") String access_token,
                                 @Field("v") String v,

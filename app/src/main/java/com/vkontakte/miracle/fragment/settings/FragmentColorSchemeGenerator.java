@@ -19,14 +19,13 @@ import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
 
 public class FragmentColorSchemeGenerator  extends SimpleMiracleFragment {
 
-    private View rootView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         iniContext();
 
 
-        rootView = inflater.inflate(R.layout.fragment_settings_color_scheme_generator, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_settings_color_scheme_generator, container, false);
         setTopBar(rootView.findViewById(R.id.appbarLinear));
         setAppBarLayout(rootView.findViewById(R.id.appbar));
 

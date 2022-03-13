@@ -207,12 +207,7 @@ public class SwitchIconViewV2  extends AppCompatImageView {
 
     private void animateToFraction(float toFraction) {
         ValueAnimator animator = ValueAnimator.ofFloat(fraction, toFraction);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                setFraction((float) animation.getAnimatedValue());
-            }
-        });
+        animator.addUpdateListener(animation -> setFraction((float) animation.getAnimatedValue()));
         animator.setInterpolator(new DecelerateInterpolator());
         animator.setDuration(animationDuration);
         animator.start();
@@ -273,7 +268,6 @@ public class SwitchIconViewV2  extends AppCompatImageView {
         getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
     }
 
-    @SuppressWarnings("deprecation")
     private void updateImageAlpha(int alpha) {
         setImageAlpha(alpha);
     }

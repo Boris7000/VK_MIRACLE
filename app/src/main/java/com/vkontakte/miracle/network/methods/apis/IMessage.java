@@ -67,7 +67,7 @@ public interface IMessage {
 
     @FormUrlEncoded
     @POST("messages.getLongPollServer")
-    Call<JSONObject> getLongpollServer(@Field("need_pts") int needPts,
+    Call<JSONObject> getLongPollServer(@Field("need_pts") int needPts,
                                        @Field("lp_version") int lpVersion,
                                        @Field("access_token") String access_token,
                                        @Field("v") String v);

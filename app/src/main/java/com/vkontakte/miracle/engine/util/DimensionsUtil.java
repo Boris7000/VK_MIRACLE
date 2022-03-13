@@ -5,18 +5,12 @@ import android.content.res.Resources;
 import android.util.TypedValue;
 
 public class DimensionsUtil {
-    public static int getDimensionByAttributeId(Context context, int resid){
+    public static int getDimensionByAttributeId(Context context, int resId){
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = context.getTheme();
-        theme.resolveAttribute(resid,typedValue,false);
+        theme.resolveAttribute(resId,typedValue,false);
         return typedValue.data;
     }
-
-    /*
-    public static float dpToPx(float dp, Context context) {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
-    }
-    */
 
     public static float dpToPx(float dp, Context context) {
         return dp * context.getResources().getDisplayMetrics().density;

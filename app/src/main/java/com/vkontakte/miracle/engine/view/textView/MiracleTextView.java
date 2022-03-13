@@ -1,10 +1,12 @@
 package com.vkontakte.miracle.engine.view.textView;
 
 import static com.vkontakte.miracle.engine.util.ColorUtil.getColorByAttributeId;
+import static com.vkontakte.miracle.engine.util.NetworkUtil.openURLInBrowser;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
-import android.os.Build;
+import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -18,8 +20,6 @@ import android.view.View;
 import com.vkontakte.miracle.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,9 +38,6 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
     private static final Pattern ownerPattern = Pattern.compile("\\[(id|club)(\\d+)\\|([^]]+)]");
     private static final Pattern topicCommentPattern = Pattern.compile("\\[(id|club)(\\d*):bp(-\\d*)_(\\d*)\\|([^]]+)]");
     private static final Pattern otherLinkPattern = Pattern.compile("\\[(https:[^]]+)\\|([^]]+)]");
-
-    //Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-    //getContext().startActivity(browserIntent);
 
     public MiracleTextView(Context context) {
         this(context, null);
@@ -195,6 +192,8 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
                 Log.d("rijgijrgjrigj",s);
                 if(onURLClickListener!=null){
                     onURLClickListener.onURLClicked(s);
+                } else {
+                    openURLInBrowser(s,getContext());
                 }
             });
             originalText.setSpan(span, m.start(), m.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

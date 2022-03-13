@@ -111,13 +111,9 @@ public class NestedScrollableHost extends FrameLayout {
                     getParent().requestDisallowInterceptTouchEvent(false);
                 } else {
                     // Gesture is parallel, query child if movement in that direction is possible
-                    if (canChildScroll(orientation, isVpHorizontal? dx : dy)) {
-                        // Child can scroll, disallow all parents to intercept
-                        getParent().requestDisallowInterceptTouchEvent(true);
-                    } else {
-                        // Child cannot scroll, allow all parents to intercept
-                        getParent().requestDisallowInterceptTouchEvent(false);
-                    }
+                    // Child can scroll, disallow all parents to intercept
+                    // Child cannot scroll, allow all parents to intercept
+                    getParent().requestDisallowInterceptTouchEvent(canChildScroll(orientation, isVpHorizontal ? dx : dy));
                 }
             }
         }

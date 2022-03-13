@@ -1,5 +1,8 @@
 package com.vkontakte.miracle.engine.util;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -16,6 +19,11 @@ import java.util.ArrayList;
 import retrofit2.Response;
 
 public class NetworkUtil {
+
+    public static void openURLInBrowser(String url, Context context){
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        context.startActivity(browserIntent);
+    }
 
     public static void CheckConnection(int timeOutMs) throws Exception {
         Socket socket = new Socket();

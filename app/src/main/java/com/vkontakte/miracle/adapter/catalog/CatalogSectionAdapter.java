@@ -2,9 +2,6 @@ package com.vkontakte.miracle.adapter.catalog;
 
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
-import android.os.Handler;
-import android.os.Looper;
-
 import androidx.collection.ArrayMap;
 
 import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
@@ -16,7 +13,6 @@ import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.network.methods.Catalog;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;

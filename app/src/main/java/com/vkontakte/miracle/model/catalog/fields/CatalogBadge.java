@@ -6,7 +6,7 @@ import org.json.JSONObject;
 public class CatalogBadge {
 
     private String text="";
-    private String type;
+    private final String type;
 
     public String getText() {
         return text;
