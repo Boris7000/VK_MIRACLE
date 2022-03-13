@@ -222,7 +222,11 @@
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/navigation_bar_bg_land.xml" value="0.28102564102564104" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/rounded_button_bg_white.xml" value="0.2712962962962963" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/rounded_button_bg_white_with_stroke.xml" value="0.2712962962962963" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/rounded_card_child_filled_primary.xml" value="0.28102564102564104" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/rounded_card_child_filled_secondary.xml" value="0.15625" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/rounded_card_child_white.xml" value="0.28102564102564104" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/rounded_card_filled_primary.xml" value="0.15625" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/rounded_card_filled_secondary.xml" value="0.15625" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/splash_screen_animated_vector.xml" value="0.26296296296296295" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/splash_screen_animated_vector_night.xml" value="0.26296296296296295" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/drawable/splash_screen_vector.xml" value="0.75" />
@@ -240,8 +244,8 @@
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout-v31/fragment_settings_color_scheme.xml" value="0.20471014492753623" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/activity_login.xml" value="0.16304347826086957" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/catalog_slider.xml" value="0.26927083333333335" />
-        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/dialog_account.xml" value="0.29720670391061454" />
-        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/dialog_audio.xml" value="0.335" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/dialog_account.xml" value="0.45" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/dialog_audio.xml" value="0.5169660678642715" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/dialog_button_stub.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/dialog_go_to_artist.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_chat.xml" value="0.75" />

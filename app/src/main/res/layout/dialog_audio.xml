@@ -25,8 +25,8 @@
             tools:backgroundTint="#363636">
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/photo"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:padding="@dimen/imageBorderWidth"
                 android:layout_gravity="center_vertical"
                 android:background="@color/white_half_10"
