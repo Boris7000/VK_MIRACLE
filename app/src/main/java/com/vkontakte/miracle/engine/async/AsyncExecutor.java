@@ -10,6 +10,7 @@ public abstract class AsyncExecutor<T> extends Thread implements IAsyncExecutor<
 
     private final ArrayList<OnExecuteListener<T>> executeListeners = new ArrayList<>();
     private boolean workIsDone = false;
+    private final String LOG_TAG = "AsyncExecutor";
 
     @Override
     public synchronized void start() {
@@ -31,13 +32,13 @@ public abstract class AsyncExecutor<T> extends Thread implements IAsyncExecutor<
 
     @Override
     public void interrupt() {
-        Log.d("AsyncExecutor","interrupted");
+        Log.d(LOG_TAG,"interrupted");
         super.interrupt();
     }
 
     @Override
     public void onFinish(T object) {
-        Log.d("AsyncExecutor","executed");
+        Log.d(LOG_TAG,"executed");
         AsyncExecutor.this.onExecute(object);
         for (OnExecuteListener<T>listener:executeListeners) {
             listener.onExecute(this);

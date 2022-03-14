@@ -2,6 +2,7 @@ package com.vkontakte.miracle.engine.adapter;
 
 import android.view.LayoutInflater;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,6 +12,8 @@ import com.vkontakte.miracle.engine.fragment.ListMiracleFragment;
 import com.vkontakte.miracle.model.users.ProfileItem;
 
 public abstract class MiracleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+
+    public static final String LOG_TAG = "MiracleAdapter";
 
     private int currentPosition = 0;
     private RecyclerView recyclerView;
@@ -82,6 +85,7 @@ public abstract class MiracleAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public abstract void load();
 
+    @CallSuper
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         this.currentPosition = holder.getBindingAdapterPosition();

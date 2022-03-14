@@ -17,12 +17,15 @@ import com.vkontakte.miracle.model.users.ProfileItem;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.InterruptedIOException;
 
 import retrofit2.Call;
 import retrofit2.Response;
 
 public class LongPollService extends Service {
+
+    private final String LOG_TAG = "LongPollService";
 
     private final IBinder iBinder = new LongPollServiceBinder(this);
     private final LongPollServiceController longPollServiceController = LongPollServiceController.get();
@@ -41,43 +44,48 @@ public class LongPollService extends Service {
                 public LongPollUpdates inBackground() {
                     try {
                         try {
-
                             ProfileItem profileItem = storageUtil.currentUser();
-                            Log.d("iejfijeifjei",profileItem.getId());
+                            if(profileItem!=null) {
+                                Log.d(LOG_TAG, profileItem.getId());
+                                Response<JSONObject> response;
+                                JSONObject jsonObject;
 
-                            Response<JSONObject> response;
-                            JSONObject jsonObject;
+                                if (server == null) {
+                                    response = message().getLongPollServer(1, 3, profileItem.getAccessToken(), latest_api_v).execute();
+                                    jsonObject = validateBody(response).getJSONObject("response");
+                                    server = jsonObject.getString("server").substring(11);
+                                    key = jsonObject.getString("key");
+                                    ts = jsonObject.getString("ts");
+                                }
 
-                            if(server==null){
-                                response = message().getLongPollServer(1,3,profileItem.getAccessToken(),latest_api_v).execute();
-                                jsonObject = validateBody(response).getJSONObject("response");
-                                server = jsonObject.getString("server").substring(11);
-                                key = jsonObject.getString("key");
+                                Call<JSONObject> call = longPoll().request(server, "a_check", key, ts, 30, 2 + 8 + 64 + 128, 3);
+
+                                response = call.execute();
+
+                                jsonObject = validateBody(response);
+
+                                Log.d(LOG_TAG, jsonObject.toString());
+
+                                LongPollUpdates longPollUpdates = new LongPollUpdates(jsonObject.getJSONArray("updates"));
+
                                 ts = jsonObject.getString("ts");
+
+                                File userDirectory = storageUtil.getUserCachesDir(profileItem);
+
+                                storageUtil.writeMessageAddedLongPollUpdates(longPollUpdates.getMessageAddedUpdates(), userDirectory);
+
+                                storageUtil.writeMessageReadLongPollUpdates(longPollUpdates.getMessageReadUpdates(), userDirectory);
+
+                                if (profileItem.equals(storageUtil.currentUser())) {
+                                    return longPollUpdates;
+                                }
+                                Log.d(LOG_TAG, "profiles not equals");
+                                destroyed = true;
                             }
-
-                            Call<JSONObject> call = longPoll().request(server,"a_check",key,ts,30,2 + 8 + 64 + 128,3);
-
-                            response = call.execute();
-
-                            jsonObject = validateBody(response);
-
-                            LongPollUpdates longPollUpdates = new LongPollUpdates(jsonObject.getJSONArray("updates"));
-
-                            ts = jsonObject.getString("ts");
-
-                            storageUtil.writeMessageAddedLongPollUpdates(longPollUpdates.getMessageAddedUpdates(), profileItem);
-
-                            storageUtil.writeMessageReadLongPollUpdates(longPollUpdates.getMessageReadUpdates(), profileItem);
-
-                            if(profileItem.equals(storageUtil.currentUser())) {
-                                return longPollUpdates;
-                            }
-                        } catch (InterruptedIOException ignore){
-                            return new LongPollUpdates();
-                        }
+                        } catch (InterruptedIOException ignore){ }
                     } catch (Exception exception) {
                         exception.printStackTrace();
+                        Log.d(LOG_TAG, exception.getMessage());
                     }
                     return new LongPollUpdates();
                 }
@@ -112,14 +120,14 @@ public class LongPollService extends Service {
 
     @Override
     public void onCreate() {
-        Log.d("iejfijeifjei","created");
+        Log.d(LOG_TAG,"created");
         super.onCreate();
     }
 
     @Override
     public void onDestroy() {
 
-        Log.d("iejfijeifjei","destroyed");
+        Log.d(LOG_TAG,"destroyed");
 
         super.onDestroy();
 

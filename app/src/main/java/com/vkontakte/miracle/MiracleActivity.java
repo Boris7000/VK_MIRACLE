@@ -119,16 +119,16 @@ public class MiracleActivity extends AppCompatActivity {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         StorageUtil storageUtil = StorageUtil.get();
-        ArrayList<ProfileItem> profileItems = storageUtil.loadUsers();
-        if(profileItems.isEmpty()) {
+        ProfileItem profileItem = storageUtil.currentUser();
+        if(profileItem==null) {
             SettingsUtil.get().storeAuthorized(false);
             Intent intent = new Intent(miracleApp, LoginActivity.class);
             startActivity(intent);
             this.finish();
             return;
-        } else {
-            userItem = storageUtil.currentUser();
         }
+
+        setUserItem(profileItem);
 
         setContentView(R.layout.activity_main);
 
@@ -414,6 +414,7 @@ public class MiracleActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
+    @NonNull
     public ProfileItem getUserItem() {
         return userItem;
     }

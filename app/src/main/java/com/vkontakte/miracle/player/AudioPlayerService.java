@@ -64,10 +64,10 @@ import com.vkontakte.miracle.notification.AppNotificationChannels;
 
 public class AudioPlayerService extends Service implements ExoPlayer.Listener, AnalyticsListener {
 
+    public static final String LOG_TAG = "AudioPlayerService";
     private final MiracleApp miracleApp = MiracleApp.getInstance();
     private final IBinder iBinder = new PlayerServiceBinder(this);
     private final PlayerServiceController playerServiceController = PlayerServiceController.get();
-    private final ProfileItem profileItem = StorageUtil.get().currentUser();
     private final SettingsUtil settingsUtil = SettingsUtil.get();
     private AudioPlayerData playerData;
     private AudioPlayerData nextPlayerData;
@@ -427,8 +427,11 @@ public class AudioPlayerService extends Service implements ExoPlayer.Listener, A
             @Override
             public Boolean inBackground() {
                 try {
-                    Audio.trackEventsAudioPlay(audioItem.getId(),audioItem.getOwnerId(),
-                            audioItem.getDuration(),profileItem.getAccessToken()).execute();
+                    ProfileItem profileItem = StorageUtil.get().currentUser();
+                    if(profileItem!=null) {
+                        Audio.trackEventsAudioPlay(audioItem.getId(), audioItem.getOwnerId(),
+                                audioItem.getDuration(), profileItem.getAccessToken()).execute();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -610,7 +613,7 @@ public class AudioPlayerService extends Service implements ExoPlayer.Listener, A
 
     @Override
     public void onPlayerError(@NonNull PlaybackException error) {
-        Log.d("MIRACLE_PLAYER","error: "+error.getErrorCodeName());
+        Log.d(LOG_TAG,"error: "+error.getErrorCodeName());
 
         if(error.errorCode==PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED||
                 error.errorCode==PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT){

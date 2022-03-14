@@ -1,6 +1,5 @@
 package com.vkontakte.miracle.login;
 
-import static com.vkontakte.miracle.engine.util.LogTags.LOGIN_TAG;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.CheckConnection;
 
 import android.util.Log;
@@ -10,10 +9,9 @@ import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.engine.util.UserDataUtil;
 import com.vkontakte.miracle.model.users.ProfileItem;
 
-import java.util.ArrayList;
-
 public class UpdateCurrentUserData extends AsyncExecutor<Boolean> {
 
+    public static final String LOGIN_TAG = "UpdateCurrentUserData";
     private ProfileItem profileItemNew;
     private final onCompleteListener onCompleteListener;
 
@@ -32,24 +30,25 @@ public class UpdateCurrentUserData extends AsyncExecutor<Boolean> {
 
             CheckConnection(3500);
 
-            ArrayList<ProfileItem> profileItems = StorageUtil.get().loadUsers();
+            ProfileItem profileItemOld = StorageUtil.get().currentUser();
 
-            ProfileItem profileItemOld = profileItems.get(0);
+            if (profileItemOld != null){
 
-            profileItemNew = UserDataUtil.downloadUserData(profileItemOld.getId(), profileItemOld.getAccessToken());
+                profileItemNew = UserDataUtil.downloadUserData(profileItemOld.getId(), profileItemOld.getAccessToken());
 
-            boolean hasChanges = !profileItemNew.getPhoto200().equals(profileItemOld.getPhoto200())||
-                    !profileItemNew.getFullName().equals(profileItemOld.getFullName())||
-                    !profileItemNew.getStatus().equals(profileItemOld.getStatus())||
-                    profileItemNew.isOnline()!=profileItemOld.isOnline()||
-                    profileItemNew.getLastSeen().getPlatform()!=profileItemOld.getLastSeen().getPlatform()||
-                    profileItemNew.getLastSeen().getTime()!=profileItemOld.getLastSeen().getTime();
+                boolean hasChanges = !profileItemNew.getPhoto200().equals(profileItemOld.getPhoto200()) ||
+                        !profileItemNew.getFullName().equals(profileItemOld.getFullName()) ||
+                        !profileItemNew.getStatus().equals(profileItemOld.getStatus()) ||
+                        profileItemNew.isOnline() != profileItemOld.isOnline() ||
+                        profileItemNew.getLastSeen().getPlatform() != profileItemOld.getLastSeen().getPlatform() ||
+                        profileItemNew.getLastSeen().getTime() != profileItemOld.getLastSeen().getTime();
 
-            if(hasChanges){
-                UserDataUtil.updateUserData(profileItemNew);
+                if (hasChanges) {
+                    UserDataUtil.updateUserData(profileItemNew);
+                }
+
+                return hasChanges;
             }
-
-            return hasChanges;
 
         } catch (Exception e) {
             String eString = e.toString();

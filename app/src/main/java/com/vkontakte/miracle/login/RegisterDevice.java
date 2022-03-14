@@ -1,7 +1,6 @@
 package com.vkontakte.miracle.login;
 
 import static com.vkontakte.miracle.engine.util.DeviceUtil.getDeviceId;
-import static com.vkontakte.miracle.engine.util.LogTags.LOGIN_TAG;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.CheckConnection;
 import static com.vkontakte.miracle.network.Constants.defaultHeaders;
 import static com.vkontakte.miracle.network.Constants.defaultRegisterDeviceFields;
@@ -21,6 +20,7 @@ import com.vkontakte.miracle.model.users.ProfileItem;
 
 public class RegisterDevice extends AsyncExecutor<Boolean> {
 
+    public static final String LOGIN_TAG = "RegisterDevice";
     private final AuthState authState;
     private final LoginActivity loginActivity;
 

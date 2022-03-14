@@ -2,7 +2,6 @@ package com.vkontakte.miracle.login;
 
 import static android.view.View.GONE;
 import static com.vkontakte.miracle.engine.util.DeviceUtil.getDeviceId;
-import static com.vkontakte.miracle.engine.util.LogTags.LOGIN_TAG;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.CheckConnection;
 import static com.vkontakte.miracle.network.Constants.defaultHeaders;
 import static com.vkontakte.miracle.network.Constants.defaultLoginFields;
@@ -25,7 +24,7 @@ import retrofit2.Response;
 
 public class Authentication extends AsyncExecutor<Boolean> {
 
-
+    public static final String LOGIN_TAG = "Authentication";
     private final LoginActivity loginActivity;
     private final AuthState authState;
 

@@ -252,7 +252,9 @@ public class PlayerServiceController {
                     try {
                         PlaylistItem playlistItem1 = new PlaylistItem(playlistItem);
                         loadAudiosToPlaylist(playlistItem1);
-                        return new AudioPlayerData(playlistItem1.getItems().get(0));
+                        if(!playlistItem1.getItems().isEmpty()) {
+                            return new AudioPlayerData(playlistItem1.getItems().get(0));
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -261,7 +263,9 @@ public class PlayerServiceController {
 
                 @Override
                 public void onExecute(AudioPlayerData audioPlayerData) {
-                    setPlayNext(audioPlayerData);
+                    if(audioPlayerData!=null) {
+                        setPlayNext(audioPlayerData);
+                    }
                 }
             }.start();
         } else {
@@ -271,22 +275,24 @@ public class PlayerServiceController {
 
     private void loadAudiosToPlaylist(PlaylistItem playlistItem) throws Exception{
         ProfileItem profileItem = StorageUtil.get().currentUser();
-        Response<JSONObject> response = Execute.getPlaylist(playlistItem.getOwnerId(),
-                playlistItem.getId(), false, playlistItem.getItems().size(),
-                Math.min(25,playlistItem.getCount()), playlistItem.getAccessKey(),
-                profileItem.getAccessToken()).execute();
-        JSONObject jo_response = validateBody(response).getJSONObject("response");
+        if(profileItem!=null) {
+            Response<JSONObject> response = Execute.getPlaylist(playlistItem.getOwnerId(),
+                    playlistItem.getId(), false, playlistItem.getItems().size(),
+                    Math.min(25, playlistItem.getCount()), playlistItem.getAccessKey(),
+                    profileItem.getAccessToken()).execute();
+            JSONObject jo_response = validateBody(response).getJSONObject("response");
 
-        JSONArray items = jo_response.getJSONArray("audios");
+            JSONArray items = jo_response.getJSONArray("audios");
 
-        ArrayList<ItemDataHolder> audioItems = new ArrayList<>();
-        for (int i = 0; i < items.length(); i++) {
-            JSONObject jo_item = items.getJSONObject(i);
-            AudioItem audioItem = new AudioItem(jo_item);
-            audioItem.setPlaylistItem(playlistItem);
-            audioItems.add(audioItem);
+            ArrayList<ItemDataHolder> audioItems = new ArrayList<>();
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject jo_item = items.getJSONObject(i);
+                AudioItem audioItem = new AudioItem(jo_item);
+                audioItem.setPlaylistItem(playlistItem);
+                audioItems.add(audioItem);
+            }
+            playlistItem.getItems().addAll(audioItems);
         }
-        playlistItem.getItems().addAll(audioItems);
     }
 
     public void actionPrevious(){

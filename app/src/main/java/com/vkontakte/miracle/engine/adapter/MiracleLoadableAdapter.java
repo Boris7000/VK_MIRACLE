@@ -1,12 +1,12 @@
 package com.vkontakte.miracle.engine.adapter;
 
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_LOADING;
-import static com.vkontakte.miracle.engine.util.LogTags.ADAPTER_TAG;
 
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.ViewGroup;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -66,12 +66,12 @@ public abstract class MiracleLoadableAdapter extends MiracleAdapter implements I
                     @Override
                     public void onExecute(Boolean object) {
                         if(object){
-                            Log.d(ADAPTER_TAG, "successful loading");
+                            Log.d(LOG_TAG, "successful loading");
                             hasError = false;
                             MiracleLoadableAdapter.this.onComplete();
                         }else {
                             if (!detached) {
-                                Log.d(ADAPTER_TAG, error);
+                                Log.d(LOG_TAG, error);
 
                                 hasError = true;
                                 finallyLoaded = true;
@@ -212,6 +212,7 @@ public abstract class MiracleLoadableAdapter extends MiracleAdapter implements I
         }
     }
 
+    @CallSuper
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
@@ -236,6 +237,7 @@ public abstract class MiracleLoadableAdapter extends MiracleAdapter implements I
         super.onDetachedFromRecyclerView(recyclerView);
     }
 
+
     @Override
     public void onComplete() {
         if (!hasData) {
@@ -252,6 +254,7 @@ public abstract class MiracleLoadableAdapter extends MiracleAdapter implements I
         }
     }
 
+    @CallSuper
     @Override
     public void ini() {
         viewHolderFabricMap = getViewHolderFabricMap();

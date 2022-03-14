@@ -4,9 +4,7 @@ import static com.vkontakte.miracle.engine.util.ColorUtil.getColorByAttributeId;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.openURLInBrowser;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.TypedArray;
-import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -14,7 +12,6 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.CharacterStyle;
 import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.vkontakte.miracle.R;
@@ -26,7 +23,7 @@ import java.util.regex.Pattern;
 
 public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView {
 
-    private List<Character> mAdditionalHashTagChars;
+    private List<Character> mAdditionalHashTagChars = new ArrayList<>();
     private OnHashTagClickListener onHashTagClickListener;
     private OnOwnerClickListener onOwnerClickListener;
     private OnTopicClickListener onTopicClickListener;
@@ -39,16 +36,17 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
     private static final Pattern topicCommentPattern = Pattern.compile("\\[(id|club)(\\d*):bp(-\\d*)_(\\d*)\\|([^]]+)]");
     private static final Pattern otherLinkPattern = Pattern.compile("\\[(https:[^]]+)\\|([^]]+)]");
 
+    {
+        this.mAdditionalHashTagChars.add('_');
+        this.mAdditionalHashTagChars.add('@');
+    }
+
     public MiracleTextView(Context context) {
         this(context, null);
     }
 
     public MiracleTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        this.mAdditionalHashTagChars = new ArrayList<>();
-        this.mAdditionalHashTagChars.add('_');
-        this.mAdditionalHashTagChars.add('@');
 
         if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MiracleTextView);
@@ -69,7 +67,6 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
 
     private void setColorForHashTagToTheEnd(Spannable originalText, int startIndex, int nextNotLetterDigitCharIndex) {
         CharacterStyle span = new ClickableForegroundColorSpan(highlightColor, s -> {
-            Log.d("rijgijrgjrigj",s);
             if(onHashTagClickListener!=null){
                 onHashTagClickListener.onHashTagClicked(s);
             }
@@ -80,7 +77,6 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
 
     private void setColorForOwner(Spannable originalText, OwnerLink link) {
         CharacterStyle span = new ClickableForegroundColorSpan(highlightColor, s -> {
-            Log.d("rijgijrgjrigj",link.ownerId);
             if(onOwnerClickListener!=null){
                 onOwnerClickListener.onOwnerLinkClicked(link);
             }
@@ -90,7 +86,6 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
 
     private void setColorForTopic(Spannable originalText, TopicLink link) {
         CharacterStyle span = new ClickableForegroundColorSpan(highlightColor, s -> {
-            Log.d("rijgijrgjrigj",link.replyToOwner);
             if(onTopicClickListener!=null){
                 onTopicClickListener.onTopicClicked(link);
             }
@@ -100,7 +95,6 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
 
     private void setColorForOther(Spannable originalText, OtherLink link) {
         CharacterStyle span = new ClickableForegroundColorSpan(highlightColor, s -> {
-            Log.d("rijgijrgjrigj",link.Link);
             if(onOtherClickListener!=null){
                 onOtherClickListener.onOtherClicked(link);
             }
@@ -189,7 +183,6 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
 
         while (m.find()) {
             ClickableSpan span = new ClickableForegroundColorSpan(highlightColor, s -> {
-                Log.d("rijgijrgjrigj",s);
                 if(onURLClickListener!=null){
                     onURLClickListener.onURLClicked(s);
                 } else {

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.longpoll.model.MessageAddedUpdate;
@@ -20,8 +21,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import static com.vkontakte.miracle.engine.util.LogTags.STORAGE_TAG;
-
 public class StorageUtil {
 
     public static final String CACHES_NAME = "Caches_%1$s";
@@ -34,16 +33,28 @@ public class StorageUtil {
     public static final String MESSAGE_ADDED_LONG_POLL_UPDATES_NAME = "messageAddedLongPollUpdates.ser";
     public static final String MESSAGE_READ_LONG_POLL_UPDATES_NAME = "messageReadLongPollUpdates.ser";
 
+    private final String LOG_TAG = "StorageUtil";
 
     private static StorageUtil instance;
+    private ProfileItem currentUser;
 
     public StorageUtil(){
         instance = this;
+        updateCurrentUser();
     }
 
     public static StorageUtil getInstance(){
         return new StorageUtil();
     }
+
+    public static StorageUtil get(){
+        if (null == instance){
+            instance = StorageUtil.getInstance();
+        }
+        return instance;
+    }
+
+    ////////////////////////////////////////////////////
 
     public void initializePublicDirectories(){
         File cachesDir = createNewDirectory(CACHES_NAME_PUBLIC,MiracleApp.getInstance().getFilesDir());
@@ -51,7 +62,6 @@ public class StorageUtil {
     }
 
     public void initializeDirectories(){
-
         File cachesDir = createNewDirectory(getCurrentUserCachesPath(),MiracleApp.getInstance().getFilesDir());
 
         createNewFile(SONGS_NAME, cachesDir);
@@ -65,32 +75,12 @@ public class StorageUtil {
         createNewFile(MESSAGE_READ_LONG_POLL_UPDATES_NAME,cachesDir);
     }
 
-    private String getCurrentUserCachesPath(){
-        return getUserCachesPath(currentUser());
-    }
-
-    public String getUserCachesPath(ProfileItem profileItem){
-        return String.format(Locale.getDefault(), CACHES_NAME, profileItem.getId());
-    }
-
-    private File getCurrentUserCachesDir(){
-        return new File(MiracleApp.getInstance().getFilesDir(), getCurrentUserCachesPath());
-    }
-
-    public File getUserCachesDir(ProfileItem profileItem){
-        return new File(MiracleApp.getInstance().getFilesDir(), getUserCachesPath(profileItem));
-    }
-
-    private File getPublicCachesDir(){
-        return new File(MiracleApp.getInstance().getFilesDir(), CACHES_NAME_PUBLIC);
-    }
-
     private File createNewFile(String name, File parent){
         File file = new File(parent,name);
         if(!file.exists()) {
             try {
                 if (file.createNewFile()) {
-                    Log.d(STORAGE_TAG, name+" created");
+                    Log.d(LOG_TAG, "Created file "+file.getAbsolutePath());
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -103,203 +93,225 @@ public class StorageUtil {
         File file = new File(parent,name);
         if(!file.exists()) {
             if (file.mkdir()) {
-                Log.d(STORAGE_TAG, name+" created");
+                Log.d(LOG_TAG, "Created directory "+file.getAbsolutePath());
             }
         }
         return file;
     }
 
+    ////////////////////////////////////////////////////
+
+    @Nullable
+    private String getCurrentUserCachesPath(){
+        return getUserCachesPath(currentUser());
+    }
+
+    @Nullable
+    public String getUserCachesPath(@Nullable ProfileItem profileItem){
+        if(profileItem==null){
+            return null;
+        } else {
+            return String.format(Locale.getDefault(), CACHES_NAME, profileItem.getId());
+        }
+    }
+
+    @Nullable
+    private File getCurrentUserCachesDir(){
+        String currentUserCachesPath = getCurrentUserCachesPath();
+        if(currentUserCachesPath==null){
+            return null;
+        } else {
+            return new File(MiracleApp.getInstance().getFilesDir(), currentUserCachesPath);
+        }
+    }
+
+    @Nullable
+    public File getUserCachesDir(@Nullable ProfileItem profileItem){
+        String userCachesPath = getUserCachesPath(profileItem);
+        if(userCachesPath==null){
+          return null;
+        } else {
+            return new File(MiracleApp.getInstance().getFilesDir(), userCachesPath);
+        }
+    }
+
+    @NonNull
+    private File getPublicCachesDir(){
+        return new File(MiracleApp.getInstance().getFilesDir(), CACHES_NAME_PUBLIC);
+    }
+
+    ////////////////////////////////////////////////////
+
+    @Nullable
     private ObjectOutputStream getOutputStream(String filename) throws IOException {
-        return getOutputStream(filename, getCurrentUserCachesDir());
+        File currentUserCachesDir = getCurrentUserCachesDir();
+        if(currentUserCachesDir==null){
+            return null;
+        } else {
+            return getOutputStream(filename, currentUserCachesDir);
+        }
     }
 
+    @Nullable
     private ObjectInputStream getInputStream(String filename) throws IOException {
-        return getInputStream(filename,getCurrentUserCachesDir());
+        File currentUserCachesDir = getCurrentUserCachesDir();
+        if(currentUserCachesDir==null){
+            return null;
+        } else {
+            return getInputStream(filename,currentUserCachesDir);
+        }
     }
 
-    private ObjectOutputStream getOutputStream(String filename, File parent) throws IOException {
-        FileOutputStream fileOutputStream = new FileOutputStream(new File(parent,filename));
-        return new ObjectOutputStream(fileOutputStream);
+    @Nullable
+    private ObjectOutputStream getOutputStream(@Nullable String filename, @Nullable File parent) throws IOException {
+        if(filename==null||parent==null){
+            return null;
+        } else {
+            FileOutputStream fileOutputStream = new FileOutputStream(new File(parent,filename));
+            return new ObjectOutputStream(fileOutputStream);
+        }
     }
 
-    private ObjectInputStream getInputStream(String filename, File parent) throws IOException {
-        FileInputStream streamIn = new FileInputStream(new File(parent,filename));
-        return new ObjectInputStream(streamIn);
+    @Nullable
+    private ObjectInputStream getInputStream(@Nullable String filename, @Nullable File parent) throws IOException {
+        if(filename==null||parent==null){
+            return null;
+        } else {
+            FileInputStream fileInputStream = new FileInputStream(new File(parent, filename));
+            return new ObjectInputStream(fileInputStream);
+        }
+    }
+
+    ////////////////////////////////////////////////////
+
+    public void updateCurrentUser(){
+        currentUser = loadCurrentUser();
+    }
+
+    @Nullable
+    public ProfileItem loadCurrentUser(){
+        ArrayList<ProfileItem> profileItems = loadUsers();
+        if(profileItems.isEmpty()){
+            return null;
+        } else {
+            return profileItems.get(0);
+        }
     }
 
     @NonNull
     public ArrayList<ProfileItem> loadUsers(){
-
-        ObjectInputStream objectInputStream = null;
-
-        try {
-            objectInputStream = getInputStream(USERS_NAME, getPublicCachesDir());
-            ArrayList<?> objects = (ArrayList<?>) objectInputStream.readObject();
-            objectInputStream.close();
-            if(objects==null) objects = new ArrayList<>();
-
-            ArrayList<ProfileItem> profileItems = new ArrayList<>();
-            for (Object o:objects){
-                profileItems.add((ProfileItem) o);
-            }
-            return profileItems;
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            if (objectInputStream != null) {
-                try {
-                    objectInputStream.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-            return new ArrayList<>();
-        }
-
+        return new ArrayListReader<ProfileItem>().read(USERS_NAME, getPublicCachesDir(), object -> (ProfileItem) object);
     }
 
+    @Nullable
     public ProfileItem currentUser(){
-        return loadUsers().get(0);
+        return currentUser;
     }
 
     public void saveUsers(ArrayList<ProfileItem> profileItems){
-        ObjectOutputStream fileOutputStream = null;
-        try {
-            fileOutputStream = getOutputStream(USERS_NAME, getPublicCachesDir());
-            fileOutputStream.writeObject(profileItems);
-            fileOutputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            if (fileOutputStream != null) {
-                try {
-                    fileOutputStream.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        }
+        writeObject(USERS_NAME, getPublicCachesDir(), profileItems);
+        updateCurrentUser();
     }
 
-    public void saveBitmap(Bitmap bitmap, String name){
-        File cachesDir = getCurrentUserCachesDir();
-        File imagesDir = new File(cachesDir, IMAGES_NAME);
-        File imageFile = new File(imagesDir, name);
+    ////////////////////////////////////////////////////
 
-        if(!imageFile.exists()) {
-            try {
-                if (imageFile.createNewFile()) {
-                    Log.d(STORAGE_TAG, name+" created");
+    public void saveBitmap(Bitmap bitmap, @Nullable String name){
+
+        if(name!=null) {
+            File cachesDir = getCurrentUserCachesDir();
+            File imagesDir = new File(cachesDir, IMAGES_NAME);
+            File imageFile = new File(imagesDir, name);
+
+            if (!imageFile.exists()) {
+                try {
+                    if (imageFile.createNewFile()) {
+                        Log.d(LOG_TAG, "Created file "+imageFile.getAbsolutePath());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
                 }
+            }
+
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(imageFile);
+
+                bitmap.compress(Bitmap.CompressFormat.PNG, Bitmap.CompressFormat.PNG.ordinal(), fos);
+
+                fos.close();
             } catch (IOException e) {
                 e.printStackTrace();
-                return;
-            }
-        }
-
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(imageFile);
-
-            bitmap.compress(Bitmap.CompressFormat.PNG, Bitmap.CompressFormat.PNG.ordinal(), fos);
-
-            fos.close();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
+                if (fos != null) {
+                    try {
+                        fos.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
         }
 
     }
 
-    public Bitmap loadBitmap(String path){
+    @Nullable
+    public Bitmap loadBitmap(@Nullable String path){
         return loadBitmap(path,getCurrentUserCachesDir());
     }
 
-    public Bitmap loadBitmap(String path, File parent){
-        File imagesDir = new File(parent, IMAGES_NAME);
-        File imageFile = new File(imagesDir, path);
-        return BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+    @Nullable
+    public Bitmap loadBitmap(@Nullable String path, @Nullable File parent){
+        if(path==null||parent==null) {
+            return null;
+        } else {
+            File imagesDir = new File(parent, IMAGES_NAME);
+            File imageFile = new File(imagesDir, path);
+            return BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+        }
     }
 
-    public void removeBitmap(String path){
+    public void removeBitmap(@Nullable String path){
         removeBitmap(path, getCurrentUserCachesDir());
     }
 
     public void removeBitmap(String path, File parent){
-        File imagesDir = new File(parent, IMAGES_NAME);
-        File imageFile = new File(imagesDir, path);
-        if(imageFile.exists()){
-            if (imageFile.delete()) {
-                Log.d(STORAGE_TAG, path+" deleted");
-            }
-        }
-    }
-
-    public boolean removeDirectory(File file){
-        File[] contents = file.listFiles();
-        if (contents != null) {
-            for (File f : contents) {
-                removeDirectory(f);
-            }
-        }
-        return file.delete();
-    }
-
-    @NonNull
-    public ArrayList<MessageAddedUpdate> loadMessageAddedLongPollUpdates(){
-        return loadMessageAddedLongPollUpdates(currentUser());
-    }
-
-    @NonNull
-    public ArrayList<MessageAddedUpdate> loadMessageAddedLongPollUpdates(ProfileItem profileItem){
-
-        ObjectInputStream objectInputStream = null;
-
-        try {
-            objectInputStream = getInputStream(MESSAGE_ADDED_LONG_POLL_UPDATES_NAME, getUserCachesDir(profileItem));
-            ArrayList<?> objects = (ArrayList<?>) objectInputStream.readObject();
-            objectInputStream.close();
-            if(objects==null) objects = new ArrayList<>();
-
-            ArrayList<MessageAddedUpdate> longPollUpdates = new ArrayList<>();
-            for (Object o:objects){
-                longPollUpdates.add((MessageAddedUpdate) o);
-            }
-            return longPollUpdates;
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            if (objectInputStream != null) {
-                try {
-                    objectInputStream.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
+        if(path!=null&&parent!=null) {
+            File imagesDir = new File(parent, IMAGES_NAME);
+            File imageFile = new File(imagesDir, path);
+            if (imageFile.exists()) {
+                if (imageFile.delete()) {
+                    Log.d(LOG_TAG, "Deleted file "+imageFile.getAbsolutePath());
                 }
             }
-            return new ArrayList<>();
         }
-
     }
 
-    public void writeMessageAddedLongPollUpdates(ArrayList<MessageAddedUpdate> longPollUpdates, ProfileItem profileItem){
-        ObjectOutputStream fileOutputStream = null;
+    ////////////////////////////////////////////////////
 
-        ArrayList<MessageAddedUpdate> previousLongPollUpdates = loadMessageAddedLongPollUpdates(profileItem);
-
-        if(previousLongPollUpdates.size()>=250||previousLongPollUpdates.size()+longPollUpdates.size()>250){
-            previousLongPollUpdates.subList(0, longPollUpdates.size()).clear();
+    public void removeDirectory(@Nullable File file){
+        if(file!=null) {
+            File[] contents = file.listFiles();
+            if (contents != null) {
+                for (File f : contents) {
+                    removeDirectory(f);
+                }
+            }
+            if(file.delete()){
+                Log.d(LOG_TAG, "Deleted "+file.getAbsolutePath());
+            } else {
+                Log.d(LOG_TAG, "Unable to delete "+file.getAbsolutePath());
+            }
         }
+    }
 
-        previousLongPollUpdates.addAll(longPollUpdates);
-
+    private void writeObject(String path, File parent, Object object){
+        ObjectOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = getOutputStream(MESSAGE_ADDED_LONG_POLL_UPDATES_NAME);
-            fileOutputStream.writeObject(previousLongPollUpdates);
-            fileOutputStream.close();
+            fileOutputStream = getOutputStream(path, parent);
+            if(fileOutputStream!=null) {
+                fileOutputStream.writeObject(object);
+                fileOutputStream.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
             if (fileOutputStream != null) {
@@ -310,75 +322,96 @@ public class StorageUtil {
                 }
             }
         }
+    }
+
+    private class ArrayListReader<T>{
+        private ArrayList<T> read(String path, File parent, AnonymousConverter<T> converter){
+            ObjectInputStream objectInputStream = null;
+            try {
+                objectInputStream = getInputStream(path, parent);
+                if(objectInputStream!=null) {
+                    ArrayList<?> objects = (ArrayList<?>) objectInputStream.readObject();
+                    objectInputStream.close();
+                    if (objects == null) {
+                        objects = new ArrayList<>();
+                    }
+                    ArrayList<T> items = new ArrayList<>();
+                    for (Object object : objects) {
+                        if(object!=null){
+                            items.add(converter.convert(object));
+                        }
+                    }
+                    return items;
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+                if (objectInputStream != null) {
+                    try {
+                        objectInputStream.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+            return new ArrayList<>();
+        }
+    }
+
+    private interface AnonymousConverter<T>{
+        T convert(Object object);
+    }
+
+    ////////////////////////////////////////////////////
+
+    @NonNull
+    public ArrayList<MessageAddedUpdate> loadMessageAddedLongPollUpdates(){
+        return loadMessageAddedLongPollUpdates(getCurrentUserCachesDir());
+    }
+
+    @NonNull
+    public ArrayList<MessageAddedUpdate> loadMessageAddedLongPollUpdates(File parent){
+        return new ArrayListReader<MessageAddedUpdate>()
+                .read(MESSAGE_ADDED_LONG_POLL_UPDATES_NAME, parent, object -> (MessageAddedUpdate) object);
+    }
+
+    public void writeMessageAddedLongPollUpdates(ArrayList<MessageAddedUpdate> longPollUpdates, File parent){
+
+
+        ArrayList<MessageAddedUpdate> previousLongPollUpdates = loadMessageAddedLongPollUpdates(parent);
+
+        if(previousLongPollUpdates.size()>=250||previousLongPollUpdates.size()+longPollUpdates.size()>250){
+            previousLongPollUpdates.subList(0, longPollUpdates.size()).clear();
+        }
+
+        previousLongPollUpdates.addAll(longPollUpdates);
+
+        writeObject(MESSAGE_ADDED_LONG_POLL_UPDATES_NAME, parent, longPollUpdates);
     }
 
     @NonNull
     public ArrayList<MessageReadUpdate> loadMessageReadLongPollUpdates(){
-        return loadMessageReadLongPollUpdates(currentUser());
+        return loadMessageReadLongPollUpdates(getCurrentUserCachesDir());
     }
 
     @NonNull
-    public ArrayList<MessageReadUpdate> loadMessageReadLongPollUpdates(ProfileItem profileItem){
-
-        ObjectInputStream objectInputStream = null;
-
-        try {
-            objectInputStream = getInputStream(MESSAGE_READ_LONG_POLL_UPDATES_NAME, getUserCachesDir(profileItem));
-            ArrayList<?> objects = (ArrayList<?>) objectInputStream.readObject();
-            objectInputStream.close();
-            if(objects==null) objects = new ArrayList<>();
-
-            ArrayList<MessageReadUpdate> longPollUpdates = new ArrayList<>();
-            for (Object o:objects){
-                longPollUpdates.add((MessageReadUpdate) o);
-            }
-            return longPollUpdates;
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            if (objectInputStream != null) {
-                try {
-                    objectInputStream.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-            return new ArrayList<>();
-        }
-
+    public ArrayList<MessageReadUpdate> loadMessageReadLongPollUpdates(File parent){
+        return new ArrayListReader<MessageReadUpdate>()
+                .read(MESSAGE_READ_LONG_POLL_UPDATES_NAME, parent, object -> (MessageReadUpdate) object);
     }
 
-    public void writeMessageReadLongPollUpdates(ArrayList<MessageReadUpdate> longPollUpdates, ProfileItem profileItem){
-        ObjectOutputStream fileOutputStream = null;
+    public void writeMessageReadLongPollUpdates(ArrayList<MessageReadUpdate> longPollUpdates, File parent){
 
-        ArrayList<MessageReadUpdate> previousLongPollUpdates = loadMessageReadLongPollUpdates(profileItem);
+        ArrayList<MessageReadUpdate> previousLongPollUpdates = loadMessageReadLongPollUpdates(parent);
 
-        if(previousLongPollUpdates.size()>=250||previousLongPollUpdates.size()+longPollUpdates.size()>250){
+        if(previousLongPollUpdates.size()>=250||previousLongPollUpdates.size()+longPollUpdates.size()>250) {
             previousLongPollUpdates.subList(0, longPollUpdates.size()).clear();
         }
 
         previousLongPollUpdates.addAll(longPollUpdates);
 
-        try {
-            fileOutputStream = getOutputStream(MESSAGE_READ_LONG_POLL_UPDATES_NAME);
-            fileOutputStream.writeObject(previousLongPollUpdates);
-            fileOutputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            if (fileOutputStream != null) {
-                try {
-                    fileOutputStream.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        }
+        writeObject(MESSAGE_READ_LONG_POLL_UPDATES_NAME, parent, previousLongPollUpdates);
+
     }
 
-    public static StorageUtil get(){
-        if (null == instance){
-            instance = StorageUtil.getInstance();
-        }
-        return instance;
-    }
 
 }

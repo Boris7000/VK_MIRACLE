@@ -5,6 +5,9 @@ import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.network.methods.Users;
 
@@ -18,7 +21,7 @@ import retrofit2.Response;
 
 public class UserDataUtil {
 
-    public static void updateUserData(ProfileItem profileItem) throws Exception {
+    public static void updateUserData(@NonNull ProfileItem profileItem) throws Exception {
 
         StorageUtil storageUtil = StorageUtil.get();
 
@@ -45,6 +48,7 @@ public class UserDataUtil {
         }
     }
 
+    @NonNull
     public static ProfileItem downloadUserData(String user_id, String accessToken) throws Exception {
         Response<JSONObject> response = Users.get(user_id, "photo_200,photo_100,online,last_seen,status",accessToken).execute();
 

@@ -9,6 +9,7 @@ import android.os.IBinder;
 import androidx.collection.ArrayMap;
 
 import com.vkontakte.miracle.MiracleApp;
+import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageAddedUpdateListener;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageReadUpdateListener;
 import com.vkontakte.miracle.longpoll.listeners.OnMessageTypingUpdateListener;
@@ -74,25 +75,28 @@ public class LongPollServiceController {
     }
 
     public void startExecuting(){
-        if (longPollService==null||longPollService.isDestroyed()) {
-            MiracleApp miracleApp = MiracleApp.getInstance();
-            Intent intent = new Intent(miracleApp, LongPollService.class);
-            //Check is service is active
-            miracleApp.startService(intent);
-            miracleApp.bindService(intent, new ServiceConnection() {
-                @Override
-                public void onServiceConnected(ComponentName name, IBinder binder) {
-                    longPollService = ((LongPollServiceBinder) binder).getService();
-                    if (longPollService != null) {
-                        longPollService.startExecuting();
+        if(StorageUtil.get().currentUser()!=null) {
+            if (longPollService == null || longPollService.isDestroyed()) {
+                MiracleApp miracleApp = MiracleApp.getInstance();
+                Intent intent = new Intent(miracleApp, LongPollService.class);
+                //Check is service is active
+                miracleApp.startService(intent);
+                miracleApp.bindService(intent, new ServiceConnection() {
+                    @Override
+                    public void onServiceConnected(ComponentName name, IBinder binder) {
+                        longPollService = ((LongPollServiceBinder) binder).getService();
+                        if (longPollService != null) {
+                            longPollService.startExecuting();
+                        }
                     }
-                }
-                @Override
-                public void onServiceDisconnected(ComponentName name) {
-                    longPollService = null;
-                }
 
-            }, Context.BIND_ABOVE_CLIENT);
+                    @Override
+                    public void onServiceDisconnected(ComponentName name) {
+                        longPollService = null;
+                    }
+
+                }, Context.BIND_ABOVE_CLIENT);
+            }
         }
     }
 

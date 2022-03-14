@@ -1,9 +1,13 @@
 package com.vkontakte.miracle;
 
+import static android.content.res.Configuration.UI_MODE_NIGHT_MASK;
+import static android.content.res.Configuration.UI_MODE_NIGHT_YES;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 
 import android.app.Application;
+import android.content.res.Configuration;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -35,15 +39,19 @@ public class MiracleApp extends Application {
 
         iniFirebaseApp();
 
-        StorageUtil.getInstance();
-
         SettingsUtil settingsUtil = SettingsUtil.getInstance();
+
+        StorageUtil.getInstance();
 
         LargeDataStorage.getInstance();
 
         int currentNightMode = settingsUtil.nightMode();
 
-        nightMode = currentNightMode==MODE_NIGHT_YES;
+        if(currentNightMode==MODE_NIGHT_FOLLOW_SYSTEM){
+            nightMode = (getResources().getConfiguration().uiMode & UI_MODE_NIGHT_MASK) == UI_MODE_NIGHT_YES;
+        } else {
+            nightMode = currentNightMode==MODE_NIGHT_YES;
+        }
 
         AppCompatDelegate.setDefaultNightMode(currentNightMode);
 
@@ -57,9 +65,7 @@ public class MiracleApp extends Application {
         ProcessLifecycleOwner.get().getLifecycle().addObserver(new DefaultLifecycleObserver(){
             @Override
             public void onResume(@NonNull LifecycleOwner owner) {
-                if(settingsUtil.authorized()) {
-                    LongPollServiceController.get().startExecuting();
-                }
+                LongPollServiceController.get().startExecuting();
             }
 
             @Override
@@ -93,10 +99,10 @@ public class MiracleApp extends Application {
 
     public void changeNightMode(boolean nightMode){
         if(this.nightMode!=nightMode) {
-            int MODE_NIGHT = nightMode?MODE_NIGHT_YES:MODE_NIGHT_NO;
-            SettingsUtil.get().storeNightMode(MODE_NIGHT);
+            int NIGHT_MODE = nightMode?MODE_NIGHT_YES:MODE_NIGHT_NO;
+            SettingsUtil.get().storeNightMode(NIGHT_MODE);
             this.nightMode = nightMode;
-            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT);
+            AppCompatDelegate.setDefaultNightMode(NIGHT_MODE);
         }
     }
 

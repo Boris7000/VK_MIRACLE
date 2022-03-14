@@ -1,6 +1,5 @@
 package com.vkontakte.miracle.login;
 
-import static com.vkontakte.miracle.engine.util.LogTags.LOGIN_TAG;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.CheckConnection;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 import static com.vkontakte.miracle.network.Constants.defaultHeaders;
@@ -19,6 +18,7 @@ import retrofit2.Response;
 
 public class TokenRefresh extends AsyncExecutor<Boolean> {
 
+    public static final String LOGIN_TAG = "RegisterDevice";
     private final LoginActivity loginActivity;
     private final AuthState authState;
 

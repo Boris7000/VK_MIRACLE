@@ -59,7 +59,6 @@ public class FragmentMenu extends SimpleMiracleFragment {
 
         UpdateCurrentUserData.onCompleteListener onCompleteListener = (profileItem, hasChanges) -> {
             getSwipeRefreshLayout().setRefreshing(false);
-
             if(hasChanges){
                 miracleActivity.setUserItem(profileItem);
                 setParameters();
