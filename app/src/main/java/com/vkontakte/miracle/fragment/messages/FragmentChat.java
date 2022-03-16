@@ -714,18 +714,13 @@ public class FragmentChat extends SimpleMiracleFragment {
 
         ChatAdapter chatAdapter = (ChatAdapter) adapter;
 
-        chatAdapter.setMessageAddedListener(new OnMessageAddedListener() {
+        chatAdapter.setMessageAddedListener(messageItem -> addTask(new Task() {
             @Override
-            public void onMessageAdded(MessageItem messageItem) {
-                addTask(new Task() {
-                    @Override
-                    public void func() {
-                        updateConversationLastMessage(messageItem);
-                        onComplete();
-                    }
-                });
+            public void func() {
+                updateConversationLastMessage(messageItem);
+                onComplete();
             }
-        });
+        }));
     }
 
     private class MessageTypingUpdates extends AsyncExecutor<Boolean> {
