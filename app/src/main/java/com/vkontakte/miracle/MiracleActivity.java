@@ -140,23 +140,18 @@ public class MiracleActivity extends AppCompatActivity {
 
         iniWindowInsets();
 
-        iniPlayerThings(savedInstanceState);
+        iniPlayerBottomSheetBehavior(savedInstanceState);
 
         iniFragmentController(savedInstanceState);
     }
 
     private void iniWindowInsets(){
-
         ViewCompat.setOnApplyWindowInsetsListener(getWindow().getDecorView(), (v, windowInsets) -> {
-
             this.windowInsets = windowInsets;
-
             updateInsets();
-
             for (OnApplyWindowInsetsListener a : onApplyWindowInsetsListeners) {
                 a.onApplyWindowInsets(v,windowInsets);
             }
-
             return windowInsets;
         });
     }
@@ -274,6 +269,107 @@ public class MiracleActivity extends AppCompatActivity {
 
         playerBar.setOnClickListener(view -> playerBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED));
 
+    }
+
+    private void iniPlayerBottomSheetBehavior(Bundle savedInstanceState){
+
+        playerBottomSheetStub = rootView.findViewById(R.id.playerBottomSheetStub);
+        playerBottomSheetBehavior = BottomSheetBehavior.from(playerBottomSheetStub);
+        playerBottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                    case BottomSheetBehavior.STATE_DRAGGING:
+                    case BottomSheetBehavior.STATE_HALF_EXPANDED:
+                    case BottomSheetBehavior.STATE_SETTLING: {
+                        break;
+                    }
+                    case BottomSheetBehavior.STATE_EXPANDED:{
+                        if(!miracleApp.nightMode()) {
+                            clearLightStatusBar(getWindow().getDecorView());
+                        }
+                        if(viewPager2.getVisibility()!=View.VISIBLE) {
+                            viewPager2.setVisibility(View.VISIBLE);
+                        }
+                        viewPager2.setAlpha(1);
+                        if(bottomNavigationMenu.getVisibility()!=View.GONE) {
+                            bottomNavigationMenu.setVisibility(View.GONE);
+
+                        }
+                        if(playerBar.getVisibility()!=View.GONE) {
+                            playerBar.setVisibility(View.GONE);
+
+                        }
+                        playerBar.setAlpha(0);
+                        bottomNavigationMenu.setAlpha(0);
+                        break;
+                    }
+                    case BottomSheetBehavior.STATE_COLLAPSED:{
+                        if(!miracleApp.nightMode()) {
+                            setLightStatusBar(getWindow().getDecorView());
+                        }
+                        if(viewPager2.getVisibility()!=View.GONE) {
+                            viewPager2.setVisibility(View.GONE);
+                        }
+                        viewPager2.setAlpha(0);
+                        viewPager2.setCurrentItem(0,false);
+                        if(bottomNavigationMenu.getVisibility()!=View.VISIBLE) {
+                            bottomNavigationMenu.setVisibility(View.VISIBLE);
+
+                        }
+                        bottomNavigationMenu.setAlpha(1);
+                        if(playerBar.getVisibility()!=View.VISIBLE) {
+                            playerBar.setVisibility(View.VISIBLE);
+
+                        }
+                        playerBar.setAlpha(1);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                float alpha = 1f-slideOffset;
+
+                if(alpha>0){
+                    if(bottomNavigationMenu.getVisibility()!=View.VISIBLE) {
+                        bottomNavigationMenu.setVisibility(View.VISIBLE);
+                    }
+                    if(playerBar.getVisibility()!=View.VISIBLE) {
+                        playerBar.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                if(slideOffset>0){
+                    if(viewPager2.getVisibility()!=View.VISIBLE) {
+                        viewPager2.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                playerBar.setAlpha(alpha);
+                bottomNavigationMenu.setAlpha(alpha);
+                viewPager2.setAlpha(slideOffset);
+            }
+        });
+
+        if(getIntent().getBooleanExtra("PlayerBottomSheetExpanded",false)){
+            playerBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        }
+        getIntent().removeExtra("PlayerBottomSheetExpanded");
+
+        if(savedInstanceState!=null) {
+            if (!savedInstanceState.isEmpty()) {
+                int state = savedInstanceState.getInt("playerSheetBehaviorState", -1);
+                if(state>0) {
+                    playerBottomSheetBehavior.setState(state);
+                    savedInstanceState.remove("playerSheetBehaviorState");
+                }
+            }
+        }
+
+        playerServiceController.addOnPlayerEventListener(onPlayerEventListener);
     }
 
     public void addFragment(MiracleFragment fragment){
@@ -433,107 +529,6 @@ public class MiracleActivity extends AppCompatActivity {
         startActivity(intent,bundle);
         finish();
         overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-    }
-
-    public void iniPlayerThings(Bundle savedInstanceState){
-
-        playerBottomSheetStub = rootView.findViewById(R.id.playerBottomSheetStub);
-        playerBottomSheetBehavior = BottomSheetBehavior.from(playerBottomSheetStub);
-        playerBottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                switch (newState) {
-                    case BottomSheetBehavior.STATE_HIDDEN:
-                    case BottomSheetBehavior.STATE_DRAGGING:
-                    case BottomSheetBehavior.STATE_HALF_EXPANDED:
-                    case BottomSheetBehavior.STATE_SETTLING: {
-                        break;
-                    }
-                    case BottomSheetBehavior.STATE_EXPANDED:{
-                        if(!miracleApp.nightMode()) {
-                            clearLightStatusBar(getWindow().getDecorView());
-                        }
-                        if(viewPager2.getVisibility()!=View.VISIBLE) {
-                            viewPager2.setVisibility(View.VISIBLE);
-                        }
-                        viewPager2.setAlpha(1);
-                        if(bottomNavigationMenu.getVisibility()!=View.GONE) {
-                            bottomNavigationMenu.setVisibility(View.GONE);
-
-                        }
-                        if(playerBar.getVisibility()!=View.GONE) {
-                            playerBar.setVisibility(View.GONE);
-
-                        }
-                        playerBar.setAlpha(0);
-                        bottomNavigationMenu.setAlpha(0);
-                        break;
-                    }
-                    case BottomSheetBehavior.STATE_COLLAPSED:{
-                        if(!miracleApp.nightMode()) {
-                            setLightStatusBar(getWindow().getDecorView());
-                        }
-                        if(viewPager2.getVisibility()!=View.GONE) {
-                            viewPager2.setVisibility(View.GONE);
-                        }
-                        viewPager2.setAlpha(0);
-                        viewPager2.setCurrentItem(0,false);
-                        if(bottomNavigationMenu.getVisibility()!=View.VISIBLE) {
-                            bottomNavigationMenu.setVisibility(View.VISIBLE);
-
-                        }
-                        bottomNavigationMenu.setAlpha(1);
-                        if(playerBar.getVisibility()!=View.VISIBLE) {
-                            playerBar.setVisibility(View.VISIBLE);
-
-                        }
-                        playerBar.setAlpha(1);
-                        break;
-                    }
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                float alpha = 1f-slideOffset;
-
-                if(alpha>0){
-                    if(bottomNavigationMenu.getVisibility()!=View.VISIBLE) {
-                        bottomNavigationMenu.setVisibility(View.VISIBLE);
-                    }
-                    if(playerBar.getVisibility()!=View.VISIBLE) {
-                        playerBar.setVisibility(View.VISIBLE);
-                    }
-                }
-
-                if(slideOffset>0){
-                    if(viewPager2.getVisibility()!=View.VISIBLE) {
-                        viewPager2.setVisibility(View.VISIBLE);
-                    }
-                }
-
-                playerBar.setAlpha(alpha);
-                bottomNavigationMenu.setAlpha(alpha);
-                viewPager2.setAlpha(slideOffset);
-            }
-        });
-
-        if(getIntent().getBooleanExtra("PlayerBottomSheetExpanded",false)){
-            playerBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        }
-        getIntent().removeExtra("PlayerBottomSheetExpanded");
-
-        if(savedInstanceState!=null) {
-            if (!savedInstanceState.isEmpty()) {
-                int state = savedInstanceState.getInt("playerSheetBehaviorState", -1);
-                if(state>0) {
-                    playerBottomSheetBehavior.setState(state);
-                    savedInstanceState.remove("playerSheetBehaviorState");
-                }
-            }
-        }
-
-        playerServiceController.addOnPlayerEventListener(onPlayerEventListener);
     }
 
     @Override

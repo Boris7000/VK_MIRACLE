@@ -371,10 +371,6 @@
     <color name="darkFront">#FF232323</color>
     <color name="darkBack">#191919</color>
 
-    <color name="textColorOnLight">#FF494949</color>
-    <color name="textHighLightColorLight">#28FFFFFF</color>
-    <color name="textHighLightColorDark">#28000000</color>
-
     <color name="lightPlaceHolder">#FFF4F4F4</color>
     <color name="darkPlaceHolder">#FF373737</color>
 

@@ -24,19 +24,19 @@
             android:layout_width="56dp"
             android:layout_height="wrap_content"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_user_28" />
+            android:src="@drawable/ic_user_28"/>
 
         <com.vkontakte.miracle.engine.view.bottomNavigation.SimpleMiracleBottomNavigationItem
             android:layout_width="56dp"
             android:layout_height="wrap_content"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_feed_28" />
+            android:src="@drawable/ic_feed_28"/>
 
         <com.vkontakte.miracle.engine.view.bottomNavigation.SimpleMiracleBottomNavigationItem
             android:layout_width="56dp"
             android:layout_height="wrap_content"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_messages_28" />
+            android:src="@drawable/ic_messages_28"/>
 
         <com.vkontakte.miracle.engine.view.bottomNavigation.MusicMiracleBottomNavigationItem
             android:layout_width="56dp"

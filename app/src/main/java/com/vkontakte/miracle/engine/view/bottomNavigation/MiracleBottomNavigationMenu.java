@@ -163,7 +163,7 @@ public class MiracleBottomNavigationMenu extends LinearLayout {
 
             }
             for (int c = 0; c < childCount; c++) {
-                View child = (View) getChildAt(c);
+                View child = getChildAt(c);
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) child.getLayoutParams();
                 params.width = childLength;
                 child.measure(params.width, params.height);
@@ -203,7 +203,7 @@ public class MiracleBottomNavigationMenu extends LinearLayout {
 
             }
             for (int c = 0; c < childCount; c++) {
-                View child = (View) getChildAt(c);
+                View child = getChildAt(c);
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) child.getLayoutParams();
                 params.width = childLength;
                 child.layout(0,0,0,0);
@@ -216,7 +216,7 @@ public class MiracleBottomNavigationMenu extends LinearLayout {
 
             }
             for (int c = 0; c < childCount; c++) {
-                View child = (View) getChildAt(c);
+                View child = getChildAt(c);
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) child.getLayoutParams();
                 params.height = childLength;
                 child.layout(0,0,0,0);

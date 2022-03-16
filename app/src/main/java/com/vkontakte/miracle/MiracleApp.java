@@ -7,7 +7,6 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 
 import android.app.Application;
-import android.content.res.Configuration;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -18,6 +17,7 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.engine.util.LargeDataStorage;
 import com.vkontakte.miracle.engine.util.SettingsUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
@@ -44,6 +44,8 @@ public class MiracleApp extends Application {
         StorageUtil.getInstance();
 
         LargeDataStorage.getInstance();
+
+        Picasso.get();
 
         int currentNightMode = settingsUtil.nightMode();
 

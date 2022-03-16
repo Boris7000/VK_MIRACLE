@@ -20,15 +20,10 @@ public abstract class MiracleBottomDialog extends BottomSheetDialog {
       super(context, theme);
    }
 
-   protected MiracleBottomDialog(@NonNull Context context, boolean cancelable, OnCancelListener cancelListener) {
-      super(context, cancelable, cancelListener);
-   }
-
    public abstract void show(Context context);
 
    public void expand(){
-      BottomSheetDialog dialog = (BottomSheetDialog) this;
-      FrameLayout bottomSheet = (FrameLayout) dialog.findViewById(R.id.design_bottom_sheet);
+      FrameLayout bottomSheet = findViewById(R.id.design_bottom_sheet);
 
       if(bottomSheet!=null) {
          BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);

@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.vkontakte.miracle.engine.fragment.FragmentFabric;
@@ -260,7 +261,10 @@ public class FragmentContainer extends FrameLayout {
                 TabHolder tabHolder = tabs.get(i);
                 ArrayList<MiracleFragment> miracleFragments = tabHolder.getFragments();
                 for(int j = 0; j<miracleFragments.size(); j++){
-                    fm.putFragment(outState, "f"+i+"_"+j, miracleFragments.get(j));
+                    Fragment fragment = miracleFragments.get(j);
+                    if(fragment.isAdded()) {
+                        fm.putFragment(outState, "f" + i + "_" + j, fragment);
+                    }
                 }
             }
 
