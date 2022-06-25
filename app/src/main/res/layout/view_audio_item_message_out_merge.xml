@@ -8,9 +8,9 @@
         android:layout_height="48dp"
         android:padding="@dimen/imageBorderWidth"
         android:layout_gravity="center_vertical"
-        android:background="?attr/colorPrimary_80"
+        android:background="?attr/colorMessageOutPlaceholder"
         app:shapeAppearanceOverlay="@style/ChildShapeAppearance"
-        app:strokeColor="?attr/colorPrimary_60"
+        app:strokeColor="?attr/colorMessageOutStroke"
         app:strokeWidth="@dimen/imageBorderWidth"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,7 +43,7 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:fontFamily="sans-serif"
-                    android:textColor="?attr/colorOnPrimary"
+                    android:textColor="?attr/colorOnMessageOut"
                     android:textSize="16sp"
                     tools:text="Title" />
 
@@ -64,10 +64,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:singleLine="true"
                 android:fontFamily="sans-serif"
-                android:textColor="?attr/colorPrimary_20"
-                android:textSize="15sp"
+                android:singleLine="true"
+                android:textColor="?attr/colorMessageOutLink"
+                android:textSize="14sp"
                 tools:text="Subtitle" />
         </LinearLayout>
 
@@ -79,7 +79,7 @@
             android:ellipsize="end"
             android:fontFamily="sans-serif"
             android:singleLine="true"
-            android:textColor="?attr/colorPrimary_20"
+            android:textColor="?attr/colorMessageOutLink"
             android:textSize="13sp"
             tools:text="00:00" />
     </LinearLayout>

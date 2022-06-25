@@ -1,7 +1,5 @@
 package com.vkontakte.miracle.login;
 
-import static com.vkontakte.miracle.engine.util.NetworkUtil.CheckConnection;
-
 import android.util.Log;
 
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
@@ -27,8 +25,6 @@ public class UpdateCurrentUserData extends AsyncExecutor<Boolean> {
     public Boolean inBackground() {
 
         try {
-
-            CheckConnection(3500);
 
             ProfileItem profileItemOld = StorageUtil.get().currentUser();
 

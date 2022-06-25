@@ -6,5 +6,5 @@
     android:layout_height="48dp"
     android:contentDescription="@string/back"
     android:scaleType="centerInside"
-    android:src="@drawable/ic_back_28"
+    android:src="@drawable/ic_chevron_back_28"
     app:tint="?attr/colorPrimary" />

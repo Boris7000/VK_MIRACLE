@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:layout_marginEnd="9dp"
-            android:textColor="?attr/colorContrast50"
+            android:textColor="?attr/colorEmphasis_60"
             tools:text="0:00" />
 
         <LinearLayout
@@ -50,10 +50,11 @@
                 android:paddingHorizontal="3dp"
                 android:includeFontPadding="false"
                 android:textSize="16sp"
-                android:textColor="?attr/colorOnPrimary"
-                app:highlightColor="?attr/colorPrimary_20"
+                android:textColor="?attr/colorOnMessageOut"
+                app:highlightColor="?attr/colorMessageOutLink"
                 app:enableClicking="true"
-                tools:text="https://fdffr\n[id158|jope]\n#rgrgrg"/>
+                app:highlightUnderline="true"
+                tools:text="\@#suus"/>
 
             <ViewStub
                 android:id="@+id/photosViewStub"
@@ -62,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="9dp"
-                android:layout="@layout/view_message_item_photos_stub"/>
+                android:layout="@layout/view_message_item_photos_out_stub"/>
 
             <ViewStub
                 android:id="@+id/audiosViewStub"

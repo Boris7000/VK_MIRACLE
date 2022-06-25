@@ -16,15 +16,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.miracle.button.SwitchButton;
+import com.miracle.button.TextViewButton;
 import com.vkontakte.miracle.MiracleActivity;
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.fragment.FragmentFabric;
 import com.vkontakte.miracle.engine.fragment.MiracleFragment;
 import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
+import com.vkontakte.miracle.engine.util.DeviceUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.engine.view.switchIcon.SwitchIconViewV2;
 import com.vkontakte.miracle.fragment.catalog.FragmentCatalogFriends;
 import com.vkontakte.miracle.fragment.catalog.FragmentCatalogGroups;
 import com.vkontakte.miracle.fragment.photos.FragmentUserPhotos;
@@ -40,22 +43,22 @@ public class FragmentMenu extends SimpleMiracleFragment {
     private MiracleActivity miracleActivity;
     private LinearLayout blockScreen;
     private UpdateCurrentUserData updateCurrentUserData;
+    private SwitchButton nightModeSwitchButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        iniContext();
-
-        miracleApp = getMiracleApp();
+        miracleApp = MiracleApp.getInstance();
         miracleActivity = getMiracleActivity();
 
         rootView = inflater.inflate(R.layout.fragment_menu, container, false);
 
-        setTopBar(rootView.findViewById(R.id.appbarLinear));
-        setAppBarLayout(rootView.findViewById(R.id.appbar));
+        setAppBarLayout(rootView.findViewById(R.id.appbarlayout));
+        setToolBar(getAppBarLayout().findViewById(R.id.toolbar));
+        setAppbarClickToTop();
         setScrollView(rootView.findViewById(R.id.scrollView));
-        scrollAndElevate(getScrollView(),getAppBarLayout(),miracleActivity);
-        blockScreen = rootView.findViewById(R.id.fragmentMenuContainer);
+        scrollAndElevate(getScrollView(), getAppBarLayout(), miracleActivity);
+        blockScreen = rootView.findViewById(R.id.fragmentBlockScreen);
 
         UpdateCurrentUserData.onCompleteListener onCompleteListener = (profileItem, hasChanges) -> {
             getSwipeRefreshLayout().setRefreshing(false);
@@ -66,28 +69,28 @@ public class FragmentMenu extends SimpleMiracleFragment {
         };
         if(savedInstanceState==null){
             (updateCurrentUserData = new UpdateCurrentUserData(onCompleteListener)).start();
+        } else {
+            block();
         }
-        setSwipeRefreshLayout(rootView.findViewById(R.id.refreshLayout),() ->{
+
+        setSwipeRefreshLayout(rootView.findViewById(R.id.refreshLayout), () ->{
             if(updateCurrentUserData == null || updateCurrentUserData.workIsDone()){
                 (updateCurrentUserData = new UpdateCurrentUserData(onCompleteListener)).start();
             }
         });
 
-
-
-        SwitchIconViewV2 dark_theme_switch = rootView.findViewById(R.id.dark_theme_switch);
-        dark_theme_switch.setIconEnabled(miracleApp.nightMode(),false);
-        dark_theme_switch.setOnClickListener(v -> {
-
-            if(updateCurrentUserData!=null&&!updateCurrentUserData.workIsDone()) return;
-
-            dark_theme_switch.setIconEnabled(!miracleApp.nightMode(),true);
+        nightModeSwitchButton = rootView.findViewById(R.id.dark_theme_switch);
+        nightModeSwitchButton.setChecked(miracleApp.nightMode());
+        nightModeSwitchButton.setOnClickListener(view -> {
+            if (updateCurrentUserData != null && !updateCurrentUserData.workIsDone()) {
+                return;
+            }
+            nightModeSwitchButton.setOnClickListener(null);
+            nightModeSwitchButton.setChecked(!miracleApp.nightMode(), true);
             block();
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 miracleApp.swapNightMode();
-                unblock();
-            }, 300);
-
+            }, nightModeSwitchButton.getAnimationDuration());
         });
 
         setButtons();
@@ -137,12 +140,11 @@ public class FragmentMenu extends SimpleMiracleFragment {
         TextView friendsButton = rootView.findViewById(R.id.friends);
         friendsButton.setOnClickListener(v -> miracleActivity.addFragment(new FragmentCatalogFriends()));
 
-        TextView exitButton = rootView.findViewById(R.id.exit);
+        TextViewButton exitButton = rootView.findViewById(R.id.exit);
         exitButton.setOnClickListener(v -> {
             block();
             miracleActivity.exitFromAccount();
         });
-
     }
 
     private void unblock(){blockScreen.setClickable(false);}
@@ -155,5 +157,12 @@ public class FragmentMenu extends SimpleMiracleFragment {
         public MiracleFragment createFragment() {
             return new FragmentMenu();
         }
+    }
+
+
+    @Override
+    public void onViewStateRestored(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        unblock();
     }
 }

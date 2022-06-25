@@ -112,16 +112,5 @@ public class CatalogUserViewHolder extends MiracleViewHolder {
                 verified.setVisibility(GONE);
             }
         }
-
-        itemView.setOnClickListener(view -> goToProfile(profileItem,getMiracleActivity()));
-
     }
-
-    public static class Fabric implements ViewHolderFabric {
-        @Override
-        public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
-            return new CatalogUserViewHolder(inflater.inflate(R.layout.view_profile_item, viewGroup, false));
-        }
-    }
-
 }

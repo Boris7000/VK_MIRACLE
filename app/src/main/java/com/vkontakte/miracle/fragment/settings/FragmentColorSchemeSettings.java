@@ -23,6 +23,9 @@ import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
 
 import com.vkontakte.miracle.MiracleActivity;
 import com.vkontakte.miracle.MiracleApp;
@@ -33,6 +36,7 @@ import com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioGroup;
 
 public class FragmentColorSchemeSettings extends SimpleMiracleFragment {
     private MiracleActivity miracleActivity;
+    private LinearLayout blockScreen;
     private final ArrayMap<Integer, Integer> themes = new ArrayMap<>();
     private final ArrayMap<Integer, Integer> buttons = new ArrayMap<>();
 
@@ -73,29 +77,34 @@ public class FragmentColorSchemeSettings extends SimpleMiracleFragment {
         buttons.put(THEME_SYSTEM1, R.id.rb_system1);
         buttons.put(THEME_SYSTEM2, R.id.rb_system2);
 
-        iniContext();
-
         miracleActivity = getMiracleActivity();
 
         View rootView = inflater.inflate(R.layout.fragment_settings_color_scheme, container, false);
 
-        setTopBar(rootView.findViewById(R.id.appbarLinear));
-        setAppBarLayout(rootView.findViewById(R.id.appbar));
-        setBackClick(rootView.findViewById(R.id.backButton));
+        setAppBarLayout(rootView.findViewById(R.id.appbarlayout));
+        setToolBar(getAppBarLayout().findViewById(R.id.toolbar));
+        setAppbarClickToTop();
+        setBackClick();
         setScrollView(rootView.findViewById(R.id.scrollView));
         scrollAndElevate(getScrollView(),getAppBarLayout(),miracleActivity);
+        blockScreen = rootView.findViewById(R.id.fragmentBlockScreen);
 
+        if(savedInstanceState!=null){
+            block();
+        }
 
-        MiracleRadioGroup radioGroup1 = rootView.findViewById(R.id.light_r);
+        MiracleRadioGroup radioGroup = rootView.findViewById(R.id.light_r);
 
         Integer rbId = buttons.get(SettingsUtil.get().themeId());
         if(rbId==null){
             rbId = R.id.rb_blue;
         }
-        radioGroup1.setCheckedId(rbId);
+        radioGroup.setCheckedId(rbId);
 
 
-        radioGroup1.setOnRadioCheckedListener(radioView -> {
+        radioGroup.setOnRadioCheckedListener(radioView -> {
+            radioGroup.setOnRadioCheckedListener(null);
+            block();
             Integer themeId = themes.get(radioView.getId());
             if (themeId == null) {
                 themeId = THEME_BLUE;
@@ -105,6 +114,16 @@ public class FragmentColorSchemeSettings extends SimpleMiracleFragment {
         });
 
         return rootView;
+    }
+
+    private void unblock(){blockScreen.setClickable(false);}
+
+    private void block(){blockScreen.setClickable(true);}
+
+    @Override
+    public void onViewStateRestored(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        unblock();
     }
 
 }

@@ -21,9 +21,9 @@
             android:scaleType="fitCenter"
             android:padding="@dimen/imageBorderWidth"
             android:layout_gravity="center_vertical"
-            android:background="?attr/placeHolderColor"
+            android:background="?attr/colorPlaceholder"
             app:shapeAppearanceOverlay="@style/ShapeAppearance"
-            app:strokeColor="?attr/colorContrast10"
+            app:strokeColor="?attr/colorStroke"
             app:strokeWidth="@dimen/imageBorderWidth"
             tools:src="@tools:sample/avatars[0]"/>
     </com.vkontakte.miracle.engine.view.OneToOneSquareView>
@@ -79,9 +79,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:singleLine="true"
             android:fontFamily="sans-serif"
-            android:textColor="?attr/colorContrast50"
+            android:singleLine="true"
+            android:textColor="?attr/colorEmphasis_60"
             android:textSize="15sp"
             tools:text="Subtitle" />
 
@@ -92,7 +92,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:fontFamily="sans-serif"
-            android:textColor="?attr/colorContrast50"
+            android:textColor="?attr/colorEmphasis_60"
             android:textSize="15sp"
             tools:text="Subtitle" />
     </LinearLayout>
@@ -102,43 +102,37 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:orientation="horizontal">
-        <com.vkontakte.miracle.engine.view.MiracleButton
+
+        <com.miracle.button.TextViewButton
             android:id="@+id/playButton"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginEnd="12dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:active="true"
-            app:text="@string/play_album"
-            app:imageResource="@drawable/ic_play_16"/>
+            android:text="@string/play_album"
+            app:icon_start="@drawable/ic_play_16"
+            style="@style/TextButton.PrimaryButton"/>
 
-        <com.vkontakte.miracle.engine.view.switchIcon.SwitchIconViewV2
+        <com.miracle.button.Button
             android:id="@+id/addButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginEnd="12dp"
-            android:background="@drawable/rounded_button_bg_white"
-            android:scaleType="centerInside"
-            app:si_disabled_alpha="1"
-            app:si_background_tint_color="?attr/colorPrimary"
-            app:si_disabled_background_color="?attr/colorSurfacePrimary"
-            app:si_disabled_color="?attr/colorPrimary"
-            app:si_tint_color="?attr/colorOnSecondary"
-            app:si_enabled="false"
-            app:si_no_dash="true"
-            android:src="@drawable/ic_add_28"/>
+            android:enabled="false"
+            android:src="@drawable/ic_add_28"
+            app:background_color="?attr/colorSecondary"
+            app:disabled_background_color="?attr/colorSecondaryContainer"
+            app:disabled_icon_color="?attr/colorOnSecondaryContainer"
+            app:icon_color="?attr/colorOnSecondary"
+            app:shapeAppearanceOverlay="@style/ChildShapeAppearance" />
 
-        <com.vkontakte.miracle.engine.view.MiracleButton
+        <com.miracle.button.TextViewButton
             android:id="@+id/optionsButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:secondary="true"
-            app:active="false"
-            app:imageResource="@drawable/ic_more_vertical_28" />
+            app:icon_start="@drawable/ic_more_vertical_28"
+            style="@style/TextButton.SecondaryButton"/>
+
     </LinearLayout>
 
 </LinearLayout>

@@ -4,4 +4,4 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:src="@drawable/ic_muted_16"
-    app:tint="?attr/colorContrast50" />
+    app:tint="?attr/colorEmphasis_60" />

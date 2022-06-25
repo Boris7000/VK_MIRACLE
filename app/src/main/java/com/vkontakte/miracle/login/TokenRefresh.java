@@ -1,9 +1,9 @@
 package com.vkontakte.miracle.login;
 
-import static com.vkontakte.miracle.engine.util.NetworkUtil.CheckConnection;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
-import static com.vkontakte.miracle.network.Constants.defaultHeaders;
 import static com.vkontakte.miracle.network.Constants.defaultTokenRefreshFields;
+import static com.vkontakte.miracle.network.Constants.defaultTokenRefreshFields2;
+import static com.vkontakte.miracle.network.Constants.fake_receipt;
 import static com.vkontakte.miracle.network.Creator.account;
 
 import android.util.Log;
@@ -14,11 +14,13 @@ import com.vkontakte.miracle.engine.async.AsyncExecutor;
 
 import org.json.JSONObject;
 
+import java.util.List;
+
 import retrofit2.Response;
 
 public class TokenRefresh extends AsyncExecutor<Boolean> {
 
-    public static final String LOGIN_TAG = "RegisterDevice";
+    public static final String LOGIN_TAG = "TokenRefresh";
     private final LoginActivity loginActivity;
     private final AuthState authState;
 
@@ -31,11 +33,32 @@ public class TokenRefresh extends AsyncExecutor<Boolean> {
     @Override
     public Boolean inBackground() {
         try {
-            CheckConnection(3500);
-            Response<JSONObject> response = account().authRefreshToken(authState.getToken(),
-                    authState.getReceipt(), defaultTokenRefreshFields(), defaultHeaders()).execute();
+
+            Response<JSONObject> response;
+
+            TokenOfficialVK tokenOfficialVK = new TokenOfficialVK();
+
+            List<String> gms = tokenOfficialVK.requestToken();
+
+            long timestamp = System.currentTimeMillis();
+
+            if(gms!=null&&gms.size()==2) {
+
+                Log.d(LOGIN_TAG, gms.get(0));
+                Log.d(LOGIN_TAG, gms.get(1));
+
+                response = account().authRefreshToken(authState.getToken(),
+                        gms.get(0), gms.get(1), tokenOfficialVK.getNonce(timestamp), timestamp,
+                        defaultTokenRefreshFields2()).execute();
+            } else {
+                response = account().authRefreshToken(authState.getToken(),
+                        fake_receipt, defaultTokenRefreshFields()).execute();
+            }
+
             JSONObject jsonObject = validateBody(response).getJSONObject("response");
+            Log.d(LOGIN_TAG, authState.getToken());
             authState.setToken(jsonObject.getString("token"));
+            Log.d(LOGIN_TAG, authState.getToken());
             return true;
         } catch (Exception e) {
             String eString = e.toString();

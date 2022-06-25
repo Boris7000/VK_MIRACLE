@@ -23,7 +23,7 @@ import com.vkontakte.miracle.adapter.messages.holders.MessageViewHolder;
 
 public class ReplySwipeCallback extends ItemTouchHelper.Callback {
 
-    private final Context mContext;
+    private final Context context;
     private final ISwipeControllerActions mSwipeControllerActions;
 
     private Drawable mReplyIcon;
@@ -45,15 +45,16 @@ public class ReplySwipeCallback extends ItemTouchHelper.Callback {
     private final float itemMargin;
 
     public ReplySwipeCallback(Context context, ISwipeControllerActions swipeControllerActions){
-        mContext = context;
+        this.context = context;
         mSwipeControllerActions = swipeControllerActions;
 
-        mReplyIcon = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_share_24,null);
+        mReplyIcon = ResourcesCompat.getDrawable(this.context.getResources(), R.drawable.ic_share_24,null);
         if(mReplyIcon!=null) {
             mReplyIcon = mReplyIcon.getConstantState().newDrawable().mutate();
-            mReplyIcon.setColorFilter(getColorByAttributeId(context, R.attr.colorPrimary), PorterDuff.Mode.SRC_IN);
+            mReplyIcon.setColorFilter(getColorByAttributeId(this.context, R.attr.colorPrimary), PorterDuff.Mode.SRC_IN);
         }
-        mReplyIconBackground = ResourcesCompat.getDrawable(context.getResources(), R.drawable.rounded_card_child_filled_primary,context.getTheme());
+        mReplyIconBackground = ResourcesCompat.getDrawable(this.context.getResources(),
+                R.drawable.rounded_card_child_container_secondary, this.context.getTheme());
 
         itemMargin =  convertToDp(9)/2f;
     }
@@ -113,7 +114,7 @@ public class ReplySwipeCallback extends ItemTouchHelper.Callback {
     }
 
     private int convertToDp(int pixels){
-        return (int) dpToPx(pixels, mContext);
+        return (int) dpToPx(context, pixels);
     }
 
 

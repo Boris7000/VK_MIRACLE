@@ -6,37 +6,17 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+        android:id="@+id/appbarlayout"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:translationZ="0dp"
-        app:elevation="0dp"
-        android:background="?attr/backgroundColor">
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppBar">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
-            app:toolbarId="@+id/appbarLinear">
-            <LinearLayout
-                android:id="@+id/appbarLinear"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <include layout="@layout/back_button"/>
-
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/product"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    tools:text="title"/>
-            </LinearLayout>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+            tools:title="Title"
+            style="@style/Widget.Toolbar.TopAppBarWithBackButton"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -47,18 +27,76 @@
         android:scrollbarStyle="insideOverlay"
         android:scrollbarThumbVertical="@drawable/scroll_bar_drawable"
         android:scrollbars="vertical"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <LinearLayout
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <EditText
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </EditText>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"/>
 
+            <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioGroup
+                android:id="@+id/light_r"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="9dp"
+                    android:orientation="horizontal">
+                    <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
+                        android:id="@+id/rb_blue"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4.5dp"
+                        android:background="@drawable/radio_item_bg"
+                        android:padding="9dp"
+                        android:layout_weight="1">
+                    </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
+                    <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
+                        android:id="@+id/rb_emerald"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4.5dp"
+                        android:background="@drawable/radio_item_bg"
+                        android:padding="9dp"
+                        android:layout_weight="1">
+                    </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="9dp"
+                    android:orientation="horizontal">
+                    <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
+                        android:id="@+id/rb_orange"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4.5dp"
+                        android:background="@drawable/radio_item_bg"
+                        android:padding="9dp"
+                        android:layout_weight="1">
+                    </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
+                    <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
+                        android:id="@+id/rb_crimson"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4.5dp"
+                        android:background="@drawable/radio_item_bg"
+                        android:padding="9dp"
+                        android:layout_weight="1">
+                    </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
+                </LinearLayout>
+            </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioGroup>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

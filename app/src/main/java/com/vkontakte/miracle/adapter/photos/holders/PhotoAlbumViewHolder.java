@@ -1,5 +1,7 @@
 package com.vkontakte.miracle.adapter.photos.holders;
 
+import static com.vkontakte.miracle.engine.util.StringsUtil.getPhotosDeclensions;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +22,6 @@ import com.vkontakte.miracle.fragment.photos.FragmentPhotoAlbum;
 import com.vkontakte.miracle.model.photos.PhotoAlbumItem;
 import com.vkontakte.miracle.model.photos.fields.Size;
 
-import static com.vkontakte.miracle.engine.util.StringsUtil.getPhotosDeclensions;
-
 public class PhotoAlbumViewHolder extends MiracleViewHolder {
 
     private final TextView title;
@@ -39,7 +39,7 @@ public class PhotoAlbumViewHolder extends MiracleViewHolder {
     public void bind(ItemDataHolder itemDataHolder) {
         PhotoAlbumItem photoAlbumItem = (PhotoAlbumItem) itemDataHolder;
         title.setText(photoAlbumItem.getTitle());
-        subtitle.setText( getPhotosDeclensions(photoAlbumItem.getSize(),itemView.getContext()));
+        subtitle.setText(getPhotosDeclensions(itemView.getContext(), photoAlbumItem.getSize()));
 
         ArrayMap<String, Size> sizes = photoAlbumItem.getSizes();
         Size size = sizes.get("x");

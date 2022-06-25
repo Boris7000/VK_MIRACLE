@@ -22,13 +22,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.graphics.ColorUtils;
 
+import com.miracle.button.TextViewButton;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.dialog.MiracleBottomDialog;
 import com.vkontakte.miracle.engine.util.DimensionsUtil;
-import com.vkontakte.miracle.engine.view.MiracleButton;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.fields.Album;
 import com.vkontakte.miracle.model.audio.fields.Photo;
@@ -86,8 +86,8 @@ public class AudioDialog extends MiracleBottomDialog {
         View rootView;
         setContentView(rootView =  View.inflate(context, R.layout.dialog_audio, null));
 
-        int size = (int) DimensionsUtil.dpToPx(52, context);
-        placeholderImage = bitmapFromLayerDrawable(R.drawable.audio_placeholder_image_mono_translucent_small, context, size, size);
+        int size = (int) DimensionsUtil.dpToPx(context,52);
+        placeholderImage = bitmapFromLayerDrawable(context, R.drawable.audio_placeholder_image_colored_neutral_small, size, size);
 
         container = rootView.findViewById(R.id.container);
 
@@ -109,12 +109,13 @@ public class AudioDialog extends MiracleBottomDialog {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         LinearLayout linearLayout = rootView.findViewById(R.id.buttonsContainer);
-        MiracleButton miracleButton;
+        TextViewButton miracleButton;
 
         if(!audioItem.getArtists().isEmpty()){
-            miracleButton = (MiracleButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
+            miracleButton = (TextViewButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
             miracleButton.setText(context.getString(R.string.go_to_artist));
-            miracleButton.setImageResource(R.drawable.ic_microphone_28);
+            miracleButton.setIconStartImageResource(R.drawable.ic_microphone_28);
+            miracleButton.setIconEndImageResource(R.drawable.ic_chevron_24);
             miracleButton.setOnClickListener(view -> {
                 dialogActionListener.goToArtist();
                 cancel();
@@ -123,9 +124,10 @@ public class AudioDialog extends MiracleBottomDialog {
         }
 
         if(audioItem.getAlbum()!=null){
-            miracleButton = (MiracleButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
+            miracleButton = (TextViewButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
             miracleButton.setText(context.getString(R.string.go_to_album));
-            miracleButton.setImageResource(R.drawable.ic_playlist_28);
+            miracleButton.setIconStartImageResource(R.drawable.ic_playlist_28);
+            miracleButton.setIconEndImageResource(R.drawable.ic_chevron_24);
             miracleButton.setOnClickListener(view -> {
                 dialogActionListener.goToAlbum();
                 cancel();
@@ -135,9 +137,9 @@ public class AudioDialog extends MiracleBottomDialog {
 
 
         if(audioItem.isLicensed()) {
-            miracleButton = (MiracleButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
+            miracleButton = (TextViewButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
             miracleButton.setText(context.getString(R.string.play_next));
-            miracleButton.setImageResource(R.drawable.ic_play_next_28);
+            miracleButton.setIconStartImageResource(R.drawable.ic_play_next_28);
             miracleButton.setOnClickListener(view -> {
                 dialogActionListener.playNext();
                 cancel();
@@ -146,27 +148,27 @@ public class AudioDialog extends MiracleBottomDialog {
         }
 
 
-        miracleButton = (MiracleButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
+        miracleButton = (TextViewButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
         if(audioItem.getOwnerId().equals(profileItem.getId())){
             miracleButton.setText(context.getString(R.string.delete_from_audio));
-            miracleButton.setImageResource(R.drawable.ic_cancel_28);
+            miracleButton.setIconStartImageResource(R.drawable.ic_cancel_28);
         } else {
             miracleButton.setText(context.getString(R.string.add_to_audio));
-            miracleButton.setImageResource(R.drawable.ic_list_add_28);
+            miracleButton.setIconStartImageResource(R.drawable.ic_list_add_28);
         }
         linearLayout.addView(miracleButton);
 
-        miracleButton = (MiracleButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
+        miracleButton = (TextViewButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
         if(audioItem.getOwnerId().equals(profileItem.getId())){
             miracleButton.setText(context.getString(R.string.delete_from_device));
-            miracleButton.setImageResource(R.drawable.ic_delete_28);
+            miracleButton.setIconStartImageResource(R.drawable.ic_delete_28);
         } else {
             miracleButton.setText(context.getString(R.string.download));
-            miracleButton.setImageResource(R.drawable.ic_download_28);
+            miracleButton.setIconStartImageResource(R.drawable.ic_download_28);
         }
         linearLayout.addView(miracleButton);
 
-        MiracleButton cancelButton = rootView.findViewById(R.id.cancel_button);
+        TextViewButton cancelButton = rootView.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(view -> cancel());
 
         show();

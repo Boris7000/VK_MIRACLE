@@ -9,5 +9,6 @@
     app:cardElevation="0dp">
     <com.vkontakte.miracle.engine.view.photoGridView.PhotoGridView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:listItemLayout="@layout/view_message_item_photo_grid_item_in"/>
 </androidx.cardview.widget.CardView>

@@ -2,6 +2,7 @@ package com.vkontakte.miracle.model;
 
 import android.util.ArrayMap;
 
+import com.vkontakte.miracle.model.catalog.CatalogExtendedArrays;
 import com.vkontakte.miracle.model.groups.GroupItem;
 import com.vkontakte.miracle.model.users.ProfileItem;
 
@@ -135,5 +136,25 @@ public class Owner {
 
     public Owner(GroupItem groupItem){
         createFromGroup(groupItem);
+    }
+
+    public Owner(String owner_id, CatalogExtendedArrays catalogExtendedArrays){
+        if (owner_id.charAt(0) == '-') {
+            ArrayMap<String, GroupItem> groupsMap = catalogExtendedArrays.getGroupsMap();
+            if(groupsMap!=null) {
+                GroupItem groupItem = groupsMap.get(owner_id);
+                if (groupItem != null) {
+                    createFromGroup(groupItem);
+                }
+            }
+        } else {
+            ArrayMap<String, ProfileItem> profilesMap = catalogExtendedArrays.getProfilesMap();
+            if(profilesMap!=null) {
+                ProfileItem profileItem = profilesMap.get(owner_id);
+                if (profileItem != null) {
+                    createFromProfile(profileItem);
+                }
+            }
+        }
     }
 }

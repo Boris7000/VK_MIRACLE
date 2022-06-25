@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class PlaylistItem implements ItemDataHolder {
+public class PlaylistItem implements ItemDataHolder, AudioWrapContainer {
 
     private final String id;
     private final String ownerId;
@@ -158,7 +158,8 @@ public class PlaylistItem implements ItemDataHolder {
         return genresString;
     }
 
-    public ArrayList<ItemDataHolder> getItems() {
+    @Override
+    public ArrayList<ItemDataHolder> getAudioItems() {
         return items;
     }
 
@@ -398,6 +399,16 @@ public class PlaylistItem implements ItemDataHolder {
             if(obj instanceof PlaylistItem){
                 PlaylistItem playlistItem = (PlaylistItem) obj;
                 return id.equals(playlistItem.id)&&ownerId.equals(playlistItem.ownerId);
+            }
+        }
+        return false;
+    }
+
+    public boolean equalsContent(@Nullable Object obj){
+        if(obj!=null){
+            if(obj instanceof PlaylistItem){
+                PlaylistItem playlistItem = (PlaylistItem) obj;
+                return playlistItem.updateTime == updateTime && playlistItem.createTime == createTime;
             }
         }
         return false;

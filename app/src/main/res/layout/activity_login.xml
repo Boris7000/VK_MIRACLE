@@ -10,7 +10,8 @@
     android:scrollbarStyle="insideOverlay"
     android:scrollbarThumbVertical="@drawable/scroll_bar_drawable"
     android:scrollbars="vertical"
-    android:clipToPadding="false">
+    android:clipToPadding="false"
+    tools:background="?attr/colorSurfaceVariant">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:layout_weight="0"
-            android:background="@drawable/rounded_card_filled_primary"
+            android:background="@drawable/rounded_card"
             android:padding="16dp">
 
             <LinearLayout
@@ -50,7 +51,6 @@
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginBottom="12dp"
                     android:text="@string/authorization"
-                    android:textColor="?attr/colorPrimary"
                     android:textSize="20sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -62,8 +62,8 @@
                     app:boxCornerRadiusTopEnd="@dimen/child_round"
                     app:boxCornerRadiusBottomStart="@dimen/child_round"
                     app:boxCornerRadiusTopStart="@dimen/child_round"
-                    app:boxStrokeColor="@color/outlined_text_box_colors"
-                    android:textColorHint="?attr/colorSecondaryNeutral_80"
+                    app:boxStrokeColor="@color/primary_tinted_outlined_text_box_colors"
+                    android:textColorHint="?attr/colorEmphasis_60"
                     app:hintTextColor="?attr/colorSecondary"
                     app:boxBackgroundMode="outline">
 
@@ -91,10 +91,10 @@
                     app:boxCornerRadiusTopEnd="@dimen/child_round"
                     app:boxCornerRadiusBottomStart="@dimen/child_round"
                     app:boxCornerRadiusTopStart="@dimen/child_round"
-                    app:boxStrokeColor="@color/outlined_text_box_colors"
-                    android:textColorHint="?attr/colorSecondaryNeutral_80"
+                    app:boxStrokeColor="@color/primary_tinted_outlined_text_box_colors"
+                    android:textColorHint="?attr/colorEmphasis_60"
                     app:hintTextColor="?attr/colorSecondary"
-                    app:passwordToggleTint="?attr/colorSecondaryNeutral_80"
+                    app:passwordToggleTint="?attr/colorEmphasis_60"
                     app:boxBackgroundMode="outline"
                     app:passwordToggleEnabled="true">
 
@@ -114,17 +114,13 @@
                         android:background="@null" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.vkontakte.miracle.engine.view.MiracleButton
+                <com.miracle.button.TextViewButton
                     android:id="@+id/loginButton"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:active="false"
-                    app:disabledTextColor="?attr/colorSurfacePrimary"
-                    app:disabledBackgroundColor="?attr/colorPrimaryNeutral_60"
-                    app:text="@string/sign_in" />
-
+                    android:layout_height="48dp"
+                    android:text="@string/sign_in"
+                    android:enabled="false"
+                    style="@style/TextButton.PrimaryButton"/>
             </LinearLayout>
 
             <ViewStub
@@ -172,10 +168,10 @@
 
                 <ProgressBar
                     android:id="@+id/loginProgress"
-                    style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Small"
+                    style="@android:style/Widget.Material.ProgressBar.Small"
                     android:layout_width="18sp"
                     android:layout_height="18sp"
-                    android:indeterminateTint="?attr/colorSecondary"
+                    android:indeterminateTint="?attr/colorPrimary"
                     android:visibility="gone"
                     tools:visibility="visible" />
 

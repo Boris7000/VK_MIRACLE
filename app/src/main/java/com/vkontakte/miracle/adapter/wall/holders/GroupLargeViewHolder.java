@@ -14,13 +14,13 @@ import androidx.annotation.NonNull;
 
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.adapter.audio.holders.PlaylistHorizontalViewHolder;
+import com.vkontakte.miracle.adapter.audio.holders.PlaylistViewHolderHorizontal;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.model.groups.GroupItem;
 
-public class GroupLargeViewHolder extends PlaylistHorizontalViewHolder {
+public class GroupLargeViewHolder extends PlaylistViewHolderHorizontal {
 
     private final ImageView imageView;
     private final TextView title;

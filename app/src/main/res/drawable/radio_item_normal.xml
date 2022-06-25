@@ -4,7 +4,7 @@
 
     <stroke
         android:width="2dp"
-        android:color="?attr/colorSurfacePrimary" />
+        android:color="?attr/colorPrimaryContainerDisabled" />
     <corners android:radius="@dimen/child_round" />
     <padding
         android:left="12dp"

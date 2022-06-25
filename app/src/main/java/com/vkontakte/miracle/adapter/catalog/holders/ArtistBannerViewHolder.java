@@ -1,6 +1,6 @@
 package com.vkontakte.miracle.adapter.catalog.holders;
 
-import static com.vkontakte.miracle.engine.util.DeviceUtil.getDisplayWidth;
+import static com.vkontakte.miracle.engine.util.DeviceUtil.getWindowWidth;
 import static com.vkontakte.miracle.engine.util.ImageUtil.fastBlur;
 import static com.vkontakte.miracle.engine.view.PicassoDrawableCopy.setBitmap;
 
@@ -70,7 +70,7 @@ public class ArtistBannerViewHolder extends MiracleViewHolder {
 
         ArrayMap<Integer,String> sizesMap = artistItem.getPhotoSizes();
         int minDifference = 100000;
-        int itemViewWidth = getDisplayWidth(itemView.getContext());
+        int itemViewWidth = getWindowWidth(itemView.getContext());
         String imgUrl = "";
         for (Map.Entry<Integer,String> entry:sizesMap.entrySet()){
             int difference = Math.abs(itemViewWidth-entry.getKey());

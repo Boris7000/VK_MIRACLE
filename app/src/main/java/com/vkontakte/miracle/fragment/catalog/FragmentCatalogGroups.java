@@ -16,18 +16,17 @@ public class FragmentCatalogGroups extends TabsMiracleFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        iniContext();
-
         MiracleActivity miracleActivity = getMiracleActivity();
 
         View rootView = inflater.inflate(R.layout.fragment_with_tabs, container, false);
 
-        setTopBar(rootView.findViewById(R.id.appbarLinear));
-        setAppBarLayout(rootView.findViewById(R.id.appbar));
-        setBackClick(rootView.findViewById(R.id.backButton));
+        setAppBarLayout(rootView.findViewById(R.id.appbarlayout));
+        setToolBar(getAppBarLayout().findViewById(R.id.toolbar));
+        setBackClick();
         setViewPager(rootView.findViewById(R.id.viewPager));
         setTabLayout(rootView.findViewById(R.id.tabLayout));
         setProgressBar(rootView.findViewById(R.id.progressCircle));
+
 
         ProfileItem profileItem = miracleActivity.getUserItem();
 

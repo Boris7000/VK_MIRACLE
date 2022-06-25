@@ -4,9 +4,9 @@ import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.Player;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.audio.AudioItem;
-import com.vkontakte.miracle.model.audio.PlaylistItem;
-import com.vkontakte.miracle.model.catalog.CatalogBlock;
+import com.vkontakte.miracle.model.audio.AudioWrapContainer;
 
 import java.util.ArrayList;
 
@@ -17,39 +17,29 @@ public class AudioPlayerData {
     private long bufferedPosition = 0;
     private int repeatMode;
     private boolean playWhenReady = true;
-    private ArrayList<ItemDataHolder> items;
     private int currentItemIndex;
+    private final AudioWrapContainer container;
+    private final ArrayList<ItemDataHolder> items;
     private AudioItem currentItem;
-    private CatalogBlock catalogBlock;
-    private PlaylistItem playlistItem;
     private boolean hasError = false;
 
     public AudioPlayerData(ItemDataHolder itemDataHolder){
-        currentItem = (AudioItem) itemDataHolder;
+        DataItemWrap<?,?> itemWrap = (DataItemWrap<?,?>) itemDataHolder;
+        container = (AudioWrapContainer) itemWrap.getHolder();
+        currentItem = (AudioItem) itemWrap.getItem();
+        items = new ArrayList<>(container.getAudioItems());
+        currentItemIndex = items.indexOf(itemWrap);
         duration = currentItem.getDuration()*1000L;
-        if(currentItem.getCatalogBlock()!=null) {
-            catalogBlock = currentItem.getCatalogBlock();
-            items = new ArrayList<>(catalogBlock.getItems());
-            currentItemIndex = items.indexOf(itemDataHolder);
-        } else {
-            if(currentItem.getPlaylistItem()!=null){
-                playlistItem = currentItem.getPlaylistItem();
-                items = new ArrayList<>(playlistItem.getItems());
-                currentItemIndex = items.indexOf(itemDataHolder);
-            } else {
-                if(currentItem.getAudios()!=null){
-                    items = new ArrayList<>(currentItem.getAudios());
-                    currentItemIndex = items.indexOf(itemDataHolder);
-                }
-            }
-        }
     }
 
     public void reset(int currentItemIndex){
-        AudioItem audioItem = (AudioItem) items.get(currentItemIndex);
-        boolean directOrder = currentItemIndex>this.currentItemIndex;
+
+        DataItemWrap<?,?> itemWrap = (DataItemWrap<?,?>)items.get(currentItemIndex);
+        AudioItem audioItem = (AudioItem) itemWrap.getItem();
+        int directOrder = currentItemIndex>this.currentItemIndex?1:-1;
         while (!audioItem.isLicensed()&&currentItemIndex>-1&&currentItemIndex<items.size()){
-            audioItem = (AudioItem) items.get(currentItemIndex+(directOrder?1:-1));
+            itemWrap = (DataItemWrap<?,?>)items.get(currentItemIndex+directOrder);
+            audioItem = (AudioItem) itemWrap.getItem();
         }
         currentItem = audioItem;
         this.currentItemIndex = currentItemIndex;
@@ -95,12 +85,8 @@ public class AudioPlayerData {
         return currentItem;
     }
 
-    public PlaylistItem getPlaylistItem() {
-        return playlistItem;
-    }
-
-    public CatalogBlock getCatalogBlock() {
-        return catalogBlock;
+    public AudioWrapContainer getContainer() {
+        return container;
     }
 
     ////////////////////////////////////////////////////////
@@ -138,26 +124,15 @@ public class AudioPlayerData {
         if(obj!=null){
             if(obj instanceof AudioPlayerData){
                 AudioPlayerData audioPlayerData = (AudioPlayerData) obj;
-                if(catalogBlock!=null){
-                    if(audioPlayerData.catalogBlock!=null){
-                        return catalogBlock.equals(audioPlayerData.catalogBlock);
-                    }
-                } else {
-                    if(playlistItem!=null){
-                        if(audioPlayerData.playlistItem!=null){
-                            return playlistItem.equals(audioPlayerData.playlistItem);
-                        }
-                    } else {
-                        if(items!=null){
-                            return items.equals(audioPlayerData.items);
-                        }
+                if(container!=null){
+                    if(audioPlayerData.container!=null){
+                        return container.equals(audioPlayerData.container);
                     }
                 }
             }
         }
         return false;
     }
-
 
 }
 

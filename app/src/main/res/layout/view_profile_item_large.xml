@@ -24,9 +24,9 @@
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:padding="@dimen/imageBorderWidth"
-            android:background="?attr/placeHolderColor"
+            android:background="?attr/colorPlaceholder"
             app:shapeAppearanceOverlay="@style/CircleShapeAppearance"
-            app:strokeColor="?attr/colorContrast10"
+            app:strokeColor="?attr/colorStroke"
             app:strokeWidth="@dimen/imageBorderWidth"/>
 
         <LinearLayout
@@ -92,7 +92,7 @@
                     android:singleLine="true"
                     android:fontFamily="sans-serif"
                     android:textSize="14sp"
-                    android:textColor="?attr/colorContrast40"
+                    android:textColor="?attr/colorEmphasis_60"
                     tools:text="Online"/>
 
                 <ViewStub
@@ -146,7 +146,7 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 app:srcCompat="@drawable/ic_friends_28"
-                app:tint="?attr/colorAccent" />
+                app:tint="?attr/colorPrimary" />
 
             <TextView
                 android:id="@+id/friends_counter"
@@ -181,7 +181,7 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 app:srcCompat="@drawable/ic_groups_28"
-                app:tint="?attr/colorAccent" />
+                app:tint="?attr/colorPrimary" />
 
             <TextView
                 android:id="@+id/follows_counter"
@@ -215,7 +215,7 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 app:srcCompat="@drawable/ic_photos_28"
-                app:tint="?attr/colorAccent" />
+                app:tint="?attr/colorPrimary" />
 
             <TextView
                 android:id="@+id/photos_counter"
@@ -249,7 +249,7 @@
                 android:layout_height="28dp"
                 android:adjustViewBounds="true"
                 app:srcCompat="@drawable/ic_videos_28"
-                app:tint="?attr/colorAccent" />
+                app:tint="?attr/colorPrimary" />
 
             <TextView
                 android:id="@+id/videos_counter"
@@ -283,7 +283,7 @@
                 android:layout_height="28dp"
                 android:adjustViewBounds="true"
                 app:srcCompat="@drawable/ic_music_28"
-                app:tint="?attr/colorAccent" />
+                app:tint="?attr/colorPrimary" />
 
             <TextView
                 android:id="@+id/audios_counter"
@@ -312,7 +312,7 @@
         android:layout_height="1dp"
         android:layout_marginHorizontal="4dp"
         android:layout_marginBottom="16dp"
-        android:background="?attr/colorContrast10"/>
+        android:background="?attr/colorEmphasis_40"/>
 
     <TextView
         android:id="@+id/show_more_info_button"
@@ -320,12 +320,12 @@
         android:layout_height="28dp"
         android:paddingHorizontal="8dp"
         android:gravity="center_vertical"
-        android:textColor="?attr/colorAccent"
+        android:textColor="?attr/colorPrimary"
         android:fontFamily="sans-serif-medium"
         android:text="Подробнее"
         android:drawablePadding="8dp"
         app:drawableStartCompat="@drawable/ic_like_filled_28"
-        app:drawableTint="?attr/colorAccent" />
+        app:drawableTint="?attr/colorPrimary" />
 
 </LinearLayout>
 

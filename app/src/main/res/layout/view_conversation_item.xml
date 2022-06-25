@@ -18,9 +18,9 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:padding="@dimen/imageBorderWidth"
-            android:background="?attr/placeHolderColor"
+            android:background="?attr/colorPlaceholder"
             app:shapeAppearanceOverlay="@style/CircleShapeAppearance"
-            app:strokeColor="?attr/colorContrast10"
+            app:strokeColor="?attr/colorStroke"
             app:strokeWidth="@dimen/imageBorderWidth"/>
 
         <ViewStub
@@ -109,7 +109,7 @@
                     android:singleLine="true"
                     android:fontFamily="sans-serif"
                     android:gravity="center_vertical"
-                    android:textColor="?attr/colorContrast40"
+                    android:textColor="?attr/colorEmphasis_60"
                     android:textSize="15sp"
                     tools:text="Кто: " />
 
@@ -124,7 +124,7 @@
                     android:gravity="center_vertical"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="15sp"
-                    app:highlightColor="?attr/colorAccent"
+                    app:highlightColor="?attr/colorPrimary"
                     tools:text="Текст" />
 
                 <TextView
@@ -137,7 +137,7 @@
                     android:singleLine="true"
                     android:fontFamily="sans-serif"
                     android:gravity="center_vertical"
-                    android:textColor="?attr/colorContrast40"
+                    android:textColor="?attr/colorEmphasis_60"
                     android:textSize="15sp"
                     tools:text="Когда" />
             </LinearLayout>

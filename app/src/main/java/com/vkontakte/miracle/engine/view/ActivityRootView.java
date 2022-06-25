@@ -16,7 +16,7 @@ public class ActivityRootView extends CoordinatorLayout {
 
     public static final int TYPE_PORTRAIT = 0;
     public static final int TYPE_LAND = 1;
-    public static final int TYPE_SW600DP = 2;
+    public static final int TYPE_TABLET = 2;
 
     public static final int STATE_CLEAR = 0;
     public static final int STATE_STANDARD = 1;

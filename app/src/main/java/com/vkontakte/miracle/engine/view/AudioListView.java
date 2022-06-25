@@ -1,33 +1,45 @@
 package com.vkontakte.miracle.engine.view;
 
+import static com.vkontakte.miracle.engine.adapter.MiracleViewRecycler.resolveSingleTypeItems;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
+
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.util.ArrayMap;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.vkontakte.miracle.MiracleActivity;
-import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.dialog.audio.AudioDialog;
-import com.vkontakte.miracle.dialog.audio.AudioDialogActionListener;
+import com.vkontakte.miracle.adapter.audio.holders.WrappedAudioViewHolder;
+import com.vkontakte.miracle.engine.adapter.MiracleViewRecycler;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.util.FragmentUtil;
-import com.vkontakte.miracle.model.audio.AudioItem;
-import com.vkontakte.miracle.model.audio.view.AudioItemView;
-import com.vkontakte.miracle.player.AudioPlayerData;
-import com.vkontakte.miracle.player.PlayerServiceController;
+import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
+import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 
 import java.util.ArrayList;
 
 public class AudioListView extends LinearLayout{
 
+    private final LayoutInflater inflater;
+    private final ArrayList<RecyclerView.ViewHolder> cache = new ArrayList<>();
+    private final ArrayMap<Integer, ViewHolderFabric> viewHolderFabricMap = new ArrayMap<>();
+    private MiracleViewRecycler recycledViewPool = new MiracleViewRecycler();
+    {
+        viewHolderFabricMap.put(TYPE_WRAPPED_AUDIO, new AudioListViewHolderFabric());
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private final static int DEFAULT_LAYOUT_RES = R.layout.view_audio_item_post;
     private final int layoutResId;
     private boolean canApplyChanges = true;
-    private ArrayList<ItemDataHolder> audioItems;
+    private ArrayList<ItemDataHolder> itemDataHolders = new ArrayList<>();
     private int measuredWidth = -1;
 
     public AudioListView(Context context) {
@@ -36,13 +48,13 @@ public class AudioListView extends LinearLayout{
 
     public AudioListView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-
+        inflater = LayoutInflater.from(context);
         if(attrs!=null){
             TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.AudioListView, 0, 0);
-            layoutResId = attributes.getResourceId(R.styleable.AudioListView_listItemLayout, R.layout.view_audio_item_post);
+            layoutResId = attributes.getResourceId(R.styleable.AudioListView_listItemLayout, DEFAULT_LAYOUT_RES);
             attributes.recycle();
         } else {
-            layoutResId = R.layout.view_audio_item_post;
+            layoutResId = DEFAULT_LAYOUT_RES;
         }
     }
 
@@ -53,7 +65,7 @@ public class AudioListView extends LinearLayout{
 
         measuredWidth = MeasureSpec.getSize(widthMeasureSpec);
 
-        for (int p = 0; p < audioItems.size(); p++) {
+        for (int p = 0; p < itemDataHolders.size(); p++) {
             View child = getChildAt(p);
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) child.getLayoutParams();
             params.width = measuredWidth;
@@ -68,7 +80,7 @@ public class AudioListView extends LinearLayout{
 
         measuredWidth = MeasureSpec.getSize(getWidth());
 
-        for (int p = 0; p < audioItems.size(); p++) {
+        for (int p = 0; p < itemDataHolders.size(); p++) {
             View child = getChildAt(p);
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) child.getLayoutParams();
             params.width = measuredWidth;
@@ -77,89 +89,31 @@ public class AudioListView extends LinearLayout{
         super.onLayout(changed, l, t, r, b);
     }
 
-    public void setItems(MiracleActivity miracleActivity, ArrayList<ItemDataHolder> audioItems){
-
-        this.audioItems = audioItems;
-        MiracleApp miracleApp = miracleActivity.getMiracleApp();
-
-        if (audioItems.isEmpty()){
-            return;
-        }
+    public void setItems(ArrayList<ItemDataHolder> itemDataHolders){
 
         canApplyChanges = false;
 
-        int k = audioItems.size() - getChildCount();
+        resolveSingleTypeItems(this, itemDataHolders, this.itemDataHolders, cache, recycledViewPool,
+                viewHolderFabricMap, inflater);
 
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        for (int j = 0;j<k;j++){
-            inflater.inflate(layoutResId, this, true);
+        for(int i=0; i<cache.size(); i++){
+            WrappedAudioViewHolder wrappedAudioViewHolder = (WrappedAudioViewHolder) cache.get(i);
+            wrappedAudioViewHolder.bind(itemDataHolders.get(i));
         }
 
-        for(int i=audioItems.size();i<getChildCount();i++) {
-            View child = getChildAt(i);
-            if (child.getVisibility()!=GONE){
-                child.setVisibility(GONE);
-            }
-        }
-
-        for (int g=0; g<audioItems.size();g++) {
-            View child = getChildAt(g);
-            if (child.getVisibility() != View.VISIBLE) {
-                child.setVisibility(View.VISIBLE);
-            }
-            AudioItem audioItem = (AudioItem) audioItems.get(g);
-            AudioItemView audioItemView = (AudioItemView)child;
-
-            audioItemView.setValues(audioItem);
-
-            if(audioItem.isLicensed()){
-                audioItemView.setOnClickListener(view -> PlayerServiceController.get().
-                        playNewAudio(new AudioPlayerData(audioItem)));
-            } else {
-                audioItemView.setOnClickListener(null);
-            }
-
-            audioItemView.setOnLongClickListener(view -> {
-                AudioDialog audioDialog = new AudioDialog(miracleActivity, audioItem, miracleActivity.getUserItem());
-                audioDialog.setDialogActionListener(new AudioDialogActionListener() {
-                    @Override
-                    public void add() {
-
-                    }
-
-                    @Override
-                    public void remove() {
-
-                    }
-
-                    @Override
-                    public void playNext() {
-                        PlayerServiceController.get().setPlayNext(new AudioPlayerData(audioItem));
-                    }
-
-                    @Override
-                    public void addToPlaylist() {
-
-                    }
-
-                    @Override
-                    public void goToAlbum() {
-                        FragmentUtil.goToAlbum(audioItem,miracleActivity);
-                    }
-
-                    @Override
-                    public void goToArtist() {
-                        FragmentUtil.goToArtist(audioItem,miracleActivity);
-                    }
-                });
-                audioDialog.show(view.getContext());
-                getParent().getParent().requestDisallowInterceptTouchEvent(true);
-                return true;
-            });
-
-        }
-
+        this.itemDataHolders = itemDataHolders;
         canApplyChanges = true;
+    }
+
+    public void setRecycledViewPool(MiracleViewRecycler recycledViewPool) {
+        this.recycledViewPool = recycledViewPool;
+    }
+
+    public class AudioListViewHolderFabric implements ViewHolderFabric {
+        @Override
+        public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
+            return new WrappedAudioViewHolder(inflater.inflate(layoutResId, viewGroup, false));
+        }
     }
 
 }

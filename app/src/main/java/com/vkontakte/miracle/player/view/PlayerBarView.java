@@ -118,8 +118,9 @@ public class PlayerBarView extends FrameLayout {
         title = findViewById(R.id.title);
         subtitle = findViewById(R.id.subtitle);
         image = findViewById(R.id.photo);
-        int size = (int) DimensionsUtil.dpToPx(56,getContext());
-        placeholderImage = bitmapFromLayerDrawable(R.drawable.audio_placeholder_image_mono_small, getContext(),size,size);
+        int size = (int) DimensionsUtil.dpToPx(getContext(),56);
+        placeholderImage = bitmapFromLayerDrawable(getContext(),
+                R.drawable.audio_placeholder_image_mono_small, size, size);
 
         ImageView previousButton = findViewById(R.id.previousButton);
         pausePlayButton = findViewById(R.id.playButton);

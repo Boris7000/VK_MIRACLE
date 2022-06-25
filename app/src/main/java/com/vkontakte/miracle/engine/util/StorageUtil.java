@@ -48,10 +48,16 @@ public class StorageUtil {
     }
 
     public static StorageUtil get(){
-        if (null == instance){
-            instance = StorageUtil.getInstance();
+        StorageUtil localInstance = instance;
+        if (localInstance == null) {
+            synchronized (StorageUtil.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = getInstance();
+                }
+            }
         }
-        return instance;
+        return localInstance;
     }
 
     ////////////////////////////////////////////////////

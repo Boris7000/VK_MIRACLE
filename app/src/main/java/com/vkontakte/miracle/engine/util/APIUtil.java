@@ -4,6 +4,7 @@ import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 import static com.vkontakte.miracle.engine.util.StringsUtil.stringFromArrayList;
 
 import android.util.ArrayMap;
+import android.util.Log;
 
 import com.vkontakte.miracle.model.Owner;
 import com.vkontakte.miracle.model.audio.ArtistItem;
@@ -124,6 +125,7 @@ public class APIUtil {
     public static ArrayMap<String, PlaylistItem> createPlaylistsMap(JSONArray playlists, ArrayMap<String,ProfileItem> profilesMap, ArrayMap<String,GroupItem> groupsMap) throws JSONException {
         ArrayMap<String, PlaylistItem> playlistsMap = new ArrayMap<>();
         for(int i=0;i < playlists.length(); i++){
+            Log.d("eifjiejfiej",playlists.getJSONObject(i).toString());
             PlaylistItem playlistItem = new PlaylistItem(playlists.getJSONObject(i), profilesMap, groupsMap);
             playlistsMap.put(playlistItem.getOwnerId()+"_"+playlistItem.getId(), playlistItem);
         }

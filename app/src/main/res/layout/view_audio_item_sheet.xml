@@ -6,6 +6,6 @@
     android:layout_height="wrap_content"
     android:paddingHorizontal="12dp"
     android:paddingVertical="9dp"
-    app:placeHolderDrawable="@drawable/audio_placeholder_image_mono_translucent_small">
+    app:placeHolderDrawable="@drawable/audio_placeholder_image_transluent_small">
     <include layout="@layout/view_audio_item_sheet_merge"/>
 </com.vkontakte.miracle.model.audio.view.AudioItemView>

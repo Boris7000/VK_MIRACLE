@@ -63,7 +63,7 @@ public class HeaderViewHolder extends MiracleViewHolder {
                 button.setVisibility(VISIBLE);
             }
 
-            CatalogAction catalogAction = catalogBlock.getActions().get(0);
+            CatalogAction catalogAction = (CatalogAction) catalogBlock.getActions().get(0);
 
             button.setUpWithCatalogAction(catalogAction);
 

@@ -7,9 +7,9 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
+import com.miracle.button.TextViewButton;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.dialog.MiracleBottomDialog;
-import com.vkontakte.miracle.engine.view.MiracleButton;
 import com.vkontakte.miracle.model.audio.fields.Artist;
 
 import java.util.ArrayList;
@@ -31,12 +31,13 @@ public class GoToArtistDialog extends MiracleBottomDialog {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         LinearLayout linearLayout = rootView.findViewById(R.id.buttonsContainer);
-        MiracleButton miracleButton;
+        TextViewButton miracleButton;
 
         for (Artist artist: artists) {
-            miracleButton = (MiracleButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
+            miracleButton = (TextViewButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
             miracleButton.setText(artist.getName());
-            miracleButton.setImageResource(R.drawable.ic_microphone_28);
+            miracleButton.setIconStartImageResource(R.drawable.ic_microphone_28);
+            miracleButton.setIconEndImageResource(R.drawable.ic_chevron_24);
             miracleButton.setOnClickListener(view -> {
                 dialogActionListener.onSelect(artist);
                 cancel();
@@ -44,7 +45,7 @@ public class GoToArtistDialog extends MiracleBottomDialog {
             linearLayout.addView(miracleButton);
         }
 
-        MiracleButton cancelButton = rootView.findViewById(R.id.cancel_button);
+        TextViewButton cancelButton = rootView.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(view -> cancel());
 
         show();

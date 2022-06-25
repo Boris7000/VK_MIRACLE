@@ -19,20 +19,40 @@ public interface IAccount {
                                     @Field("device_id") String deviceId,
                                     @Field("settings") String settings,
                                     @Field("access_token") String access_token,
-                                    @FieldMap Map<String, Object> fields,
-                                    @HeaderMap Map<String,String> headers);
+                                    @FieldMap Map<String, Object> fields);
 
     @FormUrlEncoded
     @POST("account.unregisterDevice")
     Call<JSONObject> unregisterDevice(@Field("device_id") String deviceId,
                                       @Field("access_token") String access_token,
-                                      @Field("v") String v,
-                                      @HeaderMap Map<String,String> headers);
+                                      @Field("v") String v);
+
 
     @FormUrlEncoded
     @POST("auth.refreshToken")
     Call<JSONObject> authRefreshToken(@Field("access_token") String access_token,
                                       @Field("receipt") String receipt,
-                                      @FieldMap Map<String,Object> fields,
+                                      @Field("receipt2") String receipt2,
+                                      @Field("nonce") String nonce,
+                                      @Field("timestamp") long timestamp,
+                                      @FieldMap Map<String,Object> fields);
+
+    @FormUrlEncoded
+    @POST("auth.refreshToken")
+    Call<JSONObject> authRefreshToken(@Field("access_token") String access_token,
+                                      @Field("receipt") String receipt,
+                                      @FieldMap Map<String,Object> fields);
+
+    @FormUrlEncoded
+    @POST("auth.refreshToken")
+    Call<JSONObject> authRefreshToken(@Field("access_token") String access_token,
+                                      @Field("client_id") int client_id,
+                                      @Field("client_secret") String client_secret,
+                                      @Field("https") int https,
+                                      @Field("lang") String lang,
+                                      @Field("receipt") String receipt,
+                                      @Field("sig") String sig,
+                                      @Field("v") String v,
                                       @HeaderMap Map<String,String> headers);
+
 }

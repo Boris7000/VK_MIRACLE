@@ -65,7 +65,7 @@ public class AudioItemView extends FrameLayout {
             if (album.getThumb() != null) {
                 Photo thumb = album.getThumb();
                 if (thumb.getPhoto135() != null) {
-                    Picasso.get().load(thumb.getPhoto135()).noFade().into(imageView);
+                    Picasso.get().load(thumb.getPhoto135()).fit().into(imageView);
                 } else {
                     imageView.setImageResource(placeholderDrawableId);
                 }

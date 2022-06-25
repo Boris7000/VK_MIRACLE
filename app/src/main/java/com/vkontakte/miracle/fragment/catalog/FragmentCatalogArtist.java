@@ -29,15 +29,14 @@ public class FragmentCatalogArtist extends SimpleMiracleFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        iniContext();
-
         MiracleActivity miracleActivity = getMiracleActivity();
 
         View rootView = inflater.inflate(R.layout.fragment_with_recycleview, container, false);
 
-        setTopBar(rootView.findViewById(R.id.appbarLinear));
-        setAppBarLayout(rootView.findViewById(R.id.appbar));
-        setBackClick(rootView.findViewById(R.id.backButton));
+        setAppBarLayout(rootView.findViewById(R.id.appbarlayout));
+        setToolBar(getAppBarLayout().findViewById(R.id.toolbar));
+        setAppbarClickToTop();
+        setBackClick();
         setTitle(rootView.findViewById(R.id.title));
         setRecyclerView(rootView.findViewById(R.id.recyclerView));
         scrollAndElevate(getRecyclerView(),getAppBarLayout(), miracleActivity);
@@ -52,11 +51,11 @@ public class FragmentCatalogArtist extends SimpleMiracleFragment {
             }
         }
 
-        setSwipeRefreshLayout(rootView.findViewById(R.id.refreshLayout), ()->
-                setAdapter(new CatalogSectionAdapter(Catalog.getAudioArtist(artist.getId(), 1, profileItem.getAccessToken()))));
         if(nullSavedAdapter(savedInstanceState)){
             setAdapter(new CatalogSectionAdapter(Catalog.getAudioArtist(artist.getId(), 1, profileItem.getAccessToken())));
         }
+
+        setSwipeRefreshLayout(rootView.findViewById(R.id.refreshLayout), this::reloadAdapter);
 
         setTitleText(artist.getName());
 

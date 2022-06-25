@@ -1,36 +1,47 @@
 package com.vkontakte.miracle.engine.fragment;
 
 import android.view.View;
-import android.widget.LinearLayout;
-
 import android.widget.TextView;
+
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.appbar.AppBarLayout;
 
 public class SimpleMiracleFragment extends ListMiracleFragment{
 
-    private LinearLayout topBar;
     private AppBarLayout appBarLayout;
+    private Toolbar toolBar;
     private TextView title;
     private boolean scrollAndElevate = true;
 
-    public void setTopBar(LinearLayout topBar){
-        setTopBar(topBar, v -> scrollToTop());
-    }
-
-    public void setTopBar(LinearLayout topBar, View.OnClickListener onClickListener){
-        topBar.setOnClickListener(onClickListener);
-        this.topBar = topBar;
-    }
-
-    public LinearLayout getTopBar(){
-        return topBar;
-    }
-
     //////////////////////////////////////////////////
+    public void setBackClick(){
+        setToolBarNavigationClickListener(v -> getMiracleActivity().fragmentBack());
+    }
+
+    public void setToolBarNavigationClickListener(View.OnClickListener onClickListener){
+        toolBar.setNavigationOnClickListener(onClickListener);
+    }
+
+    public void setAppbarClickToTop(){
+        setAppbarClickListener(v -> scrollToTop());
+    }
+
+    public void setAppbarClickListener(View.OnClickListener onClickListener){
+        toolBar.setOnClickListener(onClickListener);
+    }
+
+    public void setToolBar(Toolbar toolBar) {
+        this.toolBar = toolBar;
+    }
+
+    public Toolbar getToolBar() {
+        return toolBar;
+    }
 
     public void setAppBarLayout(AppBarLayout appBarLayout){
         this.appBarLayout = appBarLayout;
+        //appBarLayout.setStatusBarForeground(MaterialShapeDrawable.createWithElevationOverlay(requireContext()));
     }
 
     public AppBarLayout getAppBarLayout(){
@@ -48,6 +59,9 @@ public class SimpleMiracleFragment extends ListMiracleFragment{
     }
 
     public void setTitleText(String titleText){
+        if(toolBar!=null){
+            toolBar.setTitle(titleText);
+        }
         if(title!=null) {
             title.setText(titleText);
         }
@@ -59,9 +73,7 @@ public class SimpleMiracleFragment extends ListMiracleFragment{
 
     //////////////////////////////////////////////////
 
-    public void setBackClick(View view){
-        view.setOnClickListener(v -> getMiracleActivity().fragmentBack());
-    }
+
 
     @Override
     public void hide(boolean animate) {

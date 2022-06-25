@@ -1,6 +1,5 @@
 package com.vkontakte.miracle.engine.view.textView;
 
-import android.graphics.Typeface;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
@@ -12,17 +11,19 @@ import androidx.annotation.ColorInt;
 public class ClickableForegroundColorSpan extends ClickableSpan {
 
     private final int color;
+    private final boolean underlineText;
     private final OnClickListener onClickListener;
 
-    public ClickableForegroundColorSpan(@ColorInt int color, OnClickListener onClickListener) {
+    public ClickableForegroundColorSpan(@ColorInt int color, boolean underlineText, OnClickListener onClickListener) {
         this.color = color;
+        this.underlineText = underlineText;
         this.onClickListener = onClickListener;
     }
 
     @Override
     public void updateDrawState(TextPaint ds) {
         ds.setColor(color);
-        ds.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        ds.setUnderlineText(underlineText);
     }
 
     @Override

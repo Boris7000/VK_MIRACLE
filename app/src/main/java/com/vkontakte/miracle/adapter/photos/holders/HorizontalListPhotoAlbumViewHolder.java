@@ -1,5 +1,6 @@
 package com.vkontakte.miracle.adapter.photos.holders;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,14 +35,17 @@ public class HorizontalListPhotoAlbumViewHolder extends MiracleViewHolder {
         button = itemView.findViewById(R.id.button);
         badgeStub = itemView.findViewById(R.id.badgeStub);
         recyclerView = itemView.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(getHorizontalLayoutManager(getMiracleActivity()));
+        recyclerView.setLayoutManager(getHorizontalLayoutManager(itemView.getContext()));
     }
 
     @Override
     public void bind(ItemDataHolder itemDataHolder) {
+
+        Context context = itemView.getContext();
+
         HorizontalListPhotoAlbumItem horizontalListPhotoAlbumItem = (HorizontalListPhotoAlbumItem) itemDataHolder;
         ArrayList<PhotoAlbumItem> photoAlbumItems = horizontalListPhotoAlbumItem.getPhotoAlbumItems();
-        title.setText(itemView.getContext().getString(R.string.albums));
+        title.setText(context.getString(R.string.albums));
 
         if(badge==null) {
             if(badgeStub!=null) {
@@ -53,7 +57,7 @@ public class HorizontalListPhotoAlbumViewHolder extends MiracleViewHolder {
 
         badge.setText(String.valueOf(photoAlbumItems.size()));
 
-        recyclerView.setAdapter(new HorizontalPhotoAlbumsAdapter(photoAlbumItems,LayoutInflater.from(recyclerView.getContext())));
+        recyclerView.setAdapter(new HorizontalPhotoAlbumsAdapter(photoAlbumItems,LayoutInflater.from(context)));
 
         if(photoAlbumItems.size()<horizontalListPhotoAlbumItem.getCount()){
             if(button.getVisibility()!=View.VISIBLE) {

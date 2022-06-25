@@ -13,9 +13,9 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:padding="@dimen/imageBorderWidth"
-        android:background="?attr/placeHolderColor"
+        android:background="?attr/colorPlaceholder"
         app:shapeAppearanceOverlay="@style/ShapeAppearance"
-        app:strokeColor="?attr/colorContrast10"
+        app:strokeColor="?attr/colorStroke"
         app:strokeWidth="@dimen/imageBorderWidth"/>
 
     <LinearLayout
@@ -59,7 +59,7 @@
         android:singleLine="true"
         android:fontFamily="sans-serif"
         android:gravity="center_vertical"
-        android:textColor="?attr/colorContrast50"
+        android:textColor="?attr/colorEmphasis_60"
         android:textSize="14sp"
         tools:text="Subtitle" />
 </LinearLayout>

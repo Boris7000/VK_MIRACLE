@@ -1,5 +1,8 @@
 package com.vkontakte.miracle.model.photos;
 
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO_ITEM;
+
+import androidx.annotation.Nullable;
 import androidx.collection.ArrayMap;
 
 import com.vkontakte.miracle.engine.view.photoGridView.MediaItem;
@@ -57,5 +60,22 @@ public class PhotoItem extends MediaItem {
             }
             setSizes(sizes);
         }
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(obj!=null){
+            if(obj instanceof PhotoItem){
+                PhotoItem photoItem = (PhotoItem) obj;
+                return photoItem.id.equals(id) && photoItem.albumId.equals(albumId)
+                        && photoItem.ownerId.equals(ownerId) && photoItem.date == date;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int getViewHolderType() {
+        return TYPE_PHOTO_ITEM;
     }
 }

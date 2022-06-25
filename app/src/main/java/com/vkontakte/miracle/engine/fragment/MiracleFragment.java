@@ -1,24 +1,26 @@
 package com.vkontakte.miracle.engine.fragment;
 
+import android.os.Bundle;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.vkontakte.miracle.MiracleActivity;
-import com.vkontakte.miracle.MiracleApp;
 
 public abstract class MiracleFragment extends Fragment {
 
     private MiracleActivity miracleActivity;
 
-    public void iniContext(){
+    @CallSuper
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         miracleActivity = (MiracleActivity) getActivity();
     }
 
     public MiracleActivity getMiracleActivity(){
         return miracleActivity;
-    }
-
-    public MiracleApp getMiracleApp(){
-        return miracleActivity.getMiracleApp();
     }
 
     public abstract void scrollToTop();

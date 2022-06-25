@@ -5,52 +5,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
-        android:id="@+id/fragmentMenuContainer"
+        android:id="@+id/fragmentBlockScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="false"
         android:elevation="11dp"
         android:orientation="vertical"/>
+
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+        android:id="@+id/appbarlayout"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:translationZ="0dp"
-        app:elevation="0dp"
-        android:background="?attr/backgroundColor">
-        <LinearLayout
-            android:id="@+id/appbarLinear"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppBar">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-            <ImageView
-                android:id="@+id/logo_button"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="12dp"
-                android:src="@drawable/ic_logo_48"
-                app:tint="?attr/colorPrimary"/>
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:text="@string/profile"
-                android:textSize="24sp"
-                android:fontFamily="@font/product"
-                android:textStyle="bold"
-                android:includeFontPadding="false"
-                android:maxLines="1"
-                android:ellipsize="end" />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            app:title="@string/profile"
+            style="@style/Widget.Toolbar.TopAppBarWithLogo"/>
     </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
@@ -82,7 +63,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="2dp"
-                            android:background="?attr/placeHolderColor"
+                            android:background="?attr/colorPlaceholder"
                             android:scaleType="centerCrop"
                             app:shapeAppearanceOverlay="@style/CircleShapeAppearance"
                             app:strokeColor="?attr/colorOnSecondary"
@@ -124,61 +105,63 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-                        <com.vkontakte.miracle.engine.view.switchIcon.SwitchIconViewV2
+
+                        <com.miracle.button.SwitchButton
                             android:id="@+id/no_push_switch"
                             android:layout_width="54dp"
                             android:layout_height="54dp"
                             android:layout_marginHorizontal="12dp"
-                            android:background="@drawable/circle_card"
+                            android:enabled="false"
                             android:scaleType="centerInside"
-                            app:si_disabled_alpha="1"
-                            app:si_background_tint_color="?attr/colorPrimary"
-                            app:si_disabled_background_color="?attr/colorSurfacePrimary"
-                            app:si_disabled_color="?attr/colorPrimary"
-                            app:si_tint_color="?attr/colorOnSecondary"
-                            app:si_enabled="false"
-                            app:si_no_dash="true"
-                            android:src="@drawable/ic_do_not_disturb_28"/>
-                        <com.vkontakte.miracle.engine.view.switchIcon.SwitchIconViewV2
+                            android:src="@drawable/ic_do_not_disturb_28"
+                            app:icon_color="?attr/colorOnSecondary"
+                            app:background_color="?attr/colorPrimary"
+                            app:disabled_icon_color="?attr/colorOnSecondaryContainerDisabled"
+                            app:disabled_background_color="?attr/colorSecondaryContainerDisabled"
+                            app:shapeAppearanceOverlay="@style/CircleShapeAppearance"
+                            app:animation_duration="1200"/>
+
+                        <com.miracle.button.SwitchButton
                             android:id="@+id/incognito_switch"
                             android:layout_width="54dp"
                             android:layout_height="54dp"
                             android:layout_marginEnd="12dp"
-                            android:background="@drawable/circle_card"
                             android:scaleType="centerInside"
-                            app:si_disabled_alpha="1"
-                            app:si_background_tint_color="?attr/colorPrimary"
-                            app:si_disabled_background_color="?attr/colorSurfacePrimary"
-                            app:si_disabled_color="?attr/colorPrimary"
-                            app:si_tint_color="?attr/colorOnSecondary"
-                            app:si_enabled="false"
-                            app:si_no_dash="true"
-                            android:src="@drawable/ic_views_28"/>
-                        <com.vkontakte.miracle.engine.view.switchIcon.SwitchIconViewV2
+                            android:src="@drawable/ic_views_28"
+                            android:enabled="false"
+                            app:icon_color="?attr/colorOnSecondary"
+                            app:background_color="?attr/colorPrimary"
+                            app:disabled_icon_color="?attr/colorOnSecondaryContainerDisabled"
+                            app:disabled_background_color="?attr/colorSecondaryContainerDisabled"
+                            app:shapeAppearanceOverlay="@style/CircleShapeAppearance"/>
+
+                        <com.miracle.button.SwitchButton
                             android:id="@+id/dark_theme_switch"
                             android:layout_width="54dp"
                             android:layout_height="54dp"
                             android:layout_marginEnd="12dp"
-                            android:background="@drawable/circle_card"
                             android:scaleType="centerInside"
-                            app:si_disabled_alpha="1"
-                            app:si_background_tint_color="?attr/colorPrimary"
-                            app:si_disabled_background_color="?attr/colorSurfacePrimary"
-                            app:si_disabled_color="?attr/colorPrimary"
-                            app:si_tint_color="?attr/colorOnSecondary"
-                            app:si_enabled="false"
-                            app:si_no_dash="true"
-                            android:src="@drawable/ic_night_28"/>
+                            android:src="@drawable/ic_night_28"
+                            android:enabled="false"
+                            app:auto_click_switch="false"
+                            app:icon_color="?attr/colorOnSecondary"
+                            app:background_color="?attr/colorPrimary"
+                            app:disabled_icon_color="?attr/colorOnSecondaryContainerDisabled"
+                            app:disabled_background_color="?attr/colorSecondaryContainerDisabled"
+                            app:shapeAppearanceOverlay="@style/CircleShapeAppearance"/>
+
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/notifications_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_ripple"
                         android:drawablePadding="16dp"
                         android:fontFamily="sans-serif-medium"
                         android:gravity="center_vertical"
@@ -197,6 +180,7 @@
                         android:id="@+id/favorite_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_ripple"
                         android:drawablePadding="16dp"
                         android:fontFamily="sans-serif-medium"
                         android:gravity="center_vertical"
@@ -214,6 +198,7 @@
                         android:id="@+id/friends"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_ripple"
                         android:drawablePadding="16dp"
                         android:fontFamily="sans-serif-medium"
                         android:gravity="center_vertical"
@@ -231,6 +216,7 @@
                         android:id="@+id/groups"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_ripple"
                         android:drawablePadding="16dp"
                         android:fontFamily="sans-serif-medium"
                         android:gravity="center_vertical"
@@ -248,6 +234,7 @@
                         android:id="@+id/photos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_ripple"
                         android:drawablePadding="16dp"
                         android:fontFamily="sans-serif-medium"
                         android:gravity="center_vertical"
@@ -265,6 +252,7 @@
                         android:id="@+id/videos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_ripple"
                         android:drawablePadding="16dp"
                         android:fontFamily="sans-serif-medium"
                         android:gravity="center_vertical"
@@ -282,6 +270,7 @@
                         android:id="@+id/settings"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_ripple"
                         android:drawablePadding="16dp"
                         android:fontFamily="sans-serif-medium"
                         android:gravity="center_vertical"
@@ -293,24 +282,20 @@
                         android:textSize="14sp"
                         app:drawableEndCompat="@drawable/ic_chevron_24"
                         app:drawableStartCompat="@drawable/ic_settings_28"
-                        app:drawableTint="?attr/colorPrimary" />
-                    <TextView
+                        app:drawableTint="?attr/colorPrimary"/>
+
+                    <com.miracle.button.TextViewButton
                         android:id="@+id/exit"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/sign_out"
-                        android:background="@drawable/rounded_card"
-                        android:backgroundTint="@color/error_half"
-                        android:textColor="?attr/colorError"
-                        android:textSize="14sp"
-                        android:fontFamily="sans-serif-medium"
-                        android:includeFontPadding="false"
-                        android:textAllCaps="false"
-                        android:gravity="center"
+                        android:layout_height="48dp"
                         android:layout_marginHorizontal="12dp"
-                        android:layout_marginBottom="15dp"
-                        android:paddingHorizontal="15dp"
-                        android:paddingVertical="15dp"/>
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="12dp"
+                        android:textAppearance="@style/ButtonTextAppearance"
+                        android:text="@string/sign_out"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance"
+                        app:background_color="?attr/colorErrorContainer"
+                        app:text_color="?attr/colorOnErrorContainer"/>
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

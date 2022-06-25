@@ -1,6 +1,7 @@
 package com.vkontakte.miracle.player.fragment;
 
 import android.os.Bundle;
+import android.os.Trace;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +43,10 @@ public class FragmentPlaying extends NestedMiracleFragment {
                 FragmentPlaying.this.playerData=playerData;
                 playingAdapter = new PlayingAdapter(playerData);
                 setAdapter(playingAdapter);
+                //rootView.post(() -> setAdapter(playingAdapter));
             } else {
                 FragmentPlaying.this.playerData = playerData;
-                playingAdapter.setItemDataHolders(playerData);
+                playingAdapter.setNewItemDataHolders(playerData);
             }
         }
 
@@ -65,18 +67,18 @@ public class FragmentPlaying extends NestedMiracleFragment {
     };
     private final OnApplyWindowInsetsListener onApplyWindowInsetsListener = (v, windowInsets) -> {
         Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-        rootView.setPadding(0,insets.top,0,insets.bottom);
+        rootView.setPadding(insets.left, insets.top, insets.right, insets.bottom);
         return windowInsets;
     };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        iniContext();
         miracleActivity = getMiracleActivity();
         rootView = inflater.inflate(R.layout.fragment_playing, container, false);
         setRecyclerView(rootView.findViewById(R.id.recyclerView));
         miracleActivity.addOnApplyWindowInsetsListener(onApplyWindowInsetsListener);
+        PlayerServiceController.get().addOnPlayerEventListener(onPlayerEventListener);
         return rootView;
     }
 
@@ -85,12 +87,6 @@ public class FragmentPlaying extends NestedMiracleFragment {
         miracleActivity.removeOnApplyWindowInsetsListener(onApplyWindowInsetsListener);
         PlayerServiceController.get().removeOnPlayerEventListener(onPlayerEventListener);
         super.onDestroy();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        PlayerServiceController.get().addOnPlayerEventListener(onPlayerEventListener);
     }
 
     public static class Fabric extends NestedMiracleFragmentFabric {

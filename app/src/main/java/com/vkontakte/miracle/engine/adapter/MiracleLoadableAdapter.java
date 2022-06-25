@@ -1,39 +1,27 @@
 package com.vkontakte.miracle.engine.adapter;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_LOADING;
-
-import android.util.ArrayMap;
 import android.util.Log;
-import android.view.ViewGroup;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes;
 import com.vkontakte.miracle.engine.adapter.holder.error.ErrorDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.error.ErrorViewHolder;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.vkontakte.miracle.engine.fragment.ListMiracleFragment;
 import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
 
 import java.util.ArrayList;
 
-public abstract class MiracleLoadableAdapter extends MiracleAdapter implements ILoadableAdapter {
+public abstract class MiracleLoadableAdapter extends MiracleUniversalAdapter implements ILoadableAdapter {
 
-    private ArrayList<ItemDataHolder> itemDataHolders = new ArrayList<>();
-    public  ArrayMap<Integer, ViewHolderFabric> viewHolderFabricMap;
     private final ArrayList<Task> tasks = new ArrayList<>();
     private boolean finallyLoaded = false;
-    private boolean hasData = false;
     private boolean hasError = false;
-    private boolean detached = false;
     private String error = "";
     private String nextFrom = "";
     private long timeStump = 0;
-    private int addedCount = 0;
     private int totalCount = 0;
     private int loadedCount = 0;
     private int step = 25;
@@ -42,58 +30,61 @@ public abstract class MiracleLoadableAdapter extends MiracleAdapter implements I
 
     @Override
     public void load() {
-
-        if(detached){
-            detached = false;
-            if(hasData) {
-                getMiracleFragment().show(false);
-            }
-        }else{
-            if(!loading()){
-                (dataLoader = new AsyncExecutor<Boolean>() {
-                    @Override
-                    public Boolean inBackground() {
-                        try {
-                            MiracleLoadableAdapter.this.onLoading();
-                            error = "";
-                            return true;
-                        } catch (Exception e) {
-                            error = e.toString();
-                            return false;
+        if(attached()){
+            if(hasData()&&!isShowed()){
+                show(false);
+            } else {
+                if(!isLoading()){
+                    (dataLoader = new AsyncExecutor<Boolean>() {
+                        @Override
+                        public Boolean inBackground() {
+                            try {
+                                MiracleLoadableAdapter.this.onLoading();
+                                error = "";
+                                return true;
+                            } catch (Exception e) {
+                                error = e.toString();
+                                return false;
+                            }
                         }
-                    }
-
-                    @Override
-                    public void onExecute(Boolean object) {
-                        if(object){
-                            Log.d(LOG_TAG, "successful loading");
-                            hasError = false;
-                            MiracleLoadableAdapter.this.onComplete();
-                        }else {
-                            if (!detached) {
-                                Log.d(LOG_TAG, error);
-
-                                hasError = true;
-                                finallyLoaded = true;
-
-                                if (!hasData) {
-                                    itemDataHolders.add(new ErrorDataHolder(error));
-                                    hasData = true;
-                                    notifyData();
-                                    getMiracleFragment().show();
-                                    if(getMiracleFragment() instanceof SimpleMiracleFragment) {
-                                        ((SimpleMiracleFragment) getMiracleFragment()).setTitleText("Ошибка");
+                        @Override
+                        public void onExecute(Boolean success) {
+                            if(attached()){
+                                if(success){
+                                    Log.d(LOG_TAG, "successful loading");
+                                    hasError = false;
+                                    if(attached()) {
+                                        MiracleLoadableAdapter.this.onComplete();
+                                    }
+                                } else {
+                                    Log.d(LOG_TAG, error);
+                                    hasError = true;
+                                    finallyLoaded = true;
+                                    if (!hasData()) {
+                                        getItemDataHolders().add(new ErrorDataHolder(error));
+                                        setAddedCount(1);
+                                        setHasData(true);
+                                        notifyData();
+                                        if (!isShowed()) {
+                                            show(true);
+                                            ListMiracleFragment miracleFragment = getMiracleFragment();
+                                            if (miracleFragment != null) {
+                                                if (miracleFragment instanceof SimpleMiracleFragment) {
+                                                    ((SimpleMiracleFragment) miracleFragment).setTitleText("Ошибка");
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                }).start();
+                    }).start();
+                }
             }
         }
     }
 
-    public boolean loading() {
+    public boolean isLoading() {
         return dataLoader!=null&&!dataLoader.workIsDone();
     }
     //////////////////////////////////////////////////
@@ -116,20 +107,6 @@ public abstract class MiracleLoadableAdapter extends MiracleAdapter implements I
     }
     public String getError() {
         return error;
-    }
-    //////////////////////////////////////////////////
-    public void setHasData(boolean hasData) {
-        this.hasData = hasData;
-    }
-    public boolean hasData() {
-        return hasData;
-    }
-    //////////////////////////////////////////////////
-    public void setAddedCount(int addedCount) {
-        this.addedCount = addedCount;
-    }
-    public int getAddedCount() {
-        return addedCount;
     }
     //////////////////////////////////////////////////
     public void setNextFrom(String nextFrom) {
@@ -167,117 +144,71 @@ public abstract class MiracleLoadableAdapter extends MiracleAdapter implements I
         return timeStump;
     }
     //////////////////////////////////////////////////
-    public ArrayList<ItemDataHolder> getItemDataHolders() {
-        return itemDataHolders;
-    }
-    public void setItemDataHolders(ArrayList<ItemDataHolder> itemDataHolders) {
-        this.itemDataHolders = itemDataHolders;
+    @Override
+    public void resetToInitialState(){
+        super.resetToInitialState();
+        tasks.clear();
+        finallyLoaded = false;
+        hasError = false;
+        error = "";
+        nextFrom = "";
+        timeStump = 0;
+        totalCount = 0;
+        loadedCount = 0;
     }
     //////////////////////////////////////////////////
 
-    public void setDetached(boolean detached) {
-        this.detached = detached;
-    }
-
     @Override
     public int getItemCount() {
-        if(!hasData){
+        if(!hasData()){
             return 0;
         }else {
             if(finallyLoaded){
-                return itemDataHolders.size();
+                return getItemDataHolders().size();
             }else {
-                return itemDataHolders.size()+1;
+                return getItemDataHolders().size()+1;
             }
-        }
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if(position<itemDataHolders.size()){
-            return itemDataHolders.get(position).getViewHolderType();
-        } else {
-            return TYPE_LOADING;
-        }
-    }
-
-    @NonNull
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ViewHolderFabric viewHolderFabric = viewHolderFabricMap.get(viewType);
-        if(viewHolderFabric !=null){
-            return viewHolderFabric.create(getInflater(),parent);
-        }else {
-            return new ErrorViewHolder.Fabric().create(getInflater(),parent);
         }
     }
 
     @CallSuper
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
         super.onBindViewHolder(holder, position);
-
-        if(holder instanceof MiracleViewHolder){
-            if(position<itemDataHolders.size()){
-                ((MiracleViewHolder)holder).bind(itemDataHolders.get(position));
-            }
-        }
-
         int red = (getItemCount()>1)?2:1;
-
-        if (position==getItemCount()-red && !finallyLoaded && !detached) {
+        if (position>=getItemCount()-red && !finallyLoaded && attached()) {
             load();
         }
     }
 
     @Override
-    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
-        detached = true;
-        super.onDetachedFromRecyclerView(recyclerView);
-    }
-
-
-    @Override
     public void onComplete() {
-        if (!hasData) {
-            hasData = true;
+        if (!hasData()) {
+            setHasData(true);
+            getRecyclerView().setItemAnimator(null);
             notifyData();
-            getMiracleFragment().show();
-
+            if(isReloading()){
+                setReloading(false);
+                getRecyclerView().scrollToPosition(0);
+            }
+            getRecyclerView().setItemAnimator(new DefaultItemAnimator());
+            if(!isShowed()){
+                show(true);
+            }
             if (!tasks.isEmpty()) {
                 tasks.get(0).func();
             }
-
         }else {
             notifyData();
         }
     }
 
-    @CallSuper
     @Override
-    public void ini() {
-        viewHolderFabricMap = getViewHolderFabricMap();
-    }
-
     public void notifyData(){
-        int lastItemPosition = itemDataHolders.size();
-
-        if(addedCount>0){
-            notifyItemRangeInserted(lastItemPosition - addedCount, addedCount);
-        }else {
-            if (addedCount<0) {
-                notifyItemRangeRemoved(lastItemPosition + addedCount, -addedCount);
-            }
-        }
-
+        super.notifyData();
         if(finallyLoaded){
-            notifyItemRemoved(lastItemPosition);
+            notifyItemRemoved(getItemDataHolders().size());
         }
-    }
-
-    public ArrayMap<Integer, ViewHolderFabric> getViewHolderFabricMap(){
-        return ViewHolderTypes.getCatalogFabrics();
     }
 
     public void addTask(Task task){
@@ -301,5 +232,4 @@ public abstract class MiracleLoadableAdapter extends MiracleAdapter implements I
             }
         }
     }
-
 }

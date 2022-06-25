@@ -7,6 +7,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.tabs.TabLayout;
 import com.vkontakte.miracle.R;
 
 import static com.vkontakte.miracle.engine.util.DimensionsUtil.getDimensionByAttributeId;
@@ -14,8 +15,11 @@ import static com.vkontakte.miracle.engine.util.DimensionsUtil.getDimensionByAtt
 public class ScrollAndElevate {
     public static void scrollAndElevate(final NestedScrollView scrollView, final AppBarLayout appBarLayout, final Context context){
         scrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
-            if(!scrollView.canScrollVertically(-1)) appBarLand(appBarLayout);
-            else appBarElevate(appBarLayout,context);
+            if(!scrollView.canScrollVertically(-1)) {
+                appBarLand(appBarLayout);
+            } else {
+                appBarElevate(appBarLayout,context);
+            }
         });
     }
 
@@ -24,8 +28,11 @@ public class ScrollAndElevate {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (!recyclerView.canScrollVertically(-1)) appBarLand(appBarLayout);
-                else appBarElevate(appBarLayout, context);
+                if (!recyclerView.canScrollVertically(-1)) {
+                    appBarLand(appBarLayout);
+                } else {
+                    appBarElevate(appBarLayout, context);
+                }
             }
         });
     }

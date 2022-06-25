@@ -2,13 +2,18 @@ package com.vkontakte.miracle.adapter.wall.holders;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO_ITEM;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
 import static com.vkontakte.miracle.engine.util.ColorUtil.getColorByAttributeId;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 import static com.vkontakte.miracle.engine.util.StringsUtil.reduceTheNumber;
 
+import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.transition.AutoTransition;
 import android.transition.Slide;
 import android.transition.Transition;
@@ -27,9 +32,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
+import com.vkontakte.miracle.engine.adapter.MiracleViewRecycler;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
@@ -45,6 +52,8 @@ import com.vkontakte.miracle.model.wall.PostItem;
 import com.vkontakte.miracle.network.methods.Likes;
 
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import retrofit2.Response;
 
@@ -102,17 +111,32 @@ public class PostViewHolder extends MiracleViewHolder {
             if(postItem!=null){
                 final PostItem finalPostItem = PostViewHolder.this.postItem;
                 postItem.setUserLikes(!postItem.getUserLikes());
+                if(postItem.getUserLikes()){
+                    postItem.setLikesCount(postItem.getLikesCount()+1);
+                } else {
+                    postItem.setLikesCount(Math.max(0, postItem.getLikesCount()-1));
+                }
+                updateLikesCount(true);
                 colorLikesButton(true);
                 new AsyncExecutor<Integer>(){
                     @Override
                     public Integer inBackground() {
                         try {
+
+                            Owner owner = postItem.getFrom();
+                            if(owner==null){
+                                owner = postItem.getSource();
+                            }
+                            if(owner==null){
+                                owner = postItem.getOwner();
+                            }
+
                             ProfileItem profileItem = getMiracleActivity().getUserItem();
                             Response<JSONObject> response =  (postItem.getUserLikes() ?
                                     Likes.add("post", postItem.getId(),
-                                            postItem.getOwner().getId(),profileItem.getAccessToken())
+                                            owner.getId(),profileItem.getAccessToken())
                             :Likes.delete("post", postItem.getId(),
-                                    postItem.getOwner().getId(),profileItem.getAccessToken())).execute();
+                                    owner.getId(),profileItem.getAccessToken())).execute();
 
                             JSONObject jsonObject = validateBody(response);
 
@@ -142,14 +166,21 @@ public class PostViewHolder extends MiracleViewHolder {
 
     @Override
     public void bind(ItemDataHolder itemDataHolder) {
+        super.bind(itemDataHolder);
 
         postItem = (PostItem) itemDataHolder;
 
-        Owner owner = postItem.getOwner();
+        Owner owner = postItem.getFrom();
+        if(owner==null){
+            owner = postItem.getSource();
+        }
+        if(owner==null){
+            owner = postItem.getOwner();
+        }
 
         title.setText(owner.getName());
 
-        date.setText(TimeUtil.getPostDateString(postItem.getDate(),itemView.getContext()));
+        date.setText(TimeUtil.getPostDateString(itemView.getContext(), postItem.getDate()));
 
         if(!owner.getPhoto200().isEmpty()) {
             Picasso.get().load(owner.getPhoto200()).into(imageView);
@@ -202,6 +233,10 @@ public class PostViewHolder extends MiracleViewHolder {
                         photoGridViewHolder = itemView.findViewById(R.id.photosView);
                     }
                     photoGridView = (PhotoGridView) photoGridViewHolder.getChildAt(0);
+                    MiracleViewRecycler miracleViewRecycler =
+                            getMiracleAdapter().getMiracleViewRecycler(itemDataHolder.getViewHolderType());
+                    miracleViewRecycler.setMaxRecycledViews(TYPE_PHOTO_ITEM, 15);
+                    photoGridView.setRecycledViewPool(miracleViewRecycler);
                 }
                 if(photoGridViewHolder.getVisibility()!=VISIBLE) {
                     photoGridViewHolder.setVisibility(VISIBLE);
@@ -209,34 +244,42 @@ public class PostViewHolder extends MiracleViewHolder {
                 photoGridView.setPhotos(attachments.getMediaItems());
             } else {
                 if(photoGridViewHolder!=null&&photoGridViewHolder.getVisibility()!=GONE){
+                    photoGridView.setPhotos(attachments.getMediaItems());
                     photoGridViewHolder.setVisibility(GONE);
                 }
             }
 
-            if(!attachments.getAudios().isEmpty()){
+            if(!attachments.getAudioItems().isEmpty()){
                 if(audiosView==null) {
                     if(photosViewStub!=null) {
                         audiosView = (AudioListView) audiosViewStub.inflate();
                     } else {
                         audiosView = itemView.findViewById(R.id.audiosView);
                     }
+                    MiracleViewRecycler miracleViewRecycler =
+                            getMiracleAdapter().getMiracleViewRecycler(itemDataHolder.getViewHolderType());
+                    miracleViewRecycler.setMaxRecycledViews(TYPE_WRAPPED_AUDIO, 15);
+                    audiosView.setRecycledViewPool(miracleViewRecycler);
                 }
 
                 if(audiosView.getVisibility()!=VISIBLE) {
                     audiosView.setVisibility(VISIBLE);
                 }
-                audiosView.setItems(getMiracleActivity(),attachments.getAudios());
+                audiosView.setItems(attachments.getAudioItems());
             }else {
                 if(audiosView!=null&&audiosView.getVisibility()!=GONE){
+                    audiosView.setItems(attachments.getAudioItems());
                     audiosView.setVisibility(GONE);
                 }
             }
 
         } else {
             if(photoGridViewHolder!=null&&photoGridViewHolder.getVisibility()!=GONE){
+                photoGridView.setPhotos(new ArrayList<>());
                 photoGridViewHolder.setVisibility(GONE);
             }
             if(audiosView!=null&&audiosView.getVisibility()!=GONE){
+                audiosView.setItems( new ArrayList<>());
                 audiosView.setVisibility(GONE);
             }
         }
@@ -326,48 +369,64 @@ public class PostViewHolder extends MiracleViewHolder {
     }
 
     private void colorLikesButton(boolean animate){
+        Context context = itemView.getContext();
+
+        int colorButtonOnCardBackground = getColorByAttributeId(context, R.attr.colorButtonOnCardBackground);
+        int colorOnButtonOnCardBackground = getColorByAttributeId(context, R.attr.colorOnButtonOnCardBackground);
+
         if(postItem.getUserLikes()){
-            likesIcon.setImageDrawable(ResourcesCompat.getDrawable(getMiracleApp().getResources(),
-                    R.drawable.ic_like_filled_24, getMiracleApp().getTheme()));
 
-            int color = getColorByAttributeId(itemView.getContext(),R.attr.likeHolderColor);
+            ArgbEvaluator colorEvaluator = new ArgbEvaluator();
 
+            int colorLike = ResourcesCompat.getColor(context.getResources(), R.color.like, context.getTheme());
+
+            int likeIconColor = (int) colorEvaluator.evaluate(0.875f, colorOnButtonOnCardBackground, colorLike);
+            Drawable drawable = ResourcesCompat.getDrawable(context.getResources(),
+                    R.drawable.ic_like_filled_24, context.getTheme());
+            if(drawable!=null) {
+                drawable = DrawableCompat.wrap(drawable).mutate();
+                drawable.setColorFilter(new PorterDuffColorFilter(likeIconColor, PorterDuff.Mode.SRC_IN));
+            }
+
+            likesIcon.setImageDrawable(drawable);
+            likesText.setTextColor(likeIconColor);
+
+            int likeHolderColor = (int) colorEvaluator.evaluate(0.125f, colorButtonOnCardBackground, colorLike);
             if(animate) {
-                animateToColor(color);
-                Animation bounceAnimation = AnimationUtils.loadAnimation(getMiracleActivity(), R.anim.like_bounce);
+                animateToColor(likeHolderColor);
+                Animation bounceAnimation = AnimationUtils.loadAnimation(context, R.anim.like_bounce);
                 likesIcon.startAnimation(bounceAnimation);
             } else {
-                this.color = color;
-                PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN);
+                this.color = likeHolderColor;
+                PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(likeHolderColor, PorterDuff.Mode.SRC_IN);
                 likesHolder.getBackground().setColorFilter(colorFilter);
             }
-            color = ResourcesCompat.getColor(getMiracleApp().getResources(),
-                    R.color.like,itemView.getContext().getTheme());
-            likesText.setTextColor(color);
         } else {
-            likesIcon.setImageDrawable(ResourcesCompat.getDrawable(getMiracleApp().getResources(),
-                    R.drawable.ic_like_24, getMiracleApp().getTheme()));
-
-            int color = getColorByAttributeId(itemView.getContext(),R.attr.colorContrast10);
-
-            if(animate) {
-                animateToColor(color);
-                Animation bounceAnimation = AnimationUtils.loadAnimation(getMiracleActivity(), R.anim.like_bounce);
-                likesIcon.startAnimation(bounceAnimation);
-            } else {
-                this.color = color;
-                PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN);
-                likesHolder.getBackground().setColorFilter(colorFilter);
+            Drawable drawable = ResourcesCompat.getDrawable(context.getResources(),
+                    R.drawable.ic_like_24, context.getTheme());
+            if(drawable!=null) {
+                drawable = DrawableCompat.wrap(drawable).mutate();
+                drawable.setColorFilter(new PorterDuffColorFilter(colorOnButtonOnCardBackground, PorterDuff.Mode.SRC_IN));
             }
 
-            color = getColorByAttributeId(itemView.getContext(),R.attr.colorContrast60);
-            likesText.setTextColor(color);
+            likesIcon.setImageDrawable(drawable);
+            likesText.setTextColor(colorOnButtonOnCardBackground);
+
+            if(animate) {
+                animateToColor(colorButtonOnCardBackground);
+                Animation bounceAnimation = AnimationUtils.loadAnimation(context, R.anim.like_bounce);
+                likesIcon.startAnimation(bounceAnimation);
+            } else {
+                this.color = colorButtonOnCardBackground;
+                PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(colorButtonOnCardBackground,
+                        PorterDuff.Mode.SRC_IN);
+                likesHolder.getBackground().setColorFilter(colorFilter);
+            }
         }
     }
 
     private void animateToColor(int toColor){
         int old = color;
-
         ValueAnimator animator = ValueAnimator.ofArgb(old, toColor);
         animator.addUpdateListener(animation -> {
             color = (int) animation.getAnimatedValue();

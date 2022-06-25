@@ -14,11 +14,11 @@ public class ColorUtil {
 
     public static int getColorByAttributeId(Resources.Theme theme, int attrId){
         TypedValue typedValue = new TypedValue();
-        theme.resolveAttribute(attrId,typedValue,true);
+        theme.resolveAttribute(attrId, typedValue,true);
         return typedValue.data;
     }
 
     public static int getColorByResId(Context context, int resId){
-        return ResourcesCompat.getColor(context.getResources(),resId,context.getTheme());
+        return ResourcesCompat.getColor(context.getResources(), resId, context.getTheme());
     }
 }

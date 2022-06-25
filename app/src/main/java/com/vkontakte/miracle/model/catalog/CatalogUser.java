@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class CatalogUser implements ItemDataHolder {
+
     private final String itemId;
     private final ProfileItem profileItem;
     private ArrayList<CatalogDescription> descriptions;

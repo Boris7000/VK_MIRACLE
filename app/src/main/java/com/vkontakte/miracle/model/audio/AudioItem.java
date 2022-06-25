@@ -2,13 +2,14 @@ package com.vkontakte.miracle.model.audio;
 
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_AUDIO;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.util.TimeUtil;
 import com.vkontakte.miracle.model.audio.fields.Album;
 import com.vkontakte.miracle.model.audio.fields.Artist;
-import com.vkontakte.miracle.model.catalog.CatalogBlock;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,10 +33,6 @@ public class AudioItem implements ItemDataHolder{
     private final ArrayList<Artist> featuredArtists = new ArrayList<>();
     private final ArrayList<Artist> artists = new ArrayList<>();
     private Album album;
-
-    private CatalogBlock catalogBlock;
-    private PlaylistItem playlistItem;
-    private ArrayList<ItemDataHolder> audios;
 
     public String getId() {
         return id;
@@ -87,30 +84,6 @@ public class AudioItem implements ItemDataHolder{
         return album;
     }
 
-    public CatalogBlock getCatalogBlock() {
-        return catalogBlock;
-    }
-
-    public PlaylistItem getPlaylistItem() {
-        return playlistItem;
-    }
-
-    public ArrayList<ItemDataHolder> getAudios() {
-        return audios;
-    }
-
-    public void setCatalogBlock(CatalogBlock catalogBlock) {
-        this.catalogBlock = catalogBlock;
-    }
-
-    public void setPlaylistItem(PlaylistItem playlistItem) {
-        this.playlistItem = playlistItem;
-    }
-
-    public void setAudios(ArrayList<ItemDataHolder> audios) {
-        this.audios = audios;
-    }
-
     public AudioItem(JSONObject jsonObject) throws JSONException {
 
         id = jsonObject.getString("id");
@@ -160,7 +133,17 @@ public class AudioItem implements ItemDataHolder{
         if(obj!=null){
             if(obj instanceof AudioItem){
                 AudioItem audioItem = (AudioItem) obj;
-                return audioItem.id.equals(id);
+                return audioItem.id.equals(id)&&audioItem.ownerId.equals(ownerId);
+            }
+        }
+        return false;
+    }
+
+    public boolean equalsContent(@Nullable Object obj){
+        if(obj!=null){
+            if(obj instanceof AudioItem){
+                AudioItem audioItem = (AudioItem) obj;
+                return audioItem.title.equals(title)&&audioItem.artist.equals(artist);
             }
         }
         return false;

@@ -1,6 +1,11 @@
 package com.vkontakte.miracle.login;
 
 import static com.vkontakte.miracle.engine.util.StringsUtil.getTrimmed;
+import static com.vkontakte.miracle.login.AuthState.VALIDATION_CODE_HAS_ALREADY_BEEN_RESENT;
+import static com.vkontakte.miracle.login.AuthState.VALIDATION_CODE_RESENDS_LIMIT;
+import static com.vkontakte.miracle.login.AuthState.VALIDATION_TYPE_APP;
+import static com.vkontakte.miracle.login.AuthState.VALIDATION_TYPE_CALL;
+import static com.vkontakte.miracle.login.AuthState.VALIDATION_TYPE_SMS;
 
 import android.content.Context;
 import android.os.Handler;
@@ -14,22 +19,23 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.miracle.button.TextViewButton;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.TimeUtil;
-import com.vkontakte.miracle.engine.view.MiracleButton;
 
 import java.util.Locale;
 
 public class ValidationCodeFrame extends LinearLayout {
 
     private EditText validationCodeField;
-    private MiracleButton sendButton;
-    private MiracleButton cancelButton;
+    private TextViewButton sendButton;
+    private TextViewButton cancelButton;
     private LinearLayout forceSMSHolder;
-    private MiracleButton forceSMSButton;
+    private TextViewButton forceSMSButton;
     private TextView forceSMSTimer;
     private AsyncExecutor<Boolean> timer;
+    private AuthState authState;
 
     public ValidationCodeFrame(Context context) {
         super(context);
@@ -44,8 +50,8 @@ public class ValidationCodeFrame extends LinearLayout {
         super.onFinishInflate();
 
         validationCodeField = findViewById(R.id.validationCodeField);
-        sendButton = findViewById(R.id.validationCodeButton);
-        cancelButton = findViewById(R.id.validationCodeCancelButton);
+        sendButton = findViewById(R.id.sendButton);
+        cancelButton = findViewById(R.id.cancelButton);
         forceSMSHolder = findViewById(R.id.validationCodeForceSMSHolder);
         forceSMSButton = forceSMSHolder.findViewById(R.id.validationCodeForceSMSButton);
         forceSMSTimer = forceSMSHolder.findViewById(R.id.validationCodeForceSMSTimer);
@@ -63,7 +69,7 @@ public class ValidationCodeFrame extends LinearLayout {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                sendButton.setActive(getTrimmed(validationCodeField).length()>0);
+                sendButton.setEnabled(!getTrimmed(validationCodeField).isEmpty(), true);
             }
         };
         validationCodeField.addTextChangedListener(textWatcher);
@@ -72,46 +78,57 @@ public class ValidationCodeFrame extends LinearLayout {
 
     public void setValues(AuthState authState, LoginActivity loginActivity){
 
+        this.authState = authState;
+
         authState.setValidationCode(null);
 
         validationCodeField.requestFocus();
 
-        switch (authState.getState()) {
-            case AuthState.STATE_NEED_APP_VALIDATION:{
-                loginActivity.setText(loginActivity.getString(R.string.validationCodeAPP));
-                forceSMSHolder.setVisibility(VISIBLE);
-                forceSMSButton.setText(loginActivity.getString(R.string.forceValidationCodeSMS));
+        switch (authState.getValidationType()){
+            case VALIDATION_TYPE_CALL:{
+                loginActivity.setText(loginActivity.getString(R.string.validationCallDescription));
+                forceSMSButton.setText(loginActivity.getString(R.string.forceValidationCall));
                 break;
             }
-            case AuthState.STATE_NEED_VALIDATION: {
-                loginActivity.setText(loginActivity.getString(R.string.validationCodeNeeded));
-                forceSMSHolder.setVisibility(VISIBLE);
-                forceSMSButton.setText(loginActivity.getString(R.string.forceValidationCodeSMS));
+            case VALIDATION_TYPE_SMS:{
+                loginActivity.setText(String.format(loginActivity.getString(
+                        R.string.validationSMSDescription), authState.getPhoneMask()));
+                forceSMSButton.setText(loginActivity.getString(R.string.forceValidationSMS));
                 break;
             }
-            case AuthState.STATE_NEED_SMS_VALIDATION: {
-                loginActivity.setText(String.format(loginActivity.getString(R.string.validationCodeSMS),
-                        authState.getPhoneMask()));
-                forceSMSButton.setText(loginActivity.getString(R.string.resendValidationCodeSMS));
-                startTimer(authState);
-                break;
-            }
-            case AuthState.STATE_SMS_CODE_HAS_ALREADY_BEEN_RESENT: {
-                loginActivity.setText(String.format(loginActivity.getString(R.string.validationCodeSMSHasAlreadyBennResent),
-                        authState.getPhoneMask()));
-                forceSMSButton.setText(loginActivity.getString(R.string.resendValidationCodeSMS));
-                startTimer(authState);
-                break;
-            }
-            case AuthState.STATE_SMS_CODE_RESENDS_LIMIT: {
-                loginActivity.setText(loginActivity.getString(R.string.validationCodeSMSLimit));
-                forceSMSHolder.setVisibility(GONE);
+            case VALIDATION_TYPE_APP:{
+                loginActivity.setText(loginActivity.getString(R.string.validationAppDecription));
+                forceSMSButton.setText(loginActivity.getString(R.string.forceValidationSMS));
                 break;
             }
         }
 
+        if(authState.getForceCodeUnableReason()==0) {
+            if (authState.getDelay() == 0) {
+                forceSMSTimer.setVisibility(GONE);
+                forceSMSButton.setEnabled(true);
+            } else {
+                startTimer();
+            }
+        } else {
+            switch (authState.getForceCodeUnableReason()){
+                case VALIDATION_CODE_HAS_ALREADY_BEEN_RESENT:{
+                    forceSMSButton.setText(String.format(loginActivity.getString(
+                            R.string.validationCodeSMSHasAlreadyBennResent), authState.getPhoneMask()));
+                    startTimer();
+                    break;
+                }
+                case VALIDATION_CODE_RESENDS_LIMIT:{
+                    forceSMSButton.setText(loginActivity.getString(R.string.validationCodeSMSLimit));
+                    forceSMSTimer.setVisibility(GONE);
+                    forceSMSButton.setEnabled(false);
+                    break;
+                }
+            }
+        }
+
         forceSMSButton.setOnClickListener(view -> {
-            if(forceSMSButton.isActive()) {
+            if(forceSMSButton.isEnabled()) {
                 if (loginActivity.canLogin()) {
                     authState.setValidationCode(null);
                     new Authentication(authState, loginActivity).start();
@@ -120,7 +137,7 @@ public class ValidationCodeFrame extends LinearLayout {
         });
 
         sendButton.setOnClickListener(view -> {
-            if(sendButton.isActive()) {
+            if(sendButton.isEnabled()) {
                 if(loginActivity.canLogin()) {
                     authState.setValidationCode(getTrimmed(validationCodeField));
                     new Authentication(authState, loginActivity).start();
@@ -140,6 +157,10 @@ public class ValidationCodeFrame extends LinearLayout {
 
     }
 
+    public void clearFocus(){
+        validationCodeField.clearFocus();
+    }
+
     private void stopTimer(){
         if(timer != null && !timer.workIsDone()) {
             timer.interrupt();
@@ -147,10 +168,10 @@ public class ValidationCodeFrame extends LinearLayout {
         }
     }
 
-    private void startTimer(AuthState authState) {
+    private void startTimer() {
         forceSMSHolder.setVisibility(VISIBLE);
         forceSMSTimer.setVisibility(VISIBLE);
-        forceSMSButton.setActive(false);
+        forceSMSButton.setEnabled(false);
         final long finalRemain = Math.max(authState.getDelay()*1000L
                 -(System.currentTimeMillis()-authState.getResponseTime()),0);
         if(finalRemain>0){
@@ -165,7 +186,7 @@ public class ValidationCodeFrame extends LinearLayout {
                             String timerString = TimeUtil.getDurationStringMills(locale, remain);
                             new Handler(Looper.getMainLooper()).post(() -> forceSMSTimer.setText(timerString));
                             try {
-                                Thread.sleep(Math.min(remain,1000L));
+                                Thread.sleep(Math.max(1,Math.min(remain,1000L)));
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                                 return false;
@@ -177,7 +198,7 @@ public class ValidationCodeFrame extends LinearLayout {
                     public void onExecute(Boolean object) {
                         if(object) {
                             forceSMSTimer.setVisibility(GONE);
-                            forceSMSButton.setActive(true);
+                            forceSMSButton.setEnabled(true, true);
                         }
                     }
                 };
@@ -185,7 +206,7 @@ public class ValidationCodeFrame extends LinearLayout {
             }
         } else {
             forceSMSTimer.setVisibility(GONE);
-            forceSMSButton.setActive(true);
+            forceSMSButton.setEnabled(true);
         }
     }
 }

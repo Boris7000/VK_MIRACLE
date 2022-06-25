@@ -5,11 +5,12 @@ import static android.view.View.VISIBLE;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -37,7 +38,7 @@ public class TabsMiracleFragment extends MiracleFragment {
     private TabsAdapter tabsAdapter;
     private ViewPager2 viewPager;
     private MiracleTabLayout tabLayout;
-    private LinearLayout topBar;
+    private Toolbar toolBar;
     private AppBarLayout appBarLayout;
     private ProgressBar progressBar;
     private boolean scrollAndElevate = true;
@@ -93,11 +94,13 @@ public class TabsMiracleFragment extends MiracleFragment {
                 if(nestedMiracleFragment!=null) {
                     RecyclerView recyclerView = nestedMiracleFragment.getRecyclerView();
 
-                    if (recyclerView != null) {
-                        if (recyclerView.canScrollVertically(-1)) {
-                            ScrollAndElevate.appBarElevate(appBarLayout, getMiracleActivity());
-                        } else {
-                            ScrollAndElevate.appBarLand(appBarLayout);
+                    if(scrollAndElevate()) {
+                        if (recyclerView != null) {
+                            if (recyclerView.canScrollVertically(-1)) {
+                                ScrollAndElevate.appBarElevate(appBarLayout, getMiracleActivity());
+                            } else {
+                                ScrollAndElevate.appBarLand(appBarLayout);
+                            }
                         }
                     }
                 }
@@ -167,26 +170,36 @@ public class TabsMiracleFragment extends MiracleFragment {
 
     //////////////////////////////////////////////////
 
-    public void setTopBar(LinearLayout topBar){
-        setTopBar(topBar, v -> scrollToTop());
+    public void setBackClick(){
+        setToolBarNavigationClickListener(v -> getMiracleActivity().fragmentBack());
     }
 
-    public void setTopBar(LinearLayout topBar, View.OnClickListener onClickListener){
-        topBar.setOnClickListener(onClickListener);
-        this.topBar = topBar;
+    public void setToolBarNavigationClickListener(View.OnClickListener onClickListener){
+        toolBar.setNavigationOnClickListener(onClickListener);
     }
 
-    public LinearLayout getTopBar(){
-        return topBar;
+    public void setAppbarClickToTop(){
+        setAppbarClickListener(v -> scrollToTop());
     }
 
-    //////////////////////////////////////////////////
+    public void setAppbarClickListener(View.OnClickListener onClickListener){
+        appBarLayout.setOnClickListener(onClickListener);
+    }
+
+    public void setToolBar(Toolbar toolBar) {
+        this.toolBar = toolBar;
+    }
+
+    public Toolbar getToolBar() {
+        return toolBar;
+    }
 
     public void setAppBarLayout(AppBarLayout appBarLayout){
         this.appBarLayout = appBarLayout;
+        //appBarLayout.setStatusBarForeground(MaterialShapeDrawable.createWithElevationOverlay(requireContext()));
     }
 
-    public AppBarLayout getAppBarLayout(){
+    public AppBarLayout getAppBarLayout() {
         return appBarLayout;
     }
 
@@ -199,10 +212,6 @@ public class TabsMiracleFragment extends MiracleFragment {
     }
 
     //////////////////////////////////////////////////
-
-    public void setBackClick(View view){
-        view.setOnClickListener(v -> getMiracleActivity().fragmentBack());
-    }
 
     @Override
     public boolean notTop(){
@@ -227,7 +236,7 @@ public class TabsMiracleFragment extends MiracleFragment {
 
         if (appBarLayout != null) {
             appBarLayout.setExpanded(true);
-            if(scrollAndElevate) {
+            if(scrollAndElevate()) {
                 ScrollAndElevate.appBarLand(appBarLayout);
             }
         }
@@ -243,9 +252,10 @@ public class TabsMiracleFragment extends MiracleFragment {
                 TabsAdapter tabsAdapter = (TabsAdapter)
                         LargeDataStorage.get().getLargeData(savedInstanceState.getString("adapter"));
                 savedInstanceState.remove(savedInstanceState.getString("adapter"));
-
-                setAdapter(new TabsAdapter(this, tabsAdapter.getFabrics()));
-               return false;
+                if(tabsAdapter!=null) {
+                    setAdapter(new TabsAdapter(getChildFragmentManager(), getLifecycle(), tabsAdapter.getFabrics()));
+                    return false;
+                }
             }
         }
         return true;
@@ -271,6 +281,8 @@ public class TabsMiracleFragment extends MiracleFragment {
         new AsyncExecutor<Boolean>() {
 
             private String exString="";
+            private String defaultSection = "";
+            private int defaultSectionIndex = 0;
 
             private final ArrayList<NestedMiracleFragmentFabric> fabrics = new ArrayList<>();
 
@@ -281,10 +293,19 @@ public class TabsMiracleFragment extends MiracleFragment {
 
                     JSONObject jsonObject = validateBody(response).getJSONObject("response");
 
-                    JSONArray sections = jsonObject.getJSONObject("catalog").getJSONArray("sections");
+                    JSONObject jo_catalog = jsonObject.getJSONObject("catalog");
+
+                    if(jo_catalog.has("default_section")){
+                        defaultSection = jo_catalog.getString("default_section");
+                    }
+
+                    JSONArray sections = jo_catalog.getJSONArray("sections");
 
                     for (int i=0; i<sections.length();i++){
                         CatalogSection catalogSection = new CatalogSection(sections.getJSONObject(i));
+                        if(catalogSection.getId().equals(defaultSection)){
+                            defaultSectionIndex = i;
+                        }
                         fabrics.add(new FragmentCatalogSectionNested.Fabric(catalogSection));
                     }
 
@@ -310,7 +331,8 @@ public class TabsMiracleFragment extends MiracleFragment {
                 }
 
                 if(!fabrics.isEmpty()) {
-                    setAdapter(new TabsAdapter(TabsMiracleFragment.this, fabrics));
+                    setAdapter(new TabsAdapter(getChildFragmentManager(), getLifecycle(), fabrics));
+                    viewPager.setCurrentItem(defaultSectionIndex, false);
                 }
             }
         }.start();

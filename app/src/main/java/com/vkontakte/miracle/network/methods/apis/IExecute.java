@@ -1,5 +1,7 @@
 package com.vkontakte.miracle.network.methods.apis;
 
+import com.vkontakte.miracle.network.Constants;
+
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -8,7 +10,9 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Header;
 import retrofit2.http.HeaderMap;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public interface IExecute {
@@ -45,8 +49,7 @@ public interface IExecute {
                                   @Field("playlists_count") int playlists_count,
                                   @Field("access_token") String access_token,
                                   @Field("func_v") int func_v,
-                                  @Field("v") String v,
-                                  @HeaderMap Map<String,String> headers);
+                                  @Field("v") String v);
 
     @FormUrlEncoded
     @POST("execute.getMusicPage")
@@ -56,8 +59,7 @@ public interface IExecute {
                                   @Field("need_playlists") int need_playlists,
                                   @Field("access_token") String access_token,
                                   @Field("func_v") int func_v,
-                                  @Field("v") String v,
-                                  @HeaderMap Map<String,String> headers);
+                                  @Field("v") String v);
 
     @FormUrlEncoded
     @POST("execute.getPlaylist")
@@ -69,7 +71,18 @@ public interface IExecute {
                                  @Field("audio_count") int audio_count,
                                  @Field("access_key") String access_key,
                                  @Field("access_token") String access_token,
-                                 @Field("v") String v,
-                                 @HeaderMap Map<String,String> headers);
+                                 @Field("v") String v);
+
+    @FormUrlEncoded
+    @POST("execute")
+    Call<JSONObject> executePlaylist(
+                                 @Field("code") String code,
+                                 @Field("owner_id") String owner_id,
+                                 @Field("playlist_id") String id,
+                                 @Field("offset") int audio_offset,
+                                 @Field("count") int audio_count,
+                                 @Field("access_key") String access_key,
+                                 @Field("access_token") String access_token,
+                                 @Field("v") String v);
 
 }

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="56dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/navigation_bar_bg_portrait">
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -12,17 +12,19 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="12dp"
+        android:layout_marginVertical="9dp"
         android:padding="@dimen/imageBorderWidth"
         android:layout_gravity="center_vertical"
-        android:background="?attr/placeHolderColor"
+        android:background="?attr/colorPlaceholder"
         app:shapeAppearanceOverlay="@style/Child2ShapeAppearance"
-        app:strokeColor="?attr/colorContrast10"
+        app:strokeColor="?attr/colorStroke"
         app:strokeWidth="@dimen/imageBorderWidth"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
+        android:layout_marginVertical="9dp"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
         android:orientation="horizontal">
@@ -72,7 +74,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:fontFamily="sans-serif"
-                android:textColor="?attr/colorContrast50"
+                android:textColor="?attr/colorEmphasis_60"
                 android:textSize="13sp"
                 tools:text="Subtitle" />
         </LinearLayout>
@@ -84,7 +86,7 @@
             android:layout_weight="0"
             android:scaleType="centerInside"
             android:src="@drawable/ic_skip_previous_28"
-            app:tint="?attr/colorSecondaryNeutral_80"
+            app:tint="?attr/colorEmphasis_60"
             android:contentDescription="previous song"/>
 
         <ImageView
@@ -94,7 +96,7 @@
             android:layout_weight="0"
             android:scaleType="centerInside"
             android:src="@drawable/ic_play_28"
-            app:tint="?attr/colorPrimaryNeutral_80"
+            app:tint="?attr/colorEmphasis_60"
             android:contentDescription="pause or play"/>
 
         <ImageView
@@ -105,7 +107,8 @@
             android:layout_weight="0"
             android:scaleType="centerInside"
             android:src="@drawable/ic_skip_next_28"
-            app:tint="?attr/colorSecondaryNeutral_80"
+            app:tint="?attr/colorEmphasis_60"
             android:contentDescription="next song"/>
     </LinearLayout>
+
 </com.vkontakte.miracle.player.view.PlayerBarView>

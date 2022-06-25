@@ -7,7 +7,7 @@ import static com.vkontakte.miracle.engine.view.ActivityRootView.STATE_CLEAR;
 import static com.vkontakte.miracle.engine.view.ActivityRootView.STATE_STANDARD;
 import static com.vkontakte.miracle.engine.view.ActivityRootView.TYPE_LAND;
 import static com.vkontakte.miracle.engine.view.ActivityRootView.TYPE_PORTRAIT;
-import static com.vkontakte.miracle.engine.view.ActivityRootView.TYPE_SW600DP;
+import static com.vkontakte.miracle.engine.view.ActivityRootView.TYPE_TABLET;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,46 +17,51 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.ArrayMap;
 import androidx.core.graphics.Insets;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.navigation.NavigationBarView;
+import com.vkontakte.miracle.engine.fragment.FragmentFabric;
 import com.vkontakte.miracle.engine.fragment.MiracleFragment;
 import com.vkontakte.miracle.engine.fragment.tabs.NestedMiracleFragmentFabric;
 import com.vkontakte.miracle.engine.fragment.tabs.TabsAdapter;
-import com.vkontakte.miracle.engine.util.DimensionsUtil;
 import com.vkontakte.miracle.engine.util.LargeDataStorage;
 import com.vkontakte.miracle.engine.util.SettingsUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.engine.view.ActivityRootView;
-import com.vkontakte.miracle.engine.view.bottomNavigation.MiracleBottomNavigationMenu;
-import com.vkontakte.miracle.engine.view.fragmentContainer.FragmentContainer;
-import com.vkontakte.miracle.longpoll.LongPollServiceController;
-import com.vkontakte.miracle.player.PlayerServiceController;
-import com.vkontakte.miracle.player.fragment.FragmentPlayer;
-import com.vkontakte.miracle.fragment.base.*;
-import com.vkontakte.miracle.player.fragment.FragmentPlaying;
+import com.vkontakte.miracle.engine.view.fragmentContainer.TabsFragmentContainer;
+import com.vkontakte.miracle.engine.view.fragmentContainer.TabsFragmentContainer.TabsFragmentController;
+import com.vkontakte.miracle.fragment.base.FragmentDialogs;
+import com.vkontakte.miracle.fragment.base.FragmentFeed;
+import com.vkontakte.miracle.fragment.base.FragmentMenu;
+import com.vkontakte.miracle.fragment.base.FragmentsMusic;
 import com.vkontakte.miracle.login.LoginActivity;
 import com.vkontakte.miracle.login.UnregisterDevice;
+import com.vkontakte.miracle.longpoll.LongPollServiceController;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.player.AudioPlayerData;
 import com.vkontakte.miracle.player.OnPlayerEventListener;
+import com.vkontakte.miracle.player.PlayerServiceController;
+import com.vkontakte.miracle.player.fragment.FragmentPlayer;
+import com.vkontakte.miracle.player.fragment.FragmentPlaying;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MiracleActivity extends AppCompatActivity {
 
     private MiracleApp miracleApp;
     private ProfileItem userItem;
     private ActivityRootView rootView;
-    private FragmentContainer fragmentContainer;
-    private MiracleBottomNavigationMenu bottomNavigationMenu;
+    private TabsFragmentContainer tabsFragmentContainer;
+    private NavigationBarView navigationBarView;
 
     private ViewStub playerBottomSheetStub;
     private FrameLayout playerBottomSheet;
@@ -103,6 +108,10 @@ public class MiracleActivity extends AppCompatActivity {
 
     private final PlayerServiceController playerServiceController = PlayerServiceController.get();
 
+
+    private View.OnLayoutChangeListener playerBarChangeListener;
+    private View.OnLayoutChangeListener navigationBarChangeListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -134,9 +143,9 @@ public class MiracleActivity extends AppCompatActivity {
 
         rootView = findViewById(R.id.rootView);
 
-        bottomNavigationMenu = rootView.findViewById(R.id.bottomNavigationMenu);
+        navigationBarView = rootView.findViewById(R.id.bottomNavigationView);
 
-        fragmentContainer = rootView.findViewById(R.id.frameContainer);
+        tabsFragmentContainer = rootView.findViewById(R.id.frameContainer);
 
         iniWindowInsets();
 
@@ -146,9 +155,18 @@ public class MiracleActivity extends AppCompatActivity {
     }
 
     private void iniWindowInsets(){
+
         ViewCompat.setOnApplyWindowInsetsListener(getWindow().getDecorView(), (v, windowInsets) -> {
             this.windowInsets = windowInsets;
-            updateInsets();
+
+            rootView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
+                    rootView.removeOnLayoutChangeListener(this);
+                    updateInsets();
+                }
+            });
+
             for (OnApplyWindowInsetsListener a : onApplyWindowInsetsListeners) {
                 a.onApplyWindowInsets(v,windowInsets);
             }
@@ -164,59 +182,243 @@ public class MiracleActivity extends AppCompatActivity {
             Insets imeInsets = windowInsets.getInsets(WindowInsetsCompat.Type.ime());
 
             //height of player bar and bottom navigation menu
-            int bottomInsets = Math.max(systemBarsInsets.bottom,imeInsets.bottom);
-            int dp56 = (int) DimensionsUtil.dpToPx(56, this);
+            final int bottomInsets = Math.max(systemGesturesInsets.bottom, Math.max(systemBarsInsets.bottom, imeInsets.bottom));
 
             switch (rootView.getType()){
                 case TYPE_PORTRAIT: {
                     switch (rootView.getState()) {
                         case STATE_CLEAR: {
-                            fragmentContainer.setPadding(0, systemBarsInsets.top,
-                                    0, bottomInsets);
+
+                            if(playerBar!=null) {
+                                playerBar.removeOnLayoutChangeListener(playerBarChangeListener);
+                            }
+                            navigationBarView.removeOnLayoutChangeListener(navigationBarChangeListener);
+
+                            if(tabsFragmentContainer.getPaddingBottom()!=bottomInsets||
+                                    tabsFragmentContainer.getPaddingTop()!=systemBarsInsets.top) {
+                                tabsFragmentContainer.setPadding(
+                                        tabsFragmentContainer.getPaddingLeft(),
+                                        systemBarsInsets.top,
+                                        tabsFragmentContainer.getPaddingRight(),
+                                        bottomInsets);
+                            }
                             break;
                         }
                         case STATE_STANDARD: {
-                            bottomNavigationMenu.setPadding(0, 0,
-                                    0, bottomInsets);
-                            fragmentContainer.setPadding(0, systemBarsInsets.top,
-                                    0, bottomInsets + dp56);
+
+                            if(playerBar!=null) {
+                                playerBar.removeOnLayoutChangeListener(playerBarChangeListener);
+                            }
+                            navigationBarView.removeOnLayoutChangeListener(navigationBarChangeListener);
+
+                            navigationBarChangeListener = (view, i, i1, i2, i3, i4, i5, i6, i7) -> {
+                                if(navigationBarView.getPaddingBottom()==bottomInsets) {
+                                    if (tabsFragmentContainer.getPaddingBottom() != navigationBarView.getHeight() ||
+                                            tabsFragmentContainer.getPaddingTop() != systemBarsInsets.top) {
+                                        tabsFragmentContainer.setPadding(
+                                                tabsFragmentContainer.getPaddingLeft(),
+                                                systemBarsInsets.top,
+                                                tabsFragmentContainer.getPaddingRight(),
+                                                navigationBarView.getHeight());
+                                    }
+                                }
+                            };
+
+                            navigationBarView.addOnLayoutChangeListener(navigationBarChangeListener);
+
+                            if(navigationBarView.getPaddingBottom()!=bottomInsets) {
+                                navigationBarView.setPadding(
+                                        navigationBarView.getPaddingLeft(),
+                                        navigationBarView.getPaddingTop(),
+                                        navigationBarView.getPaddingRight(),
+                                        bottomInsets);
+                            } else {
+                                navigationBarChangeListener.onLayoutChange(navigationBarView,0,0,0,0,0,0,0,0);
+                            }
+
                             break;
                         }
                         case STATE_AUDIO: {
-                            bottomNavigationMenu.setPadding(0, 0,
-                                    0, bottomInsets);
-                            playerBottomSheetBehavior.setPeekHeight(
-                                    bottomInsets + dp56 + dp56);
-                            fragmentContainer.setPadding(0, systemBarsInsets.top,
-                                    0, playerBottomSheetBehavior.getPeekHeight());
+
+                            navigationBarView.removeOnLayoutChangeListener(navigationBarChangeListener);
+
+                            navigationBarChangeListener = (view, i, i1, i2, i3, i4, i5, i6, i7) -> {
+                                if(navigationBarView.getPaddingBottom()==bottomInsets) {
+                                    if (playerBottomSheetBehavior.getPeekHeight() != playerBar.getHeight() + navigationBarView.getHeight()) {
+                                        playerBottomSheetBehavior.setPeekHeight(playerBar.getHeight() + navigationBarView.getHeight());
+                                    }
+                                    if (tabsFragmentContainer.getPaddingBottom() != playerBottomSheetBehavior.getPeekHeight() ||
+                                            tabsFragmentContainer.getPaddingTop() != systemBarsInsets.top) {
+                                        tabsFragmentContainer.setPadding(
+                                                tabsFragmentContainer.getPaddingLeft(),
+                                                systemBarsInsets.top,
+                                                tabsFragmentContainer.getPaddingRight(),
+                                                playerBottomSheetBehavior.getPeekHeight());
+                                    }
+                                }
+                            };
+
+                            navigationBarView.addOnLayoutChangeListener(navigationBarChangeListener);
+
+                            playerBar.removeOnLayoutChangeListener(playerBarChangeListener);
+
+                            playerBarChangeListener = (view1, i8, i11, i21, i31, i41, i51, i61, i71) -> {
+                                if(navigationBarView.getPaddingBottom()==bottomInsets) {
+                                    if (playerBottomSheetBehavior.getPeekHeight() != playerBar.getHeight() + navigationBarView.getHeight()) {
+                                        playerBottomSheetBehavior.setPeekHeight(playerBar.getHeight() + navigationBarView.getHeight());
+                                    }
+                                    if (tabsFragmentContainer.getPaddingBottom() != playerBottomSheetBehavior.getPeekHeight() ||
+                                            tabsFragmentContainer.getPaddingTop() != systemBarsInsets.top) {
+                                        tabsFragmentContainer.setPadding(
+                                                tabsFragmentContainer.getPaddingLeft(),
+                                                systemBarsInsets.top,
+                                                tabsFragmentContainer.getPaddingRight(),
+                                                playerBottomSheetBehavior.getPeekHeight());
+                                    }
+                                }
+                            };
+
+                            playerBar.addOnLayoutChangeListener(playerBarChangeListener);
+
+                            if(navigationBarView.getPaddingBottom()!=bottomInsets) {
+                                navigationBarView.setPadding(
+                                        navigationBarView.getPaddingLeft(),
+                                        navigationBarView.getPaddingTop(),
+                                        navigationBarView.getPaddingRight(),
+                                        bottomInsets);
+                            } else {
+                                navigationBarChangeListener.onLayoutChange(navigationBarView,0,0,0,0,0,0,0,0);
+                            }
+
                             break;
                         }
                     }
                     break;
                 }
                 case TYPE_LAND:
-                case TYPE_SW600DP: {
+                case TYPE_TABLET: {
                     switch (rootView.getState()) {
                         case STATE_CLEAR: {
-                            fragmentContainer.setPadding(systemBarsInsets.left, systemBarsInsets.top,
-                                    systemBarsInsets.right, bottomInsets);
+
+                            if(playerBar!=null) {
+                                playerBar.removeOnLayoutChangeListener(playerBarChangeListener);
+                            }
+                            navigationBarView.removeOnLayoutChangeListener(navigationBarChangeListener);
+
+                            if(tabsFragmentContainer.getPaddingBottom()!=bottomInsets||
+                                    tabsFragmentContainer.getPaddingTop()!=systemBarsInsets.top||
+                                    tabsFragmentContainer.getPaddingLeft()!=systemBarsInsets.left||
+                                    tabsFragmentContainer.getPaddingRight()!=systemBarsInsets.right) {
+                                tabsFragmentContainer.setPadding(
+                                        systemBarsInsets.left,
+                                        systemBarsInsets.top,
+                                        systemBarsInsets.right,
+                                        bottomInsets);
+                            }
                             break;
                         }
                         case STATE_STANDARD: {
-                            bottomNavigationMenu.setPadding(systemBarsInsets.left, systemBarsInsets.top,
-                                    0, bottomInsets);
-                            fragmentContainer.setPadding(systemBarsInsets.left + dp56, systemBarsInsets.top,
-                                    systemBarsInsets.right, bottomInsets);
+
+                            if(playerBar!=null) {
+                                playerBar.removeOnLayoutChangeListener(playerBarChangeListener);
+                            }
+                            navigationBarView.removeOnLayoutChangeListener(navigationBarChangeListener);
+
+                            navigationBarChangeListener = (view, i, i1, i2, i3, i4, i5, i6, i7) -> {
+                                if(navigationBarView.getPaddingBottom()==bottomInsets&&
+                                        navigationBarView.getPaddingTop()==systemBarsInsets.top&&
+                                        navigationBarView.getPaddingLeft()==systemBarsInsets.left) {
+                                    if (tabsFragmentContainer.getPaddingBottom() != bottomInsets ||
+                                            tabsFragmentContainer.getPaddingTop() != systemBarsInsets.top ||
+                                            tabsFragmentContainer.getPaddingLeft() != navigationBarView.getWidth() ||
+                                            tabsFragmentContainer.getPaddingRight() != systemBarsInsets.right) {
+                                        tabsFragmentContainer.setPadding(
+                                                navigationBarView.getWidth(),
+                                                systemBarsInsets.top,
+                                                systemBarsInsets.right,
+                                                bottomInsets);
+                                    }
+                                }
+                            };
+
+                            navigationBarView.addOnLayoutChangeListener(navigationBarChangeListener);
+
+                            if(navigationBarView.getPaddingBottom()!=bottomInsets||
+                            navigationBarView.getPaddingTop()!=systemBarsInsets.top||
+                            navigationBarView.getPaddingLeft()!=systemBarsInsets.left) {
+                                navigationBarView.setPadding(
+                                        systemBarsInsets.left,
+                                        systemBarsInsets.top,
+                                        navigationBarView.getPaddingRight(),
+                                        bottomInsets);
+                            } else {
+                                navigationBarChangeListener.onLayoutChange(navigationBarView,0,0,0,0,0,0,0,0);
+                            }
+
                             break;
                         }
                         case STATE_AUDIO: {
-                            playerBar.setPadding(systemBarsInsets.left,0,systemBarsInsets.right,0);
-                            playerBottomSheetBehavior.setPeekHeight(
-                                    Math.max(systemGesturesInsets.bottom, bottomInsets)+dp56);
-                            bottomNavigationMenu.setPadding(systemBarsInsets.left, systemBarsInsets.top,
-                                    0, playerBottomSheetBehavior.getPeekHeight());
-                            fragmentContainer.setPadding(systemBarsInsets.left + dp56, systemBarsInsets.top,
-                                    systemBarsInsets.right, playerBottomSheetBehavior.getPeekHeight());
+
+                            playerBar.removeOnLayoutChangeListener(playerBarChangeListener);
+
+                            playerBarChangeListener = (view1, i8, i11, i21, i31, i41, i51, i61, i71) -> {
+                                if(playerBar.getPaddingBottom()==bottomInsets&&
+                                        playerBar.getPaddingLeft()==systemBarsInsets.left&&
+                                        playerBar.getPaddingRight()==systemBarsInsets.right) {
+
+                                    if (playerBottomSheetBehavior.getPeekHeight() != playerBar.getHeight()) {
+                                        playerBottomSheetBehavior.setPeekHeight(playerBar.getHeight());
+                                    }
+
+                                    if (navigationBarView.getPaddingBottom() != playerBottomSheetBehavior.getPeekHeight() ||
+                                            navigationBarView.getPaddingTop() != systemBarsInsets.top ||
+                                            navigationBarView.getPaddingLeft() != systemBarsInsets.left) {
+                                        navigationBarView.setPadding(
+                                                systemBarsInsets.left,
+                                                systemBarsInsets.top,
+                                                navigationBarView.getPaddingRight(),
+                                                playerBottomSheetBehavior.getPeekHeight());
+                                    } else {
+                                        navigationBarChangeListener.onLayoutChange(playerBar,0,0,0,0,0,0,0,0);
+                                    }
+                                }
+                            };
+
+                            playerBar.addOnLayoutChangeListener(playerBarChangeListener);
+
+                            navigationBarView.removeOnLayoutChangeListener(navigationBarChangeListener);
+
+                            navigationBarChangeListener = (view, i, i1, i2, i3, i4, i5, i6, i7) -> {
+                                if(navigationBarView.getPaddingBottom()==playerBottomSheetBehavior.getPeekHeight()&&
+                                        navigationBarView.getPaddingTop()==systemBarsInsets.top&&
+                                        navigationBarView.getPaddingLeft()==systemBarsInsets.left) {
+                                    if (tabsFragmentContainer.getPaddingBottom() != playerBottomSheetBehavior.getPeekHeight() ||
+                                            tabsFragmentContainer.getPaddingTop() != systemBarsInsets.top ||
+                                            tabsFragmentContainer.getPaddingLeft() != navigationBarView.getWidth() ||
+                                            tabsFragmentContainer.getPaddingRight() != systemBarsInsets.right) {
+                                        tabsFragmentContainer.setPadding(
+                                                navigationBarView.getWidth(),
+                                                systemBarsInsets.top,
+                                                systemBarsInsets.right,
+                                                playerBottomSheetBehavior.getPeekHeight());
+                                    }
+                                }
+                            };
+
+                            navigationBarView.addOnLayoutChangeListener(navigationBarChangeListener);
+
+                            if(playerBar.getPaddingBottom()!=bottomInsets||
+                                    playerBar.getPaddingLeft()!=systemBarsInsets.left||
+                                    playerBar.getPaddingRight()!=systemBarsInsets.right) {
+                                playerBar.setPadding(
+                                        systemBarsInsets.left,
+                                        playerBar.getPaddingTop(),
+                                        systemBarsInsets.right,
+                                        bottomInsets);
+                            } else {
+                                playerBarChangeListener.onLayoutChange(playerBar,0,0,0,0,0,0,0,0);
+                            }
+
                             break;
                         }
                     }
@@ -226,24 +428,35 @@ public class MiracleActivity extends AppCompatActivity {
         }
     }
 
+
     private void iniFragmentController(Bundle savedInstanceState){
         if(savedInstanceState!=null){
             if(!savedInstanceState.isEmpty()){
                 String key = savedInstanceState.getString("ControllerSavedData","");
-                FragmentContainer.ControllerSavedData controllerSavedData =
-                        (FragmentContainer.ControllerSavedData) LargeDataStorage.get().getLargeData(key);
-
-                fragmentContainer.setController(new FragmentContainer.TabsFragmentController(getSupportFragmentManager(),controllerSavedData,savedInstanceState));
-                bottomNavigationMenu.setupWithFragmentContainer(fragmentContainer);
-                bottomNavigationMenu.select(savedInstanceState.getInt("SelectedTab",1), false);
+                TabsFragmentController.ControllerSavedState controllerSavedData =
+                        (TabsFragmentController.ControllerSavedState)
+                                LargeDataStorage.get().getLargeData(key);
+                if(controllerSavedData!=null) {
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    TabsFragmentController tabsFragmentController =
+                            new TabsFragmentController(fragmentManager);
+                    tabsFragmentContainer.setController(tabsFragmentController);
+                    tabsFragmentController.setUpWithNavigationBarView(navigationBarView);
+                    tabsFragmentController.restoreFromSavedState(controllerSavedData, savedInstanceState);
+                    return;
+                }
             }
-        } else {
-            fragmentContainer.setController(new FragmentContainer.TabsFragmentController(getSupportFragmentManager(),
-                    new ArrayList<>(Arrays.asList(new FragmentMenu.Fabric(), new FragmentFeed.Fabric(),
-                    new FragmentDialogs.Fabric(), new FragmentsMusic.Fabric()))));
-            bottomNavigationMenu.setupWithFragmentContainer(fragmentContainer);
-            bottomNavigationMenu.select(1);
         }
+        ArrayMap<Integer, FragmentFabric> fabrics = new ArrayMap<>();
+        fabrics.put(R.id.tab_user, new FragmentMenu.Fabric());
+        fabrics.put(R.id.tab_feed, new FragmentFeed.Fabric());
+        fabrics.put(R.id.tab_dialogs, new FragmentDialogs.Fabric());
+        fabrics.put(R.id.tab_music, new FragmentsMusic.Fabric());
+        TabsFragmentController tabsFragmentController =
+                new TabsFragmentController(getSupportFragmentManager(), fabrics);
+        tabsFragmentContainer.setController(tabsFragmentController);
+        tabsFragmentController.setUpWithNavigationBarView(navigationBarView);
+        navigationBarView.setSelectedItemId(R.id.tab_feed);
     }
 
     private void iniPlayerBottomSheet(){
@@ -265,6 +478,8 @@ public class MiracleActivity extends AppCompatActivity {
 
         fabrics.add(new FragmentPlayer.Fabric());
         fabrics.add(new FragmentPlaying.Fabric());
+        //very laggy
+        //viewPager2.setOffscreenPageLimit(1);
         viewPager2.setAdapter(new TabsAdapter(getSupportFragmentManager(), getLifecycle(), fabrics));
 
         playerBar.setOnClickListener(view -> playerBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED));
@@ -293,16 +508,8 @@ public class MiracleActivity extends AppCompatActivity {
                             viewPager2.setVisibility(View.VISIBLE);
                         }
                         viewPager2.setAlpha(1);
-                        if(bottomNavigationMenu.getVisibility()!=View.GONE) {
-                            bottomNavigationMenu.setVisibility(View.GONE);
-
-                        }
-                        if(playerBar.getVisibility()!=View.GONE) {
-                            playerBar.setVisibility(View.GONE);
-
-                        }
+                        navigationBarView.setAlpha(0);
                         playerBar.setAlpha(0);
-                        bottomNavigationMenu.setAlpha(0);
                         break;
                     }
                     case BottomSheetBehavior.STATE_COLLAPSED:{
@@ -314,15 +521,7 @@ public class MiracleActivity extends AppCompatActivity {
                         }
                         viewPager2.setAlpha(0);
                         viewPager2.setCurrentItem(0,false);
-                        if(bottomNavigationMenu.getVisibility()!=View.VISIBLE) {
-                            bottomNavigationMenu.setVisibility(View.VISIBLE);
-
-                        }
-                        bottomNavigationMenu.setAlpha(1);
-                        if(playerBar.getVisibility()!=View.VISIBLE) {
-                            playerBar.setVisibility(View.VISIBLE);
-
-                        }
+                        navigationBarView.setAlpha(1);
                         playerBar.setAlpha(1);
                         break;
                     }
@@ -332,24 +531,17 @@ public class MiracleActivity extends AppCompatActivity {
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 float alpha = 1f-slideOffset;
-
-                if(alpha>0){
-                    if(bottomNavigationMenu.getVisibility()!=View.VISIBLE) {
-                        bottomNavigationMenu.setVisibility(View.VISIBLE);
-                    }
-                    if(playerBar.getVisibility()!=View.VISIBLE) {
-                        playerBar.setVisibility(View.VISIBLE);
-                    }
-                }
-
                 if(slideOffset>0){
                     if(viewPager2.getVisibility()!=View.VISIBLE) {
                         viewPager2.setVisibility(View.VISIBLE);
                     }
                 }
 
+                float transitionPercent = (1-alpha);
                 playerBar.setAlpha(alpha);
-                bottomNavigationMenu.setAlpha(alpha);
+                playerBar.setTranslationY(-transitionPercent*playerBar.getHeight());
+                navigationBarView.setAlpha(alpha);
+                navigationBarView.setTranslationY(transitionPercent*navigationBarView.getHeight());
                 viewPager2.setAlpha(slideOffset);
             }
         });
@@ -372,16 +564,9 @@ public class MiracleActivity extends AppCompatActivity {
         playerServiceController.addOnPlayerEventListener(onPlayerEventListener);
     }
 
-    public void addFragment(MiracleFragment fragment){
-        fragmentContainer.addFragment(fragment);
-        if(playerBottomSheetIsExpanded()) {
-            playerBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        }
-    }
-
     public void hideNavigationBars() {
-        if(bottomNavigationMenu.getVisibility()!= View.GONE){
-            bottomNavigationMenu.setVisibility(View.GONE);
+        if(navigationBarView.getVisibility()!= View.GONE){
+            navigationBarView.setVisibility(View.GONE);
         }
         if(showingPlayer){
             if(playerBottomSheet!=null&&playerBottomSheet.getVisibility()!=View.GONE) {
@@ -393,8 +578,8 @@ public class MiracleActivity extends AppCompatActivity {
     }
 
     public void showNavigationBars(){
-        if(bottomNavigationMenu.getVisibility()!=View.VISIBLE){
-            bottomNavigationMenu.setVisibility(View.VISIBLE);
+        if(navigationBarView.getVisibility()!=View.VISIBLE){
+            navigationBarView.setVisibility(View.VISIBLE);
         }
         if(showingPlayer){
             if (playerBottomSheet == null) {
@@ -413,7 +598,7 @@ public class MiracleActivity extends AppCompatActivity {
                     playerBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 }
             }
-            bottomNavigationMenu.setAlpha(1);
+            navigationBarView.setAlpha(1);
             rootView.setState(STATE_STANDARD);
         }
         updateInsets();
@@ -427,10 +612,10 @@ public class MiracleActivity extends AppCompatActivity {
                     playerBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 }
             }
-            if(bottomNavigationMenu.getVisibility()!=View.VISIBLE){
-                bottomNavigationMenu.setVisibility(View.VISIBLE);
+            if(navigationBarView.getVisibility()!=View.VISIBLE){
+                navigationBarView.setVisibility(View.VISIBLE);
             }
-            bottomNavigationMenu.setAlpha(1);
+            navigationBarView.setAlpha(1);
             rootView.setState(STATE_STANDARD);
             updateInsets();
         }
@@ -475,13 +660,25 @@ public class MiracleActivity extends AppCompatActivity {
         return viewPager2;
     }
 
-    public boolean fragmentBack(){
-        if(fragmentContainer.getFragmentCount()>1) {
-            fragmentContainer.back();
-            return true;
-        }else {
-            return false;
+    public void addFragment(MiracleFragment fragment){
+        TabsFragmentController tabsFragmentController = tabsFragmentContainer.getController();
+        if(tabsFragmentController!=null) {
+            tabsFragmentController.addFragment(fragment);
+            if(playerBottomSheetIsExpanded()) {
+                playerBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
         }
+    }
+
+    public boolean fragmentBack(){
+        TabsFragmentController tabsFragmentController = tabsFragmentContainer.getController();
+        if(tabsFragmentController!=null){
+            if(tabsFragmentController.getFragmentCount()>1){
+                tabsFragmentController.back();
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -497,17 +694,17 @@ public class MiracleActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-
-        outState.putInt("SelectedTab",bottomNavigationMenu.getSelectedIndex());
+        super.onSaveInstanceState(outState);
 
         outState.putInt("playerSheetBehaviorState",playerBottomSheetBehavior.getState());
 
-        FragmentContainer.ControllerSavedData controllerSavedData = fragmentContainer.saveState(outState);
-        if(controllerSavedData!=null){
+        TabsFragmentController tabsFragmentController = tabsFragmentContainer.getController();
+
+        if(tabsFragmentController!=null){
+            TabsFragmentController.ControllerSavedState controllerSavedData =
+                    tabsFragmentController.saveState(outState);
             outState.putString("ControllerSavedData", LargeDataStorage.get().storeLargeData(controllerSavedData));
         }
-
-        super.onSaveInstanceState(outState);
     }
 
     @NonNull
@@ -550,7 +747,7 @@ public class MiracleActivity extends AppCompatActivity {
         LongPollServiceController.get().actionStop();
         playerServiceController.actionStop();
         SettingsUtil.get().storeAuthorized(false);//сброс индекса текущего пользователя
-        new UnregisterDevice(userItem.getAccessToken(),miracleApp).start();
+        new UnregisterDevice(this, userItem.getAccessToken()).start();
         Intent intent = new Intent(miracleApp, LoginActivity.class);
         startActivity(intent);
         finish();

@@ -41,12 +41,6 @@ public class MiracleApp extends Application {
 
         SettingsUtil settingsUtil = SettingsUtil.getInstance();
 
-        StorageUtil.getInstance();
-
-        LargeDataStorage.getInstance();
-
-        Picasso.get();
-
         int currentNightMode = settingsUtil.nightMode();
 
         if(currentNightMode==MODE_NIGHT_FOLLOW_SYSTEM){
@@ -56,9 +50,13 @@ public class MiracleApp extends Application {
         }
 
         AppCompatDelegate.setDefaultNightMode(currentNightMode);
+        setTheme(themeRecourseId = UIUtil.getThemeRecourseId(settingsUtil.themeId()));
 
-        themeRecourseId = UIUtil.getThemeRecourseId(settingsUtil.themeId());
-        setTheme(themeRecourseId);
+        StorageUtil.getInstance();
+
+        LargeDataStorage.getInstance();
+
+        Picasso.get();
 
         PlayerServiceController.getInstance();
 
@@ -101,9 +99,9 @@ public class MiracleApp extends Application {
 
     public void changeNightMode(boolean nightMode){
         if(this.nightMode!=nightMode) {
+            this.nightMode = nightMode;
             int NIGHT_MODE = nightMode?MODE_NIGHT_YES:MODE_NIGHT_NO;
             SettingsUtil.get().storeNightMode(NIGHT_MODE);
-            this.nightMode = nightMode;
             AppCompatDelegate.setDefaultNightMode(NIGHT_MODE);
         }
     }
@@ -116,13 +114,20 @@ public class MiracleApp extends Application {
         SettingsUtil.get().storeThemeId(themeId);
         themeRecourseId = UIUtil.getThemeRecourseId(themeId);
         setTheme(themeRecourseId);
+        PlayerServiceController.get().updateTheme();
     }
 
     public static MiracleApp getInstance(){
-        if (null == instance){
-            instance = new MiracleApp();
+        MiracleApp localInstance = instance;
+        if (localInstance == null) {
+            synchronized (MiracleApp.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new MiracleApp();
+                }
+            }
         }
-        return instance;
+        return localInstance;
     }
 
 }

@@ -1,7 +1,7 @@
 package com.vkontakte.miracle.adapter.photos;
 
 import com.vkontakte.miracle.adapter.photos.holders.HorizontalListPhotoAlbumItem;
-import com.vkontakte.miracle.adapter.photos.holders.StackedPhotoItem;
+import com.vkontakte.miracle.adapter.photos.holders.StackedPhotosItem;
 import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
@@ -24,7 +24,7 @@ import android.util.ArrayMap;
 public class PhotoAllAdapter extends MiracleLoadableAdapter {
 
     private boolean albumsLoaded = false;
-    private int rowLength = 3;
+    private final int rowLength = 3;
 
     @Override
     public void onLoading() throws Exception {
@@ -61,13 +61,13 @@ public class PhotoAllAdapter extends MiracleLoadableAdapter {
 
         for (int i = 0; i < jsonArray.length(); ) {
 
-            ArrayList<PhotoItem> arrayList = new ArrayList<>();
+            ArrayList<ItemDataHolder> arrayList = new ArrayList<>();
 
             for (int j = 0; j < rowLength && i < jsonArray.length(); j++) {
                 arrayList.add(new PhotoItem(jsonArray.getJSONObject(i)));
                 i++;
             }
-            holders.add(new StackedPhotoItem(arrayList, rowLength));
+            holders.add(new StackedPhotosItem(arrayList, rowLength));
         }
 
         if (holders.size() == getTotalCount() || jsonArray.length() < getStep()) {
@@ -76,11 +76,16 @@ public class PhotoAllAdapter extends MiracleLoadableAdapter {
     }
 
     @Override
-    public void ini() {
+    public void resetToInitialState() {
+        super.resetToInitialState();
+        albumsLoaded = false;
+    }
+
+    @Override
+    public void ini(){
         super.ini();
         setStep(rowLength*15);
     }
-
 
     @Override
     public ArrayMap<Integer, ViewHolderFabric> getViewHolderFabricMap() {

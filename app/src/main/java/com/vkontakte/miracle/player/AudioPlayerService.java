@@ -65,7 +65,6 @@ import com.vkontakte.miracle.notification.AppNotificationChannels;
 public class AudioPlayerService extends Service implements ExoPlayer.Listener, AnalyticsListener {
 
     public static final String LOG_TAG = "AudioPlayerService";
-    private final MiracleApp miracleApp = MiracleApp.getInstance();
     private final IBinder iBinder = new PlayerServiceBinder(this);
     private final PlayerServiceController playerServiceController = PlayerServiceController.get();
     private final SettingsUtil settingsUtil = SettingsUtil.get();
@@ -156,11 +155,7 @@ public class AudioPlayerService extends Service implements ExoPlayer.Listener, A
             stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,playerData.getCurrentPosition(), 0, SystemClock.elapsedRealtime());
             mediaSessionCompat.setPlaybackState(stateBuilder.build());
 
-            updateMetaData();
-
-            Notification notification = createNotification(songImage, player.getPlayWhenReady());
-
-            notificationManager.notify(NOTIFICATION_ID, notification);
+            sendNotification();
 
         }
 
@@ -174,6 +169,14 @@ public class AudioPlayerService extends Service implements ExoPlayer.Listener, A
 
         }
     };
+
+    private void sendNotification(){
+        updateMetaData();
+
+        Notification notification = createNotification(songImage, player.getPlayWhenReady());
+
+        notificationManager.notify(NOTIFICATION_ID, notification);
+    }
 
     private Notification createNotification(Bitmap largeIcon, boolean playWhenReady){
 
@@ -194,10 +197,10 @@ public class AudioPlayerService extends Service implements ExoPlayer.Listener, A
         ////////////////////////////////////////////
         ////////////////////////////////////////////
 
-        Intent intent = new Intent(miracleApp, MiracleActivity.class);
+        Intent intent = new Intent(this, MiracleActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("PlayerBottomSheetExpanded", true);
-        PendingIntent contentIntent = PendingIntent.getActivity(miracleApp, 0, intent,
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
 
         ////////////////////////////////////////////
@@ -238,19 +241,19 @@ public class AudioPlayerService extends Service implements ExoPlayer.Listener, A
     public void onCreate() {
         super.onCreate();
 
-        setTheme(miracleApp.getThemeRecourseId());
+        setTheme(MiracleApp.getInstance().getThemeRecourseId());
 
         handler = new Handler(Looper.getMainLooper());
 
-        notificationManager = (NotificationManager) miracleApp.getSystemService(NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel notificationChannel = AppNotificationChannels.getAudioChannel(this);
             notificationManager.createNotificationChannel(notificationChannel);
         }
 
-        int size = (int) DimensionsUtil.dpToPx(84,this);
-        placeholderImage = bitmapFromLayerDrawable(R.drawable.audio_placeholder_image, this,size,size);
+        int size = (int) DimensionsUtil.dpToPx(this,84);
+        placeholderImage = bitmapFromLayerDrawable(this, R.drawable.audio_placeholder_image_colored, size, size);
 
         updateProgressValue();
 
@@ -548,6 +551,18 @@ public class AudioPlayerService extends Service implements ExoPlayer.Listener, A
 
     public void setPlayNext(AudioPlayerData newPlayerData){
         nextPlayerData = newPlayerData;
+    }
+
+    public void updateTheme(){
+        setTheme(MiracleApp.getInstance().getThemeRecourseId());
+        int size = (int) DimensionsUtil.dpToPx(this,84);
+        if(songImage==placeholderImage){
+            placeholderImage = bitmapFromLayerDrawable(this, R.drawable.audio_placeholder_image_colored, size, size);
+            songImage = placeholderImage;
+            sendNotification();
+        } else {
+            placeholderImage = bitmapFromLayerDrawable(this, R.drawable.audio_placeholder_image_colored, size, size);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////

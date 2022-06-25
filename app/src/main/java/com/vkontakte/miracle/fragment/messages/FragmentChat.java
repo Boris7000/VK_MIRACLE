@@ -41,7 +41,6 @@ import com.vkontakte.miracle.MiracleActivity;
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.messages.ChatAdapter;
-import com.vkontakte.miracle.adapter.messages.OnMessageAddedListener;
 import com.vkontakte.miracle.adapter.messages.ReplySwipeCallback;
 import com.vkontakte.miracle.engine.adapter.MiracleAdapter;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
@@ -112,22 +111,24 @@ public class FragmentChat extends SimpleMiracleFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        iniContext();
-
         miracleActivity = getMiracleActivity();
         miracleActivity.hideNavigationBars();
-        miracleApp = getMiracleApp();
+        miracleApp = MiracleApp.getInstance();
         userItem = miracleActivity.getUserItem();
         ownerArrayMap.put(userItem.getId(), new Owner(userItem));
 
         rootView = inflater.inflate(R.layout.fragment_chat, container, false);
 
-        setTopBar(rootView.findViewById(R.id.appbarLinear));
-        setAppBarLayout(rootView.findViewById(R.id.appbar));
-        setBackClick(rootView.findViewById(R.id.backButton));
+        setAppBarLayout(rootView.findViewById(R.id.appbarlayout));
+        setToolBar(getAppBarLayout().findViewById(R.id.toolbar));
+        setAppbarClickToTop();
+        setBackClick();
+
         setTitle(rootView.findViewById(R.id.title));
-        setRecyclerView(rootView.findViewById(R.id.recyclerView),getVerticalLayoutManager(getContext(), true));
-        new ItemTouchHelper(new ReplySwipeCallback(miracleActivity, position -> Log.d("ABOBA","SWIPED"))).attachToRecyclerView(getRecyclerView());
+        setRecyclerView(rootView.findViewById(R.id.recyclerView),
+                getVerticalLayoutManager(getMiracleActivity(), true));
+        new ItemTouchHelper(new ReplySwipeCallback(miracleApp, position -> Log.d("ABOBA","SWIPED")))
+                .attachToRecyclerView(getRecyclerView());
         setProgressBar(rootView.findViewById(R.id.progressCircle));
         disableScrollAndElevate();
 
@@ -286,9 +287,9 @@ public class FragmentChat extends SimpleMiracleFragment {
                     @Override
                     public void func() {
                         if(isText) {
-                            updateConversationMessageTyping(getMiracleApp().getString(R.string.formatted_typing), typingIds, true);
+                            updateConversationMessageTyping(miracleApp.getString(R.string.formatted_typing), typingIds, true);
                         } else {
-                            updateConversationMessageTyping(getMiracleApp().getString(R.string.formatted_typing_audio), typingIds, false);
+                            updateConversationMessageTyping(miracleApp.getString(R.string.formatted_typing_audio), typingIds, false);
                         }
                         onComplete();
                     }
@@ -323,8 +324,8 @@ public class FragmentChat extends SimpleMiracleFragment {
                                     if(profileItem!=null){
                                         Owner owner = new Owner(profileItem);
                                         ownerArrayMap.put(ownerId,owner);
-                                        updateConversationMessageTyping(getMessageTypingDeclensions(owner, isText,
-                                                typingIds.size()-1,getMiracleApp()), typingIds, isText);
+                                        updateConversationMessageTyping(getMessageTypingDeclensions(getMiracleActivity(), owner, isText,
+                                                typingIds.size()-1), typingIds, isText);
                                     }
                                     onComplete();
                                 }
@@ -335,8 +336,8 @@ public class FragmentChat extends SimpleMiracleFragment {
                     addTask(new Task() {
                         @Override
                         public void func() {
-                            updateConversationMessageTyping(getMessageTypingDeclensions(owner, isText, typingIds.size()-1,
-                                    getMiracleApp()), typingIds, isText);
+                            updateConversationMessageTyping(getMessageTypingDeclensions(getMiracleActivity(),owner, isText,
+                                    typingIds.size()-1), typingIds, isText);
                             onComplete();
                         }
                     });
@@ -435,7 +436,7 @@ public class FragmentChat extends SimpleMiracleFragment {
         title.setText(chatSettings.getTitle());
 
         if(chatSettings.getPhoto200().isEmpty()){
-            ColorDrawable colorDrawable = new ColorDrawable(getColorByAttributeId(miracleActivity,R.attr.colorSecondary)) ;
+            ColorDrawable colorDrawable = new ColorDrawable(getColorByAttributeId(miracleApp, R.attr.colorSecondary));
             imageView.setImageDrawable(colorDrawable);
 
             if(imageText ==null) {
@@ -458,7 +459,7 @@ public class FragmentChat extends SimpleMiracleFragment {
     }
 
     private void setStatusFromChat(ChatSettings chatSettings){
-        setStatus(getMembersDeclensions(chatSettings.getMembersCount(),miracleActivity));
+        setStatus(getMembersDeclensions(miracleApp, chatSettings.getMembersCount()));
     }
 
     //
@@ -498,7 +499,7 @@ public class FragmentChat extends SimpleMiracleFragment {
     }
 
     private void setStatusFromGroup(){
-        setStatus(miracleActivity.getString(R.string.group));
+        setStatus(miracleApp.getString(R.string.group));
     }
 
     //
@@ -553,12 +554,11 @@ public class FragmentChat extends SimpleMiracleFragment {
 
     private void setStatusFromUser(ProfileItem profileItem){
         if(profileItem.isOnline()){
-            setStatus(miracleActivity.getString(R.string.online));
+            setStatus(miracleApp.getString(R.string.online));
         } else {
             if(profileItem.getLastSeen()!=null) {
                 LastSeen lastSeen = profileItem.getLastSeen();
-                setStatus(TimeUtil.getOnlineDateString(lastSeen.getTime(),
-                        profileItem.getSex(), miracleActivity));
+                setStatus(TimeUtil.getOnlineDateString(miracleApp, lastSeen.getTime(), profileItem.getSex()));
             }
         }
     }

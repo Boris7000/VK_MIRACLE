@@ -2,8 +2,8 @@ package com.vkontakte.miracle.login;
 
 import static android.view.View.GONE;
 import static com.vkontakte.miracle.engine.util.DeviceUtil.getDeviceId;
-import static com.vkontakte.miracle.engine.util.NetworkUtil.CheckConnection;
-import static com.vkontakte.miracle.network.Constants.defaultHeaders;
+import static com.vkontakte.miracle.login.AuthState.STATE_NEED_CAPTCHA;
+import static com.vkontakte.miracle.login.AuthState.STATE_NEED_VALIDATION;
 import static com.vkontakte.miracle.network.Constants.defaultLoginFields;
 import static com.vkontakte.miracle.network.Constants.defaultValidatePhoneFields;
 import static com.vkontakte.miracle.network.Creator.oauth;
@@ -36,98 +36,7 @@ public class Authentication extends AsyncExecutor<Boolean> {
     @Override
     public Boolean inBackground() {
         try {
-            CheckConnection(3500);
-
-            HashMap<String,String> headers = defaultHeaders();
-            Call<JSONObject> call;
-            Response<JSONObject> response;
-
-            if(authState.getValidationSid()!=null){
-                String validationCode = authState.getValidationCode();
-                if(validationCode!=null){
-                    loginActivity.setText(loginActivity.getString(R.string.sendingCode));
-                    loginActivity.setProgressBarVisibility(View.VISIBLE);
-                    HashMap<String,Object> fields = defaultLoginFields();
-                    fields.put("code",validationCode);
-                    call = oauth().token(authState.getUsername(), authState.getPassword(),
-                            getDeviceId(loginActivity), fields, headers);
-                } else {
-                    loginActivity.setText(loginActivity.getString(R.string.forceSMS));
-                    loginActivity.setProgressBarVisibility(View.VISIBLE);
-                    HashMap<String,Object> fields = defaultValidatePhoneFields();
-                    call = oauthMethod().validatePhone(authState.getValidationSid(), fields, headers);
-                }
-            } else {
-                if(authState.getCaptchaSid()!=null){
-                    loginActivity.setText(loginActivity.getString(R.string.sendingCode));
-                    loginActivity.setProgressBarVisibility(View.VISIBLE);
-                    HashMap<String,Object> fields = defaultLoginFields();
-                    fields.put("captcha_key",authState.getCaptchaKey());
-                    fields.put("captcha_sid",authState.getCaptchaSid());
-                    call = oauth().token(authState.getUsername(), authState.getPassword(),
-                            getDeviceId(loginActivity),fields, headers);
-                }else {
-                    loginActivity.setText(loginActivity.getString(R.string.authentication));
-                    loginActivity.setProgressBarVisibility(View.VISIBLE);
-                    HashMap<String,Object> fields = defaultLoginFields();
-                    call = oauth().token(authState.getUsername(), authState.getPassword(),
-                            getDeviceId(loginActivity),fields, headers);
-                }
-            }
-
-            response = call.execute();
-
-            if(response.errorBody()!=null){
-                JSONObject errorObject =  new JSONObject(response.errorBody().string());
-                if(errorObject.has("validation_type")){
-                    authState.updateValidation(errorObject);
-                }else {
-                    if(errorObject.has("captcha_sid")){
-                        authState.updateCaptcha(errorObject);
-                    }else {
-                        if(errorObject.has("error_description")){
-                            throw new Exception(errorObject.getString("error_description"));
-                        }else {
-                            throw new Exception(errorObject.getString("error"));
-                        }
-                    }
-                }
-            } else {
-                JSONObject jsonObject = response.body();
-                if(jsonObject!=null){
-                    if (jsonObject.has("access_token")){
-                        authState.setToken(jsonObject.getString("access_token"));
-                        authState.setUserId(jsonObject.getString("user_id"));
-                        authState.setState(AuthState.STATE_SUCCESS);
-                    }else {
-                        if(jsonObject.has("response")){
-                            jsonObject = jsonObject.getJSONObject("response");
-                            authState.updatePhoneValidation(jsonObject);
-                        }else {
-                            if(jsonObject.has("error")){
-                                JSONObject errorObject = jsonObject.getJSONObject("error");
-                                int error_code = errorObject.getInt("error_code");
-                                switch (error_code){
-                                    case 103:{
-                                        authState.updateFakePhoneValidation();
-                                        authState.setState(AuthState.STATE_SMS_CODE_RESENDS_LIMIT);
-                                        break;
-                                    }
-                                    case 1112:{
-                                        authState.updateFakePhoneValidationAlready();
-                                        authState.setState(AuthState.STATE_SMS_CODE_HAS_ALREADY_BEEN_RESENT);
-                                        break;
-                                    }
-                                    default:{
-                                        authState.setState(AuthState.STATE_HAS_ERROR);
-                                        throw new Exception(jsonObject.getString("error_description"));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            process();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,6 +47,144 @@ public class Authentication extends AsyncExecutor<Boolean> {
         return false;
     }
 
+    public void process() throws Exception {
+        Call<JSONObject> call;
+        Response<JSONObject> response;
+
+        call = processCall();
+
+        response = call.execute();
+
+        processResponse(response);
+    }
+
+    public Call<JSONObject> processCall(){
+        if(authState.getValidationSid()!=null){
+            String validationCode = authState.getValidationCode();
+            if(validationCode!=null){
+                loginActivity.setText(loginActivity.getString(R.string.sendingCode));
+                loginActivity.setProgressBarVisibility(View.VISIBLE);
+                return sendValidationCode();
+            } else {
+                loginActivity.setText(loginActivity.getString(R.string.forceCode));
+                loginActivity.setProgressBarVisibility(View.VISIBLE);
+                return validatePhone();
+            }
+        } else {
+            if(authState.getCaptchaSid()!=null){
+                loginActivity.setText(loginActivity.getString(R.string.sendingCaptcha));
+                loginActivity.setProgressBarVisibility(View.VISIBLE);
+                return sendCaptcha();
+            }else {
+                loginActivity.setText(loginActivity.getString(R.string.authentication));
+                loginActivity.setProgressBarVisibility(View.VISIBLE);
+                return requestToken();
+            }
+        }
+    }
+
+    public void processResponse(Response<JSONObject> response) throws Exception {
+        if(response.errorBody()!=null){
+            checkError(new JSONObject(response.errorBody().string()));
+        } else {
+            if(response.body()!=null){
+                checkResponse(response.body());
+            }
+        }
+    }
+
+    private void checkResponse(JSONObject jsonObject) throws Exception {
+        Log.d(LOGIN_TAG, jsonObject.toString());
+
+        if (jsonObject.has("access_token")){
+            authState.setToken(jsonObject.getString("access_token"));
+            authState.setUserId(jsonObject.getString("user_id"));
+            authState.setState(AuthState.STATE_SUCCESS);
+        }else {
+            if(jsonObject.has("response")){
+                jsonObject = jsonObject.getJSONObject("response");
+                if(jsonObject.has("validation_type")){
+                    authState.updateForceCode(jsonObject);
+                }
+            } else {
+                if(jsonObject.has("error")){
+                    JSONObject errorObject = jsonObject.getJSONObject("error");
+                    int error_code = errorObject.getInt("error_code");
+                    switch (error_code){
+                        case 103:{
+                            authState.setForceCodeUnableReason(AuthState.VALIDATION_CODE_RESENDS_LIMIT);
+                            break;
+                        }
+                        case 1112:{
+                            authState.setForceCodeUnableReason(AuthState.VALIDATION_CODE_HAS_ALREADY_BEEN_RESENT);
+                            break;
+                        }
+                        default:{
+                            authState.setState(AuthState.STATE_HAS_ERROR);
+                            throw new Exception(jsonObject.getString("error_description"));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void checkError(JSONObject jsonObject) throws Exception {
+        Log.d(LOGIN_TAG, jsonObject.toString());
+
+        if(jsonObject.has("validation_sid")){
+            authState.updateValidation(jsonObject);
+            authState.setState(STATE_NEED_VALIDATION);
+            process();
+        }else {
+            if(jsonObject.has("captcha_sid")){
+                authState.updateCaptcha(jsonObject);
+                authState.setState(STATE_NEED_CAPTCHA);
+            }else {
+                authState.setState(AuthState.STATE_HAS_ERROR);
+                if(jsonObject.has("error_description")){
+                    throw new Exception(jsonObject.getString("error_description"));
+                }else {
+                    throw new Exception(jsonObject.getString("error"));
+                }
+            }
+        }
+    }
+
+    private Call<JSONObject> validatePhone() {
+        HashMap<String,Object> fields = defaultValidatePhoneFields();
+        return oauthMethod().validatePhone(
+                authState.getValidationSid(),
+                fields);
+    }
+
+    private Call<JSONObject> sendValidationCode() {
+        HashMap<String,Object> fields = defaultLoginFields();
+        fields.put("code", authState.getValidationCode());
+        return oauth().token(
+                authState.getUsername(),
+                authState.getPassword(),
+                getDeviceId(loginActivity),
+                fields);
+    }
+
+    private Call<JSONObject> sendCaptcha() {
+        HashMap<String,Object> fields = defaultLoginFields();
+        fields.put("captcha_key",authState.getCaptchaKey());
+        fields.put("captcha_sid",authState.getCaptchaSid());
+        return oauth().token(
+                authState.getUsername(),
+                authState.getPassword(),
+                getDeviceId(loginActivity),
+                fields);
+    }
+
+    private Call<JSONObject> requestToken() {
+        HashMap<String,Object> fields = defaultLoginFields();
+        return oauth().token(authState.getUsername(), authState.getPassword(),
+                getDeviceId(loginActivity),fields);
+    }
+
     @Override
     public void onExecute(Boolean object) {
         if(object){
@@ -146,26 +193,16 @@ public class Authentication extends AsyncExecutor<Boolean> {
                 new TokenRefresh(authState,loginActivity).start();
             }else {
                 loginActivity.setCanLogin(true);
-                    switch (state){
-                        case AuthState.STATE_NEED_VALIDATION:
-                        case AuthState.STATE_NEED_SMS_VALIDATION:
-                        case AuthState.STATE_NEED_APP_VALIDATION:
-                        case AuthState.STATE_SMS_CODE_HAS_ALREADY_BEEN_RESENT:
-                        case AuthState.STATE_SMS_CODE_RESENDS_LIMIT:{
-                            loginActivity.showValidationCodeFrame(authState);
-                            break;
-                        }
-                        case AuthState.STATE_NEED_LIBVERIFY_VALIDATION:{
-                            new Authentication(authState,loginActivity).start();
-                            break;
-                        }
-                        case AuthState.STATE_NEED_CAPTCHA:{
-                            loginActivity.showCaptchaCodeFrame(authState);
-                            break;
-                        }
-
+                switch (state){
+                    case STATE_NEED_VALIDATION: {
+                        loginActivity.showValidationCodeFrame(authState);
+                        break;
                     }
-
+                    case AuthState.STATE_NEED_CAPTCHA:{
+                        loginActivity.showCaptchaCodeFrame(authState);
+                        break;
+                    }
+                }
                 loginActivity.setProgressBarVisibility(GONE);
             }
         }else {

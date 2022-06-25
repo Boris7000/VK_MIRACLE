@@ -4,7 +4,7 @@
 
     <item android:gravity="center">
         <shape android:shape="rectangle">
-            <solid android:color="?attr/colorPrimary_80"/>
+            <solid android:color="?attr/colorPrimary"/>
         </shape>
     </item>
 
@@ -16,6 +16,6 @@
         android:gravity="center">
         <bitmap
             android:src="@drawable/ic_music_28"
-            android:tint="?attr/colorPrimary_20"/>
+            android:tint="?attr/colorPrimaryContainer"/>
     </item>
 </layer-list>

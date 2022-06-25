@@ -1,4 +1,4 @@
-package com.vkontakte.miracle.model.catalog.other;
+package com.vkontakte.miracle.model.catalog;
 
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_TRIPLE_STACKED;
 
@@ -14,8 +14,12 @@ public class CatalogTripleStack implements ItemDataHolder {
         itemDataHolders.add(itemDataHolder);
     }
 
-    public ArrayList<ItemDataHolder> getItemDataHolders() {
+    public ArrayList<ItemDataHolder> getItems() {
         return itemDataHolders;
+    }
+
+    public int getSize(){
+        return itemDataHolders.size();
     }
 
     @Override

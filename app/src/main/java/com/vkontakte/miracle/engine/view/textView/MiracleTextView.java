@@ -8,12 +8,10 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.CharacterStyle;
 import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
-import android.view.View;
 
 import com.vkontakte.miracle.R;
 
@@ -26,7 +24,6 @@ import java.util.regex.Pattern;
 
 public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView {
 
-    private List<Character> mAdditionalHashTagChars = new ArrayList<>();
     private OnHashTagClickListener onHashTagClickListener;
     private OnOwnerClickListener onOwnerClickListener;
     private OnDogClickListener onDogClickListener;
@@ -34,18 +31,14 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
     private OnOtherClickListener onOtherClickListener;
     private OnURLClickListener onURLClickListener;
     private final int highlightColor;
+    private final boolean highlightUnderline;
 
-    private static final Pattern urlPattern = Pattern.compile("((http|https|rstp)://\\S*)");
-    private static final Pattern hashTagPattern = Pattern.compile("(#)(\\S*)");
+    private static final Pattern urlPattern = Pattern.compile("((http|https|rstp)://\\S+)");
+    private static final Pattern hashTagPattern = Pattern.compile("(#)([а-яА-Я\\w][а-яА-Я@\\w]+)");
     private static final Pattern dogPatter = Pattern.compile("(@)(all|online)");
     private static final Pattern ownerPattern = Pattern.compile("\\[(id|club)(\\d+)\\|([^]]+)]");
     private static final Pattern topicCommentPattern = Pattern.compile("\\[(id|club)(\\d*):bp(-\\d*)_(\\d*)\\|([^]]+)]");
     private static final Pattern otherLinkPattern = Pattern.compile("\\[(https:[^]]+)\\|([^]]+)]");
-
-    {
-        mAdditionalHashTagChars.add('_');
-        mAdditionalHashTagChars.add('@');
-    }
 
     public MiracleTextView(Context context) {
         this(context, null);
@@ -57,7 +50,9 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
         if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MiracleTextView);
             try {
-                highlightColor = a.getColor(R.styleable.MiracleTextView_highlightColor, getColorByAttributeId(context,R.attr.colorPrimary));
+                highlightColor = a.getColor(R.styleable.MiracleTextView_highlightColor,
+                        getColorByAttributeId(context, R.attr.colorPrimary));
+                highlightUnderline = a.getBoolean(R.styleable.MiracleTextView_highlightUnderline, false);
                 if(a.getBoolean(R.styleable.MiracleTextView_enableClicking, false)){
                     setMovementMethod(LinkMovementMethod.getInstance());
                 }
@@ -65,15 +60,16 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
                 a.recycle();
             }
         } else {
-            highlightColor = getColorByAttributeId(context,R.attr.colorPrimary);
+            highlightColor = getColorByAttributeId(context, R.attr.colorPrimary);
+            highlightUnderline = false;
         }
 
-        setText(getText());
+        setText(getText(),BufferType.SPANNABLE);
     }
 
 
     private void setColorForHashTag(Spannable originalText, HashTagLink link) {
-        CharacterStyle span = new ClickableForegroundColorSpan(highlightColor, s -> {
+        CharacterStyle span = new ClickableForegroundColorSpan(highlightColor, highlightUnderline, s -> {
             if(onHashTagClickListener!=null){
                 onHashTagClickListener.onHashTagClicked(link);
             }
@@ -82,7 +78,7 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
     }
 
     private void setColorForDog(Spannable originalText, DogLink link) {
-        CharacterStyle span = new ClickableForegroundColorSpan(highlightColor, s -> {
+        CharacterStyle span = new ClickableForegroundColorSpan(highlightColor, highlightUnderline, s -> {
             if(onDogClickListener!=null){
                 onDogClickListener.onDogClicked(link);
             }
@@ -91,7 +87,7 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
     }
 
     private void setColorForOwner(Spannable originalText, OwnerLink link) {
-        CharacterStyle span = new ClickableForegroundColorSpan(highlightColor, s -> {
+        CharacterStyle span = new ClickableForegroundColorSpan(highlightColor, highlightUnderline, s -> {
             if(onOwnerClickListener!=null){
                 onOwnerClickListener.onOwnerClicked(link);
             }
@@ -100,7 +96,7 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
     }
 
     private void setColorForTopic(Spannable originalText, TopicLink link) {
-        CharacterStyle span = new ClickableForegroundColorSpan(highlightColor, s -> {
+        CharacterStyle span = new ClickableForegroundColorSpan(highlightColor, highlightUnderline, s -> {
             if(onTopicClickListener!=null){
                 onTopicClickListener.onTopicClicked(link);
             }
@@ -109,7 +105,7 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
     }
 
     private void setColorForOther(Spannable originalText, OtherLink link) {
-        CharacterStyle span = new ClickableForegroundColorSpan(highlightColor, s -> {
+        CharacterStyle span = new ClickableForegroundColorSpan(highlightColor, highlightUnderline, s -> {
             if(onOtherClickListener!=null){
                 onOtherClickListener.onOtherClicked(link);
             }
@@ -121,11 +117,9 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
     public void setText(CharSequence originalText, BufferType type) {
         if (originalText != null && originalText.length() > 0) {
 
-            Spannable spannable = SpannableStringBuilder.valueOf(originalText);
-
-            List<OwnerLink> ownerLinks = findOwnersLinks(spannable);
-            List<TopicLink> topicLinks = findTopicLinks(spannable);
-            List<OtherLink> othersLinks = findOthersLinks(spannable);
+            List<OwnerLink> ownerLinks = findOwnersLinks(originalText);
+            List<TopicLink> topicLinks = findTopicLinks(originalText);
+            List<OtherLink> othersLinks = findOthersLinks(originalText);
             List<AbsInternalLink> all = new ArrayList<>();
             all.addAll(ownerLinks);
             all.addAll(topicLinks);
@@ -143,7 +137,7 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
                 });
             }
 
-            spannable = Spannable.Factory.getInstance().newSpannable(replace(spannable, all));
+            SpannableStringBuilder spannable = replace(SpannableStringBuilder.valueOf(originalText), all);
 
             for (OwnerLink link : ownerLinks) {
                 setColorForOwner(spannable,link);
@@ -172,11 +166,6 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
 
             super.setText(spannable, type);
 
-            if(getParent()!=null){
-                View view = (View) getParent();
-                view.requestLayout();
-            }
-
         } else {
             super.setText(originalText, type);
         }
@@ -187,14 +176,14 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
         Matcher m = urlPattern.matcher(originalText);
 
         while (m.find()) {
-            ClickableSpan span = new ClickableForegroundColorSpan(highlightColor, s -> {
+            ClickableSpan span = new ClickableForegroundColorSpan(highlightColor, highlightUnderline, s -> {
                 if(onURLClickListener!=null){
                     onURLClickListener.onURLClicked(s);
                 } else {
                     openURLInBrowser(s,getContext());
                 }
             });
-            originalText.setSpan(span, m.start(), m.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            originalText.setSpan(span, m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }
 
@@ -253,11 +242,10 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
         return links;
     }
 
-    private static CharSequence replace(CharSequence input, List<? extends AbsInternalLink> links) {
+    private static SpannableStringBuilder replace(SpannableStringBuilder input, List<? extends AbsInternalLink> links) {
         if (links == null || links.isEmpty()) {
             return input;
         }
-        StringBuilder result = new StringBuilder(input);
         for (int y = 0; y < links.size(); y++) {
             AbsInternalLink link = links.get(y);
             int origLength = link.end - link.start;
@@ -268,17 +256,13 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
                 nextLink.start-=count;
                 nextLink.end-=count;
             }
-            result.replace(link.start, link.end, link.targetLine);
+            input.replace(link.start, link.end, link.targetLine);
             link.end-=count;
         }
 
-        return result;
+        return input;
     }
 
-
-    public void setAdditionalHashTagChars(List<Character> additionalHashTagChars) {
-        this.mAdditionalHashTagChars = additionalHashTagChars;
-    }
 
     public void setOnHashTagClickListener(OnHashTagClickListener mOnHashTagClickListener) {
         this.onHashTagClickListener = mOnHashTagClickListener;

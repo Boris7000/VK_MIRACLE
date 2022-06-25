@@ -18,11 +18,11 @@ public class TimeUtil {
     private static final long ONE_MOTH_SEC = 2678400;
     private static final long ONE_YEAR_SEC = 31536000;
 
-    public static String getOnlineDateString(long dateSec, int sex, Context context){
-        return String.format(getOnlineSexDeclensions(sex, context),getOnlineDateString(dateSec,context));
+    public static String getOnlineDateString(Context context, long dateSec, int sex){
+        return String.format(getOnlineSexDeclensions(context, sex),getOnlineDateString(context, dateSec));
     }
 
-    public static String getOnlineDateString(long dateSec, Context context){
+    public static String getOnlineDateString(Context context, long dateSec){
         long currentDate = System.currentTimeMillis();
         long currentDateSec = currentDate/1000;
         long deltaSec = currentDateSec - dateSec;
@@ -34,7 +34,7 @@ public class TimeUtil {
             calendar.setTimeInMillis(date);
             int moth = calendar.get(Calendar.MONTH);
             int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-            return months(moth, dayOfMonth, context)+" "+context.getString(R.string.formatted_date_in, shorFormat.format(date));
+            return months(context, moth, dayOfMonth)+" "+context.getString(R.string.formatted_date_in, shorFormat.format(date));
         }
 
         if(deltaSec<5){
@@ -42,12 +42,12 @@ public class TimeUtil {
         }
 
         if(deltaSec<ONE_MINUTE_SEC){
-            return secs((int) deltaSec, context);
+            return secs(context, (int) deltaSec);
         }
 
         if(deltaSec<ONE_HOUR_SEC){
             long minutesDelta = deltaSec/ONE_MINUTE_SEC;
-            return minutes((int) minutesDelta, context);
+            return minutes(context, (int) minutesDelta);
         }
 
         if(deltaSec<ONE_HOUR_SEC*2){
@@ -77,17 +77,17 @@ public class TimeUtil {
             if(currentDayOfYear-1==dayOfYear){
                 return context.getString(R.string.formatted_date_yesterday1, shorFormat.format(date));
             }
-            return months(moth, dayOfMonth, context)+" "+context.getString(R.string.formatted_date_in, shorFormat.format(date));
+            return months(context, moth, dayOfMonth)+" "+context.getString(R.string.formatted_date_in, shorFormat.format(date));
         } else {
-            return months(moth, dayOfMonth, context)+" "+year;
+            return months(context, moth, dayOfMonth)+" "+year;
         }
     }
 
-    public static String getUpdatedDateString(long dateSec, Context context){
-        return String.format(context.getString(R.string.last_update),getOnlineDateString(dateSec,context));
+    public static String getUpdatedDateString(Context context, long dateSec){
+        return String.format(context.getString(R.string.last_update),getOnlineDateString(context, dateSec));
     }
 
-    public static String getPostDateString(long dateSec, Context context){
+    public static String getPostDateString(Context context, long dateSec){
 
         long currentDate = System.currentTimeMillis();
         long currentDateSec = currentDate/1000;
@@ -100,7 +100,7 @@ public class TimeUtil {
             calendar.setTimeInMillis(date);
             int moth = calendar.get(Calendar.MONTH);
             int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-            return months(moth, dayOfMonth, context)+" "+context.getString(R.string.formatted_date_in, shorFormat.format(date));
+            return months(context, moth, dayOfMonth)+" "+context.getString(R.string.formatted_date_in, shorFormat.format(date));
         }
 
         if(deltaSec<5){
@@ -108,12 +108,12 @@ public class TimeUtil {
         }
 
         if(deltaSec<ONE_MINUTE_SEC){
-            return secs((int) deltaSec, context);
+            return secs(context, (int) deltaSec);
         }
 
         if(deltaSec<ONE_HOUR_SEC){
             long minutesDelta = deltaSec/ONE_MINUTE_SEC;
-            return minutes((int) minutesDelta, context);
+            return minutes(context, (int) minutesDelta);
         }
 
         if(deltaSec<ONE_HOUR_SEC*2){
@@ -143,13 +143,13 @@ public class TimeUtil {
             if(currentDayOfYear-1==dayOfYear){
                 return context.getString(R.string.formatted_date_yesterday, shorFormat.format(date));
             }
-            return months(moth, dayOfMonth, context)+" "+context.getString(R.string.formatted_date_in, shorFormat.format(date));
+            return months(context, moth, dayOfMonth)+" "+context.getString(R.string.formatted_date_in, shorFormat.format(date));
         } else {
-            return months(moth, dayOfMonth, context)+" "+year;
+            return months(context, moth, dayOfMonth)+" "+year;
         }
     }
 
-    public static String getMessageDateString(long dateSec, Context context){
+    public static String getMessageDateString(Context context, long dateSec){
 
         long currentDate = System.currentTimeMillis();
         long currentDateSec = currentDate/1000;
@@ -190,7 +190,7 @@ public class TimeUtil {
 
     }
 
-    public static String secs(int sec, Context context){
+    public static String secs(Context context, int sec){
         if(sec<20 && sec>10) {
             return context.getString(R.string.formatted_date_sec2, sec);
         }
@@ -216,7 +216,7 @@ public class TimeUtil {
         }
     }
 
-    public static String minutes(int min, Context context){
+    public static String minutes(Context context, int min){
         if(min<20 && min>10) {
             return context.getString(R.string.formatted_date_min2, min);
         }
@@ -260,7 +260,7 @@ public class TimeUtil {
         }
     }
 
-    public static String months(int month, int dayOfMonth, Context context){
+    public static String months(Context context, int month, int dayOfMonth){
         return context.getString(getMonthStringRecourseId(month), dayOfMonth);
     }
 

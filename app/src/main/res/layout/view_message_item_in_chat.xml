@@ -35,9 +35,9 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:padding="@dimen/imageBorderWidth"
-                    android:background="?attr/placeHolderColor"
+                    android:background="?attr/colorPlaceholder"
                     app:shapeAppearanceOverlay="@style/CircleShapeAppearance"
-                    app:strokeColor="?attr/colorContrast20"
+                    app:strokeColor="?attr/colorStroke"
                     app:strokeWidth="@dimen/imageBorderWidth"/>
 
                 <TextView
@@ -61,7 +61,7 @@
                 android:paddingHorizontal="3dp"
                 android:includeFontPadding="false"
                 android:textSize="16sp"
-                app:highlightColor="?attr/colorAccent"
+                app:highlightColor="?attr/colorPrimary"
                 app:enableClicking="true"
                 tools:text="https://fdffr\n[id158|jope]\n#rgrgrg"/>
 
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="9dp"
-                android:layout="@layout/view_message_item_photos_stub"/>
+                android:layout="@layout/view_message_item_photos_in_stub"/>
 
             <ViewStub
                 android:id="@+id/audiosViewStub"
@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
             android:layout_weight="0"
-            android:textColor="?attr/colorContrast50"
+            android:textColor="?attr/colorEmphasis_60"
             tools:text="0:00" />
     </LinearLayout>
 </FrameLayout>

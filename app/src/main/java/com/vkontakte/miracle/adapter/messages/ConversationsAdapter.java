@@ -1,5 +1,6 @@
 package com.vkontakte.miracle.adapter.messages;
 
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CONVERSATION;
 import static com.vkontakte.miracle.engine.util.APIUtil.createOwnersMap;
 import static com.vkontakte.miracle.engine.util.APIUtil.loadOwners;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
@@ -10,10 +11,12 @@ import android.util.Log;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.messages.holders.ConversationViewHolder;
 import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.longpoll.LongPollServiceController;
@@ -42,7 +45,6 @@ import java.util.Map;
 import retrofit2.Response;
 
 public class ConversationsAdapter extends MiracleLoadableAdapter {
-
 
     private final ArrayMap<String,ConversationItem> conversationItemArrayMap = new ArrayMap<>();
     private final ArrayMap<String,Owner> ownerArrayMap = new ArrayMap<>();
@@ -133,7 +135,6 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
     @Override
     public void ini() {
         super.ini();
-
         setStep(50);
 
         onMessageAddedUpdateListener = messageAddedUpdates -> {
@@ -425,13 +426,14 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
                 addTask(new Task() {
                     @Override
                     public void func() {
+                        MiracleApp miracleApp = MiracleApp.getInstance();
                         MessageTypingUpdates executor = messageTypingUpdatesArrayMap.get(peerId);
                         if(isText) {
                             updateConversationMessageTyping(executor,
-                                    getMiracleApp().getString(R.string.formatted_typing), typingIds, true, peerId);
+                                    miracleApp.getString(R.string.formatted_typing), typingIds, true, peerId);
                         } else {
                             updateConversationMessageTyping(executor,
-                                    getMiracleApp().getString(R.string.formatted_typing_audio), typingIds, false, peerId);
+                                    miracleApp.getString(R.string.formatted_typing_audio), typingIds, false, peerId);
                         }
                         onComplete();
                     }
@@ -470,8 +472,8 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
                                         ownerArrayMap.put(ownerId,owner);
                                         MessageTypingUpdates executor = messageTypingUpdatesArrayMap.get(peerId);
                                         updateConversationMessageTyping(executor,
-                                                getMessageTypingDeclensions(owner, isText, typingIds.size()-1,getMiracleApp()),
-                                                typingIds, isText, peerId);
+                                                getMessageTypingDeclensions(MiracleApp.getInstance(), owner, isText,
+                                                        typingIds.size()-1), typingIds, isText, peerId);
                                     }
                                     onComplete();
                                 }
@@ -483,9 +485,8 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
                         @Override
                         public void func() {
                             MessageTypingUpdates executor = messageTypingUpdatesArrayMap.get(peerId);
-                            updateConversationMessageTyping(executor,
-                                    getMessageTypingDeclensions(owner, isText, typingIds.size()-1, getMiracleApp()),
-                                    typingIds, isText, peerId);
+                            updateConversationMessageTyping(executor, getMessageTypingDeclensions(MiracleApp.getInstance(),
+                                    owner, isText, typingIds.size()-1), typingIds, isText, peerId);
                             onComplete();
                         }
                     });
@@ -559,8 +560,9 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
     }
 
     @Override
-    public void setDetached(boolean detached) {
-        if(detached){
+    public void setRecyclerView(RecyclerView recyclerView) {
+        super.setRecyclerView(recyclerView);
+        if(recyclerView==null){
             LongPollServiceController longPollServiceController = LongPollServiceController.get();
             longPollServiceController.removeOnMessageAddedUpdateListener(onMessageAddedUpdateListener);
             longPollServiceController.removeOnMessageReadUpdateListener(onMessageReadUpdateListener);
@@ -570,7 +572,6 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
                 etr.getValue().cancel();
             }
         }
-        super.setDetached(detached);
     }
 
     private class MessageTypingUpdates extends AsyncExecutor<Boolean> {
@@ -688,6 +689,14 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
         }
         return null;
     }
+
+    @Override
+    public ArrayMap<Integer, ViewHolderFabric> getViewHolderFabricMap() {
+        ArrayMap<Integer, ViewHolderFabric> arrayMap = super.getViewHolderFabricMap();
+        arrayMap.put(TYPE_CONVERSATION, new ConversationViewHolder.Fabric());
+        return arrayMap;
+    }
+
 }
 
 

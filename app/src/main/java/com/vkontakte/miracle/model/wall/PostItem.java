@@ -2,14 +2,10 @@ package com.vkontakte.miracle.model.wall;
 
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_POST;
 
-import android.util.ArrayMap;
-
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.Attachments;
 import com.vkontakte.miracle.model.Owner;
 import com.vkontakte.miracle.model.catalog.CatalogExtendedArrays;
-import com.vkontakte.miracle.model.groups.GroupItem;
-import com.vkontakte.miracle.model.users.ProfileItem;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,10 +13,11 @@ import org.json.JSONObject;
 public class PostItem implements ItemDataHolder {
 
     private String id;
-    private String ownerId;
-    private String from_id;
     private long date;
     private Owner owner;
+    private Owner source;
+    private Owner from;
+    private Owner to;
     private Attachments attachments;
     private String text;
     private boolean zoom_text = false;
@@ -37,6 +34,15 @@ public class PostItem implements ItemDataHolder {
     }
     public Owner getOwner() {
         return owner;
+    }
+    public Owner getSource() {
+        return source;
+    }
+    public Owner getFrom() {
+        return from;
+    }
+    public Owner getTo() {
+        return to;
     }
     public long getDate() {
         return date;
@@ -92,60 +98,22 @@ public class PostItem implements ItemDataHolder {
         }
 
         if(jsonObject.has("owner_id")){
-            ownerId = jsonObject.getString("owner_id");
-        }else {
-            if(jsonObject.has("source_id")){
-                ownerId = jsonObject.getString("source_id");
-            }else {
-                if(jsonObject.has("from_id")){
-                    ownerId = jsonObject.getString("from_id");
-                }else {
-                    if(jsonObject.has("to_id")){
-                        ownerId = jsonObject.getString("to_id");
-                    }else {
-                        return;
-                    }
-                }
-            }
+            owner = new Owner(jsonObject.getString("owner_id"), catalogExtendedArrays);
+        }
+
+        if(jsonObject.has("source_id")){
+            source = new Owner(jsonObject.getString("source_id"), catalogExtendedArrays);
         }
 
         if(jsonObject.has("from_id")){
-            from_id = jsonObject.getString("from_id");
-        }else {
-            if(jsonObject.has("source_id")){
-                from_id = jsonObject.getString("source_id");
-            }else {
-                if(jsonObject.has("owner_id")){
-                    from_id = jsonObject.getString("owner_id");
-                }else {
-                    if(jsonObject.has("to_id")){
-                        from_id = jsonObject.getString("to_id");
-                    }else {
-                        return;
-                    }
-                }
-            }
+            from = new Owner(jsonObject.getString("from_id"), catalogExtendedArrays);
+        }
+
+        if(jsonObject.has("to_id")){
+            to = new Owner(jsonObject.getString("to_id"), catalogExtendedArrays);
         }
 
         date = jsonObject.getLong("date");
-
-        if (from_id.charAt(0) == '-') {
-            ArrayMap<String, GroupItem> groupsMap = catalogExtendedArrays.getGroupsMap();
-            if(groupsMap!=null) {
-                GroupItem groupItem = groupsMap.get(from_id);
-                if (groupItem != null) {
-                    owner = new Owner(groupItem);
-                }
-            }
-        } else {
-            ArrayMap<String, ProfileItem> profilesMap = catalogExtendedArrays.getProfilesMap();
-            if(profilesMap!=null) {
-                ProfileItem profileItem = profilesMap.get(from_id);
-                if (profileItem != null) {
-                    owner = new Owner(profileItem);
-                }
-            }
-        }
 
         if(jsonObject.has("text")){
             text = jsonObject.getString("text");

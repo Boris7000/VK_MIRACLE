@@ -4,7 +4,7 @@ import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
 import android.util.ArrayMap;
 
-import com.vkontakte.miracle.adapter.photos.holders.StackedPhotoItem;
+import com.vkontakte.miracle.adapter.photos.holders.StackedPhotosItem;
 import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
@@ -24,7 +24,7 @@ import retrofit2.Response;
 public class PhotoAlbumAdapter extends MiracleLoadableAdapter {
 
     private final PhotoAlbumItem photoAlbumItem;
-    private int rowLength = 3;
+    private final int rowLength = 3;
 
     public PhotoAlbumAdapter(PhotoAlbumItem photoAlbumItem){
         this.photoAlbumItem = photoAlbumItem;
@@ -49,13 +49,13 @@ public class PhotoAlbumAdapter extends MiracleLoadableAdapter {
 
         for (int i = 0; i < jsonArray.length(); ) {
 
-            ArrayList<PhotoItem> arrayList = new ArrayList<>();
+            ArrayList<ItemDataHolder> arrayList = new ArrayList<>();
 
             for (int j = 0; j < rowLength && i < jsonArray.length(); j++) {
                 arrayList.add(new PhotoItem(jsonArray.getJSONObject(i)));
                 i++;
             }
-            holders.add(new StackedPhotoItem(arrayList, rowLength));
+            holders.add(new StackedPhotosItem(arrayList, rowLength));
         }
 
         if (holders.size() == getTotalCount() || jsonArray.length() < getStep()) {

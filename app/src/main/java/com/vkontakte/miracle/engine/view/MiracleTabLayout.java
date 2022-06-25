@@ -51,7 +51,7 @@ public class MiracleTabLayout extends TabLayout {
                 textView.setVisibility(VISIBLE);
                 imageView.setVisibility(VISIBLE);
 
-                MarginLayoutParamsCompat.setMarginStart(ilp, (int) dpToPx(8, getContext()));
+                MarginLayoutParamsCompat.setMarginStart(ilp, (int) dpToPx(getContext(),8));
                 MarginLayoutParamsCompat.setMarginEnd(ilp, 0);
                 imageView.setLayoutParams(ilp);
                 imageView.requestLayout();
@@ -64,7 +64,7 @@ public class MiracleTabLayout extends TabLayout {
                         textView.setVisibility(GONE);
                         imageView.setVisibility(VISIBLE);
 
-                        MarginLayoutParamsCompat.setMarginStart(ilp, (int) dpToPx(0, getContext()));
+                        MarginLayoutParamsCompat.setMarginStart(ilp, (int) dpToPx(getContext(), 0));
                         MarginLayoutParamsCompat.setMarginEnd(ilp, 0);
                         imageView.setLayoutParams(ilp);
                         imageView.requestLayout();

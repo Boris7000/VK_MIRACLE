@@ -9,7 +9,7 @@
     android:layout_marginHorizontal="12dp"
     android:layout_marginBottom="6dp"
     android:padding="12dp"
-    android:background="@drawable/rounded_card_filled_primary">
+    android:background="@drawable/rounded_card_child_container_secondary">
 
     <com.vkontakte.miracle.engine.view.textView.MiracleTextView
         android:id="@+id/description"
@@ -19,7 +19,7 @@
         android:textSize="15sp"
         android:includeFontPadding="false"
         android:autoLink="web"
-        app:highlightColor="?attr/colorAccent"
+        app:highlightColor="?attr/colorPrimary"
         app:enableClicking="true"
         tools:text="Описание"/>
 </FrameLayout>

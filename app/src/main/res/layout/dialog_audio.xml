@@ -10,15 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="16dp"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginVertical="19dp"
         android:orientation="vertical"
         android:background="@drawable/rounded_card"
-        android:padding="16dp">
+        android:paddingVertical="16dp">
 
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="8dp"
             android:padding="16dp"
             android:background="@drawable/rounded_card_child_white"
@@ -106,22 +108,16 @@
             android:id="@+id/buttonsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="4dp">
+            android:paddingHorizontal="8dp"
+            android:orientation="vertical"/>
 
-        </LinearLayout>
-
-        <com.vkontakte.miracle.engine.view.MiracleButton
-            android:id="@+id/cancel_button"
+        <com.miracle.button.TextViewButton
+            android:id="@+id/cancelButton"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:active="false"
-            app:outline="false"
-            app:secondary="true"
-            app:text="@string/cancel" />
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="16dp"
+            android:text="@string/cancel"
+            style="@style/TextButton.SecondaryButton"/>
 
     </LinearLayout>
 

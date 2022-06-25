@@ -28,8 +28,7 @@ public class PicassoDrawableCopy  extends BitmapDrawable {
         if (placeholder instanceof Animatable) {
             ((Animatable) placeholder).stop();
         }
-        PicassoDrawableCopy drawable =
-                new PicassoDrawableCopy(context, bitmap, placeholder, fadeDuration);
+        PicassoDrawableCopy drawable = new PicassoDrawableCopy(context, bitmap, placeholder, fadeDuration);
         target.setImageDrawable(drawable);
     }
 

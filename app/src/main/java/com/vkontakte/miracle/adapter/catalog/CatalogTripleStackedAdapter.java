@@ -1,11 +1,8 @@
-package com.vkontakte.miracle.adapter.audio;
+package com.vkontakte.miracle.adapter.catalog;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_ERROR;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_LOADING;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
 
 import android.util.ArrayMap;
-import android.util.Log;
 
 import androidx.recyclerview.widget.DiffUtil;
 
@@ -13,26 +10,28 @@ import com.vkontakte.miracle.adapter.audio.holders.WrappedAudioViewHolder;
 import com.vkontakte.miracle.engine.adapter.MiracleUniversalAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.adapter.holder.error.ErrorViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.loading.LoadingViewHolder;
 import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.audio.AudioItem;
-import com.vkontakte.miracle.player.AudioPlayerData;
+import com.vkontakte.miracle.model.catalog.CatalogTripleStack;
 
 import java.util.ArrayList;
 
-public class PlayingAdapter extends MiracleUniversalAdapter {
+public class CatalogTripleStackedAdapter extends MiracleUniversalAdapter {
 
-    private AudioPlayerData playerData;
-
-    public PlayingAdapter(AudioPlayerData playerData){
-        this.playerData=playerData;
+    public CatalogTripleStackedAdapter(ArrayList<ItemDataHolder> holders){
+        getItemDataHolders().addAll(holders);
+        setAddedCount(holders.size());
     }
 
-    public void setNewItemDataHolders(AudioPlayerData playerData){
-        this.playerData=playerData;
+    public CatalogTripleStackedAdapter(CatalogTripleStack catalogTripleStack){
+        ArrayList<ItemDataHolder> holders = catalogTripleStack.getItems();
+        getItemDataHolders().addAll(holders);
+        setAddedCount(holders.size());
+    }
+
+
+    public void setNewItemDataHolders(ArrayList<ItemDataHolder> newHolders){
         ArrayList<ItemDataHolder> holders = getItemDataHolders();
-        ArrayList<ItemDataHolder> newHolders = playerData.getItems();
         if(newHolders.size()>0) {
             final int oldSize = holders.size();
             final int newSize = newHolders.size();
@@ -80,7 +79,7 @@ public class PlayingAdapter extends MiracleUniversalAdapter {
                 setHasData(true);
             }
             setItemDataHolders(holders, result);
-            getRecyclerView().scrollToPosition(playerData.getCurrentItemIndex());
+            getRecyclerView().scrollToPosition(0);
         } else {
             final int oldSize = holders.size();
             holders.clear();
@@ -91,24 +90,13 @@ public class PlayingAdapter extends MiracleUniversalAdapter {
 
     @Override
     public void load(){
-        ArrayList<ItemDataHolder> holders = getItemDataHolders();
-        ArrayList<ItemDataHolder> newHolders = playerData.getItems();
-        holders.clear();
-        holders.addAll(newHolders);
-        if (!hasData()) {
-            setHasData(true);
-        }
-        setAddedCount(newHolders.size());
-        setItemDataHolders(holders);
         super.load();
     }
 
     @Override
     public ArrayMap<Integer, ViewHolderFabric> getViewHolderFabricMap() {
-        ArrayMap<Integer, ViewHolderFabric> arrayMap = super.getViewHolderFabricMap();
-        arrayMap.put(TYPE_LOADING, new LoadingViewHolder.Fabric());
-        arrayMap.put(TYPE_ERROR, new ErrorViewHolder.Fabric());
-        arrayMap.put(TYPE_WRAPPED_AUDIO, new WrappedAudioViewHolder.FabricSheet());
+        ArrayMap<Integer, ViewHolderFabric> arrayMap = new ArrayMap<>();
+        arrayMap.put(TYPE_WRAPPED_AUDIO, new WrappedAudioViewHolder.FabricTripleStacked());
         return arrayMap;
     }
 }

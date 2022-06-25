@@ -1,5 +1,6 @@
 package com.vkontakte.miracle.player;
 
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
 import android.content.ComponentName;
@@ -13,6 +14,8 @@ import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
+import com.vkontakte.miracle.model.audio.AudioWrapContainer;
+import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.model.users.ProfileItem;
@@ -142,9 +145,10 @@ public class PlayerServiceController {
 
     public void playNewAudio(AudioPlayerData audioPlayerData){
 
-        if(audioPlayerData.getPlaylistItem()!=null){
-            PlaylistItem playlistItem = audioPlayerData.getPlaylistItem();
-            if(playlistItem.getItems().size()<25&&playlistItem.getItems().size()<playlistItem.getCount()){
+        AudioWrapContainer container = audioPlayerData.getContainer();
+        if(container instanceof PlaylistItem){
+            PlaylistItem playlistItem = (PlaylistItem) container;
+            if(playlistItem.getAudioItems().size()<25&&playlistItem.getAudioItems().size()<playlistItem.getCount()){
                 loadAndPlayNewAudio(audioPlayerData);
                 return;
             }
@@ -155,13 +159,15 @@ public class PlayerServiceController {
         } else {
             startAndPlay(audioPlayerData);
         }
+
     }
 
     public void setPlayNext(AudioPlayerData audioPlayerData){
 
-        if(audioPlayerData.getPlaylistItem()!=null){
-            PlaylistItem playlistItem = audioPlayerData.getPlaylistItem();
-            if(playlistItem.getItems().size()<25&&playlistItem.getItems().size()<playlistItem.getCount()){
+        AudioWrapContainer container = audioPlayerData.getContainer();
+        if(container instanceof PlaylistItem){
+            PlaylistItem playlistItem = (PlaylistItem) container;
+            if(playlistItem.getAudioItems().size()<25&&playlistItem.getAudioItems().size()<playlistItem.getCount()){
                 loadAndSetPlayNext(audioPlayerData);
                 return;
             }
@@ -180,9 +186,12 @@ public class PlayerServiceController {
             @Override
             public AudioPlayerData inBackground() {
                 try {
-                    PlaylistItem playlistItem1 = new PlaylistItem(audioPlayerData.getPlaylistItem());
-                    loadAudiosToPlaylist(playlistItem1);
-                    return new AudioPlayerData(playlistItem1.getItems().get(audioPlayerData.getCurrentItemIndex()));
+                    AudioWrapContainer container = audioPlayerData.getContainer();
+                    if(container instanceof PlaylistItem) {
+                        PlaylistItem playlistItem1 = new PlaylistItem((PlaylistItem) container);
+                        loadAudiosToPlaylist(playlistItem1);
+                        return new AudioPlayerData(playlistItem1.getAudioItems().get(audioPlayerData.getCurrentItemIndex()));
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -202,9 +211,12 @@ public class PlayerServiceController {
             @Override
             public AudioPlayerData inBackground() {
                 try {
-                    PlaylistItem playlistItem1 = new PlaylistItem(audioPlayerData.getPlaylistItem());
-                    loadAudiosToPlaylist(playlistItem1);
-                    return new AudioPlayerData(playlistItem1.getItems().get(audioPlayerData.getCurrentItemIndex()));
+                    AudioWrapContainer container = audioPlayerData.getContainer();
+                    if(container instanceof PlaylistItem) {
+                        PlaylistItem playlistItem1 = new PlaylistItem((PlaylistItem) container);
+                        loadAudiosToPlaylist(playlistItem1);
+                        return new AudioPlayerData(playlistItem1.getAudioItems().get(audioPlayerData.getCurrentItemIndex()));
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -220,14 +232,14 @@ public class PlayerServiceController {
 
     public void loadAndPlayNewAudio(PlaylistItem playlistItem){
 
-        if(playlistItem.getItems().size()<25&&playlistItem.getItems().size()<playlistItem.getCount()) {
+        if(playlistItem.getAudioItems().size()<25&&playlistItem.getAudioItems().size()<playlistItem.getCount()) {
             new AsyncExecutor<AudioPlayerData>() {
                 @Override
                 public AudioPlayerData inBackground() {
                     try {
                         PlaylistItem playlistItem1 = new PlaylistItem(playlistItem);
                         loadAudiosToPlaylist(playlistItem1);
-                        return new AudioPlayerData(playlistItem1.getItems().get(0));
+                        return new AudioPlayerData(playlistItem1.getAudioItems().get(0));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -239,21 +251,21 @@ public class PlayerServiceController {
                 }
             }.start();
         } else {
-            playNewAudio(new AudioPlayerData(playlistItem.getItems().get(0)));
+            playNewAudio(new AudioPlayerData(playlistItem.getAudioItems().get(0)));
         }
     }
 
     public void loadAndSetPlayNext(PlaylistItem playlistItem){
 
-        if(playlistItem.getItems().size()<25&&playlistItem.getItems().size()<playlistItem.getCount()) {
+        if(playlistItem.getAudioItems().size()<25&&playlistItem.getAudioItems().size()<playlistItem.getCount()) {
             new AsyncExecutor<AudioPlayerData>() {
                 @Override
                 public AudioPlayerData inBackground() {
                     try {
                         PlaylistItem playlistItem1 = new PlaylistItem(playlistItem);
                         loadAudiosToPlaylist(playlistItem1);
-                        if(!playlistItem1.getItems().isEmpty()) {
-                            return new AudioPlayerData(playlistItem1.getItems().get(0));
+                        if(!playlistItem1.getAudioItems().isEmpty()) {
+                            return new AudioPlayerData(playlistItem1.getAudioItems().get(0));
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -269,7 +281,7 @@ public class PlayerServiceController {
                 }
             }.start();
         } else {
-            setPlayNext(new AudioPlayerData(playlistItem.getItems().get(0)));
+            setPlayNext(new AudioPlayerData(playlistItem.getAudioItems().get(0)));
         }
     }
 
@@ -277,7 +289,7 @@ public class PlayerServiceController {
         ProfileItem profileItem = StorageUtil.get().currentUser();
         if(profileItem!=null) {
             Response<JSONObject> response = Execute.getPlaylist(playlistItem.getOwnerId(),
-                    playlistItem.getId(), false, playlistItem.getItems().size(),
+                    playlistItem.getId(), false, playlistItem.getAudioItems().size(),
                     Math.min(25, playlistItem.getCount()), playlistItem.getAccessKey(),
                     profileItem.getAccessToken()).execute();
             JSONObject jo_response = validateBody(response).getJSONObject("response");
@@ -288,10 +300,22 @@ public class PlayerServiceController {
             for (int i = 0; i < items.length(); i++) {
                 JSONObject jo_item = items.getJSONObject(i);
                 AudioItem audioItem = new AudioItem(jo_item);
-                audioItem.setPlaylistItem(playlistItem);
-                audioItems.add(audioItem);
+                DataItemWrap<AudioItem, AudioWrapContainer> dataItemWrap =
+                        new DataItemWrap<AudioItem, AudioWrapContainer>(audioItem, playlistItem) {
+                            @Override
+                            public int getViewHolderType() {
+                                return TYPE_WRAPPED_AUDIO;
+                            }
+                        };
+                audioItems.add(dataItemWrap);
             }
-            playlistItem.getItems().addAll(audioItems);
+            playlistItem.getAudioItems().addAll(audioItems);
+        }
+    }
+
+    public void updateTheme(){
+        if(audioPLayerService!=null){
+            audioPLayerService.updateTheme();
         }
     }
 

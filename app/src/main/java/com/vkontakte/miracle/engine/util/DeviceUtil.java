@@ -1,23 +1,32 @@
 package com.vkontakte.miracle.engine.util;
 
+import static android.content.Context.WINDOW_SERVICE;
+import static com.vkontakte.miracle.network.Constants.app_version_code;
+import static com.vkontakte.miracle.network.Constants.app_version_name;
+
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.WindowManager;
 
 import java.util.Locale;
-import java.util.Objects;
-
-import static com.vkontakte.miracle.network.Constants.app_version_code;
-import static com.vkontakte.miracle.network.Constants.app_version_name;
 
 public class DeviceUtil {
     public static String getUserAgent(){
-        return String.format(Locale.US, "VKAndroidApp/%s-%s (Android %s; SDK %d; %s; %s; %s; %s)", app_version_name, app_version_code, Build.VERSION.RELEASE, Build.VERSION.SDK_INT, Build.SUPPORTED_ABIS[0], getDeviceName(), "ru", SCREEN_RESOLUTION());
+        return String.format(Locale.US,
+                "VKAndroidApp/%s-%s (Android %s; SDK %d; %s; %s; %s; %s)",
+                app_version_name,
+                app_version_code,
+                Build.VERSION.RELEASE,
+                Build.VERSION.SDK_INT,
+                Build.SUPPORTED_ABIS[0],
+                getDeviceName(),
+                System.getProperty("user.language"),
+                SCREEN_RESOLUTION());
   }
 
     @SuppressLint("HardwareIds")
@@ -47,7 +56,7 @@ public class DeviceUtil {
         }
     }
 
-    private static String SCREEN_RESOLUTION() {
+    public static String SCREEN_RESOLUTION() {
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         if (metrics == null) {
             return "1920x1080";
@@ -56,41 +65,68 @@ public class DeviceUtil {
     }
 
     public static int getDisplayHeight(Context context) {
-        Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
+        WindowManager wm = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();
         display.getRealMetrics(outMetrics);
         return outMetrics.heightPixels;
     }
 
     public static int getDisplayWidth(Context context) {
-        Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
+        WindowManager wm = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();
         display.getRealMetrics(outMetrics);
         return outMetrics.widthPixels;
     }
 
-    public static int getStatusBarHeight(Context context){
-
-        Resources resources = Objects.requireNonNull(context).getResources();
-
-        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) { return resources.getDimensionPixelSize(resourceId); }
-        else return 0;
+    public static int getWindowHeight(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+        return outMetrics.heightPixels;
     }
 
-    public static int getNavigationBarHeight(Context context){
+    public static int getWindowWidth(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+        return outMetrics.widthPixels;
+    }
 
-        Resources resources = Objects.requireNonNull(context).getResources();
+    public static int[] getDisplaySize(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getRealMetrics(outMetrics);
+        return new int[]{outMetrics.widthPixels, outMetrics.heightPixels};
+    }
+    public static int[] getWindowSize(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+        return new int[]{outMetrics.widthPixels, outMetrics.heightPixels};
+    }
 
-        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
-        int resourceId1 = resources.getIdentifier("config_showNavigationBar", "bool", "android");
-        if (resourceId > 0) {
-            if(resourceId1>0){
-                if(!resources.getBoolean(resourceId1)) return 0;
-            }
-            return resources.getDimensionPixelSize(resourceId);
-        }
-        else return 0;
+    public boolean showNavigationBar(Resources resources)
+    {
+        int id = resources.getIdentifier("config_showNavigationBar", "bool", "android");
+        return id > 0 && resources.getBoolean(id);
+    }
+
+    private int getNavigationBarHeight(WindowManager wm) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+        int usableHeight = metrics.heightPixels;
+        wm.getDefaultDisplay().getRealMetrics(metrics);
+        int realHeight = metrics.heightPixels;
+        if (realHeight > usableHeight)
+            return realHeight - usableHeight;
+        else
+            return 0;
     }
 
 }

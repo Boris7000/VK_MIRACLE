@@ -12,11 +12,15 @@ public class DimensionsUtil {
         return typedValue.data;
     }
 
-    public static float dpToPx(float dp, Context context) {
-        return dp * context.getResources().getDisplayMetrics().density;
+    public static float dpToPx(Context context, float dp) {
+        if (dp == 0){
+            return 0;
+        } else {
+            return dp * context.getResources().getDisplayMetrics().density;
+        }
     }
 
-    public static float pxToDp(float px, Context context){
+    public static float pxToDp(Context context, float px){
         if (px == 0){
             return 0;
         } else{

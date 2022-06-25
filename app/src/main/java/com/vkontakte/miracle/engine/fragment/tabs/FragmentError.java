@@ -21,8 +21,6 @@ public class FragmentError extends NestedMiracleFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        iniContext();
-
         View rootView = inflater.inflate(R.layout.fragment_error, container, false);
 
         setTabsMiracleFragment((TabsMiracleFragment) getParentFragment());

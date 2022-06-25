@@ -3,6 +3,7 @@ package com.vkontakte.miracle.adapter.wall.holders;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,6 @@ import androidx.annotation.NonNull;
 
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.adapter.audio.holders.PlaylistHorizontalViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
@@ -23,7 +23,7 @@ import com.vkontakte.miracle.engine.util.TimeUtil;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.model.users.fields.LastSeen;
 
-public class ProfileLargeViewHolder extends PlaylistHorizontalViewHolder {
+public class ProfileLargeViewHolder extends MiracleViewHolder {
 
     private final ImageView imageView;
     private final TextView title;
@@ -52,6 +52,9 @@ public class ProfileLargeViewHolder extends PlaylistHorizontalViewHolder {
 
     @Override
     public void bind(ItemDataHolder itemDataHolder) {
+
+        Context context = itemView.getContext();
+
         ProfileItem profileItem = (ProfileItem) itemDataHolder;
 
         title.setText(profileItem.getScreenName());
@@ -76,10 +79,10 @@ public class ProfileLargeViewHolder extends PlaylistHorizontalViewHolder {
         }
 
         if(profileItem.isOnline()) {
-            subtitle2.setText(getMiracleActivity().getString(R.string.online));
+            subtitle2.setText(context.getString(R.string.online));
         } else {
-            subtitle2.setText(TimeUtil.getOnlineDateString(
-                    lastSeen.getTime(),profileItem.getSex(),itemView.getContext()));
+            subtitle2.setText(TimeUtil.getOnlineDateString(context,
+                    lastSeen.getTime(),profileItem.getSex()));
         }
 
         if(profileItem.isVerified()){

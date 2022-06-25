@@ -78,4 +78,6 @@ public class CatalogExtendedArrays {
             artistsMap = createArtistsMap(response.getJSONArray("artists"));
         }
     }
+
+
 }

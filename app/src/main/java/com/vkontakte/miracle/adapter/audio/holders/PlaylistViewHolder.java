@@ -13,7 +13,7 @@ import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 
-public class PlaylistViewHolder extends PlaylistHorizontalViewHolder {
+public class PlaylistViewHolder extends PlaylistViewHolderHorizontal {
 
     private final TextView subtitle2;
 
@@ -38,12 +38,4 @@ public class PlaylistViewHolder extends PlaylistHorizontalViewHolder {
             subtitle2.setText(playlistItem.getYear());
         }
     }
-
-    public static class Fabric implements ViewHolderFabric {
-        @Override
-        public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
-            return new PlaylistViewHolder(inflater.inflate(R.layout.view_playlist_item_vertical, viewGroup, false));
-        }
-    }
-
 }

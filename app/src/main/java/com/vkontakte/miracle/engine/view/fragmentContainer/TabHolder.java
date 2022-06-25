@@ -27,6 +27,14 @@ public class TabHolder {
         }
     }
 
+    public MiracleFragment getFirstFragment(){
+        if(fragments.isEmpty()){
+            return null;
+        }else {
+            return fragments.get(0);
+        }
+    }
+
     public int getCount(){
         return fragments.size();
     }

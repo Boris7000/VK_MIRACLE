@@ -6,24 +6,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
-    <com.vkontakte.miracle.engine.view.MiracleButton
-        android:id="@+id/playButton"
+
+    <com.miracle.button.TextViewButton
+        android:id="@+id/editButton"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:active="false"
-        app:text="@string/edit"/>
+        android:text="@string/edit"
+        style="@style/TextButton.PrimaryButton"/>
+
     <Space
         android:layout_width="12dp"
         android:layout_height="0dp"/>
-    <com.vkontakte.miracle.engine.view.MiracleButton
+
+    <com.miracle.button.TextViewButton
+        android:id="@+id/optionsButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:secondary="true"
-        app:active="false"
-        app:imageResource="@drawable/ic_more_vertical_28"/>
+        app:icon_start="@drawable/ic_more_vertical_28"
+        style="@style/TextButton.SecondaryButton"/>
+
 </LinearLayout>

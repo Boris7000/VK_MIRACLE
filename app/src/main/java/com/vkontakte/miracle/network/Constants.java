@@ -1,22 +1,23 @@
 package com.vkontakte.miracle.network;
 
+import static com.vkontakte.miracle.engine.util.DeviceUtil.getDeviceName;
+import static com.vkontakte.miracle.engine.util.DeviceUtil.getUserAgent;
+
 import android.os.Build;
 
 import java.util.HashMap;
 
-import static com.vkontakte.miracle.engine.util.DeviceUtil.getDeviceName;
-import static com.vkontakte.miracle.engine.util.DeviceUtil.getUserAgent;
-
 public class Constants {
 
-    public static final String app_version_code = "10156";
-    public static final String app_version_name = "7.3";
+    public static final String app_version_code = "12338";
+    public static final String app_version_name = "7.26";
     public static final Integer client_id = 2274003;
     public static final String client_secret = "hHbZxrka2uZ6jB1inYsH";
     public static final String sig = "b238fdd4d2681fe69dddffd9eb1000cb";
     public static final String fake_receipt = "xTdgMap-WI%3AAPA91bHrZ0atGrdMY25OP_KfQtVlWHySYYoHjovrukLsRu-wpLMTJVwc4NThRwXkAdSTmKY_594D8s7LDwV28HWjMnkzfz37OkPFZkK2pthd1fyU3iewwakN5mISTno3BLHAntpKKKw5";
 
-    public static final String latest_api_v = "5.167";
+    public static final String latest_api_v = "5.183";
+    public static final String current_api_v = "5.131";
 
     public static final String base_fields ="photo_100,photo_200";
 
@@ -31,6 +32,11 @@ public class Constants {
     public static final String wall_fields = "video_files,photo_100,photo_200,sex,verified";
     public static final String message_fields = wall_fields+",online,last_seen";
 
+    public static HashMap<String,String> defaultLoginHeaders(){
+        HashMap<String, String> map = new HashMap<>();
+        map.put("User-Agent", getUserAgent());
+        return map;
+    }
 
     public static HashMap<String, Object> defaultWallFields(){
         HashMap<String, Object> map = new HashMap<>();
@@ -47,20 +53,15 @@ public class Constants {
         return map;
     }
 
-    public static HashMap<String, String> defaultHeaders(){
-        HashMap<String, String> map = new HashMap<>();
-        map.put("User-Agent", getUserAgent());
-        return map;
-    }
     public static HashMap<String, Object> defaultLoginFields(){
         HashMap<String, Object> map = new HashMap<>();
         map.put("grant_type", "password");
         map.put("client_id", client_id);
         map.put("client_secret", client_secret);
         map.put("scope", "all");
-        map.put("v", latest_api_v);
         map.put("2fa_supported", 1);
-        map.put("libverify_support", 1);
+        map.put("libverify_support", 0);
+        map.put("v", latest_api_v);
         return map;
     }
 
@@ -73,10 +74,18 @@ public class Constants {
         return map;
     }
 
+    public static HashMap<String, Object> defaultTokenRefreshFields2(){
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("v", latest_api_v);
+        return map;
+    }
+
     public static HashMap<String, Object> defaultTokenRefreshFields(){
         HashMap<String, Object> map = new HashMap<>();
         map.put("client_id", client_id);
         map.put("client_secret", client_secret);
+        map.put("https", 1);
+        map.put("lang", System.getProperty("user.language"));
         map.put("sig", sig);
         map.put("v", latest_api_v);
         return map;

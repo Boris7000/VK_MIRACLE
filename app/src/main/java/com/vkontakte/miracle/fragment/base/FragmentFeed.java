@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.vkontakte.miracle.MiracleActivity;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.wall.FeedAdapter;
 import com.vkontakte.miracle.engine.fragment.FragmentFabric;
@@ -21,21 +20,18 @@ public class FragmentFeed  extends SimpleMiracleFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        iniContext();
-
-        MiracleActivity miracleActivity = getMiracleActivity();
-
         View rootView = inflater.inflate(R.layout.fragment_feed, container, false);
 
-        setTopBar(rootView.findViewById(R.id.appbarLinear));
-        setAppBarLayout(rootView.findViewById(R.id.appbar));
+        setAppBarLayout(rootView.findViewById(R.id.appbarlayout));
+        setToolBar(getAppBarLayout().findViewById(R.id.toolbar));
+        setAppbarClickToTop();
         setRecyclerView(rootView.findViewById(R.id.recyclerView));
-        scrollAndElevate(getRecyclerView(),getAppBarLayout(), miracleActivity);
+        scrollAndElevate(getRecyclerView(),getAppBarLayout(), getMiracleActivity());
         setProgressBar(rootView.findViewById(R.id.progressCircle));
-        setSwipeRefreshLayout(rootView.findViewById(R.id.refreshLayout), ()-> setAdapter(new FeedAdapter()));
         if(nullSavedAdapter(savedInstanceState)){
             setAdapter(new FeedAdapter());
         }
+        setSwipeRefreshLayout(rootView.findViewById(R.id.refreshLayout), this::reloadAdapter);
 
         return rootView;
     }

@@ -67,10 +67,16 @@ public class SettingsUtil {
     }
 
     public static SettingsUtil get(){
-        if (null == instance){
-            instance = SettingsUtil.getInstance();
+        SettingsUtil localInstance = instance;
+        if (localInstance == null) {
+            synchronized (SettingsUtil.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = getInstance();
+                }
+            }
         }
-        return instance;
+        return localInstance;
     }
 
 }

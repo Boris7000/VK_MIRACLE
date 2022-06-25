@@ -15,9 +15,11 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.vkontakte.miracle.MiracleActivity;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.MiracleAdapter;
 import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
+import com.vkontakte.miracle.engine.adapter.MiracleUniversalAdapter;
 import com.vkontakte.miracle.engine.util.LargeDataStorage;
 
 public class ListMiracleFragment extends MiracleFragment{
@@ -57,8 +59,9 @@ public class ListMiracleFragment extends MiracleFragment{
     }
 
     public void setSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout, SwipeRefreshLayout.OnRefreshListener onRefreshListener) {
-        swipeRefreshLayout.setColorSchemeColors(getColorByAttributeId(getMiracleActivity(), R.attr.colorPrimary));
-        swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getColorByAttributeId(getMiracleActivity(), R.attr.swipeRefreshCircleColor));
+        MiracleActivity miracleActivity = getMiracleActivity();
+        swipeRefreshLayout.setColorSchemeColors(getColorByAttributeId(miracleActivity,R.attr.colorPrimary));
+        swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getColorByAttributeId(miracleActivity,R.attr.swipeRefreshCircleColor));
         swipeRefreshLayout.setProgressViewOffset(true,0,1);
         swipeRefreshLayout.setProgressViewEndTarget(true,64);
         swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
@@ -83,10 +86,12 @@ public class ListMiracleFragment extends MiracleFragment{
     //////////////////////////////////////////////////
 
     public void show(boolean animate){
-        if(animate){
-            recyclerView.animate().alpha(1f).setDuration(200).start();
-        }else {
-            recyclerView.setAlpha(1f);
+        if(recyclerView!=null) {
+            if (animate) {
+                recyclerView.animate().alpha(1f).setDuration(200).start();
+            } else {
+                recyclerView.setAlpha(1f);
+            }
         }
         if (progressBar != null){
             progressBar.setVisibility(GONE);
@@ -120,23 +125,47 @@ public class ListMiracleFragment extends MiracleFragment{
             adapter.iniFromFragment(this);
             adapter.setRecyclerView(recyclerView);
             adapter.ini();
-
             RecyclerView.Adapter<?> previousAdapter = recyclerView.getAdapter();
-
             if (previousAdapter != null) {
-                hide();
-                if (previousAdapter instanceof MiracleLoadableAdapter){
-                    ((MiracleLoadableAdapter)previousAdapter).setDetached(true);
+                if(previousAdapter != adapter) {
+                    if (previousAdapter instanceof MiracleAdapter) {
+                        MiracleAdapter miracleAdapter = (MiracleAdapter) previousAdapter;
+                        miracleAdapter.setRecyclerView(null);
+                    }
+                    hide();
+                    (new Handler(Looper.getMainLooper())).postDelayed(() -> {
+                        recyclerView.setAdapter(adapter);
+                        adapter.load();
+                    }, 200);
+                } else {
+                    hide();
+                    (new Handler(Looper.getMainLooper())).postDelayed(adapter::load, 200);
                 }
-                (new Handler(Looper.getMainLooper())).postDelayed(() -> {
-                    recyclerView.setAdapter(adapter);
-                    adapter.load();
-                }, 200);
             } else {
                 recyclerView.setAdapter(adapter);
                 adapter.load();
             }
         }
+    }
+
+    public void reloadAdapter(){
+        RecyclerView.Adapter<?> previousAdapter = getRecyclerView().getAdapter();
+        if (previousAdapter != null) {
+            if(previousAdapter instanceof MiracleUniversalAdapter) {
+                if(previousAdapter instanceof MiracleLoadableAdapter){
+                    MiracleLoadableAdapter miracleLoadableAdapter = (MiracleLoadableAdapter) previousAdapter;
+                    if(!miracleLoadableAdapter.isLoading()){
+                        miracleLoadableAdapter.reload();
+                        return;
+                    }
+                } else {
+                    MiracleUniversalAdapter universalAdapter = (MiracleUniversalAdapter) previousAdapter;
+                    universalAdapter.reload();
+                    return;
+                }
+            }
+        }
+        getSwipeRefreshLayout().setRefreshing(false);
     }
 
     @Override
@@ -167,14 +196,17 @@ public class ListMiracleFragment extends MiracleFragment{
         }
     }
 
+
     @Override
     public void onDestroy() {
         if(recyclerView!=null) {
             RecyclerView.Adapter<?> adapter = recyclerView.getAdapter();
             if(adapter!=null){
-                if(adapter instanceof MiracleLoadableAdapter){
-                    MiracleLoadableAdapter miracleLoadableAdapter = (MiracleLoadableAdapter) adapter;
-                    miracleLoadableAdapter.setDetached(true);
+                if(adapter instanceof MiracleAdapter){
+                    MiracleAdapter miracleAdapter = (MiracleAdapter) adapter;
+                    if(miracleAdapter.getMiracleFragment()==this) {
+                        miracleAdapter.setRecyclerView(null);
+                    }
                 }
             }
         }
@@ -183,13 +215,15 @@ public class ListMiracleFragment extends MiracleFragment{
 
     public boolean nullSavedAdapter(Bundle savedInstanceState){
         if(savedInstanceState!=null) {
-            if (savedInstanceState.getString("adapter") != null) {
-                MiracleLoadableAdapter adapter = (MiracleLoadableAdapter)
-                        LargeDataStorage.get().getLargeData(savedInstanceState.getString("adapter"));
-                savedInstanceState.remove(savedInstanceState.getString("adapter"));
-                if (adapter != null) {
-                    adapter.setDetached(true);
-                    setAdapter(adapter);
+            String key = savedInstanceState.getString("Adapter");
+            if (key != null) {
+                MiracleAdapter miracleAdapter = (MiracleAdapter) LargeDataStorage.get().getLargeData(key);
+                savedInstanceState.remove(key);
+                if (miracleAdapter != null) {
+                    miracleAdapter.setStateSaved(false);
+                    miracleAdapter.setSavedStateKey("");
+                    miracleAdapter.setShowed(false);
+                    setAdapter(miracleAdapter);
                     return false;
                 }
             }
@@ -202,11 +236,9 @@ public class ListMiracleFragment extends MiracleFragment{
         if(recyclerView!=null) {
             Object object = recyclerView.getAdapter();
             if (object != null){
-                if (object instanceof MiracleLoadableAdapter) {
-                    MiracleLoadableAdapter loadableAdapter = (MiracleLoadableAdapter) object;
-                    if (loadableAdapter.hasData()) {
-                        outState.putString("adapter", LargeDataStorage.get().storeLargeData(loadableAdapter));
-                    }
+                if (object instanceof MiracleAdapter) {
+                    MiracleAdapter miracleAdapter = (MiracleAdapter) object;
+                    miracleAdapter.saveState(outState);
                 }
             }
         }

@@ -29,12 +29,13 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.button.TextViewButton;
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.login.AccountsAdapter;
+import com.vkontakte.miracle.engine.util.ColorUtil;
 import com.vkontakte.miracle.engine.util.DimensionsUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.engine.view.MiracleButton;
 import com.vkontakte.miracle.model.users.ProfileItem;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
@@ -71,6 +72,8 @@ public class LoginActivity extends AppCompatActivity {
 
         ScrollView rootView = findViewById(R.id.rootView);
 
+        getWindow().getDecorView().setBackgroundColor(ColorUtil.getColorByAttributeId(getTheme(),R.attr.colorSurfaceVariant));
+
         ViewCompat.setOnApplyWindowInsetsListener(getWindow().getDecorView(), (v, windowInsets) -> {
             Insets systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
             Insets imeInsets = windowInsets.getInsets(WindowInsetsCompat.Type.ime());
@@ -86,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
 
         frameContainer = rootView.findViewById(R.id.frameContainer);
         loginFrame = frameContainer.findViewById(R.id.loginFrame);
-        MiracleButton loginButton = loginFrame.findViewById(R.id.loginButton);
+        TextViewButton loginButton = loginFrame.findViewById(R.id.loginButton);
         loginField = loginFrame.findViewById(R.id.loginField);
         passField = loginFrame.findViewById(R.id.passField);
         validationCodeFrameStub = frameContainer.findViewById(R.id.validationCodeFrameStub);
@@ -102,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
             @Override
             public void afterTextChanged(Editable editable) {
-                loginButton.setActive(getTrimmed(loginField).length()>0 && getTrimmed(passField).length()>0);
+                loginButton.setEnabled(getTrimmed(loginField).length()>0 && getTrimmed(passField).length()>0,true);
             }
         };
         loginField.addTextChangedListener(textWatcher);
@@ -116,6 +119,15 @@ public class LoginActivity extends AppCompatActivity {
             } else{
                 loginField.clearFocus();
                 passField.clearFocus();
+
+                if(validationCodeFrame!=null){
+                    validationCodeFrame.clearFocus();
+                }
+
+                if(captchaCodeFrame!=null){
+                    captchaCodeFrame.clearFocus();
+                }
+
                 recyclerView.setVisibility(View.VISIBLE);
                 /*int count = recyclerView.getChildCount();
                 for(int i=0; i<count; i++){
@@ -126,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         loginButton.setOnClickListener(view -> {
-            if(loginButton.isActive()) {
+            if(loginButton.isEnabled()) {
                 startLogin(getTrimmed(loginField),getTrimmed(passField));
             }else {
                 setText(getString(R.string.missingLoginOrPass));
@@ -145,7 +157,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void scaleView(int toScale, View view){
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
-        ValueAnimator va = ValueAnimator.ofInt(layoutParams.height,(int) DimensionsUtil.dpToPx(toScale,this));
+        ValueAnimator va = ValueAnimator.ofInt(layoutParams.height,(int) DimensionsUtil.dpToPx(this, toScale));
         va.setDuration(300);
         va.setInterpolator(new DecelerateInterpolator());
         va.addUpdateListener(animation ->{

@@ -1,9 +1,5 @@
 package com.vkontakte.miracle.engine.fragment.tabs;
 
-import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-
 import com.google.android.material.appbar.AppBarLayout;
 import com.vkontakte.miracle.engine.fragment.ListMiracleFragment;
 import com.vkontakte.miracle.engine.fragment.ScrollAndElevate;
@@ -18,11 +14,6 @@ public class NestedMiracleFragment extends ListMiracleFragment {
 
     public void setTabsMiracleFragment(TabsMiracleFragment tabsMiracleFragment) {
         this.tabsMiracleFragment = tabsMiracleFragment;
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     @Override

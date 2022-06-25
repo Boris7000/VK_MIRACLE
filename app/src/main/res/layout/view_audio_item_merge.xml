@@ -8,9 +8,9 @@
         android:layout_height="48dp"
         android:padding="@dimen/imageBorderWidth"
         android:layout_gravity="center_vertical"
-        android:background="?attr/placeHolderColor"
+        android:background="?attr/colorPlaceholder"
         app:shapeAppearanceOverlay="@style/ChildShapeAppearance"
-        app:strokeColor="?attr/colorContrast10"
+        app:strokeColor="?attr/colorStroke"
         app:strokeWidth="@dimen/imageBorderWidth"/>
 
     <LinearLayout
@@ -66,8 +66,8 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:fontFamily="sans-serif"
-                android:textColor="?attr/colorContrast50"
-                android:textSize="15sp"
+                android:textColor="?attr/colorEmphasis_60"
+                android:textSize="14sp"
                 tools:text="Subtitle" />
         </LinearLayout>
 
@@ -79,7 +79,7 @@
             android:ellipsize="end"
             android:fontFamily="sans-serif"
             android:singleLine="true"
-            android:textColor="?attr/colorContrast50"
+            android:textColor="?attr/colorEmphasis_60"
             android:textSize="13sp"
             tools:text="00:00" />
     </LinearLayout>

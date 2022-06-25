@@ -8,10 +8,10 @@ import com.vkontakte.miracle.network.methods.apis.IExecute;
 import com.vkontakte.miracle.network.methods.apis.IFriends;
 import com.vkontakte.miracle.network.methods.apis.IGroups;
 import com.vkontakte.miracle.network.methods.apis.ILikes;
+import com.vkontakte.miracle.network.methods.apis.ILongPoll;
 import com.vkontakte.miracle.network.methods.apis.IMessage;
 import com.vkontakte.miracle.network.methods.apis.IOauth;
 import com.vkontakte.miracle.network.methods.apis.IPhotos;
-import com.vkontakte.miracle.network.methods.apis.ILongPoll;
 import com.vkontakte.miracle.network.methods.apis.IUsers;
 import com.vkontakte.miracle.network.methods.apis.IWall;
 
@@ -22,26 +22,50 @@ import retrofit2.Retrofit;
 
 public class Creator {
 
+    public static OkHttpClient createClient(){
+        return new OkHttpClient.Builder()
+                .readTimeout(30, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .addInterceptor(new UserAgentInterceptor())
+                .build();
+    }
+
     public static Retrofit getBuilder(){
-        return new Retrofit.Builder().baseUrl("https://api.vk.com/method/").addConverterFactory(JSONConverterFactory.create()).build();
+        /*return new Retrofit.Builder()
+                .baseUrl("https://api.vk.com/method/")
+                .addConverterFactory(JSONConverterFactory.create())
+                .build();
+
+         */
+        return new Retrofit.Builder()
+                .baseUrl("https://api.vk.com/method/")
+                .addConverterFactory(JSONConverterFactory.create())
+                .client(createClient())
+                .build();
     }
 
     public static IOauth oauth(){
-        return new Retrofit.Builder().baseUrl("https://oauth.vk.com/").addConverterFactory(JSONConverterFactory.create()).build().create(IOauth.class);
+        return new Retrofit.Builder()
+                .baseUrl("https://oauth.vk.com/")
+                .addConverterFactory(JSONConverterFactory.create())
+                .client(createClient())
+                .build().create(IOauth.class);
     }
 
     public static ILongPoll longPoll(){
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .readTimeout(35, TimeUnit.SECONDS)
-                .connectTimeout(35, TimeUnit.SECONDS)
-                .build();
-        return new Retrofit.Builder().baseUrl("https://api.vk.com/").addConverterFactory(JSONConverterFactory.create()).client(okHttpClient).build().create(ILongPoll.class);
+        return new Retrofit.Builder()
+                .baseUrl("https://api.vk.com/")
+                .addConverterFactory(JSONConverterFactory.create())
+                .client(createClient())
+                .build()
+                .create(ILongPoll.class);
+
     }
 
     public static IOauth oauthMethod(){
         return getBuilder().create(IOauth.class);
     }
-
     public static IAccount account(){
         return getBuilder().create(IAccount.class);
     }

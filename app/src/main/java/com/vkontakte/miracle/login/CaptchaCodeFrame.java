@@ -12,15 +12,15 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
+import com.miracle.button.TextViewButton;
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.view.MiracleButton;
 
 public class CaptchaCodeFrame extends LinearLayout {
 
     private EditText validationCodeField;
-    private MiracleButton sendButton;
-    private MiracleButton cancelButton;
+    private TextViewButton sendButton;
+    private TextViewButton cancelButton;
     private ImageView captchaImage;
 
     public CaptchaCodeFrame(Context context) {
@@ -36,8 +36,8 @@ public class CaptchaCodeFrame extends LinearLayout {
         super.onFinishInflate();
 
         validationCodeField = findViewById(R.id.captchaCodeField);
-        sendButton = findViewById(R.id.captchaCodeButton);
-        cancelButton = findViewById(R.id.captchaCodeCancelButton);
+        sendButton = findViewById(R.id.sendButton);
+        cancelButton = findViewById(R.id.cancelButton);
         captchaImage = findViewById(R.id.captchaImage);
 
         TextWatcher textWatcher = new TextWatcher() {
@@ -53,7 +53,7 @@ public class CaptchaCodeFrame extends LinearLayout {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                sendButton.setActive(getTrimmed(validationCodeField).length()>0);
+                sendButton.setEnabled(getTrimmed(validationCodeField).length()>0, true);
             }
         };
         validationCodeField.addTextChangedListener(textWatcher);
@@ -69,7 +69,7 @@ public class CaptchaCodeFrame extends LinearLayout {
         loginActivity.setText(loginActivity.getString(R.string.captchaNeeded));
 
         sendButton.setOnClickListener(view -> {
-            if(sendButton.isActive()) {
+            if(sendButton.isEnabled()) {
                 if(loginActivity.canLogin()) {
                     authState.setCaptchaKey(getTrimmed(validationCodeField));
                     new Authentication(authState, loginActivity).start();
@@ -87,5 +87,9 @@ public class CaptchaCodeFrame extends LinearLayout {
         });
 
         Picasso.get().load(authState.getCaptchaImg()).into(captchaImage);
+    }
+
+    public void clearFocus(){
+        validationCodeField.clearFocus();
     }
 }

@@ -13,15 +13,15 @@
         android:id="@+id/post_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:highlightColor="?attr/colorAccent"
+        app:highlightColor="?attr/colorPrimary"
         app:enableClicking="true"
-        tools:text="https://fdffr\n[id158|jope]\n#rgrgrg" />
+        tools:text="#атпадпиека #sus" />
     <TextView
         android:id="@+id/post_more_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/show_more"
-        android:textColor="?android:attr/colorButtonNormal"
+        android:textColor="?attr/colorPrimary"
         android:visibility="gone"
         tools:visibility="visible" />
 </com.vkontakte.miracle.engine.view.PostTextView>

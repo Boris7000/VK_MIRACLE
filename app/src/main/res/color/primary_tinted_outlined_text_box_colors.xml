@@ -3,5 +3,5 @@
     <item android:state_focused="true" android:color="?attr/colorPrimary" />
     <item android:state_hovered="true" android:color="?attr/colorPrimary" />
     <item android:state_enabled="true" android:color="?attr/colorPrimary"/>
-    <item android:color="?attr/colorPrimaryNeutral_60"/>
+    <item android:color="?attr/colorOutline"/>
 </selector>

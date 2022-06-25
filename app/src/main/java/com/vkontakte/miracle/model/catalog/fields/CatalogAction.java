@@ -1,12 +1,21 @@
 package com.vkontakte.miracle.model.catalog.fields;
 
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_CREATE_PLAYLIST;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_OPEN_SECTION;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_PLAY_SHUFFLED;
+
+import android.util.Log;
+
+import com.vkontakte.miracle.R;
+import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class CatalogAction {
+public class CatalogAction implements ItemDataHolder {
     private String type;
     private String sectionId;
     private String title;
@@ -74,7 +83,6 @@ public class CatalogAction {
             }
         }
 
-
         if(jsonObject.has("section_id")) {
             sectionId = jsonObject.getString("section_id");
         }
@@ -104,6 +112,25 @@ public class CatalogAction {
 
         if(jsonObject.has("ref_data_type")) {
             refDataType = jsonObject.getString("ref_data_type");
+        }
+    }
+
+    @Override
+    public int getViewHolderType() {
+        switch (type){
+            default:{
+                Log.d("ofkokefe",type);
+                return R.layout.view_loading_item;
+            }
+            case "play_shuffled_audios_from_block":{
+                return TYPE_BUTTON_PLAY_SHUFFLED;
+            }
+            case "open_section":{
+                return TYPE_BUTTON_OPEN_SECTION;
+            }
+            case "create_playlist":{
+                return TYPE_BUTTON_CREATE_PLAYLIST;
+            }
         }
     }
 }

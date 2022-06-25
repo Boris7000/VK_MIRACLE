@@ -7,7 +7,7 @@
     android:fontFamily="sans-serif-medium"
     android:includeFontPadding="false"
     android:textAllCaps="true"
-    android:textColor="?android:attr/windowBackground"
+    android:textColor="?attr/colorOnPrimary"
     android:textSize="20dp"
     tools:text="T"
     tools:ignore="SpUsage"/>

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">VK MIRACLE</string>
+    <string name="asset_statements">[ { "include": "https://vk.com/.well-known/assetlinks.json" },{ "relation":[ "delegate_permission/common.handle_all_urls" ],"target":{ "namespace":"web", "site":"https://vk.com" } },{ "relation":[ "delegate_permission/common.handle_all_urls" ], "target":{ "namespace":"web", "site":"https://m.vk.com" } } ]</string>
     <string name="profile">Профиль</string>
     <string name="notifications">Уведомления</string>
     <string name="bookmarks">Закладки</string>
@@ -30,8 +31,10 @@
     <string name="go_to_artist">Перейти к исполнителю</string>
     <string name="go_to_album">Перейти к альбому</string>
     <string name="go_to_owner">Перейти к владельцу</string>
+    <string name="play_shuffled">Перемешать все</string>
     <string name="delete_from_audio">Удалить из моей музыки</string>
-    <string name="show_more">Больше</string>
+    <string name="show_more">Показать все</string>
+    <string name="create_playlist">Создать плейлист</string>
     <string name="default_timer">0:00</string>
 
     <string name="error">Ошибка</string>
@@ -45,15 +48,18 @@
     <string name="enterValidationCode">Введите код подтверждения</string>
     <string name="validationCode">Код подтверждения</string>
     <string name="validationCodeNeeded">Требуется код подтверждения</string>
-    <string name="validationCodeSMS">Вам был выслан SMS-код подтверждения на номер %s</string>
-    <string name="validationCodeSMSHasAlreadyBennResent">Вам уже был выслан SMS-код подтверждения на номер %s</string>
-    <string name="validationCodeSMSLimit">Превышен лимит запросов на отправку SMS-кода</string>
-    <string name="validationCodeAPP">Требуется код подтверждения из Приложения</string>
-    <string name="forceValidationCodeSMS">Не получиили код?</string>
+    <string name="validationSMSDescription">Вам был выслан SMS-код подтверждения на номер %s</string>
+    <string name="validationCallDescription">Введите последние 4 цифры номера, с которого вам позвонят</string>
+    <string name="validationCodeSMSHasAlreadyBennResent">Вам уже был повторно выслан код подтверждения на номер %s</string>
+    <string name="validationCodeSMSLimit">Превышен лимит запросов на повторную отправку кода подтверждения</string>
+    <string name="validationAppDecription">Требуется код подтверждения из Приложения</string>
+    <string name="forceValidationSMS">Не получиили код?</string>
+    <string name="forceValidationCall">Не поступил звонок?</string>
     <string name="resendValidationCodeSMS">Отправить код повторно</string>
     <string name="authentication">Аунтификация</string>
-    <string name="sendingCode">Отправка кода</string>
-    <string name="forceSMS">Запрос SMS-кода</string>
+    <string name="sendingCode">Отправка кода подтверждения</string>
+    <string name="sendingCaptcha">Отправка каптчи</string>
+    <string name="forceCode">Запрос кода подтверждения</string>
     <string name="tokenRefresh">Обновление токена</string>
     <string name="userDataUpdate">Обновление информации о пользователе</string>
     <string name="registerDevice">Регистрация устройства</string>

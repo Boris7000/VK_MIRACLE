@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.vkontakte.miracle.MiracleActivity;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.catalog.CatalogSectionAdapter;
 import com.vkontakte.miracle.engine.fragment.tabs.NestedMiracleFragment;
@@ -25,19 +24,15 @@ public class FragmentCatalogSectionNested extends NestedMiracleFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        iniContext();
-
-        MiracleActivity miracleActivity = getMiracleActivity();
-
         View rootView = inflater.inflate(R.layout.fragment_with_recycleview_nested, container, false);
         setRecyclerView(rootView.findViewById(R.id.recyclerView));
 
         setTabsMiracleFragment((TabsMiracleFragment) getParentFragment());
-        scrollAndElevate(getRecyclerView(), getTabsMiracleFragment().getAppBarLayout(), miracleActivity);
+        if(getTabsMiracleFragment()!=null&&getTabsMiracleFragment().scrollAndElevate()) {
+            scrollAndElevate(getRecyclerView(), getTabsMiracleFragment().getAppBarLayout(), getMiracleActivity());
+        }
 
         setProgressBar(rootView.findViewById(R.id.progressCircle));
-        setSwipeRefreshLayout(rootView.findViewById(R.id.refreshLayout), ()->
-                setAdapter(new CatalogSectionAdapter(catalogSection.getId())));
 
         if(savedInstanceState!=null) {
             if (savedInstanceState.getString("catalogSection") != null) {
@@ -53,6 +48,8 @@ public class FragmentCatalogSectionNested extends NestedMiracleFragment {
         if(nullSavedAdapter(savedInstanceState)){
             setAdapter(new CatalogSectionAdapter(catalogSection.getId()));
         }
+
+        setSwipeRefreshLayout(rootView.findViewById(R.id.refreshLayout), this::reloadAdapter);
 
         return rootView;
     }

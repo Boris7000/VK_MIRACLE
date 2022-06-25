@@ -6,6 +6,7 @@ import static com.vkontakte.miracle.engine.util.ColorUtil.getColorByAttributeId;
 import static com.vkontakte.miracle.engine.util.StringsUtil.getWordFirstChar;
 import static com.vkontakte.miracle.engine.util.TimeUtil.getMessageDateString;
 
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,6 +75,8 @@ public class ConversationViewHolder extends MiracleViewHolder {
     @Override
     public void bind(ItemDataHolder itemDataHolder) {
 
+        Context context = itemView.getContext();
+
         ConversationItem conversationItem = (ConversationItem) itemDataHolder;
 
         if(conversationItem.getPushSettings()!=null){
@@ -108,7 +111,7 @@ public class ConversationViewHolder extends MiracleViewHolder {
             }
 
             case "chat": {
-                setFromChat(conversationItem.getChatSettings());
+                setFromChat(context, conversationItem.getChatSettings());
                 break;
             }
         }
@@ -125,14 +128,14 @@ public class ConversationViewHolder extends MiracleViewHolder {
             date.setText("");
             from.setText("");
             if(colorGrayDarker==-1){
-                colorGrayDarker = getColorByAttributeId(getMiracleActivity(), R.attr.colorContrast60);
+                colorGrayDarker = getColorByAttributeId(context, R.attr.colorEmphasis_70);
             }
             body.setTextColor(colorGrayDarker);
             body.setText(ownersString);
         } else {
             MessageItem messageItem = conversationItem.getLastMessage();
             if(messageItem!=null){
-                date.setText(getMessageDateString(messageItem.getDate(),itemView.getContext()));
+                date.setText(getMessageDateString(context, messageItem.getDate()));
 
                 if(messageItem.isOut()){
                     from.setText("Вы: ");
@@ -147,14 +150,14 @@ public class ConversationViewHolder extends MiracleViewHolder {
 
                 if(messageItem.getText().isEmpty()){
                     if(colorPrimary==-1){
-                        colorPrimary = getColorByAttributeId(getMiracleActivity(), R.attr.colorPrimary);
+                        colorPrimary = getColorByAttributeId(context, R.attr.colorPrimary);
                     }
                     body.setTextColor(colorPrimary);
                     //TODO доделать
                     body.setText("Вложения");
                 } else {
                     if(colorGrayDarker==-1){
-                        colorGrayDarker = getColorByAttributeId(getMiracleActivity(), R.attr.colorContrast60);
+                        colorGrayDarker = getColorByAttributeId(context, R.attr.colorEmphasis_70);
                     }
                     body.setTextColor(colorGrayDarker);
                     body.setText(messageItem.getText());
@@ -180,13 +183,13 @@ public class ConversationViewHolder extends MiracleViewHolder {
 
     }
 
-    private void setFromChat(ChatSettings chatSettings){
+    private void setFromChat(Context context, ChatSettings chatSettings){
         title.setText(chatSettings.getTitle());
 
         if(chatSettings.getPhoto200().isEmpty()){
 
             if(colorDrawable==null){
-                colorDrawable = new ColorDrawable(getColorByAttributeId(getMiracleActivity(),R.attr.colorSecondary)) ;
+                colorDrawable = new ColorDrawable(getColorByAttributeId(context, R.attr.colorPrimary));
             }
 
             imageView.setImageDrawable(colorDrawable);

@@ -102,8 +102,9 @@ public class FragmentPlayer extends NestedMiracleFragment {
                 }
                 @Override
                 public void onExecute(Boolean object) {
-                    setBitmap(blur, getMiracleActivity(), blurBitmap);
-                    setBitmap(image, getMiracleActivity(), bitmap);
+                    MiracleApp miracleApp = MiracleApp.getInstance();
+                    setBitmap(blur, miracleApp, blurBitmap);
+                    setBitmap(image, miracleApp, bitmap);
                     animateToColor(averageColor);
                 }
             }.start();
@@ -157,8 +158,7 @@ public class FragmentPlayer extends NestedMiracleFragment {
             }
 
             optionsButton.setOnClickListener(view -> {
-                AudioDialog audioDialog = new AudioDialog(getMiracleActivity(), audioItem,
-                        getMiracleActivity().getUserItem());
+                AudioDialog audioDialog = new AudioDialog(miracleActivity, audioItem, miracleActivity.getUserItem());
                 audioDialog.setDialogActionListener(new AudioDialogActionListener() {
                     @Override
                     public void add() {
@@ -218,7 +218,7 @@ public class FragmentPlayer extends NestedMiracleFragment {
     };
     private final OnApplyWindowInsetsListener onApplyWindowInsetsListener = (v, windowInsets) -> {
         Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-        rootView.setPadding(0,insets.top,0,insets.bottom);
+        rootView.setPadding(insets.left, insets.top, insets.right, insets.bottom);
         return windowInsets;
     };
     private ViewPager2 viewPager2;
@@ -226,9 +226,8 @@ public class FragmentPlayer extends NestedMiracleFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        iniContext();
         miracleActivity = getMiracleActivity();
-        miracleApp = getMiracleApp();
+        miracleApp = MiracleApp.getInstance();
         rootView = inflater.inflate(R.layout.fragment_player, container, false);
 
         SettingsUtil settingsUtil = SettingsUtil.get();
@@ -236,8 +235,8 @@ public class FragmentPlayer extends NestedMiracleFragment {
         pause_drawable_48 = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_pause_48,null);
         play_drawable_48 = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_play_48,null);
 
-        int size = (int) DimensionsUtil.dpToPx(280,miracleActivity);
-        placeholderImage = bitmapFromLayerDrawable(R.drawable.audio_placeholder_image_large, miracleActivity,size,size);
+        int size = (int) DimensionsUtil.dpToPx(miracleApp, 280);
+        placeholderImage = bitmapFromLayerDrawable(miracleApp, R.drawable.audio_placeholder_image_colored_large, size, size);
 
         image = rootView.findViewById(R.id.photo);
         image.setTag(target);
@@ -344,21 +343,21 @@ public class FragmentPlayer extends NestedMiracleFragment {
             case Player.REPEAT_MODE_OFF:{
                 repeatButton.setImageDrawable(ResourcesCompat.getDrawable(miracleApp.getResources(),
                         R.drawable.ic_repeat_24, miracleApp.getTheme()));
-                repeatButton.setColorFilter(getColorByResId(miracleApp,R.color.white_half_50),
+                repeatButton.setColorFilter(getColorByResId(miracleApp, R.color.white_half_50),
                         PorterDuff.Mode.SRC_IN);
                 break;
             }
             case Player.REPEAT_MODE_ONE:{
                 repeatButton.setImageDrawable(ResourcesCompat.getDrawable(miracleApp.getResources(),
                         R.drawable.ic_repeat_one_24, miracleApp.getTheme()));
-                repeatButton.setColorFilter(getColorByResId(miracleApp,R.color.white),
+                repeatButton.setColorFilter(getColorByResId(miracleApp, R.color.white),
                         PorterDuff.Mode.SRC_IN);
                 break;
             }
             case Player.REPEAT_MODE_ALL:{
                 repeatButton.setImageDrawable(ResourcesCompat.getDrawable(miracleApp.getResources(),
                         R.drawable.ic_repeat_24, miracleApp.getTheme()));
-                repeatButton.setColorFilter(getColorByResId(miracleApp,R.color.white),
+                repeatButton.setColorFilter(getColorByResId(miracleApp, R.color.white),
                         PorterDuff.Mode.SRC_IN);
                 break;
             }

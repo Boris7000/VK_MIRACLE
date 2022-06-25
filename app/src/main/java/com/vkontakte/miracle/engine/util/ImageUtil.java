@@ -15,14 +15,14 @@ import androidx.core.graphics.ColorUtils;
 
 public class ImageUtil {
 
-    public static Bitmap bitmapFromLayerDrawable(int id, Context context){
-        return bitmapFromLayerDrawable(id, context, 224, 224);
+    public static Bitmap bitmapFromLayerDrawable(Context context, int id){
+        return bitmapFromLayerDrawable(context, id, 224, 224);
     }
 
-    public static Bitmap bitmapFromLayerDrawable(int id, Context context, int width, int height){
+    public static Bitmap bitmapFromLayerDrawable(Context context, int id, int width, int height){
 
         LayerDrawable layerDrawable = (LayerDrawable) ResourcesCompat.getDrawable(context.getResources(),
-                id,context.getTheme());
+                id, context.getTheme());
 
         if(layerDrawable!=null) {
             Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);

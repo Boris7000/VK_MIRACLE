@@ -1,8 +1,6 @@
 package com.vkontakte.miracle.login;
 
 import static com.vkontakte.miracle.engine.util.DeviceUtil.getDeviceId;
-import static com.vkontakte.miracle.engine.util.NetworkUtil.CheckConnection;
-import static com.vkontakte.miracle.network.Constants.defaultHeaders;
 import static com.vkontakte.miracle.network.Constants.latest_api_v;
 import static com.vkontakte.miracle.network.Creator.account;
 
@@ -16,15 +14,15 @@ public class UnregisterDevice extends AsyncExecutor<Boolean> {
     public static final String LOGIN_TAG = "UnregisterDevice";
     private final String token;
     private final Context context;
-    public UnregisterDevice(String token, Context context){
-        this.token = token;
+
+    public UnregisterDevice(Context context, String token){
         this.context = context;
+        this.token = token;
     }
     @Override
     public Boolean inBackground() {
         try {
-            CheckConnection(3500);
-            account().unregisterDevice(getDeviceId(context), token, latest_api_v, defaultHeaders()).execute();
+            account().unregisterDevice(getDeviceId(context), token, latest_api_v).execute();
             return true;
         } catch (Exception e) {
             e.printStackTrace();

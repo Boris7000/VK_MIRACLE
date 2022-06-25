@@ -2,9 +2,12 @@ package com.vkontakte.miracle.network.methods.apis;
 
 import org.json.JSONObject;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 
 public interface ICatalog {
@@ -67,13 +70,13 @@ public interface ICatalog {
     @FormUrlEncoded
     @POST("catalog.getSection")
     Call<JSONObject> getSection(@Field("section_id") String block_id,
-                                        @Field("access_token") String access_token,
-                                        @Field("v") String v);
+                                @Field("access_token") String access_token,
+                                @Field("v") String v);
 
     @FormUrlEncoded
     @POST("catalog.getSection")
     Call<JSONObject> getSection(@Field("section_id") String block_id,
-                                        @Field("start_from") String start_from,
-                                        @Field("access_token") String access_token,
-                                        @Field("v") String v);
+                                @Field("start_from") String start_from,
+                                @Field("access_token") String access_token,
+                                @Field("v") String v);
 }

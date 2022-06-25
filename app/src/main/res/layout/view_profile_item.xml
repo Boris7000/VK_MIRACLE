@@ -17,9 +17,9 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:padding="@dimen/imageBorderWidth"
-            android:background="?attr/placeHolderColor"
+            android:background="?attr/colorPlaceholder"
             app:shapeAppearanceOverlay="@style/CircleShapeAppearance"
-            app:strokeColor="?attr/colorContrast10"
+            app:strokeColor="?attr/colorStroke"
             app:strokeWidth="@dimen/imageBorderWidth"/>
 
         <ViewStub
@@ -75,7 +75,7 @@
             android:ellipsize="end"
             android:fontFamily="sans-serif"
             android:singleLine="true"
-            android:textColor="?attr/colorContrast50"
+            android:textColor="?attr/colorEmphasis_60"
             android:textSize="15sp"
             tools:text="Subtitle" />
     </LinearLayout>

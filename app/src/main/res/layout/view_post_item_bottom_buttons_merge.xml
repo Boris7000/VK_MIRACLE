@@ -11,8 +11,7 @@
             android:layout_height="36dp"
             android:minWidth="52dp"
             android:gravity="center"
-            android:background="@drawable/rounded_card_child_white"
-            android:backgroundTint="?attr/colorContrast10"
+            android:background="@drawable/rounded_button_bg_post"
             android:paddingHorizontal="9dp">
 
             <ImageView
@@ -20,7 +19,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_like_24"/>
+                app:srcCompat="@drawable/ic_like_24"
+                app:tint="?attr/colorOnButtonOnCardBackground" />
 
             <TextView
                 android:id="@+id/likesText"
@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:fontFamily="sans-serif-medium"
-                android:textColor="?attr/colorContrast60"
+                android:textColor="?attr/colorOnButtonOnCardBackground"
                 android:textSize="13sp"
                 android:visibility="gone"/>
 
@@ -41,22 +41,22 @@
             android:minWidth="52dp"
             android:layout_marginStart="8dp"
             android:gravity="center"
-            android:background="@drawable/rounded_card_child_white"
-            android:backgroundTint="?attr/colorContrast10"
+            android:background="@drawable/rounded_button_bg_post"
             android:paddingHorizontal="9dp">
 
             <ImageView
                 android:id="@+id/commentsIcon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                app:srcCompat="@drawable/ic_comments_24" />
+                app:srcCompat="@drawable/ic_comments_24"
+                app:tint="?attr/colorOnButtonOnCardBackground"/>
             <TextView
                 android:id="@+id/commentsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:fontFamily="sans-serif-medium"
-                android:textColor="?attr/colorContrast60"
+                android:textColor="?attr/colorOnButtonOnCardBackground"
                 android:textSize="13sp"
                 android:visibility="gone"/>
         </LinearLayout>
@@ -68,22 +68,22 @@
             android:minWidth="52dp"
             android:layout_marginStart="8dp"
             android:gravity="center"
-            android:background="@drawable/rounded_card_child_white"
-            android:backgroundTint="?attr/colorContrast10"
+            android:background="@drawable/rounded_button_bg_post"
             android:paddingHorizontal="9dp">
 
             <ImageView
                 android:id="@+id/repostsIcon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                app:srcCompat="@drawable/ic_share_24" />
+                app:srcCompat="@drawable/ic_share_24"
+                app:tint="?attr/colorOnButtonOnCardBackground"/>
             <TextView
                 android:id="@+id/repostsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:fontFamily="sans-serif-medium"
-                android:textColor="?attr/colorContrast60"
+                android:textColor="?attr/colorOnButtonOnCardBackground"
                 android:textSize="13sp"
                 android:visibility="gone"/>
         </LinearLayout>
@@ -102,7 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="4dp"
             android:fontFamily="sans-serif-medium"
-            android:textColor="?attr/colorContrast30"
+            android:textColor="?attr/colorEmphasis_60"
             android:textSize="13sp"/>
 
         <ImageView
@@ -110,7 +110,7 @@
             android:layout_width="28dp"
             android:layout_height="28dp"
             app:srcCompat="@drawable/ic_views_28"
-            app:tint="?attr/colorContrast30" />
+            app:tint="?attr/colorEmphasis_60" />
 
     </LinearLayout>
 

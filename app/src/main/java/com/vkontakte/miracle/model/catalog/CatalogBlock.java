@@ -5,19 +5,31 @@ import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_C
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_SEPARATOR;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_SLIDER;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_TRIPLE_STACKED_SLIDER;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_ERROR;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_HORIZONTAL_BUTTONS;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_LOADING;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_CATALOG_USER;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_GROUP;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_PLAYLIST;
+
 import android.util.ArrayMap;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.vkontakte.miracle.model.audio.AudioWrapContainer;
+import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.audio.ArtistItem;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
+import com.vkontakte.miracle.model.audio.PlaylistWrapContainer;
 import com.vkontakte.miracle.model.catalog.fields.CatalogAction;
 import com.vkontakte.miracle.model.catalog.fields.CatalogBadge;
 import com.vkontakte.miracle.model.catalog.fields.CatalogLayout;
 import com.vkontakte.miracle.model.groups.GroupItem;
+import com.vkontakte.miracle.model.groups.GroupWrapContainer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,14 +37,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class CatalogBlock implements ItemDataHolder {
+public class CatalogBlock implements ItemDataHolder, AudioWrapContainer, GroupWrapContainer,
+        PlaylistWrapContainer, CatalogUserWrapContainer {
 
     private final String id;
     private final String dataType;
     private final String nextFrom;
     private final CatalogLayout layout;
     private CatalogBadge badge;
-    private ArrayList<CatalogAction> actions;
+    private ArrayList<ItemDataHolder> actions;
     private final ArrayList<ItemDataHolder> items = new ArrayList<>();
 
     public String getId() {
@@ -55,13 +68,11 @@ public class CatalogBlock implements ItemDataHolder {
         return badge;
     }
 
-    public ArrayList<CatalogAction> getActions() {
+    public ArrayList<ItemDataHolder> getActions() {
         return actions;
     }
 
-    public ArrayList<ItemDataHolder> getItems() {
-        return items;
-    }
+
 
     public CatalogBlock(JSONObject jsonObject, CatalogExtendedArrays catalogExtendedArrays) throws JSONException {
 
@@ -98,13 +109,24 @@ public class CatalogBlock implements ItemDataHolder {
         ArrayList<ItemDataHolder> catalogBlockItemDataHolders = new ArrayList<>();
 
         switch (dataType){
+            default:{
+                Log.d("eifjiejfiej",jsonObject.toString());
+                break;
+            }
             case "groups_friends_likes":{
                 JSONArray group_ids = jsonObject.getJSONArray("groups_likes_ids");
                 ArrayMap<String, GroupItem> groupsMap = catalogExtendedArrays.getGroupsMap();
                 for (int i = 0; i < group_ids.length(); i++) {
                     GroupItem groupItem = groupsMap.get("-"+group_ids.getString(i));
                     if(groupItem!=null){
-                        catalogBlockItemDataHolders.add(groupItem);
+                        DataItemWrap<GroupItem, GroupWrapContainer> dataItemWrap =
+                                new DataItemWrap<GroupItem, GroupWrapContainer>(groupItem, this) {
+                                    @Override
+                                    public int getViewHolderType() {
+                                        return TYPE_WRAPPED_GROUP;
+                                    }
+                                };
+                        catalogBlockItemDataHolders.add(dataItemWrap);
                     }
                 }
                 break;
@@ -115,7 +137,14 @@ public class CatalogBlock implements ItemDataHolder {
                 for (int i = 0; i < groups.length(); i++) {
                     GroupItem groupItem = groupsMap.get("-"+groups.getJSONObject(i).getString("id"));
                     if(groupItem!=null){
-                        catalogBlockItemDataHolders.add(groupItem);
+                        DataItemWrap<GroupItem, GroupWrapContainer> dataItemWrap =
+                                new DataItemWrap<GroupItem, GroupWrapContainer>(groupItem, this) {
+                                    @Override
+                                    public int getViewHolderType() {
+                                        return TYPE_WRAPPED_GROUP;
+                                    }
+                                };
+                        catalogBlockItemDataHolders.add(dataItemWrap);
                     }
                 }
                 break;
@@ -126,7 +155,14 @@ public class CatalogBlock implements ItemDataHolder {
                 for (int i = 0; i < group_ids.length(); i++) {
                     GroupItem groupItem = groupsMap.get("-"+group_ids.getString(i));
                     if(groupItem!=null){
-                        catalogBlockItemDataHolders.add(groupItem);
+                        DataItemWrap<GroupItem, GroupWrapContainer> dataItemWrap =
+                                new DataItemWrap<GroupItem, GroupWrapContainer>(groupItem, this) {
+                                    @Override
+                                    public int getViewHolderType() {
+                                        return TYPE_WRAPPED_GROUP;
+                                    }
+                                };
+                        catalogBlockItemDataHolders.add(dataItemWrap);
                     }
                 }
                 break;
@@ -137,7 +173,46 @@ public class CatalogBlock implements ItemDataHolder {
                 for (int i = 0; i < catalog_users_ids.length(); i++) {
                     CatalogUser catalogUser = catalogUsersMap.get(catalog_users_ids.getString(i));
                     if(catalogUser!=null){
-                        catalogBlockItemDataHolders.add(catalogUser);
+                        DataItemWrap<CatalogUser, GroupWrapContainer> dataItemWrap =
+                                new DataItemWrap<CatalogUser, GroupWrapContainer>(catalogUser, this) {
+                                    @Override
+                                    public int getViewHolderType() {
+                                        return TYPE_WRAPPED_CATALOG_USER;
+                                    }
+                                };
+                        catalogBlockItemDataHolders.add(dataItemWrap);
+                    }
+                }
+                break;
+            }
+            case "music_recommended_playlists": {
+                JSONArray audios_ids = jsonObject.getJSONArray("audios_ids");
+                ArrayMap<String, AudioItem> audiosMap = catalogExtendedArrays.getAudiosMap();
+                ArrayMap<String, ArrayList<ItemDataHolder>> playlistAudios = new ArrayMap<>();
+
+                for (int i = 0; i < audios_ids.length(); i++) {
+                    String playlistId_audioId = audios_ids.getString(i);
+                    String playlistId = playlistId_audioId.substring(0,playlistId_audioId.indexOf('_'));
+                    ArrayList<ItemDataHolder> audios = playlistAudios.get(playlistId);
+                    if(audios==null){
+                        playlistAudios.put(playlistId, audios=new ArrayList<>());
+                    }
+                    AudioItem audioItem = audiosMap.get(playlistId_audioId);
+                    if(audioItem!=null) {
+                        audios.add(audioItem);
+                    }
+                }
+
+                JSONArray playlists_ids = jsonObject.getJSONArray("playlists_ids");
+                ArrayMap<String, PlaylistItem> playlistsMap = catalogExtendedArrays.getPlaylistsMap();
+                for (int i = 0; i < playlists_ids.length(); i++) {
+                    PlaylistItem playlistItem = playlistsMap.get(playlists_ids.getString(i));
+                    if(playlistItem!=null){
+                        ArrayList<ItemDataHolder> audios = playlistAudios.get(playlistItem.getOwnerId());
+                        if(audios!=null) {
+                            CatalogRecommendedPlaylist catalogRecommendedPlaylist = new CatalogRecommendedPlaylist(playlistItem, audios);
+                            catalogBlockItemDataHolders.add(catalogRecommendedPlaylist);
+                        }
                     }
                 }
                 break;
@@ -148,8 +223,14 @@ public class CatalogBlock implements ItemDataHolder {
                 for (int i = 0; i < audios_ids.length(); i++) {
                     AudioItem audioItem = audiosMap.get(audios_ids.getString(i));
                     if(audioItem!=null) {
-                        audioItem.setCatalogBlock(this);
-                        catalogBlockItemDataHolders.add(audioItem);
+                        DataItemWrap<AudioItem, AudioWrapContainer> dataItemWrap =
+                                new DataItemWrap<AudioItem, AudioWrapContainer>(audioItem, this) {
+                            @Override
+                            public int getViewHolderType() {
+                                return TYPE_WRAPPED_AUDIO;
+                            }
+                        };
+                        catalogBlockItemDataHolders.add(dataItemWrap);
                     }
                 }
                 break;
@@ -160,7 +241,14 @@ public class CatalogBlock implements ItemDataHolder {
                 for (int i = 0; i < playlists_ids.length(); i++) {
                     PlaylistItem playlistItem = playlistsMap.get(playlists_ids.getString(i));
                     if(playlistItem!=null){
-                        catalogBlockItemDataHolders.add(playlistItem);
+                        DataItemWrap<PlaylistItem, AudioWrapContainer> dataItemWrap =
+                                new DataItemWrap<PlaylistItem, AudioWrapContainer>(playlistItem, this) {
+                                    @Override
+                                    public int getViewHolderType() {
+                                        return TYPE_WRAPPED_PLAYLIST;
+                                    }
+                                };
+                        catalogBlockItemDataHolders.add(dataItemWrap);
                     }
                 }
                 break;
@@ -176,7 +264,6 @@ public class CatalogBlock implements ItemDataHolder {
                 }
                 break;
             }
-
         }
         return catalogBlockItemDataHolders;
     }
@@ -185,7 +272,7 @@ public class CatalogBlock implements ItemDataHolder {
     public int getViewHolderType() {
         switch (layout.getName()){
             default:{
-                return TYPE_LOADING;
+                return TYPE_ERROR;
             }
             case "header":{
                 return TYPE_CATALOG_HEADER;
@@ -198,6 +285,9 @@ public class CatalogBlock implements ItemDataHolder {
             case "music_chart_large_slider":{
                 return TYPE_CATALOG_SLIDER;
             }
+            case "horizontal_buttons":{
+                return TYPE_HORIZONTAL_BUTTONS;
+            }
             case "triple_stacked_slider":
             case "music_chart_triple_stacked_slider":{
                 return TYPE_CATALOG_TRIPLE_STACKED_SLIDER;
@@ -205,7 +295,7 @@ public class CatalogBlock implements ItemDataHolder {
             case "banner":{
                 switch (dataType){
                     default:{
-                        return TYPE_LOADING;
+                        return TYPE_ERROR;
                     }
                     case "artist":{
                         return TYPE_ARTIST_BANNER;
@@ -213,6 +303,30 @@ public class CatalogBlock implements ItemDataHolder {
                 }
             }
         }
+    }
+
+    public ArrayList<ItemDataHolder> getItems() {
+        return items;
+    }
+
+    @Override
+    public ArrayList<ItemDataHolder> getAudioItems() {
+        return items;
+    }
+
+    @Override
+    public ArrayList<ItemDataHolder> getGroupItems() {
+        return items;
+    }
+
+    @Override
+    public ArrayList<ItemDataHolder> getPlaylistItems() {
+        return items;
+    }
+
+    @Override
+    public ArrayList<ItemDataHolder> getCatalogUserItems() {
+        return items;
     }
 
     @Override
@@ -225,4 +339,5 @@ public class CatalogBlock implements ItemDataHolder {
         }
         return false;
     }
+
 }

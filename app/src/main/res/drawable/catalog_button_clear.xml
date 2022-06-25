@@ -7,7 +7,7 @@
         android:height="24dp"
         android:width="24dp">
         <shape android:shape="oval">
-            <solid android:color="?attr/colorSurfacePrimary"/>
+            <solid android:color="?attr/colorSecondaryContainer"/>
         </shape>
     </item>
 

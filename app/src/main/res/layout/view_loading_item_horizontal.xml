@@ -6,4 +6,4 @@
     android:layout_gravity="center_vertical"
     android:layout_marginHorizontal="4.5dp"
     android:indeterminate="true"
-    android:indeterminateTint="?attr/colorPrimaryNeutral_80" />
+    android:indeterminateTint="?attr/colorSecondaryContainer" />

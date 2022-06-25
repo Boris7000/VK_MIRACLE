@@ -15,9 +15,9 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:padding="@dimen/imageBorderWidth"
-            android:background="?attr/placeHolderColor"
+            android:background="?attr/colorPlaceholder"
             app:shapeAppearanceOverlay="@style/CircleShapeAppearance"
-            app:strokeColor="?attr/colorContrast10"
+            app:strokeColor="?attr/colorStroke"
             app:strokeWidth="@dimen/imageBorderWidth"/>
 
         <LinearLayout
@@ -65,7 +65,7 @@
                 android:gravity="center_vertical"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textColor="?attr/colorContrast50"
+                android:textColor="?attr/colorEmphasis_60"
                 android:textSize="13sp"
                 tools:text="Сегодня в 0:00" />
         </LinearLayout>
@@ -76,6 +76,6 @@
         android:layout_height="48dp"
         android:scaleType="centerInside"
         android:layout_gravity="end|center_vertical"
-        app:tint="?attr/colorContrast30"
+        app:tint="?attr/colorEmphasis_60"
         app:srcCompat="@drawable/ic_more_vertical_28"/>
 </merge>

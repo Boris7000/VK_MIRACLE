@@ -7,45 +7,102 @@
     <include layout="@layout/view_loading_circle" />
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+        android:id="@+id/appbarlayout"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:translationZ="0dp"
-        app:elevation="0dp"
-        android:background="?attr/backgroundColor">
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppBar">
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
-            app:toolbarId="@+id/appbarLinear">
-            <LinearLayout
-                android:id="@+id/appbarLinear"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:toolbarId="@id/toolbar1"
+            style="@style/Widget.CollapsingToolbar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_height="48dp"
+                style="@style/Widget.Toolbar"/>
 
-                <include layout="@layout/back_button"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.Toolbar.TopAppBarWithBackButton"/>
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginVertical="8dp"
+                        android:background="@drawable/rounded_card_child_container_secondary"
+                        android:backgroundTint="?attr/colorSearchTextBackground">
 
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/messageEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginVertical="4dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="40dp"
+                            android:paddingVertical="4dp"
+                            android:includeFontPadding="false"
+                            android:background="@android:color/transparent"
+                            android:focusable="true"
+                            android:hint="Типа тут поиск"
+                            android:imeOptions="normal|actionSearch"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:scrollbars="vertical"
+                            android:textColorHint="?attr/colorSearchTextHint"
+                            android:textCursorDrawable="@drawable/edit_text_cursor_drawable"
+                            android:textSize="18sp" />
+
+                        <ImageView
+                            android:id="@+id/emoji_button"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="end|bottom"
+                            android:backgroundTintMode="src_in"
+                            android:contentDescription="@string/back"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_voice_28"
+                            app:tint="?attr/colorSearchTextHint" />
+
+                    </FrameLayout>
+                </LinearLayout>
                 <com.vkontakte.miracle.engine.view.MiracleTabLayout
                     android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="9dp"
+                    android:layout_height="48dp"
+                    android:paddingBottom="9dp"
+                    android:paddingHorizontal="12dp"
                     android:requiresFadingEdge="horizontal"
                     android:fadingEdgeLength="20dp"
                     android:overScrollMode="never"
+                    android:background="@drawable/top_bar_bg"
                     app:tabGravity="start"
                     app:tabIndicatorFullWidth="true"
                     app:tabInlineLabel="true"
                     app:tabMode="scrollable"
-                    app:tabIndicatorColor="?attr/colorSecondary"
+                    app:tabIndicatorColor="?attr/colorPrimary"
                     app:tabIndicator="@drawable/tab_indicator_style"
                     app:tabRippleColor="@android:color/transparent"
-                    app:tabPaddingEnd="5dp"
-                    app:tabPaddingStart="5dp"/>
+                    app:tabPaddingEnd="8dp"
+                    app:tabPaddingStart="8dp"/>
             </LinearLayout>
+
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -53,6 +110,6 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

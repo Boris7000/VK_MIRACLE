@@ -1,50 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr name="colorContrast10" format="color"/>
-    <attr name="colorContrast20" format="color"/>
-    <attr name="colorContrast30" format="color"/>
-    <attr name="colorContrast40" format="color"/>
-    <attr name="colorContrast50" format="color"/>
-    <attr name="colorContrast60" format="color"/>
-    <attr name="colorContrast70" format="color"/>
-    <attr name="colorContrast80" format="color"/>
-    <attr name="colorContrast90" format="color"/>
-    <attr name="colorContrast100" format="color"/>
-
-    <attr name="colorSurfacePrimary" format="color"/>
-    <attr name="colorSurfaceSecondary" format="color"/>
-    <attr name="placeHolderColor" format="color"/>
-    <attr name="swipeRefreshCircleColor" format="color"/>
-
+    <attr name="colorPrimary_10" format="color"/>
     <attr name="colorPrimary_20" format="color"/>
+    <attr name="colorPrimary_25" format="color"/>
+    <attr name="colorPrimary_30" format="color"/>
+    <attr name="colorPrimary_35" format="color"/>
     <attr name="colorPrimary_40" format="color"/>
+    <attr name="colorPrimary_50" format="color"/>
     <attr name="colorPrimary_60" format="color"/>
+    <attr name="colorPrimary_70" format="color"/>
     <attr name="colorPrimary_80" format="color"/>
+    <attr name="colorPrimary_90" format="color"/>
+    <attr name="colorPrimary_95" format="color"/>
+    <attr name="colorPrimary_98" format="color"/>
+    <attr name="colorPrimary_99" format="color"/>
 
-    <attr name="colorPrimaryNeutral_20" format="color"/>
-    <attr name="colorPrimaryNeutral_40" format="color"/>
-    <attr name="colorPrimaryNeutral_60" format="color"/>
-    <attr name="colorPrimaryNeutral_80" format="color"/>
-    <attr name="colorPrimaryNeutral" format="color"/>
-
+    <attr name="colorSecondary_10" format="color"/>
     <attr name="colorSecondary_20" format="color"/>
+    <attr name="colorSecondary_25" format="color"/>
+    <attr name="colorSecondary_30" format="color"/>
+    <attr name="colorSecondary_35" format="color"/>
     <attr name="colorSecondary_40" format="color"/>
+    <attr name="colorSecondary_50" format="color"/>
     <attr name="colorSecondary_60" format="color"/>
+    <attr name="colorSecondary_70" format="color"/>
     <attr name="colorSecondary_80" format="color"/>
+    <attr name="colorSecondary_90" format="color"/>
+    <attr name="colorSecondary_95" format="color"/>
+    <attr name="colorSecondary_98" format="color"/>
+    <attr name="colorSecondary_99" format="color"/>
 
-    <attr name="colorSecondaryNeutral_20" format="color"/>
-    <attr name="colorSecondaryNeutral_40" format="color"/>
-    <attr name="colorSecondaryNeutral_60" format="color"/>
-    <attr name="colorSecondaryNeutral_80" format="color"/>
-    <attr name="colorSecondaryNeutral" format="color"/>
+    <attr name="colorSecondaryContainerDisabled" format="color"/>
+    <attr name="colorOnSecondaryContainerDisabled" format="color"/>
+    <attr name="colorPrimaryContainerDisabled" format="color"/>
+    <attr name="colorOnPrimaryContainerDisabled" format="color"/>
 
-    <attr name="textHighlightColor" format="color"/>
-    <attr name="scrollBarColor" format="color"/>
+    <attr name="colorPrimaryDisabled" format="color"/>
+    <attr name="colorOnPrimaryDisabled" format="color"/>
+    <attr name="colorSecondaryDisabled" format="color"/>
+    <attr name="colorOnSecondaryDisabled" format="color"/>
+
+    <attr name="colorEmphasis_90" format="color"/>
+    <attr name="colorEmphasis_70" format="color"/>
+    <attr name="colorEmphasis_65" format="color"/>
+    <attr name="colorEmphasis_60" format="color"/>
+    <attr name="colorEmphasis_50" format="color"/>
+    <attr name="colorEmphasis_40" format="color"/>
+
+    <attr name="colorSearchTextBackground" format="color"/>
+    <attr name="colorSearchTextHint" format="color"/>
+    <attr name="colorPlaceholder" format="color"/>
+    <attr name="colorStroke" format="color"/>
+    <attr name="colorDivider" format="color"/>
+
+    <attr name="colorOnButtonOnCardBackground" format="color"/>
+    <attr name="colorButtonOnCardBackground" format="color"/>
+    <attr name="colorCardBackground" format="color"/>
+
+    <attr name="colorMessageInContainer" format="color"/>
+    <attr name="colorOnMessageIn" format="color"/>
+    <attr name="colorMessageInPlaceholder" format="color"/>
+    <attr name="colorMessageInLink" format="color"/>
+    <attr name="colorMessageInStroke" format="color"/>
+    <attr name="colorMessageOutContainer" format="color"/>
+    <attr name="colorOnMessageOut" format="color"/>
+    <attr name="colorMessageOutPlaceholder" format="color"/>
+    <attr name="colorMessageOutLink" format="color"/>
+    <attr name="colorMessageOutStroke" format="color"/>
+
+
     <attr name="globalTranslationZ" format="dimension"/>
-    <!--<attr name="messageOutBackgroundColor" format="color"/>-->
-    <attr name="messageInBackgroundColor" format="color"/>
-    <attr name="likeHolderColor" format="color"/>
+    <attr name="swipeRefreshCircleColor" format="color"/>
+    <attr name="scrollBarColor" format="color"/>
 
     <declare-styleable name="MiracleBottomNavigationView">
         <attr name="selectedColor" format="color"/>
@@ -94,8 +122,11 @@
         <attr name="itemsSpacing" format="dimension"/>
     </declare-styleable>
 
+    <attr name="listItemLayout" format="reference"/>
+
     <declare-styleable name="PhotoGridView">
         <attr name="spacing" format="dimension"/>
+        <attr name="listItemLayout"/>
     </declare-styleable>
 
     <declare-styleable name="MessageItemView">
@@ -107,7 +138,7 @@
         <attr name="type" format="enum">
             <enum name="portrait" value="0"/>
             <enum name="land" value="1"/>
-            <enum name="sw600dp" value="2"/>
+            <enum name="tablet" value="2"/>
         </attr>
     </declare-styleable>
 
@@ -120,11 +151,12 @@
 
     <declare-styleable name="MiracleTextView">
         <attr name="highlightColor" format="color"/>
+        <attr name="highlightUnderline" format="boolean"/>
         <attr name="enableClicking" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="AudioListView">
-        <attr name="listItemLayout" format="reference"/>
+        <attr name="listItemLayout"/>
     </declare-styleable>
 
     <declare-styleable name="AudioItemView">

@@ -1,8 +1,6 @@
 package com.vkontakte.miracle.login;
 
 import static com.vkontakte.miracle.engine.util.DeviceUtil.getDeviceId;
-import static com.vkontakte.miracle.engine.util.NetworkUtil.CheckConnection;
-import static com.vkontakte.miracle.network.Constants.defaultHeaders;
 import static com.vkontakte.miracle.network.Constants.defaultRegisterDeviceFields;
 import static com.vkontakte.miracle.network.Creator.account;
 
@@ -34,9 +32,8 @@ public class RegisterDevice extends AsyncExecutor<Boolean> {
     @Override
     public Boolean inBackground() {
         try {
-            CheckConnection(3500);
             account().registerDevice(authState.getReceipt(),1, getDeviceId(loginActivity),
-                    null, authState.getToken(), defaultRegisterDeviceFields(), defaultHeaders()).execute();
+                    null, authState.getToken(), defaultRegisterDeviceFields()).execute();
             loginActivity.setText(loginActivity.getString(R.string.userDataUpdate));
             ProfileItem profileItem = UserDataUtil.downloadUserData(authState.getUserId(), authState.getToken());
             UserDataUtil.updateUserData(profileItem);

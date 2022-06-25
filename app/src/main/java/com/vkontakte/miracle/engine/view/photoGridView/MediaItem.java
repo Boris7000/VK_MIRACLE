@@ -2,9 +2,10 @@ package com.vkontakte.miracle.engine.view.photoGridView;
 
 import androidx.collection.ArrayMap;
 
+import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.photos.fields.Size;
 
-public abstract class MediaItem {
+public abstract class MediaItem implements ItemDataHolder {
 
     private ArrayMap<String,Size> sizes;
 
@@ -49,9 +50,7 @@ public abstract class MediaItem {
                             if(width<=1024){
                                 return findFor("z", 807, false);
                             }else {
-                                if(width<=2048){
-                                    return findFor("w", 1024, false);
-                                }
+                                return findFor("w", 1024, false);
                             }
                         }
                     }

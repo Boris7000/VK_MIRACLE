@@ -3,6 +3,8 @@ package com.vkontakte.miracle.adapter.login;
 import static com.vkontakte.miracle.engine.util.UserDataUtil.removeUserData;
 import static com.vkontakte.miracle.network.Constants.fake_receipt;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,14 +65,15 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.UserVi
             name = itemView.findViewById(R.id.title);
             imageView = itemView.findViewById(R.id.photo);
             itemView.setOnLongClickListener(view -> {
-                AccountDialog accountDialog = new AccountDialog(view.getContext(),profileItem);
+                Context context = view.getContext();
+                AccountDialog accountDialog = new AccountDialog(context,profileItem);
                 accountDialog.setDialogActionListener(() -> {
                     removeUserData(profileItem);
                     int pos = accounts.indexOf(profileItem);
                     accounts.remove(pos);
                     notifyItemRemoved(pos);
                 });
-                accountDialog.show(view.getContext());
+                accountDialog.show(context);
                 return true;
             });
 

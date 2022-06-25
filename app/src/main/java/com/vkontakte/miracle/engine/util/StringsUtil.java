@@ -43,7 +43,7 @@ public class StringsUtil {
         return stringBuilder1.toString();
     }
 
-    public static String getOnlineSexDeclensions(int sex, Context context){
+    public static String getOnlineSexDeclensions(Context context, int sex){
         switch (sex){
             default:
             case 0:{
@@ -58,7 +58,7 @@ public class StringsUtil {
         }
     }
 
-    public static String getPhotosDeclensions(int count, Context context){
+    public static String getPhotosDeclensions(Context context, int count){
 
         if(count==0||count>1000){
             return context.getString(R.string.formatted_photo4, reduceTheNumber(count));
@@ -89,7 +89,7 @@ public class StringsUtil {
         }
     }
 
-    public static String getPlaysDeclensions(int count, Context context){
+    public static String getPlaysDeclensions(Context context, int count){
 
         if(count==0||count>1000){
             return context.getString(R.string.formatted_plays4, reduceTheNumber(count));
@@ -120,7 +120,7 @@ public class StringsUtil {
         }
     }
 
-    public static String getAudiosDeclensions(int count, Context context){
+    public static String getAudiosDeclensions(Context context, int count){
 
         if(count==0||count>1000){
             return context.getString(R.string.formatted_audios4, reduceTheNumber(count));
@@ -151,7 +151,7 @@ public class StringsUtil {
         }
     }
 
-    public static String getMembersDeclensions(int count, Context context){
+    public static String getMembersDeclensions(Context context, int count){
 
         if(count==0||count>1000){
             return context.getString(R.string.formatted_members4, reduceTheNumber(count));
@@ -182,7 +182,7 @@ public class StringsUtil {
         }
     }
 
-    public static String getMessageTypingDeclensions(Owner owner, boolean isText, int count, Context context){
+    public static String getMessageTypingDeclensions(Context context, Owner owner, boolean isText, int count){
         if(count==0){
             if(isText) {
                 return context.getString(R.string.formatted_typing4, owner.getNameWithInitials());
@@ -219,7 +219,7 @@ public class StringsUtil {
         if(number>=1000){
             return new DecimalFormat("#.#K").format(number/1000f);
         }
-        return number>0?String.valueOf((int) number):"Нет";
+        return number>0?String.valueOf(number):"Нет";
     }
 
 }

@@ -67,7 +67,7 @@
                 android:singleLine="true"
                 android:fontFamily="sans-serif"
                 android:textColor="@color/white_half_60"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 tools:text="Subtitle" />
         </LinearLayout>
 

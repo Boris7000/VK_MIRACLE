@@ -1,7 +1,5 @@
 package com.vkontakte.miracle.adapter.messages;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_ERROR;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_LOADING;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_MESSAGE_IN;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_MESSAGE_OUT;
 import static com.vkontakte.miracle.engine.util.APIUtil.createOwnersMap;
@@ -21,8 +19,6 @@ import com.vkontakte.miracle.adapter.messages.holders.MessageViewHolder;
 import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.adapter.holder.error.ErrorViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.loading.LoadingViewHolder;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.longpoll.LongPollServiceController;
@@ -134,7 +130,6 @@ public class ChatAdapter extends MiracleLoadableAdapter {
     public void ini() {
         super.ini();
         setStep(75);
-
         LongPollServiceController longPollServiceController = LongPollServiceController.get();
 
         onMessageReadUpdateListener = messageReadUpdates -> {
@@ -292,27 +287,24 @@ public class ChatAdapter extends MiracleLoadableAdapter {
     }
 
     @Override
-    public void setDetached(boolean detached) {
-        if(detached){
+    public void setRecyclerView(RecyclerView recyclerView) {
+        super.setRecyclerView(recyclerView);
+        if(recyclerView==null){
             LongPollServiceController longPollServiceController = LongPollServiceController.get();
             longPollServiceController.removeOnMessageReadUpdateListener(onMessageReadUpdateListener);
             longPollServiceController.removeOnMessageAddedUpdateListener(onMessageAddedUpdateListener);
         }
-        super.setDetached(detached);
     }
 
     @Override
     public ArrayMap<Integer, ViewHolderFabric> getViewHolderFabricMap() {
-        ArrayMap<Integer, ViewHolderFabric> arrayMap = new ArrayMap<>();
-        arrayMap.put(TYPE_LOADING, new LoadingViewHolder.Fabric());
-        arrayMap.put(TYPE_ERROR, new ErrorViewHolder.Fabric());
+        ArrayMap<Integer, ViewHolderFabric> arrayMap = super.getViewHolderFabricMap();
         arrayMap.put(TYPE_MESSAGE_OUT, new MessageOutViewHolder.Fabric());
         if(conversationItem.getPeer().getType().equals("chat")){
             arrayMap.put(TYPE_MESSAGE_IN, new MessageInChatViewHolder.Fabric());
         } else {
             arrayMap.put(TYPE_MESSAGE_IN, new MessageInViewHolder.Fabric());
         }
-
         return arrayMap;
     }
 

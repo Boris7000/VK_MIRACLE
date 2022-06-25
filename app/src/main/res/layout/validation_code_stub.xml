@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    tools:background="@drawable/rounded_card_filled_primary">
+    tools:padding="20dp"
+    tools:background="@drawable/rounded_card">
 
     <TextView
         android:layout_width="match_parent"
@@ -13,7 +14,6 @@
         android:layout_marginHorizontal="8dp"
         android:layout_marginBottom="12dp"
         android:text="@string/enterValidationCode"
-        android:textColor="?attr/colorPrimary"
         android:textSize="20sp" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -25,8 +25,8 @@
         app:boxCornerRadiusTopEnd="@dimen/child_round"
         app:boxCornerRadiusBottomStart="@dimen/child_round"
         app:boxCornerRadiusTopStart="@dimen/child_round"
-        app:boxStrokeColor="@color/outlined_text_box_colors"
-        android:textColorHint="?attr/colorSecondaryNeutral_80"
+        app:boxStrokeColor="@color/primary_tinted_outlined_text_box_colors"
+        android:textColorHint="?attr/colorEmphasis_60"
         app:hintTextColor="?attr/colorSecondary"
         app:boxBackgroundMode="outline">
 
@@ -45,28 +45,21 @@
             android:background="@null" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.vkontakte.miracle.engine.view.MiracleButton
-        android:id="@+id/validationCodeButton"
+    <com.miracle.button.TextViewButton
+        android:id="@+id/sendButton"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="12dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:active="false"
-        app:disabledTextColor="?attr/colorSurfacePrimary"
-        app:disabledBackgroundColor="?attr/colorPrimaryNeutral_60"
-        app:text="@string/send" />
+        android:text="@string/send"
+        android:enabled="false"
+        style="@style/TextButton.PrimaryButton"/>
 
-    <com.vkontakte.miracle.engine.view.MiracleButton
-        android:id="@+id/validationCodeCancelButton"
+    <com.miracle.button.TextViewButton
+        android:id="@+id/cancelButton"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:activeBackgroundColor="?attr/colorSecondaryNeutral"
-        app:outline="false"
-        app:secondary="true"
-        app:text="@string/cancel" />
+        android:layout_height="48dp"
+        android:text="@string/cancel"
+        style="@style/TextButton.SecondaryButton"/>
 
     <LinearLayout
         android:id="@+id/validationCodeForceSMSHolder"
@@ -82,17 +75,20 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="9dp"
             tools:text="00:00"
-            android:textColor="?attr/colorSecondary_80"
+            android:textColor="?attr/colorPrimary"
             android:visibility="gone"
             tools:visibility="visible"/>
-        <com.vkontakte.miracle.engine.view.MiracleButton
+
+        <com.miracle.button.TextViewButton
             android:id="@+id/validationCodeForceSMSButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:active="true"
-            app:transparent="true"
-            app:text="@string/forceValidationCodeSMS"/>
-
+            android:textAppearance="@style/ButtonTextAppearance"
+            android:text="@string/forceValidationSMS"
+            android:enabled="true"
+            app:disable_auto_background="true"
+            app:text_color="?attr/colorPrimary"
+            app:disabled_text_color="?attr/colorPrimaryDisabled"/>
     </LinearLayout>
 
 </com.vkontakte.miracle.login.ValidationCodeFrame>

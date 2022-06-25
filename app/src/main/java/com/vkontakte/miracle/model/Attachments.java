@@ -1,8 +1,10 @@
 package com.vkontakte.miracle.model;
 
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
+
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.view.photoGridView.MediaItem;
 import com.vkontakte.miracle.model.audio.AudioItem;
+import com.vkontakte.miracle.model.audio.AudioWrapContainer;
 import com.vkontakte.miracle.model.photos.PhotoItem;
 import com.vkontakte.miracle.model.wall.LinkItem;
 
@@ -12,11 +14,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Attachments {
+public class Attachments implements AudioWrapContainer {
 
     private final ArrayList<ItemDataHolder> audios = new ArrayList<>();
 
-    public ArrayList<ItemDataHolder> getAudios() {
+    @Override
+    public ArrayList<ItemDataHolder> getAudioItems() {
         return audios;
     }
 
@@ -26,15 +29,15 @@ public class Attachments {
         return links;
     }
 
-    private final ArrayList<MediaItem> mediaItems = new ArrayList<>();
+    private final ArrayList<ItemDataHolder> mediaItems = new ArrayList<>();
 
-    public ArrayList<MediaItem> getMediaItems() {
+    public ArrayList<ItemDataHolder> getMediaItems() {
         return mediaItems;
     }
 
-    private final ArrayList<PhotoItem> photos = new ArrayList<>();
+    private final ArrayList<ItemDataHolder> photos = new ArrayList<>();
 
-    public ArrayList<PhotoItem> getPhotos() {
+    public ArrayList<ItemDataHolder> getPhotoItems() {
         return photos;
     }
 
@@ -56,12 +59,20 @@ public class Attachments {
                 }
                 case "audio":{
                     AudioItem audioItem = new AudioItem(jsonObject.getJSONObject("audio"));
-                    audioItem.setAudios(audios);
-                    audios.add(audioItem);
+                    DataItemWrap<AudioItem, AudioWrapContainer> dataItemWrap =
+                            new DataItemWrap<AudioItem, AudioWrapContainer>(audioItem, this) {
+                                @Override
+                                public int getViewHolderType() {
+                                    return TYPE_WRAPPED_AUDIO;
+                                }
+                            };
+                    audios.add(dataItemWrap);
                     break;
                 }
             }
 
         }
     }
+
+
 }

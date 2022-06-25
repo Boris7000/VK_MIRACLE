@@ -4,20 +4,23 @@ import org.json.JSONObject;
 
 public class AuthState {
 
-    public final static int STATE_NONE = -1;
-    public final static int STATE_SUCCESS = 0;
-    public final static int STATE_NEED_SMS_VALIDATION = 1;
-    public final static int STATE_NEED_APP_VALIDATION = 2;
-    public final static int STATE_NEED_VALIDATION = 3;
-    public final static int STATE_NEED_LIBVERIFY_VALIDATION = 4;
-    public final static int STATE_SMS_CODE_HAS_ALREADY_BEEN_RESENT = 5;
-    public final static int STATE_SMS_CODE_RESENDS_LIMIT = 6;
-    public final static int STATE_NEED_CAPTCHA = 7;
-    public final static int STATE_HAS_ERROR = 8;
+    //TODO переделать ОТПРАВИТЬ НОВЫЙ КОД
 
-    private final static String VALIDATION_TYPE_SMS = "2fa_sms";
-    private final static String VALIDATION_TYPE_APP = "2fa_app";
-    private final static String VALIDATION_TYPE_LIBVERIFY = "2fa_libverify";
+    public final static int STATE_NONE = 0;
+    public final static int STATE_SUCCESS = 1;
+    public final static int STATE_NEED_VALIDATION = 2;
+    public final static int STATE_NEED_CAPTCHA = 3;
+    public final static int STATE_HAS_ERROR = 4;
+
+
+    public final static int VALIDATION_CODE_HAS_ALREADY_BEEN_RESENT = 0;
+    public final static int VALIDATION_CODE_RESENDS_LIMIT = 1;
+
+
+    public final static String VALIDATION_TYPE_SMS = "2fa_sms";
+    public final static String VALIDATION_TYPE_APP = "2fa_app";
+    public final static String VALIDATION_TYPE_CALL = "2fa_callreset";
+    //public final static String VALIDATION_TYPE_LIBVERIFY = "2fa_libverify";
 
     private int state = STATE_NONE;
     private long responseTime;
@@ -38,6 +41,7 @@ public class AuthState {
     private String captchaKey;
 
     private int delay = 0;
+    private int forceCodeUnableReason = 0;
 
 
     public static AuthState fromFields(String login, String pass, String receipt){
@@ -56,56 +60,47 @@ public class AuthState {
         return authState;
     }
 
+    public void resetValidation(){
+        validationSid = null;
+        phoneMask = null;
+        validationType = null;
+    }
+
+    public void resetCaptcha(){
+        captchaSid = null;
+        captchaImg = null;
+    }
+
+    public void resetForceCode(){
+        delay = 0;
+        forceCodeUnableReason = 0;
+    }
+
+
     public void updateValidation(JSONObject jsonObject) throws JSONException {
+        resetCaptcha();
+        resetForceCode();
         validationSid = jsonObject.getString("validation_sid");
         phoneMask = jsonObject.getString("phone_mask");
         validationType = jsonObject.getString("validation_type");
-        updateValidationState(validationType);
     }
 
-    public void updatePhoneValidation(JSONObject jsonObject) throws JSONException {
+    public void updateForceCode(JSONObject jsonObject) throws JSONException {
+        validationType = "2fa_"+jsonObject.getString("validation_type");
         responseTime = System.currentTimeMillis();
         delay = jsonObject.getInt("delay");
-        validationType = "2fa_"+jsonObject.getString("validation_type");
-        updateValidationState(validationType);
     }
 
-    public void updateValidationState(String validationType){
-        switch (validationType){
-            case VALIDATION_TYPE_SMS:{
-                state = STATE_NEED_SMS_VALIDATION;
-                break;
-            }
-            case VALIDATION_TYPE_APP:{
-                state = STATE_NEED_APP_VALIDATION;
-                break;
-            }
-            case VALIDATION_TYPE_LIBVERIFY:{
-                state = STATE_NEED_LIBVERIFY_VALIDATION;
-                break;
-            }
-            default:{
-                state = STATE_NEED_VALIDATION;
-                break;
-            }
-        }
-    }
-
-    public void updateFakePhoneValidationAlready(){
-        updateFakePhoneValidation();
-        delay = 120;
-    }
-
-    public void updateFakePhoneValidation(){
-        validationType = VALIDATION_TYPE_SMS;
+    public void setForceCodeUnableReason(int forceCodeUnableReason) {
+        this.forceCodeUnableReason = forceCodeUnableReason;
     }
 
     public void updateCaptcha(JSONObject jsonObject) throws JSONException {
-        state = STATE_NEED_CAPTCHA;
+        resetValidation();
+        resetForceCode();
         captchaSid = jsonObject.getString("captcha_sid");
         captchaImg = jsonObject.getString("captcha_img");
     }
-
 
     public int getState() {
         return state;
@@ -143,6 +138,10 @@ public class AuthState {
         return phoneMask;
     }
 
+    public String getValidationType() {
+        return validationType;
+    }
+
     public String getCaptchaSid() {
         return captchaSid;
     }
@@ -163,6 +162,9 @@ public class AuthState {
         return delay;
     }
 
+    public int getForceCodeUnableReason() {
+        return forceCodeUnableReason;
+    }
 
     public void setState(int state) {
         this.state = state;

@@ -4,9 +4,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class OnlineInfo {
-    private final long lastSeen;
-    private final boolean isOnline;
-    private final boolean isMobile;
+    private long lastSeen;
+    private boolean isOnline;
+    private boolean isMobile;
     private final boolean visible;
 
     public long getLastSeen() {
@@ -26,9 +26,11 @@ public class OnlineInfo {
     }
 
     public OnlineInfo(JSONObject jsonObject) throws JSONException {
-        lastSeen = jsonObject.getLong("last_seen");
-        isOnline = jsonObject.getBoolean("is_online");
-        isMobile = jsonObject.getBoolean("is_mobile");
         visible = jsonObject.getBoolean("visible");
+        if(visible) {
+            lastSeen = jsonObject.getLong("last_seen");
+            isOnline = jsonObject.getBoolean("is_online");
+            isMobile = jsonObject.getBoolean("is_mobile");
+        }
     }
 }
