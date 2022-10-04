@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="save_colors" format="boolean"/>
+    <attr name="disable_auto_ripple" format="boolean"/>
+    <attr name="disable_auto_background" format="boolean"/>
+    <attr name="text_color" format="color"/>
+    <attr name="disabled_text_color" format="color"/>
+    <attr name="ripple_color" format="color"/>
+    <attr name="disabled_ripple_color" format="color"/>
+    <attr name="ripple_alpha" format="float"/>
+    <attr name="icon_color" format="color"/>
+    <attr name="background_color" format="color"/>
+    <attr name="disabled_icon_color" format="color"/>
+    <attr name="disabled_background_color" format="color"/>
+    <attr name="stroke_color" format="color"/>
+    <attr name="disabled_stroke_color" format="color"/>
+    <attr name="animation_duration" format="integer"/>
+    <attr name="stroke_width"/>
+    <attr name="shapeAppearanceOverlay" format="reference"/>
+    <attr name="icon_spacing" format="dimension"/>
+
+    <declare-styleable name="SwitchButton">
+        <attr name="icon_color"/>
+        <attr name="disabled_icon_color"/>
+        <attr name="dash_color" format="color"/>
+        <attr name="ripple_color"/>
+        <attr name="disabled_ripple_color"/>
+        <attr name="ripple_alpha"/>
+        <attr name="stroke_color"/>
+        <attr name="disabled_stroke_color"/>
+        <attr name="background_color"/>
+        <attr name="disabled_background_color"/>
+        <attr name="animation_duration"/>
+        <attr name="shapeAppearanceOverlay"/>
+        <attr name="stroke_width"/>
+        <attr name="disabled_alpha" format="float"/>
+        <attr name="auto_click_switch" format="boolean"/>
+        <attr name="dash_enabled" format="boolean"/>
+        <attr name="save_colors"/>
+        <attr name="disable_auto_background"/>
+        <attr name="disable_auto_ripple"/>
+        <attr name="android:enabled" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="Button">
+        <attr name="icon_color"/>
+        <attr name="disabled_icon_color"/>
+        <attr name="text_color"/>
+        <attr name="disabled_text_color"/>
+        <attr name="ripple_color"/>
+        <attr name="disabled_ripple_color"/>
+        <attr name="ripple_alpha"/>
+        <attr name="stroke_color"/>
+        <attr name="disabled_stroke_color"/>
+        <attr name="background_color"/>
+        <attr name="disabled_background_color"/>
+        <attr name="animation_duration"/>
+        <attr name="shapeAppearanceOverlay"/>
+        <attr name="android:text" format="string"/>
+        <attr name="android:textSize" format="dimension"/>
+        <attr name="android:textAppearance" format="reference"/>
+        <attr name="android:src" format="reference"/>
+        <attr name="android:gravity" format="integer"/>
+        <attr name="stroke_width"/>
+        <attr name="icon_spacing"/>
+        <attr name="icon_gravity" format="enum">
+            <enum name="start" value="0"/>
+            <enum name="end" value="1"/>
+        </attr>
+        <attr name="save_colors"/>
+        <attr name="disable_auto_background"/>
+        <attr name="disable_auto_ripple"/>
+        <attr name="android:enabled" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="TextViewButton">
+        <attr name="text_color"/>
+        <attr name="disabled_text_color"/>
+        <attr name="ripple_color"/>
+        <attr name="disabled_ripple_color"/>
+        <attr name="ripple_alpha"/>
+        <attr name="stroke_color"/>
+        <attr name="disabled_stroke_color"/>
+        <attr name="background_color"/>
+        <attr name="disabled_background_color"/>
+        <attr name="animation_duration"/>
+        <attr name="shapeAppearanceOverlay"/>
+        <attr name="android:gravity" format="integer"/>
+        <attr name="stroke_width"/>
+        <attr name="save_colors"/>
+        <attr name="disable_auto_background"/>
+        <attr name="disable_auto_ripple"/>
+        <attr name="android:enabled" format="boolean"/>
+        <attr name="icon_start_size" format="dimension"/>
+        <attr name="icon_end_size" format="dimension"/>
+        <attr name="icon_spacing"/>
+        <attr name="icon_start_color" format="color"/>
+        <attr name="icon_end_color" format="color"/>
+        <attr name="disabled_icon_start_color" format="color"/>
+        <attr name="disabled_icon_end_color" format="color"/>
+        <attr name="icon_start" format="reference"/>
+        <attr name="icon_end" format="reference"/>
+        <attr name="icon_start_gravity" format="enum">
+            <enum name="start" value="0x1"/>
+            <enum name="text_start" value="0x2"/>
+        </attr>
+        <attr name="icon_end_gravity" format="enum">
+            <enum name="end" value="0x3"/>
+            <enum name="text_end" value="0x4"/>
+        </attr>
+    </declare-styleable>
+
+</resources>
