@@ -21,7 +21,7 @@ import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.util.DeviceUtil;
 import com.vkontakte.miracle.model.catalog.fields.Image;
 import com.vkontakte.miracle.model.groups.GroupItem;
-import com.vkontakte.miracle.model.groups.fields.Cover;
+import com.vkontakte.miracle.model.wall.fields.Cover;
 
 public class GroupLargeViewHolder extends MiracleViewHolder {
 

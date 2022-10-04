@@ -5,7 +5,7 @@ import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_G
 import android.util.Log;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.model.groups.fields.Cover;
+import com.vkontakte.miracle.model.wall.fields.Cover;
 import com.vkontakte.miracle.model.wall.fields.Counters;
 
 import org.json.JSONArray;

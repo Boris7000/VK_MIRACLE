@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="9dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/photo"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_vertical"
+        android:background="?attr/colorPlaceholder"
+        android:padding="@dimen/imageBorderWidth"
+        android:scaleType="centerInside"
+        app:shapeAppearanceOverlay="@style/ChildShapeAppearance"
+        app:srcCompat="@drawable/ic_shuffle_24"
+        app:tint="?attr/colorEmphasis_60"
+        app:strokeColor="?attr/colorStroke"
+        app:strokeWidth="@dimen/imageBorderWidth" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_gravity="center_vertical"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:fontFamily="sans-serif"
+        android:textSize="16sp"
+        android:text="@string/play_shuffled" />
+
+</FrameLayout>

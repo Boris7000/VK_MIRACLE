@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.vkontakte.miracle.engine.view.zoomableImageView.ZoomableImageView2
+        android:id="@+id/photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        tools:srcCompat="@tools:sample/backgrounds/scenic[1]">
+
+    </com.vkontakte.miracle.engine.view.zoomableImageView.ZoomableImageView2>
+
+    <include layout="@layout/view_loading_circle"/>
+
+</FrameLayout>

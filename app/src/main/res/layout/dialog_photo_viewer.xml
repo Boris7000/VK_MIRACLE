@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:theme="@style/PhotoViewerTheme"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/player_background"
+    tools:backgroundTint="#ff000000">
+
+
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:id="@+id/topToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="#88000000">
+
+        <include layout="@layout/back_button"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/product"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:text="@string/photos"/>
+
+    </LinearLayout>
+
+    <com.vkontakte.miracle.engine.view.bottomToolBar.MiracleBottomToolBar
+        android:id="@+id/bottomToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="#88000000">
+
+        <LinearLayout
+            android:id="@+id/likesHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:gravity="center"
+            android:paddingHorizontal="9dp">
+
+            <ImageView
+                android:id="@+id/likesIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/ic_like_24"/>
+
+            <TextView
+                android:id="@+id/likesText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="?attr/colorEmphasis_60"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="256"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/commentsHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:paddingHorizontal="9dp">
+
+            <ImageView
+                android:id="@+id/commentsIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/ic_comments_24" />
+            <TextView
+                android:id="@+id/commentsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="?attr/colorEmphasis_60"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="256"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/repostsHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:paddingHorizontal="9dp">
+
+            <ImageView
+                android:id="@+id/repostsIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/ic_share_24" />
+            <TextView
+                android:id="@+id/repostsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="?attr/colorEmphasis_60"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="256"/>
+        </LinearLayout>
+
+    </com.vkontakte.miracle.engine.view.bottomToolBar.MiracleBottomToolBar>
+
+
+    <View
+        android:id="@+id/blocking"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

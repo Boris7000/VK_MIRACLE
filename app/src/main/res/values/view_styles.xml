@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="TextButton">
+        <item name="android:textAppearance">@style/ButtonTextAppearance</item>
+        <item name="shapeAppearanceOverlay">@style/ChildShapeAppearance</item>
+    </style>
+
+    <style name="TextButton.PrimaryButton">
+        <item name="text_color">?attr/colorOnPrimary</item>
+        <item name="disabled_text_color">?attr/colorOnPrimaryDisabled</item>
+        <item name="background_color">?attr/colorPrimary</item>
+        <item name="disabled_background_color">?attr/colorPrimaryDisabled</item>
+        <item name="icon_start_color">?attr/colorOnPrimary</item>
+        <item name="disabled_icon_start_color">?attr/colorOnPrimaryDisabled</item>
+        <item name="icon_end_color">?attr/colorOnPrimary</item>
+        <item name="disabled_icon_end_color">?attr/colorOnPrimaryDisabled</item>
+    </style>
+
+    <style name="TextButton.SecondaryButton">
+        <item name="text_color">?attr/colorOnSecondaryContainer</item>
+        <item name="disabled_text_color">?attr/colorOnSecondaryContainerDisabled</item>
+        <item name="background_color">?attr/colorSecondaryContainer</item>
+        <item name="disabled_background_color">?attr/colorSecondaryContainerDisabled</item>
+        <item name="icon_start_color">?attr/colorOnSecondaryContainer</item>
+        <item name="disabled_icon_start_color">?attr/colorOnSecondaryContainerDisabled</item>
+        <item name="icon_end_color">?attr/colorOnSecondaryContainer</item>
+        <item name="disabled_icon_end_color">?attr/colorOnSecondaryContainerDisabled</item>
+    </style>
+
+    <style name="Widget.AppBar" parent="Widget.Design.AppBarLayout">
+        <item name="android:fitsSystemWindows">false</item>
+        <item name="liftOnScroll">false</item>
+        <item name="elevation">0dp</item>
+        <item name="statusBarForeground">?android:attr/windowBackground</item>
+        <item name="android:background">@drawable/app_bar_bg</item>
+        <item name="android:outlineAmbientShadowColor" tools:targetApi="29">@android:color/black</item>
+        <item name="android:outlineSpotShadowColor" tools:targetApi="29">@android:color/black</item>
+    </style>
+
+    <style name="Widget.AppBar.SurfaceVariant" parent="Widget.AppBar">
+        <item name="statusBarForeground">?attr/colorSurfaceVariant</item>
+        <item name="android:background">@drawable/app_bar_bg_surface_variant</item>
+    </style>
+
+    <style name="Widget.CollapsingToolbar" parent="Widget.Design.CollapsingToolbar">
+        <item name="android:fitsSystemWindows">false</item>
+        <item name="contentScrim">?android:attr/colorBackground</item>
+        <item name="statusBarScrim">?android:attr/colorBackground</item>
+        <item name="android:background">@drawable/app_bar_bg</item>
+    </style>
+
+    <style name="Widget.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="titleTextAppearance">@style/ToolBarTitleTextAppearance</item>
+    </style>
+
+    <style name="Widget.Toolbar.TopAppBarWithLogo">
+        <!--<item name="navigationContentDescription">@string/back</item>-->
+        <item name="navigationIcon">@drawable/ic_logo_48</item>
+    </style>
+
+    <style name="Widget.Toolbar.TopAppBarWithBackButton">
+        <!--<item name="navigationContentDescription">@string/back</item>-->
+        <item name="navigationIcon">@drawable/ic_back_28</item>
+    </style>
+
+    <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="tint">?attr/colorPrimary</item>
+    </style>
+
+    <style name="NavigationBarView">
+        <item name="itemIconSize">28dp</item>
+        <item name="itemIconTint">@color/nav_bar_icon_colors</item>
+        <item name="itemTextColor">@color/nav_bar_text_colors</item>
+        <item name="itemRippleColor">?attr/colorSecondaryContainer</item>
+        <item name="itemActiveIndicatorStyle">@style/NavigationBarView.Indicator</item>
+    </style>
+
+    <style name="NavigationBarView.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">?attr/colorSecondaryContainer</item>
+    </style>
+
+</resources>

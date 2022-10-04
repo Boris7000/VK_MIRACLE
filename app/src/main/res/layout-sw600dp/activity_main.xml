@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.vkontakte.miracle.engine.view.ActivityRootView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:type="tablet">
+
+    <com.vkontakte.miracle.engine.view.fragmentContainer.TabsFragmentContainer
+        android:id="@+id/frameContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.google.android.material.navigationrail.NavigationRailView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="false"
+        android:background="@drawable/navigation_bar_bg_land"
+        app:menuGravity="center"
+        app:menu="@menu/bottom_nav_menu"
+        style="@style/NavigationBarView"/>
+
+    <ViewStub
+        android:id="@+id/playerBottomSheetStub"
+        android:inflatedId="@+id/playerBottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/view_player_bottom_sheet_stub"
+        app:layout_behavior=".engine.view.LockableSheetBehavior"
+        app:behavior_hideable="false"/>
+
+</com.vkontakte.miracle.engine.view.ActivityRootView>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.vkontakte.miracle.engine.view.VP2NestedRecyclerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:layout_marginBottom="4dp"
+    android:paddingHorizontal="7.5dp"
+    android:clipToPadding="false"
+    android:overScrollMode="ifContentScrolls"
+    android:nestedScrollingEnabled="false"
+    android:orientation="horizontal"
+    android:background="@drawable/rounded_card_bottom_window_color"
+    android:backgroundTint="?attr/colorPostBackground"/>

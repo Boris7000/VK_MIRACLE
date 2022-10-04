@@ -7,7 +7,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.model.groups.fields.Cover;
+import com.vkontakte.miracle.model.wall.fields.Cover;
 import com.vkontakte.miracle.model.wall.fields.Counters;
 import com.vkontakte.miracle.model.users.fields.LastSeen;
 import com.vkontakte.miracle.model.users.fields.OnlineInfo;

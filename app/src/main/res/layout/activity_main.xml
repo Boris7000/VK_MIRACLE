@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.vkontakte.miracle.engine.view.ActivityRootView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:type="portrait">
+
+    <com.vkontakte.miracle.engine.view.fragmentContainer.TabsFragmentContainer
+        android:id="@+id/frameContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ViewStub
+        android:id="@+id/playerBottomSheetStub"
+        android:inflatedId="@+id/playerBottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/view_player_bottom_sheet_stub"
+        app:layout_behavior=".engine.view.LockableSheetBehavior"
+        app:behavior_hideable="false"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:paddingHorizontal="28dp"
+        android:fitsSystemWindows="false"
+        android:background="@drawable/navigation_bar_bg_portrait"
+        app:elevation="0dp"
+        app:menu="@menu/bottom_nav_menu"
+        style="@style/NavigationBarView"/>
+</com.vkontakte.miracle.engine.view.ActivityRootView>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/tab_user"
+        android:enabled="true"
+        android:icon="@drawable/ic_user_28"
+        android:title="@string/profile"/>
+    <item
+        android:id="@+id/tab_feed"
+        android:enabled="true"
+        android:icon="@drawable/ic_feed_28"
+        android:title="@string/feed"/>
+    <item
+        android:id="@+id/tab_dialogs"
+        android:enabled="true"
+        android:icon="@drawable/ic_messages_28"
+        android:title="@string/dialogs"/>
+    <item
+        android:id="@+id/tab_music"
+        android:enabled="true"
+        android:icon="@drawable/ic_vk_music_outline_28"
+        android:title="Музыка"/>
+</menu>
