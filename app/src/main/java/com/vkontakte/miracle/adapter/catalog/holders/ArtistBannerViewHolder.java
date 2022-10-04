@@ -19,6 +19,7 @@ import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.vkontakte.miracle.engine.picasso.ATarget;
 import com.vkontakte.miracle.executors.image.BlurImage;
 import com.vkontakte.miracle.model.audio.ArtistItem;
 import com.vkontakte.miracle.model.catalog.CatalogBlock;
@@ -28,7 +29,7 @@ import java.util.Map;
 public class ArtistBannerViewHolder extends MiracleViewHolder {
 
     private final ImageView photo;
-    private final Target target = new Target() {
+    private final Target target = new ATarget() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             new BlurImage(bitmap, 0.2f, 4){
@@ -37,15 +38,6 @@ public class ArtistBannerViewHolder extends MiracleViewHolder {
                     setBitmap(photo, getMiracleActivity(), object);
                 }
             }.start();
-        }
-
-        @Override
-        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-        }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-
         }
     };
 

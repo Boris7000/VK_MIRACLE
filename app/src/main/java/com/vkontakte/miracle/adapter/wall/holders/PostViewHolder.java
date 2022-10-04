@@ -47,7 +47,6 @@ import com.vkontakte.miracle.engine.view.PostTextView;
 import com.vkontakte.miracle.engine.view.photoGridView.PhotoGridView;
 import com.vkontakte.miracle.executors.wall.AddLike;
 import com.vkontakte.miracle.executors.wall.DeleteLike;
-import com.vkontakte.miracle.fragment.wall.FragmentWall;
 import com.vkontakte.miracle.model.Attachments;
 import com.vkontakte.miracle.model.Owner;
 import com.vkontakte.miracle.model.wall.PostItem;

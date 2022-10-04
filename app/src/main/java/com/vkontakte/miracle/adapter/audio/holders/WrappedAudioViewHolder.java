@@ -1,7 +1,6 @@
 package com.vkontakte.miracle.adapter.audio.holders;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.executors.audio.AddAudio;
 import com.vkontakte.miracle.executors.audio.DeleteAudio;
-import com.vkontakte.miracle.fragment.catalog.FragmentAudioSearch;
 import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.AudioWrapContainer;
@@ -178,11 +176,7 @@ public class WrappedAudioViewHolder extends AudioViewHolder{
 
     public static void resolveFindArtist(DataItemWrap<?,?> itemWrap, MainActivity mainActivity){
         AudioItem audioItem = (AudioItem) itemWrap.getItem();
-        FragmentAudioSearch fragmentAudioSearch = new FragmentAudioSearch();
-        Bundle args = new Bundle();
-        args.putString("initialQ",audioItem.getArtist());
-        fragmentAudioSearch.setArguments(args);
-        mainActivity.addFragment(fragmentAudioSearch);
+        NavigationUtil.goToArtistSearch(audioItem.getArtist(), mainActivity);
     }
 
     public static void showAudioDialog(AudioItem audioItem, Context context,

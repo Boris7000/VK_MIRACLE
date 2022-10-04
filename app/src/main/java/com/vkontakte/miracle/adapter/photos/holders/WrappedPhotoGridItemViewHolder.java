@@ -9,7 +9,6 @@ import com.vkontakte.miracle.engine.view.photoGridView.PhotoGridItem;
 import com.vkontakte.miracle.fragment.photos.PhotoViewerItem;
 import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.photos.PhotoWrapContainer;
-import com.vkontakte.miracle.service.player.PlayerServiceController;
 
 import java.util.ArrayList;
 

@@ -16,6 +16,7 @@ import com.vkontakte.miracle.adapter.audio.PlayingAdapter;
 import com.vkontakte.miracle.engine.fragment.FragmentFabric;
 import com.vkontakte.miracle.engine.fragment.MiracleFragment;
 import com.vkontakte.miracle.engine.fragment.recycler.RecyclerFragment;
+import com.vkontakte.miracle.service.player.AOnPlayerEventListener;
 import com.vkontakte.miracle.service.player.AudioPlayerData;
 import com.vkontakte.miracle.service.player.OnPlayerEventListener;
 import com.vkontakte.miracle.service.player.PlayerServiceController;
@@ -24,41 +25,17 @@ public class FragmentPlaying extends RecyclerFragment {
 
     private View rootView;
     private MainActivity mainActivity;
-    private AudioPlayerData playerData;
     private PlayingAdapter playingAdapter;
-    private final OnPlayerEventListener onPlayerEventListener = new OnPlayerEventListener() {
-        @Override
-        public void onBufferChange(AudioPlayerData playerData) {}
-
-        @Override
-        public void onPlaybackPositionChange(AudioPlayerData playerData) {}
-
+    private final OnPlayerEventListener onPlayerEventListener = new AOnPlayerEventListener() {
         @Override
         public void onSongChange(AudioPlayerData playerData, boolean animate) {
-            if(FragmentPlaying.this.playerData==null){
-                FragmentPlaying.this.playerData=playerData;
+            if(playingAdapter==null){
                 playingAdapter = new PlayingAdapter(playerData);
                 getRecyclerFragmentController().setRecyclerAdapter(playingAdapter);
             } else {
-                FragmentPlaying.this.playerData = playerData;
                 playingAdapter.setNewAudioPlayerData(playerData);
                 playingAdapter.load();
             }
-        }
-
-        @Override
-        public void onPlayWhenReadyChange(AudioPlayerData playerData, boolean animate) {
-
-        }
-
-        @Override
-        public void onRepeatModeChange(AudioPlayerData playerData) {
-
-        }
-
-        @Override
-        public void onPlayerClose() {
-
         }
     };
     private final OnApplyWindowInsetsListener onApplyWindowInsetsListener = (v, windowInsets) -> {

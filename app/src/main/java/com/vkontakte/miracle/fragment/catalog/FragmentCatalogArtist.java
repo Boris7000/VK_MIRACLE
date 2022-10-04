@@ -7,9 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vkontakte.miracle.adapter.catalog.CatalogSectionAdapter;
-import com.vkontakte.miracle.engine.util.LargeDataStorage;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.model.audio.fields.Artist;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.network.methods.Catalog;
 

@@ -5,8 +5,6 @@ import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_W
 import androidx.annotation.Nullable;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.model.Owner;
-import com.vkontakte.miracle.model.audio.AudioItem;
 
 public class Counter implements ItemDataHolder {
 

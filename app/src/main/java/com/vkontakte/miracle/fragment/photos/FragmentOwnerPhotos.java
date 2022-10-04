@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.photos.PhotoAllAdapter;
 import com.vkontakte.miracle.engine.fragment.side.SideRecyclerFragment;
-import com.vkontakte.miracle.engine.util.LargeDataStorage;
-import com.vkontakte.miracle.model.Owner;
 
 public class FragmentOwnerPhotos extends SideRecyclerFragment {
 

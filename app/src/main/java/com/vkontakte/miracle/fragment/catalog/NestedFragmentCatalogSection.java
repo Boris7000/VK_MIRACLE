@@ -1,7 +1,6 @@
 package com.vkontakte.miracle.fragment.catalog;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,8 +9,6 @@ import com.vkontakte.miracle.adapter.catalog.CatalogSectionAdapter;
 import com.vkontakte.miracle.engine.fragment.MiracleFragment;
 import com.vkontakte.miracle.engine.fragment.NestedMiracleFragmentFabric;
 import com.vkontakte.miracle.engine.fragment.nested.NestedRecyclerFragment;
-import com.vkontakte.miracle.engine.util.LargeDataStorage;
-import com.vkontakte.miracle.model.catalog.CatalogSection;
 
 public class NestedFragmentCatalogSection extends NestedRecyclerFragment {
 

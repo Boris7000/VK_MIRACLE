@@ -5,19 +5,24 @@ import static com.vkontakte.miracle.adapter.audio.holders.WrappedPlaylistViewHol
 import static com.vkontakte.miracle.adapter.audio.holders.WrappedPlaylistViewHolderHorizontal.resolveItemClickListener;
 import static com.vkontakte.miracle.adapter.audio.holders.WrappedPlaylistViewHolderHorizontal.showPlaylistDialog;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
+import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.R;
+import com.vkontakte.miracle.dialog.audio.AudioDialog;
+import com.vkontakte.miracle.dialog.audio.AudioDialogActionListener;
 import com.vkontakte.miracle.dialog.audio.PlaylistDialogActionListener;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.model.DataItemWrap;
+import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.service.player.PlayerServiceController;
 
@@ -77,7 +82,5 @@ public class WrappedPlaylistViewHolder extends PlaylistViewHolder{
             return new WrappedPlaylistViewHolder(inflater.inflate(R.layout.view_playlist_item_vertical, viewGroup, false));
         }
     }
-
-
 
 }

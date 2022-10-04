@@ -22,7 +22,6 @@ import com.vkontakte.miracle.engine.fragment.NestedMiracleFragmentFabric;
 import com.vkontakte.miracle.engine.fragment.NestedTabsAdapter;
 import com.vkontakte.miracle.engine.util.LargeDataStorage;
 import com.vkontakte.miracle.engine.view.MiracleTabLayout;
-import com.vkontakte.miracle.model.groups.GroupItem;
 
 import java.util.ArrayList;
 

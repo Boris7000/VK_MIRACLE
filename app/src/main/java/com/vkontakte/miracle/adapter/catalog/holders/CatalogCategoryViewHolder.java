@@ -21,6 +21,7 @@ import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.vkontakte.miracle.engine.picasso.ATarget;
 import com.vkontakte.miracle.model.catalog.CatalogLink;
 import com.vkontakte.miracle.model.catalog.fields.Image;
 
@@ -28,19 +29,10 @@ public class CatalogCategoryViewHolder extends MiracleViewHolder {
 
     private CatalogLink catalogLink;
     private final TextViewButton textViewButton;
-    private final Target target = new Target() {
+    private final Target target = new ATarget() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             textViewButton.setIconStart(drawableFromBitmap(itemView.getResources(),bitmap));
-        }
-
-        @Override
-        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-        }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-
         }
     };
 

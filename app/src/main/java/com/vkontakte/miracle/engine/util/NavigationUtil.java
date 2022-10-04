@@ -2,9 +2,12 @@ package com.vkontakte.miracle.engine.util;
 
 import static com.vkontakte.miracle.engine.util.DialogUtil.openArtistDialog;
 
+import android.os.Bundle;
+
 import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.fragment.audio.FragmentOfflineAudio;
 import com.vkontakte.miracle.fragment.audio.FragmentPlaylist;
+import com.vkontakte.miracle.fragment.catalog.FragmentAudioSearch;
 import com.vkontakte.miracle.fragment.catalog.FragmentCatalogArtist;
 import com.vkontakte.miracle.fragment.catalog.FragmentCatalogFriends;
 import com.vkontakte.miracle.fragment.catalog.FragmentCatalogGroups;
@@ -135,6 +138,14 @@ public class NavigationUtil {
         FragmentCatalogArtist fragmentCatalogArtist = new FragmentCatalogArtist();
         fragmentCatalogArtist.setUrl(url);
         mainActivity.addFragment(fragmentCatalogArtist);
+    }
+
+    public static void goToArtistSearch(String q, MainActivity mainActivity){
+        FragmentAudioSearch fragmentAudioSearch = new FragmentAudioSearch();
+        Bundle args = new Bundle();
+        args.putString("initialQ", q);
+        fragmentAudioSearch.setArguments(args);
+        mainActivity.addFragment(fragmentAudioSearch);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////

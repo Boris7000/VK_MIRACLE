@@ -41,6 +41,7 @@ import com.vkontakte.miracle.dialog.audio.AudioDialogActionListener;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.fragment.FragmentFabric;
 import com.vkontakte.miracle.engine.fragment.MiracleFragment;
+import com.vkontakte.miracle.engine.picasso.ATarget;
 import com.vkontakte.miracle.engine.util.DimensionsUtil;
 import com.vkontakte.miracle.engine.util.ImageUtil;
 import com.vkontakte.miracle.engine.util.SettingsUtil;
@@ -49,6 +50,7 @@ import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.fields.Album;
 import com.vkontakte.miracle.model.audio.fields.Photo;
+import com.vkontakte.miracle.service.player.AOnPlayerEventListener;
 import com.vkontakte.miracle.service.player.AudioPlayerData;
 import com.vkontakte.miracle.service.player.OnPlayerEventListener;
 import com.vkontakte.miracle.service.player.PlayerServiceController;
@@ -86,7 +88,7 @@ public class FragmentPlayer extends MiracleFragment {
     private final Locale locale = Locale.getDefault();
     private String previousImageUrl = "none";
 
-    private final OnPlayerEventListener onPlayerEventListener = new OnPlayerEventListener() {
+    private final OnPlayerEventListener onPlayerEventListener = new AOnPlayerEventListener() {
         @Override
         public void onBufferChange(AudioPlayerData playerData) {
             FragmentPlayer.this.playerData = playerData;
@@ -145,7 +147,7 @@ public class FragmentPlayer extends MiracleFragment {
         }
     };
 
-    private final Target target = new Target() {
+    private final Target target = new ATarget() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             new AsyncExecutor<Boolean>() {
@@ -165,14 +167,10 @@ public class FragmentPlayer extends MiracleFragment {
                 }
             }.start();
         }
-
         @Override
         public void onBitmapFailed(Exception e, Drawable errorDrawable) {
             onBitmapLoaded(placeholderImage, null);
         }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {}
     };
 
     private final OnApplyWindowInsetsListener onApplyWindowInsetsListener = (v, windowInsets) -> {

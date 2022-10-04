@@ -18,7 +18,6 @@ import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.util.TimeUtil;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.model.users.fields.LastSeen;
 import com.vkontakte.miracle.model.users.fields.OnlineInfo;

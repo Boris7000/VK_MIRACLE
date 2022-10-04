@@ -3,7 +3,6 @@ package com.vkontakte.miracle.adapter.photos.holders;
 import static com.vkontakte.miracle.engine.util.NavigationUtil.goToPhotoAlbum;
 import static com.vkontakte.miracle.engine.util.StringsUtil.getPhotosDeclensions;
 
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,6 @@ import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.util.LargeDataStorage;
-import com.vkontakte.miracle.fragment.photos.FragmentPhotoAlbum;
 import com.vkontakte.miracle.model.photos.PhotoAlbumItem;
 import com.vkontakte.miracle.model.photos.fields.Size;
 

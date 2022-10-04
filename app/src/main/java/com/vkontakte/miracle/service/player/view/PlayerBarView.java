@@ -20,6 +20,7 @@ import com.vkontakte.miracle.engine.util.DimensionsUtil;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.fields.Album;
 import com.vkontakte.miracle.model.audio.fields.Photo;
+import com.vkontakte.miracle.service.player.AOnPlayerEventListener;
 import com.vkontakte.miracle.service.player.AudioPlayerData;
 import com.vkontakte.miracle.service.player.OnPlayerEventListener;
 import com.vkontakte.miracle.service.player.PlayerServiceController;
@@ -35,17 +36,7 @@ public class PlayerBarView extends FrameLayout {
     private Bitmap placeholderImage;
     private String previousImageUrl = " ";
     private ImageView pausePlayButton;
-    private final OnPlayerEventListener onPlayerEventListener = new OnPlayerEventListener() {
-        @Override
-        public void onBufferChange(AudioPlayerData playerData) {
-
-        }
-
-        @Override
-        public void onPlaybackPositionChange(AudioPlayerData playerData) {
-
-        }
-
+    private final OnPlayerEventListener onPlayerEventListener = new AOnPlayerEventListener() {
         @Override
         public void onSongChange(AudioPlayerData playerData, boolean animate) {
             AudioItem audioItem = playerData.getCurrentItem();
@@ -55,7 +46,6 @@ public class PlayerBarView extends FrameLayout {
 
             createTarget(audioItem);
         }
-
         @Override
         public void onPlayWhenReadyChange(AudioPlayerData playerData, boolean animate) {
             pausePlayButton.setImageDrawable(playerData.getPlayWhenReady()?
@@ -64,15 +54,6 @@ public class PlayerBarView extends FrameLayout {
             pausePlayButton.setOnClickListener(playerData.getPlayWhenReady()?
                     view -> playerServiceController.actionPause() :
                     view -> playerServiceController.actionResume());
-        }
-
-        @Override
-        public void onRepeatModeChange(AudioPlayerData playerData) {
-
-        }
-
-        @Override
-        public void onPlayerClose() {
         }
     };
 

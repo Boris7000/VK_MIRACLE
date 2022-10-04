@@ -4,7 +4,6 @@ import static com.vkontakte.miracle.engine.util.NavigationUtil.goToOwnerFriends;
 import static com.vkontakte.miracle.engine.util.NavigationUtil.goToOwnerGroups;
 import static com.vkontakte.miracle.engine.util.NavigationUtil.goToOwnerMusic;
 import static com.vkontakte.miracle.engine.util.NavigationUtil.goToOwnerPhotos;
-import static com.vkontakte.miracle.engine.util.NavigationUtil.goToUserMusic;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,8 +17,6 @@ import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.model.wall.fields.Counter;
 
 public class WallCounterViewHolder extends MiracleViewHolder {
@@ -44,9 +41,7 @@ public class WallCounterViewHolder extends MiracleViewHolder {
             case "audios":{
                 imageResource = R.drawable.ic_vk_music_outline_28;
                 stringResource = R.string.audios;
-                itemView.setOnClickListener(view -> {
-                    goToOwnerMusic(counter.getOwnerId(), getMiracleActivity());
-                });
+                itemView.setOnClickListener(view -> goToOwnerMusic(counter.getOwnerId(), getMiracleActivity()));
                 break;
             }
             case "videos":{

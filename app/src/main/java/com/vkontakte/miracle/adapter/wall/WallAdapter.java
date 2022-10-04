@@ -9,7 +9,6 @@ import com.vkontakte.miracle.engine.adapter.MiracleAsyncLoadAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.model.Owner;
 import com.vkontakte.miracle.model.catalog.CatalogExtendedArrays;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.model.wall.PostItem;

@@ -48,7 +48,8 @@ public class PlayerServiceController {
         @Override
         public void onBufferChange(AudioPlayerData playerData) {
             PlayerServiceController.this.playerData = playerData;
-            for (OnPlayerEventListener a : convertListenersToArray()) {
+            final OnPlayerEventListener[] onPlayerEventListeners = convertListenersToArray();
+            for (OnPlayerEventListener a : onPlayerEventListeners) {
                 a.onBufferChange(playerData);
             }
         }
@@ -56,7 +57,8 @@ public class PlayerServiceController {
         @Override
         public void onPlaybackPositionChange(AudioPlayerData playerData) {
             PlayerServiceController.this.playerData = playerData;
-            for (OnPlayerEventListener a : convertListenersToArray()) {
+            final OnPlayerEventListener[] onPlayerEventListeners = convertListenersToArray();
+            for (OnPlayerEventListener a : onPlayerEventListeners) {
                 a.onPlaybackPositionChange(playerData);
             }
         }
@@ -64,7 +66,8 @@ public class PlayerServiceController {
         @Override
         public void onSongChange(AudioPlayerData playerData, boolean animate) {
             PlayerServiceController.this.playerData = playerData;
-            for (OnPlayerEventListener a : convertListenersToArray()) {
+            final OnPlayerEventListener[] onPlayerEventListeners = convertListenersToArray();
+            for (OnPlayerEventListener a : onPlayerEventListeners) {
                 a.onSongChange(playerData, animate);
             }
         }
@@ -72,7 +75,8 @@ public class PlayerServiceController {
         @Override
         public void onPlayWhenReadyChange(AudioPlayerData playerData, boolean animate) {
             PlayerServiceController.this.playerData = playerData;
-            for (OnPlayerEventListener a : convertListenersToArray()) {
+            final OnPlayerEventListener[] onPlayerEventListeners = convertListenersToArray();
+            for (OnPlayerEventListener a : onPlayerEventListeners) {
                 a.onPlayWhenReadyChange(playerData, animate);
             }
         }
@@ -80,7 +84,8 @@ public class PlayerServiceController {
         @Override
         public void onRepeatModeChange(AudioPlayerData playerData) {
             PlayerServiceController.this.playerData = playerData;
-            for (OnPlayerEventListener a : convertListenersToArray()) {
+            final OnPlayerEventListener[] onPlayerEventListeners = convertListenersToArray();
+            for (OnPlayerEventListener a : onPlayerEventListeners) {
                 a.onRepeatModeChange(playerData);
             }
         }
@@ -89,7 +94,8 @@ public class PlayerServiceController {
         public void onPlayerClose() {
             playerData = null;
             audioPLayerService =null;
-            for (OnPlayerEventListener a : convertListenersToArray()) {
+            final OnPlayerEventListener[] onPlayerEventListeners = convertListenersToArray();
+            for (OnPlayerEventListener a : onPlayerEventListeners) {
                 a.onPlayerClose();
             }
         }

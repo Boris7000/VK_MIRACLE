@@ -36,7 +36,6 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.google.android.exoplayer2.C;
@@ -44,7 +43,6 @@ import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.squareup.picasso.Picasso;
@@ -53,10 +51,11 @@ import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.async.ExecutorConveyor;
+import com.vkontakte.miracle.engine.picasso.ATarget;
 import com.vkontakte.miracle.engine.util.DimensionsUtil;
 import com.vkontakte.miracle.engine.util.SettingsUtil;
-import com.vkontakte.miracle.executors.util.SimpleTimer;
 import com.vkontakte.miracle.executors.audio.SendTrackEvents;
+import com.vkontakte.miracle.executors.util.SimpleTimer;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.fields.Album;
 import com.vkontakte.miracle.model.audio.fields.Photo;
@@ -147,26 +146,17 @@ public class AudioPlayerService extends Service implements ExoPlayer.Listener, A
         }
     };
 
-    private final Target target = new Target() {
+    private final Target target = new ATarget() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             songImage = bitmap;
-
             player.prepare();
             player.play();
-
             sendNotification();
-
         }
-
         @Override
         public void onBitmapFailed(Exception e, Drawable errorDrawable) {
             onBitmapLoaded(placeholderImage, null);
-        }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-
         }
     };
 

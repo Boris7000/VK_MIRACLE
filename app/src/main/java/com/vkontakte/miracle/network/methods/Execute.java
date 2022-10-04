@@ -1,17 +1,16 @@
 package com.vkontakte.miracle.network.methods;
 
-import org.json.JSONObject;
-
-import retrofit2.Call;
-
 import static com.vkontakte.miracle.network.Constants.current_api_v;
-import static com.vkontakte.miracle.network.Constants.defaultMessagesFields;
 import static com.vkontakte.miracle.network.Constants.defaultWallFields;
 import static com.vkontakte.miracle.network.Constants.latest_api_v;
 import static com.vkontakte.miracle.network.Constants.message_fields;
 import static com.vkontakte.miracle.network.Creator.execute;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
+
+import retrofit2.Call;
 
 public class Execute {
 

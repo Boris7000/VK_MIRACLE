@@ -42,6 +42,7 @@ import com.vkontakte.miracle.engine.activity.tabs.TabsActivityController;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.fragment.FragmentFabric;
 import com.vkontakte.miracle.engine.fragment.tabs.adapters.SimpleTabsAdapter;
+import com.vkontakte.miracle.engine.picasso.ATarget;
 import com.vkontakte.miracle.engine.util.IMEUtil;
 import com.vkontakte.miracle.engine.util.SettingsUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
@@ -58,6 +59,7 @@ import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.fields.Album;
 import com.vkontakte.miracle.model.audio.fields.Photo;
 import com.vkontakte.miracle.service.longpoll.LongPollServiceController;
+import com.vkontakte.miracle.service.player.AOnPlayerEventListener;
 import com.vkontakte.miracle.service.player.AudioPlayerData;
 import com.vkontakte.miracle.service.player.OnPlayerEventListener;
 import com.vkontakte.miracle.service.player.PlayerServiceController;
@@ -78,33 +80,20 @@ public class MainActivity extends TabsActivity {
     private int color;
     private Bitmap placeholderImage;
     private String previousImageUrl = "none";
-    private final OnPlayerEventListener onPlayerEventListener = new OnPlayerEventListener() {
-        @Override
-        public void onBufferChange(AudioPlayerData playerData) {}
-
-        @Override
-        public void onPlaybackPositionChange(AudioPlayerData playerData) {}
-
+    private final OnPlayerEventListener onPlayerEventListener = new AOnPlayerEventListener() {
         @Override
         public void onSongChange(AudioPlayerData playerData, boolean animate) {
             showingPlayer = true;
             showPlayerBottomSheet();
             createTarget(playerData.getCurrentItem());
         }
-
-        @Override
-        public void onPlayWhenReadyChange(AudioPlayerData playerData, boolean animate) {}
-
-        @Override
-        public void onRepeatModeChange(AudioPlayerData playerData) {}
-
         @Override
         public void onPlayerClose() {
             showingPlayer = false;
             hidePlayerBottomSheet();
         }
     };
-    private final Target target = new Target() {
+    private final Target target = new ATarget() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             new AsyncExecutor<Boolean>() {
@@ -130,8 +119,6 @@ public class MainActivity extends TabsActivity {
         public void onBitmapFailed(Exception e, Drawable errorDrawable) {
             onBitmapLoaded(placeholderImage, null);
         }
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {}
     };
 
     private View.OnLayoutChangeListener playerBarChangeListener;

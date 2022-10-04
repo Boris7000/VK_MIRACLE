@@ -1,8 +1,8 @@
 package com.vkontakte.miracle.adapter.catalog.holders;
 
 import static com.vkontakte.miracle.adapter.catalog.holders.CatalogButtonOpenSectionViewHolder.resolveItemClickListener;
-import static com.vkontakte.miracle.engine.util.NavigationUtil.hardResolveVKURL;
 import static com.vkontakte.miracle.engine.util.ImageUtil.getOptimalSize;
+import static com.vkontakte.miracle.engine.util.NavigationUtil.hardResolveVKURL;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,14 +14,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.squareup.picasso.Picasso;
-import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.util.DeviceUtil;
 import com.vkontakte.miracle.engine.util.DimensionsUtil;
-import com.vkontakte.miracle.fragment.audio.FragmentOfflineAudio;
 import com.vkontakte.miracle.model.catalog.CatalogBanner;
 import com.vkontakte.miracle.model.catalog.fields.CatalogAction;
 import com.vkontakte.miracle.model.catalog.fields.Image;
@@ -62,49 +59,31 @@ public class CatalogBannerViewHolder extends MiracleViewHolder {
         subtitle2.setText(catalogBanner.getSubtext());
 
         if(catalogBanner.getClickAction()!=null){
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CatalogAction catalogAction = catalogBanner.getClickAction();
-                    switch (catalogAction.getType()) {
-                        case "open_url": {
-                            resolveOpenCatalogUrl(catalogAction, getMiracleActivity());
-                            break;
-                        }
-                        case "open_section": {
-                            resolveItemClickListener(catalogAction, getMiracleActivity());
-                            break;
-                        }
-                        case "clear_recent_groups": {
+            itemView.setOnClickListener(view -> {
+                CatalogAction catalogAction = catalogBanner.getClickAction();
+                switch (catalogAction.getType()) {
+                    case "open_url": {
+                        hardResolveVKURL(catalogAction.getUrl(), getMiracleActivity());
+                        break;
+                    }
+                    case "open_section": {
+                        resolveItemClickListener(catalogAction, getMiracleActivity());
+                        break;
+                    }
+                    case "clear_recent_groups": {
 
-                            break;
-                        }
-                        case "select_sorting": {
+                        break;
+                    }
+                    case "select_sorting": {
 
-                            break;
-                        }
-                        case "friends_lists": {
+                        break;
+                    }
+                    case "friends_lists": {
 
-                            break;
-                        }
+                        break;
                     }
                 }
             });
-        }
-    }
-
-    //TODO вынеси это куда-нибудь
-    public static void resolveOpenCatalogUrl(CatalogAction catalogAction, MainActivity mainActivity){
-        switch (catalogAction.getUrl()){
-            default:{
-                hardResolveVKURL(catalogAction.getUrl(), mainActivity);
-                break;
-            }
-            case "https://vk.com/audio_offline":{
-                FragmentOfflineAudio fragmentOfflineAudio = new FragmentOfflineAudio();
-                mainActivity.addFragment(fragmentOfflineAudio);
-                break;
-            }
         }
     }
 

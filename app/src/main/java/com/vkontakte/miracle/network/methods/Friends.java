@@ -1,16 +1,13 @@
 package com.vkontakte.miracle.network.methods;
 
-import org.json.JSONObject;
-
-import retrofit2.Call;
-
 import static com.vkontakte.miracle.network.Constants.latest_api_v;
 import static com.vkontakte.miracle.network.Constants.users_min_fields;
-import static com.vkontakte.miracle.network.Creator.audio;
 import static com.vkontakte.miracle.network.Creator.execute;
 import static com.vkontakte.miracle.network.Creator.friends;
 
-import java.util.Locale;
+import org.json.JSONObject;
+
+import retrofit2.Call;
 
 public class Friends {
 

@@ -102,9 +102,7 @@ public class PlaylistLargeViewHolder extends MiracleViewHolder {
         });
 
         addButton.setOnClickListener(v -> {
-
             switchAddButtonState(2, false);
-
             if(playlistItem.isFollowing()){
                resolveDelete();
             } else {
@@ -124,9 +122,7 @@ public class PlaylistLargeViewHolder extends MiracleViewHolder {
         subtitle.setText(playlistItem.getSubtitle());
 
         if(playlistItem.getType()==1){
-            if(playlistItem.getArtists().isEmpty()){
-               //TODO сделай тут поиск
-            } else {
+            if(!playlistItem.getArtists().isEmpty()){
                 subtitle.setOnClickListener(v -> goToArtist(playlistItem, getMiracleActivity()));
             }
         } else {

@@ -26,6 +26,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.dialog.MiracleBottomDialog;
+import com.vkontakte.miracle.engine.picasso.ATarget;
 import com.vkontakte.miracle.engine.util.DimensionsUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.executors.color.CalculateAverage;
@@ -42,7 +43,7 @@ public class PlaylistDialog extends MiracleBottomDialog {
     private ImageView imageView;
     private Bitmap placeholderImage;
     private FrameLayout container;
-    private final Target target = new Target() {
+    private final Target target = new ATarget() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             new CalculateAverage(bitmap){
@@ -52,15 +53,6 @@ public class PlaylistDialog extends MiracleBottomDialog {
                     animateToColor(object);
                 }
             }.start();
-        }
-
-        @Override
-        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-        }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-
         }
     };
 

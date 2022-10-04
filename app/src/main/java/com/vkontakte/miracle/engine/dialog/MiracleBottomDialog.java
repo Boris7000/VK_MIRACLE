@@ -24,7 +24,6 @@ public abstract class MiracleBottomDialog extends BottomSheetDialog {
 
    public void expand(){
       FrameLayout bottomSheet = findViewById(R.id.design_bottom_sheet);
-
       if(bottomSheet!=null) {
          BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
          behavior.setSkipCollapsed(true);

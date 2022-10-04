@@ -209,7 +209,6 @@ public class FragmentColorSchemeGenerator extends SideListFragment {
         float minS = Math.min(this.minS,10f);
         float maxS = Math.min(this.maxS,30f);
 
-        dS = 100f;
         wS = dS-(minS+(dS-maxS));
         hS = wS/(float) colorsCount;
 

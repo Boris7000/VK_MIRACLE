@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.wall.WallAdapter;
 import com.vkontakte.miracle.engine.fragment.side.SideRecyclerFragment;
-import com.vkontakte.miracle.engine.util.LargeDataStorage;
-import com.vkontakte.miracle.model.wall.PostItem;
 
 public class FragmentWall extends SideRecyclerFragment {
 

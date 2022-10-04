@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vkontakte.miracle.adapter.catalog.CatalogSectionAdapter;
-import com.vkontakte.miracle.engine.util.LargeDataStorage;
 
 public class FragmentCatalogSection extends AFragmentCatalogSection {
 
