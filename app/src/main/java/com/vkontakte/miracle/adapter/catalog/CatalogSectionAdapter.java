@@ -1,21 +1,28 @@
 package com.vkontakte.miracle.adapter.catalog;
 
 import static com.vkontakte.miracle.engine.adapter.MiracleViewRecycler.resolveMultiTypeItems;
+import static com.vkontakte.miracle.engine.adapter.MiracleViewRecycler.resolveSingleTypeItems;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_ARTIST_BANNER;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_CREATE_PLAYLIST;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_OPEN_SECTION;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_PLAY;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_PLAY_SHUFFLED;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_BANNER;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_CATEGORIES_LIST;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_HEADER;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_HEADER_EXTENDED;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_LINK;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_SEPARATOR;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_SLIDER;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_SUGGESTION;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_TRIPLE_STACKED_SLIDER;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_HORIZONTAL_BUTTONS;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PLAYLIST_RECOMMENDATION;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_TRIPLE_STACKED;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_CATALOG_USER;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_GROUP;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_PLAYLIST;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_PLAYLIST_RECOMMENDATION;
 import static com.vkontakte.miracle.engine.util.AdapterUtil.getHorizontalLayoutManager;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
@@ -32,19 +39,26 @@ import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.audio.holders.WrappedAudioViewHolder;
 import com.vkontakte.miracle.adapter.audio.holders.WrappedPlaylistViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.ArtistBannerViewHolder;
+import com.vkontakte.miracle.adapter.catalog.holders.CatalogBannerViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.CatalogButtonCreatePlaylistViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.CatalogButtonOpenSectionViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.CatalogButtonPlayShuffledViewHolder;
+import com.vkontakte.miracle.adapter.catalog.holders.CatalogButtonPlayViewHolder;
+import com.vkontakte.miracle.adapter.catalog.holders.CatalogCategoryViewHolder;
+import com.vkontakte.miracle.adapter.catalog.holders.CatalogLinkViewHolder;
+import com.vkontakte.miracle.adapter.catalog.holders.CatalogSuggestionViewHolder;
+import com.vkontakte.miracle.adapter.catalog.holders.HeaderExtendedViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.HeaderViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.SeparatorViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.WrappedCatalogUserViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.WrappedGroupViewHolder;
 import com.vkontakte.miracle.engine.adapter.MiracleAdapter;
-import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
+import com.vkontakte.miracle.engine.adapter.MiracleAsyncLoadAdapter;
 import com.vkontakte.miracle.engine.adapter.MiracleViewRecycler;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.model.catalog.CatalogBlock;
 import com.vkontakte.miracle.model.catalog.CatalogExtendedArrays;
 import com.vkontakte.miracle.model.catalog.CatalogSection;
@@ -59,14 +73,13 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class CatalogSectionAdapter extends MiracleLoadableAdapter {
+public class CatalogSectionAdapter extends MiracleAsyncLoadAdapter {
 
     private String sectionId;
     private Call<JSONObject> call;
     private final ArrayMap<String,CatalogBlock> listCatalogBlocksMap = new ArrayMap<>();
 
     private CatalogSection catalogSection;
-    private OnSectionLoadedListener onSectionLoadedListener;
 
     public CatalogSectionAdapter(String sectionId){
         this.sectionId = sectionId;
@@ -76,16 +89,20 @@ public class CatalogSectionAdapter extends MiracleLoadableAdapter {
         this.call = call;
     }
 
+    public CatalogSection getCatalogSection() {
+        return catalogSection;
+    }
+
     @Override
-    public void resetToInitialState() {
-        super.resetToInitialState();
+    public void restoreState() {
+        super.restoreState();
         listCatalogBlocksMap.clear();
     }
 
     @Override
     public void onLoading() throws Exception {
 
-        ProfileItem profileItem = getUserItem();
+        ProfileItem profileItem = StorageUtil.get().currentUser();
         ArrayList<ItemDataHolder> holders = getItemDataHolders();
 
         int previous = holders.size();
@@ -107,6 +124,8 @@ public class CatalogSectionAdapter extends MiracleLoadableAdapter {
             section = jo_response.getJSONObject("section");
         }
 
+        Log.d("suwdwokdowkdchushcdus",jo_response.toString());
+
         catalogSection = new CatalogSection(section);
 
         JSONArray blocks = section.getJSONArray("blocks");
@@ -117,17 +136,19 @@ public class CatalogSectionAdapter extends MiracleLoadableAdapter {
 
             JSONObject jo_catalogBlock = blocks.getJSONObject(i);
 
+            Log.d("suwdwokdowkdchushcdus",jo_catalogBlock.toString());
+
             String catalogId = jo_catalogBlock.getString("id");
             CatalogBlock previousCatalogBlock = listCatalogBlocksMap.get(catalogId);
             if(previousCatalogBlock!=null){
-                if(previousCatalogBlock.getLayout().getName().equals("list")){
+                if(previousCatalogBlock.getLayout().isList()){
                     ArrayList<ItemDataHolder> catalogBlockItemDataHolders =
                             previousCatalogBlock.findItems(jo_catalogBlock, catalogExtendedArrays);
                     previousCatalogBlock.getItems().addAll(catalogBlockItemDataHolders);
                     holders.addAll(catalogBlockItemDataHolders);
                 } else {
                     CatalogBlock catalogBlock = new CatalogBlock(jo_catalogBlock, catalogExtendedArrays);
-                    if(catalogBlock.getLayout().getName().equals("list")){
+                    if(catalogBlock.getLayout().isList()){
                         listCatalogBlocksMap.put(catalogId,catalogBlock);
                         holders.addAll(catalogBlock.getItems());
                     } else {
@@ -136,7 +157,7 @@ public class CatalogSectionAdapter extends MiracleLoadableAdapter {
                 }
             } else {
                 CatalogBlock catalogBlock = new CatalogBlock(jo_catalogBlock, catalogExtendedArrays);
-                if(catalogBlock.getLayout().getName().equals("list")){
+                if(catalogBlock.getLayout().isList()){
                     listCatalogBlocksMap.put(catalogId,catalogBlock);
                     holders.addAll(catalogBlock.getItems());
                 } else {
@@ -156,35 +177,26 @@ public class CatalogSectionAdapter extends MiracleLoadableAdapter {
     }
 
     @Override
-    public void onComplete() {
-        super.onComplete();
-        if(!hasData()){
-            if(onSectionLoadedListener!=null){
-                onSectionLoadedListener.onSectionLoaded(catalogSection);
-            }
-        }
-
-    }
-
-    @Override
     public ArrayMap<Integer, ViewHolderFabric> getViewHolderFabricMap() {
         ArrayMap<Integer, ViewHolderFabric> arrayMap = super.getViewHolderFabricMap();
         arrayMap.put(TYPE_CATALOG_TRIPLE_STACKED_SLIDER, new TripleStackedSliderViewHolderFabric());
         arrayMap.put(TYPE_CATALOG_SLIDER, new SliderViewHolderFabric());
         arrayMap.put(TYPE_HORIZONTAL_BUTTONS, new HorizontalButtonsViewHolderFabric());
+        arrayMap.put(TYPE_CATALOG_CATEGORIES_LIST, new CategoriesListViewHolderFabric());
         arrayMap.put(TYPE_CATALOG_HEADER, new HeaderViewHolder.Fabric());
+        arrayMap.put(TYPE_CATALOG_HEADER_EXTENDED, new HeaderExtendedViewHolder.Fabric());
         arrayMap.put(TYPE_CATALOG_SEPARATOR, new SeparatorViewHolder.Fabric());
         arrayMap.put(TYPE_ARTIST_BANNER, new ArtistBannerViewHolder.Fabric());
+        arrayMap.put(TYPE_CATALOG_LINK, new CatalogLinkViewHolder.Fabric());
+        arrayMap.put(TYPE_CATALOG_SUGGESTION, new CatalogSuggestionViewHolder.Fabric());
+        arrayMap.put(TYPE_CATALOG_BANNER, new CatalogBannerViewHolder.Fabric());
 
         arrayMap.put(TYPE_WRAPPED_AUDIO, new WrappedAudioViewHolder.Fabric());
         arrayMap.put(TYPE_WRAPPED_PLAYLIST, new WrappedPlaylistViewHolder.Fabric());
+        arrayMap.put(TYPE_WRAPPED_PLAYLIST_RECOMMENDATION, new WrappedPlaylistViewHolder.Fabric());
         arrayMap.put(TYPE_WRAPPED_GROUP, new WrappedGroupViewHolder.Fabric());
         arrayMap.put(TYPE_WRAPPED_CATALOG_USER, new WrappedCatalogUserViewHolder.Fabric());
         return arrayMap;
-    }
-
-    public void setOnSectionLoadedListener(OnSectionLoadedListener onSectionLoadedListener) {
-        this.onSectionLoadedListener = onSectionLoadedListener;
     }
 
     public class TripleStackedSliderViewHolder extends MiracleViewHolder {
@@ -218,23 +230,28 @@ public class CatalogSectionAdapter extends MiracleLoadableAdapter {
             }
 
             RecyclerView.Adapter<?> adapter = recyclerView.getAdapter();
+            CatalogTripleStackedSliderAdapter catalogSliderAdapter;
             if(adapter instanceof CatalogTripleStackedSliderAdapter){
-                ((CatalogTripleStackedSliderAdapter)recyclerView.getAdapter()).setItemDataHolders(catalogBlock);
+                catalogSliderAdapter =
+                        ((CatalogTripleStackedSliderAdapter)recyclerView.getAdapter());
+                catalogSliderAdapter.setNewCatalogBlock(catalogBlock);
             } else {
                 if(adapter instanceof MiracleAdapter){
                     MiracleAdapter miracleAdapter = (MiracleAdapter) adapter;
                     miracleAdapter.setRecyclerView(null);
                 }
-                CatalogTripleStackedSliderAdapter catalogSliderAdapter = new CatalogTripleStackedSliderAdapter(catalogBlock);
-                catalogSliderAdapter.iniFromActivity(getMiracleActivity());
+                catalogSliderAdapter = new CatalogTripleStackedSliderAdapter(catalogBlock);
                 catalogSliderAdapter.setRecyclerView(recyclerView);
                 catalogSliderAdapter.ini();
                 recyclerView.setAdapter(catalogSliderAdapter);
-                catalogSliderAdapter.load();
             }
+            catalogSliderAdapter.iniFromFragment(getMiracleFragment());
+            catalogSliderAdapter.load();
 
             if(changedType){
-                recyclerView.setHasFixedSize(true);
+                if(!recyclerView.hasFixedSize()) {
+                    recyclerView.setHasFixedSize(true);
+                }
             }
 
         }
@@ -260,12 +277,13 @@ public class CatalogSectionAdapter extends MiracleLoadableAdapter {
                     getNestedRecycledViewPool(TYPE_CATALOG_SLIDER);
             recycledViewPool.setMaxRecycledViews(TYPE_WRAPPED_PLAYLIST, 10);
             recycledViewPool.setMaxRecycledViews(TYPE_WRAPPED_GROUP, 7);
-            recycledViewPool.setMaxRecycledViews(TYPE_PLAYLIST_RECOMMENDATION, 7);
+            recycledViewPool.setMaxRecycledViews(TYPE_WRAPPED_PLAYLIST_RECOMMENDATION, 7);
             recyclerView.setRecycledViewPool(recycledViewPool);
         }
 
         @Override
         public void bind(ItemDataHolder itemDataHolder) {
+            super.bind(itemDataHolder);
             CatalogBlock newCatalogBlock = (CatalogBlock) itemDataHolder;
             boolean changedType = true;
             if(catalogBlock!=null){
@@ -280,23 +298,28 @@ public class CatalogSectionAdapter extends MiracleLoadableAdapter {
             }
 
             RecyclerView.Adapter<?> adapter = recyclerView.getAdapter();
+            CatalogSliderAdapter catalogSliderAdapter;
             if(adapter instanceof CatalogSliderAdapter){
-                ((CatalogSliderAdapter)recyclerView.getAdapter()).setItemDataHolders(catalogBlock);
+                catalogSliderAdapter = ((CatalogSliderAdapter)recyclerView.getAdapter());
+                catalogSliderAdapter.iniFromFragment(getMiracleFragment());
+                catalogSliderAdapter.setNewCatalogBlock(catalogBlock);
             } else {
                 if(adapter instanceof MiracleAdapter){
                     MiracleAdapter miracleAdapter = (MiracleAdapter) adapter;
                     miracleAdapter.setRecyclerView(null);
                 }
-                CatalogSliderAdapter catalogSliderAdapter = new CatalogSliderAdapter(catalogBlock);
-                catalogSliderAdapter.iniFromActivity(getMiracleActivity());
+                catalogSliderAdapter = new CatalogSliderAdapter(catalogBlock);
+                catalogSliderAdapter.iniFromFragment(getMiracleFragment());
                 catalogSliderAdapter.setRecyclerView(recyclerView);
                 catalogSliderAdapter.ini();
                 recyclerView.setAdapter(catalogSliderAdapter);
-                catalogSliderAdapter.onComplete();
             }
+            catalogSliderAdapter.instantLoad();
 
             if(changedType){
-                recyclerView.setHasFixedSize(true);
+                if(!recyclerView.hasFixedSize()) {
+                    recyclerView.setHasFixedSize(true);
+                }
             }
         }
     }
@@ -319,6 +342,7 @@ public class CatalogSectionAdapter extends MiracleLoadableAdapter {
             super(itemView);
             viewHolderFabricMap.put(TYPE_BUTTON_OPEN_SECTION, new CatalogButtonOpenSectionViewHolder.Fabric());
             viewHolderFabricMap.put(TYPE_BUTTON_PLAY_SHUFFLED, new CatalogButtonPlayShuffledViewHolder.Fabric());
+            viewHolderFabricMap.put(TYPE_BUTTON_PLAY, new CatalogButtonPlayViewHolder.Fabric());
             viewHolderFabricMap.put(TYPE_BUTTON_CREATE_PLAYLIST, new CatalogButtonCreatePlaylistViewHolder.Fabric());
 
         }
@@ -336,15 +360,62 @@ public class CatalogSectionAdapter extends MiracleLoadableAdapter {
             resolveMultiTypeItems((ViewGroup) itemView, actions, this.actions, cache,
                     miracleViewRecycler, viewHolderFabricMap, getInflater());
 
+            for(int i=0; i<actions.size(); i++){
+                MiracleViewHolder miracleViewHolder = (MiracleViewHolder) cache.get(i);
+                miracleViewHolder.bind(actions.get(i));
+            }
+
             this.actions = actions;
 
         }
     }
-
     public class HorizontalButtonsViewHolderFabric implements ViewHolderFabric {
         @Override
         public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
             return new HorizontalButtonsViewHolder(inflater.inflate(R.layout.view_catalog_horizontal_buttons,
+                    viewGroup, false));
+        }
+    }
+
+    public class CategoriesListViewHolder extends MiracleViewHolder {
+
+        private final ArrayList<RecyclerView.ViewHolder> cache = new ArrayList<>();
+        private final ArrayMap<Integer, ViewHolderFabric> viewHolderFabricMap = new ArrayMap<>();
+
+        private ArrayList<ItemDataHolder> itemDataHolders = new ArrayList<>();
+
+        public CategoriesListViewHolder(@NonNull View itemView) {
+            super(itemView);
+            viewHolderFabricMap.put(TYPE_CATALOG_LINK, new CatalogCategoryViewHolder.Fabric());
+
+        }
+
+        @Override
+        public void bind(ItemDataHolder itemDataHolder) {
+
+            super.bind(itemDataHolder);
+            CatalogBlock catalogBlock = (CatalogBlock) itemDataHolder;
+            ArrayList<ItemDataHolder> itemDataHolders = catalogBlock.getItems();
+
+            MiracleViewRecycler miracleViewRecycler =
+                    getMiracleAdapter().getMiracleViewRecycler(itemDataHolder.getViewHolderType());
+
+            resolveSingleTypeItems((ViewGroup) itemView, itemDataHolders, this.itemDataHolders, cache,
+                    miracleViewRecycler, viewHolderFabricMap, getInflater());
+
+            for(int i=0; i<itemDataHolders.size(); i++){
+                MiracleViewHolder miracleViewHolder = (MiracleViewHolder) cache.get(i);
+                miracleViewHolder.bind(itemDataHolders.get(i));
+            }
+
+            this.itemDataHolders = itemDataHolders;
+
+        }
+    }
+    public class CategoriesListViewHolderFabric implements ViewHolderFabric {
+        @Override
+        public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
+            return new CategoriesListViewHolder(inflater.inflate(R.layout.catalog_categories_list,
                     viewGroup, false));
         }
     }

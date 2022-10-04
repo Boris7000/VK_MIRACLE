@@ -5,30 +5,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.vkontakte.miracle.MiracleActivity;
+import androidx.annotation.NonNull;
+
+import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
+import com.vkontakte.miracle.engine.fragment.side.SideListFragment;
 
-import static com.vkontakte.miracle.engine.fragment.ScrollAndElevate.scrollAndElevate;
+public class FragmentInterfaceSettings extends SideListFragment {
 
-public class FragmentInterfaceSettings extends SimpleMiracleFragment {
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        MiracleActivity miracleActivity = getMiracleActivity();
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
-        View rootView = inflater.inflate(R.layout.fragment_settings_interface, container, false);
-
-        setAppBarLayout(rootView.findViewById(R.id.appbarlayout));
-        setToolBar(getAppBarLayout().findViewById(R.id.toolbar));
-        setAppbarClickToTop();
-        setBackClick();
-        setScrollView(rootView.findViewById(R.id.scrollView));
-        scrollAndElevate(getScrollView(),getAppBarLayout(),miracleActivity);
+        MainActivity mainActivity = getMiracleActivity();
 
         View colorSchemeSettings = rootView.findViewById(R.id.settings_color_scheme);
-        colorSchemeSettings.setOnClickListener(view -> miracleActivity.addFragment(new FragmentColorSchemeSettings()));
+        colorSchemeSettings.setOnClickListener(view -> mainActivity.addFragment(new FragmentColorSchemeSettings()));
 
         return rootView;
+    }
+
+    @NonNull
+    @Override
+    public View inflateRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_settings_interface, container, false);
     }
 }

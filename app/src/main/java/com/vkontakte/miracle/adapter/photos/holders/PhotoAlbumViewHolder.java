@@ -1,5 +1,6 @@
 package com.vkontakte.miracle.adapter.photos.holders;
 
+import static com.vkontakte.miracle.engine.util.NavigationUtil.goToPhotoAlbum;
 import static com.vkontakte.miracle.engine.util.StringsUtil.getPhotosDeclensions;
 
 import android.os.Bundle;
@@ -47,13 +48,7 @@ public class PhotoAlbumViewHolder extends MiracleViewHolder {
             Picasso.get().load(size.getUrl()).into(image);
         }else (image).setImageDrawable(null);
 
-        itemView.setOnClickListener(view -> {
-            FragmentPhotoAlbum fragmentPhotoAlbum = new FragmentPhotoAlbum();
-            Bundle bundle = new Bundle();
-            bundle.putString("photoAlbumItem", LargeDataStorage.get().storeLargeData(photoAlbumItem));
-            fragmentPhotoAlbum.setArguments(bundle);
-            getMiracleActivity().addFragment(fragmentPhotoAlbum);
-        });
+        itemView.setOnClickListener(view -> goToPhotoAlbum(photoAlbumItem, getMiracleActivity()));
 
     }
 

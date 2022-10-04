@@ -1,25 +1,30 @@
 package com.vkontakte.miracle.adapter.audio;
 
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_PLAY_SHUFFLED;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PLAYLIST;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PLAYLIST_DESCRIPTION;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
 import android.util.ArrayMap;
-import android.util.Log;
 
+import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.audio.holders.PlaylistDescriptionViewHolder;
 import com.vkontakte.miracle.adapter.audio.holders.PlaylistLargeViewHolder;
+import com.vkontakte.miracle.adapter.audio.holders.PlaylistShuffleViewHolder;
 import com.vkontakte.miracle.adapter.audio.holders.WrappedAudioViewHolder;
-import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
+import com.vkontakte.miracle.engine.adapter.MiracleAsyncLoadAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.vkontakte.miracle.engine.adapter.holder.error.ErrorDataHolder;
+import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.AudioWrapContainer;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
-import com.vkontakte.miracle.model.audio.fields.Album;
+import com.vkontakte.miracle.model.audio.PlaylistShuffleItem;
 import com.vkontakte.miracle.model.audio.fields.Description;
+import com.vkontakte.miracle.model.groups.GroupItem;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.network.methods.Execute;
 
@@ -31,36 +36,23 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class PlaylistAdapter extends MiracleLoadableAdapter {
+public class PlaylistAdapter extends MiracleAsyncLoadAdapter {
 
     private final String playlistId;
     private final String ownerId;
     private final String accessKey;
     private PlaylistItem playlistItem;
 
-    public PlaylistAdapter(Album album){
-        playlistId = album.getId();
-        accessKey = album.getAccessKey();
-        ownerId = album.getOwnerId();
-    }
-
-    public PlaylistAdapter(PlaylistItem playlistItem){
-        if(playlistItem.getOriginal()!=null) {
-            playlistId = playlistItem.getOriginal().getId();
-            accessKey = playlistItem.getOriginal().getAccessKey();
-            ownerId = playlistItem.getOriginal().getOwnerId();
-        } else {
-            playlistId = playlistItem.getId();
-            accessKey = playlistItem.getAccessKey();
-            ownerId = playlistItem.getOwnerId();
-        }
-        this.playlistItem = new PlaylistItem(playlistItem);
+    public PlaylistAdapter(String playlistId, String ownerId, String accessKey) {
+        this.playlistId = playlistId;
+        this.ownerId = ownerId;
+        this.accessKey = accessKey;
     }
 
     @Override
     public void onLoading() throws Exception {
 
-        ProfileItem profileItem = getUserItem();
+        ProfileItem profileItem = StorageUtil.get().currentUser();
         ArrayList<ItemDataHolder> holders = getItemDataHolders();
 
         int previous = holders.size();
@@ -68,24 +60,50 @@ public class PlaylistAdapter extends MiracleLoadableAdapter {
         JSONObject jo_response = null;
         Response<JSONObject> response = null;
 
-
-        if(!hasData()) {
+        if(!loaded()) {
             Call<JSONObject> call = Execute.getPlaylist(
                     ownerId, playlistId, true, 0,
                     getStep(), accessKey, profileItem.getAccessToken());
             response = call.execute();
             jo_response = validateBody(response);
+
             jo_response = jo_response.getJSONObject("response");
-            JSONObject jo_playlist = jo_response.getJSONObject("playlist");
-            if (playlistItem == null) {
-                playlistItem = new PlaylistItem(jo_playlist,null,null);
-            } else {
-                playlistItem.update(jo_playlist);
+
+            if(jo_response.get("playlist") instanceof Boolean){
+                holders.add(new ErrorDataHolder(R.string.playlist_missing));
+                setAddedCount(1);
+                setFinallyLoaded(true);
+                return;
             }
+
+            JSONObject jo_playlist = jo_response.getJSONObject("playlist");
+
+            if (playlistItem == null) {
+                ArrayMap<String, GroupItem> groupsMap = null;
+                ArrayMap<String, ProfileItem> profilesMap = null;
+                if (jo_response.has("owner")){
+                    JSONObject jo_owner = jo_response.getJSONObject("owner");
+                    if (jo_owner.has("name")) {
+                        GroupItem owner = new GroupItem(jo_owner);
+                        groupsMap = new ArrayMap<>();
+                        groupsMap.put(owner.getId(), owner);
+
+                    } else {
+                        if (jo_owner.has("first_name")) {
+                            ProfileItem owner = new ProfileItem(jo_owner);
+                            profilesMap = new ArrayMap<>();
+                            profilesMap.put(owner.getId(), owner);
+                        }
+                    }
+                }
+                playlistItem = new PlaylistItem(jo_playlist, profilesMap, groupsMap);
+            }
+
             holders.add(playlistItem);
             if(playlistItem.getDescription()!=null&&!playlistItem.getDescription().isEmpty()){
                 holders.add(new Description(playlistItem.getDescription()));
             }
+            holders.add(new PlaylistShuffleItem(playlistItem));
             setTotalCount(playlistItem.getCount());
         }
 
@@ -136,6 +154,7 @@ public class PlaylistAdapter extends MiracleLoadableAdapter {
         arrayMap.put(TYPE_WRAPPED_AUDIO, new WrappedAudioViewHolder.Fabric());
         arrayMap.put(TYPE_PLAYLIST, new PlaylistLargeViewHolder.Fabric());
         arrayMap.put(TYPE_PLAYLIST_DESCRIPTION, new PlaylistDescriptionViewHolder.Fabric());
+        arrayMap.put(TYPE_BUTTON_PLAY_SHUFFLED, new PlaylistShuffleViewHolder.Fabric());
         return arrayMap;
     }
 }

@@ -7,5 +7,5 @@
     android:includeFontPadding="false"
     android:textSize="16sp"
     android:fontFamily="sans-serif-medium"
-    android:textColor="?attr/colorEmphasis_60"
+    android:textColor="?attr/colorSubtitle"
     tools:text="Badge"/>

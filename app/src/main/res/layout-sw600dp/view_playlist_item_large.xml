@@ -86,7 +86,7 @@
                 android:ellipsize="end"
                 android:fontFamily="sans-serif"
                 android:singleLine="true"
-                android:textColor="?attr/colorEmphasis_60"
+                android:textColor="?attr/colorSubtitle"
                 android:textSize="15sp"
                 tools:text="Subtitle" />
 
@@ -97,7 +97,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:fontFamily="sans-serif"
-                android:textColor="?attr/colorEmphasis_60"
+                android:textColor="?attr/colorSubtitle"
                 android:textSize="15sp"
                 tools:text="Subtitle" />
         </LinearLayout>
@@ -114,7 +114,7 @@
                 android:layout_height="48dp"
                 android:layout_marginEnd="12dp"
                 android:layout_weight="1"
-                android:text="@string/play_album"
+                android:text="@string/play"
                 app:icon_start="@drawable/ic_play_16"
                 style="@style/TextButton.PrimaryButton"/>
 

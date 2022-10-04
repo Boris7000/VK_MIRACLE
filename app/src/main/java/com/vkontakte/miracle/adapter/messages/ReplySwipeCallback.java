@@ -48,7 +48,7 @@ public class ReplySwipeCallback extends ItemTouchHelper.Callback {
         this.context = context;
         mSwipeControllerActions = swipeControllerActions;
 
-        mReplyIcon = ResourcesCompat.getDrawable(this.context.getResources(), R.drawable.ic_share_24,null);
+        mReplyIcon = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_share_24,null);
         if(mReplyIcon!=null) {
             mReplyIcon = mReplyIcon.getConstantState().newDrawable().mutate();
             mReplyIcon.setColorFilter(getColorByAttributeId(this.context, R.attr.colorPrimary), PorterDuff.Mode.SRC_IN);
@@ -134,10 +134,7 @@ public class ReplySwipeCallback extends ItemTouchHelper.Callback {
         int mReplyBackgroundOffsetDouble = mReplyBackgroundOffset*2;
 
         mLastReplyButtonAnimationTime = newTime;
-        boolean showing = false;
-        if (translationX >= convertToDp(mReplyBackgroundOffsetDouble)){
-            showing = true;
-        }
+        boolean showing = translationX >= convertToDp(mReplyBackgroundOffsetDouble);
         if (showing){
             if (mReplyButtonProgress < 1.0f){
                 mReplyButtonProgress += dt / (float)maxX;

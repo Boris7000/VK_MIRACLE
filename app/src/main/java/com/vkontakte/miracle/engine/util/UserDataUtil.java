@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.network.methods.Users;

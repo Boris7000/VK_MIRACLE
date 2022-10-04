@@ -1,7 +1,6 @@
 package com.vkontakte.miracle.dialog.audio;
 
 import static com.vkontakte.miracle.engine.util.ImageUtil.bitmapFromLayerDrawable;
-import static com.vkontakte.miracle.engine.util.ImageUtil.getAverageHSLFromBitmap;
 import static com.vkontakte.miracle.engine.view.PicassoDrawableCopy.setBitmap;
 
 import android.animation.ValueAnimator;
@@ -26,9 +25,10 @@ import com.miracle.button.TextViewButton;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.dialog.MiracleBottomDialog;
 import com.vkontakte.miracle.engine.util.DimensionsUtil;
+import com.vkontakte.miracle.engine.util.StorageUtil;
+import com.vkontakte.miracle.executors.color.CalculateAverage;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.fields.Album;
 import com.vkontakte.miracle.model.audio.fields.Photo;
@@ -46,21 +46,11 @@ public class AudioDialog extends MiracleBottomDialog {
     private final Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            new AsyncExecutor<Boolean>() {
-                int averageColor;
+            new CalculateAverage(bitmap){
                 @Override
-                public Boolean inBackground() {
-                    Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 50, 50, false);
-                    float[] hsl = getAverageHSLFromBitmap(scaled);
-                    hsl[1] =  Math.min(hsl[1],0.52f);
-                    hsl[2] = Math.max(Math.min(hsl[2],0.43f),0.23f);
-                    averageColor = ColorUtils.HSLToColor(hsl);
-                    return true;
-                }
-                @Override
-                public void onExecute(Boolean object) {
+                public void onExecute(Integer object) {
                     setBitmap(imageView, getContext(), bitmap);
-                    animateToColor(averageColor);
+                    animateToColor(object);
                 }
             }.start();
         }
@@ -75,10 +65,10 @@ public class AudioDialog extends MiracleBottomDialog {
         }
     };
 
-    public AudioDialog(@NonNull Context context, AudioItem audioItem, ProfileItem profileItem) {
+    public AudioDialog(@NonNull Context context, AudioItem audioItem) {
         super(context);
         this.audioItem = audioItem;
-        this.profileItem = profileItem;
+        this.profileItem = StorageUtil.get().currentUser();
     }
 
     @Override
@@ -111,7 +101,18 @@ public class AudioDialog extends MiracleBottomDialog {
         LinearLayout linearLayout = rootView.findViewById(R.id.buttonsContainer);
         TextViewButton miracleButton;
 
-        if(!audioItem.getArtists().isEmpty()){
+
+        if(audioItem.getArtists().isEmpty()){
+            miracleButton = (TextViewButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
+            miracleButton.setText(context.getString(R.string.find_artist));
+            miracleButton.setIconStartImageResource(R.drawable.ic_search_28);
+            miracleButton.setIconEndImageResource(R.drawable.ic_chevron_24);
+            miracleButton.setOnClickListener(view -> {
+                dialogActionListener.findArtist();
+                cancel();
+            });
+            linearLayout.addView(miracleButton);
+        } else {
             miracleButton = (TextViewButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
             miracleButton.setText(context.getString(R.string.go_to_artist));
             miracleButton.setIconStartImageResource(R.drawable.ic_microphone_28);
@@ -135,7 +136,6 @@ public class AudioDialog extends MiracleBottomDialog {
             linearLayout.addView(miracleButton);
         }
 
-
         if(audioItem.isLicensed()) {
             miracleButton = (TextViewButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
             miracleButton.setText(context.getString(R.string.play_next));
@@ -147,24 +147,39 @@ public class AudioDialog extends MiracleBottomDialog {
             linearLayout.addView(miracleButton);
         }
 
-
         miracleButton = (TextViewButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
         if(audioItem.getOwnerId().equals(profileItem.getId())){
             miracleButton.setText(context.getString(R.string.delete_from_audio));
             miracleButton.setIconStartImageResource(R.drawable.ic_cancel_28);
+            miracleButton.setOnClickListener(view -> {
+                dialogActionListener.delete();
+                cancel();
+            });
         } else {
             miracleButton.setText(context.getString(R.string.add_to_audio));
             miracleButton.setIconStartImageResource(R.drawable.ic_list_add_28);
+            miracleButton.setOnClickListener(view -> {
+                dialogActionListener.add();
+                cancel();
+            });
         }
         linearLayout.addView(miracleButton);
 
         miracleButton = (TextViewButton) inflater.inflate(R.layout.dialog_button_stub, linearLayout, false);
-        if(audioItem.getOwnerId().equals(profileItem.getId())){
+        if(audioItem.getDownloaded()!=null){
             miracleButton.setText(context.getString(R.string.delete_from_device));
             miracleButton.setIconStartImageResource(R.drawable.ic_delete_28);
+            miracleButton.setOnClickListener(view -> {
+                dialogActionListener.erase();
+                cancel();
+            });
         } else {
             miracleButton.setText(context.getString(R.string.download));
             miracleButton.setIconStartImageResource(R.drawable.ic_download_28);
+            miracleButton.setOnClickListener(view -> {
+                dialogActionListener.download();
+                cancel();
+            });
         }
         linearLayout.addView(miracleButton);
 

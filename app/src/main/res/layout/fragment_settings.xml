@@ -46,7 +46,7 @@
                     android:background="@drawable/circle_card_container_secondary"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_post_28"
-                    app:tint="?attr/colorPrimary" />
+                    app:tint="?attr/colorSecondary" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:fontFamily="sans-serif-medium"
-                        android:textColor="?attr/colorEmphasis_60"
+                        android:textColor="?attr/colorSubtitle"
                         android:textSize="13sp"
                         android:text="Цветовая схема, стили элементов интерфейса"/>
                 </LinearLayout>
@@ -88,7 +88,7 @@
                     android:background="@drawable/circle_card_container_secondary"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_music_28"
-                    app:tint="?attr/colorPrimary" />
+                    app:tint="?attr/colorSecondary" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:fontFamily="sans-serif-medium"
-                        android:textColor="?attr/colorEmphasis_60"
+                        android:textColor="?attr/colorSubtitle"
                         android:textSize="13sp"
                         android:text="Поведение плеера, кэширование"/>
                 </LinearLayout>
@@ -130,7 +130,7 @@
                     android:background="@drawable/circle_card_container_secondary"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_palette_outline_28"
-                    app:tint="?attr/colorPrimary" />
+                    app:tint="?attr/colorSecondary" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -152,7 +152,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:fontFamily="sans-serif-medium"
-                        android:textColor="?attr/colorEmphasis_60"
+                        android:textColor="?attr/colorSubtitle"
                         android:textSize="13sp"
                         android:text="Генерацция оттенков"/>
                 </LinearLayout>
@@ -172,7 +172,7 @@
                     android:background="@drawable/circle_card_container_secondary"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_palette_outline_28"
-                    app:tint="?attr/colorPrimary" />
+                    app:tint="?attr/colorSecondary" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -194,9 +194,51 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:fontFamily="sans-serif-medium"
-                        android:textColor="?attr/colorEmphasis_60"
+                        android:textColor="?attr/colorSubtitle"
                         android:textSize="13sp"
                         android:text="test"/>
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/url_test"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_ripple">
+                <ImageView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginVertical="9dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/circle_card_container_secondary"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_palette_outline_28"
+                    app:tint="?attr/colorSecondary" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="68dp"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif"
+                        android:singleLine="true"
+                        android:text="URL test"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="?attr/colorSubtitle"
+                        android:textSize="13sp"
+                        android:text="url test"/>
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>

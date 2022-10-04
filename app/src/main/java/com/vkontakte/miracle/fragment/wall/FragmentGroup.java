@@ -1,66 +1,99 @@
 package com.vkontakte.miracle.fragment.wall;
 
-import static com.vkontakte.miracle.engine.fragment.ScrollAndElevate.scrollAndElevate;
+import static com.vkontakte.miracle.engine.adapter.AdapterStates.SATE_FIRST_LOADING_COMPLETE;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.wall.GroupAdapter;
-import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
-import com.vkontakte.miracle.engine.util.LargeDataStorage;
+import com.vkontakte.miracle.engine.fragment.side.SideRecyclerFragment;
 import com.vkontakte.miracle.model.groups.GroupItem;
 
-public class FragmentGroup  extends SimpleMiracleFragment {
+public class FragmentGroup extends SideRecyclerFragment {
 
-    private GroupItem groupItem;
+    private String groupId;
+    private String groupName;
 
-    public void setGroupItem(GroupItem groupItem) {
-        this.groupItem = groupItem;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    @NonNull
+    @Override
+    public View inflateRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_with_recycleview_dark, container, false);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public RecyclerView.Adapter<?> onCreateRecyclerAdapter() {
+        return new GroupAdapter(groupId);
+    }
 
-        View rootView = inflater.inflate(R.layout.fragment_with_recycleview, container, false);
+    @Override
+    public String requestTitleText() {
+        if(groupName!=null){
+            return groupName;
+        }
+        return super.requestTitleText();
+    }
 
-        setAppBarLayout(rootView.findViewById(R.id.appbarlayout));
-        setToolBar(getAppBarLayout().findViewById(R.id.toolbar));
-        setAppbarClickToTop();
-        setBackClick();
-        setTitle(rootView.findViewById(R.id.title));
-        setRecyclerView(rootView.findViewById(R.id.recyclerView));
-        scrollAndElevate(getRecyclerView(),getAppBarLayout(), getMiracleActivity());
-        setProgressBar(rootView.findViewById(R.id.progressCircle));
-
-        if(savedInstanceState!=null&&!savedInstanceState.isEmpty()){
-            String key = savedInstanceState.getString("groupItem");
-            if(key!=null){
-                groupItem = (GroupItem) LargeDataStorage.get().getLargeData(key);
-                savedInstanceState.remove("groupItem");
+    @CallSuper
+    @Override
+    public void onRecyclerAdapterStateChange(int state) {
+        if (state == SATE_FIRST_LOADING_COMPLETE) {
+            if(groupName==null||groupName.isEmpty()) {
+                RecyclerView.Adapter<?> adapter = getRecyclerView().getAdapter();
+                if(adapter instanceof GroupAdapter){
+                    GroupAdapter groupAdapter = (GroupAdapter) adapter;
+                    GroupItem groupItem = groupAdapter.getGroupItem();
+                    if(groupItem!=null){
+                        groupName = groupItem.getName();
+                    }
+                }
             }
         }
+        super.onRecyclerAdapterStateChange(state);
+    }
 
-        if(groupItem !=null){
-            setTitleText(groupItem.getName());
-            if(nullSavedAdapter(savedInstanceState)){
-                setAdapter(new GroupAdapter(groupItem));
-            }
+    @Override
+    public void readSavedInstance(Bundle savedInstanceState) {
+        String key = savedInstanceState.getString("groupId");
+        if(key!=null){
+            groupId = key;
+            savedInstanceState.remove("groupId");
         }
+        key = savedInstanceState.getString("groupName");
+        if(key!=null){
+            groupName = key;
+            savedInstanceState.remove("groupName");
+        }
+    }
 
-        setSwipeRefreshLayout(rootView.findViewById(R.id.refreshLayout), this::reloadAdapter);
-
-        return rootView;
+    @Override
+    public void onClearSavedInstance(@NonNull Bundle savedInstanceState) {
+        super.onClearSavedInstance(savedInstanceState);
+        savedInstanceState.remove("groupId");
+        savedInstanceState.remove("groupName");
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        if(groupItem !=null){
-            outState.putString("groupItem", LargeDataStorage.get().storeLargeData(groupItem));
+        if(groupId !=null){
+            outState.putString("groupId", groupId);
+        }
+        if(groupName !=null){
+            outState.putString("groupName", groupName);
         }
         super.onSaveInstanceState(outState);
     }

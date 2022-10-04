@@ -30,6 +30,21 @@
             android:src="@drawable/ic_vk_monochrome_logo"
             app:tint="?attr/colorPrimary"/>
 
+        <!--<com.miracle.button.TextViewButton
+            android:id="@+id/showValidationCode"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="showValidationCode"
+            android:enabled="true"
+            style="@style/TextButton.PrimaryButton"/>
+        <com.miracle.button.TextViewButton
+            android:id="@+id/showCaptcha"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="showCaptcha"
+            android:enabled="true"
+            style="@style/TextButton.PrimaryButton"/>-->
+
         <FrameLayout
             android:id="@+id/frameContainer"
             android:layout_width="match_parent"
@@ -37,7 +52,7 @@
             android:layout_margin="20dp"
             android:layout_weight="0"
             android:background="@drawable/rounded_card"
-            android:padding="16dp">
+            android:padding="12dp">
 
             <LinearLayout
                 android:id="@+id/loginFrame"
@@ -63,7 +78,7 @@
                     app:boxCornerRadiusBottomStart="@dimen/child_round"
                     app:boxCornerRadiusTopStart="@dimen/child_round"
                     app:boxStrokeColor="@color/primary_tinted_outlined_text_box_colors"
-                    android:textColorHint="?attr/colorEmphasis_60"
+                    android:textColorHint="?attr/colorEditTextHint"
                     app:hintTextColor="?attr/colorSecondary"
                     app:boxBackgroundMode="outline">
 
@@ -92,9 +107,9 @@
                     app:boxCornerRadiusBottomStart="@dimen/child_round"
                     app:boxCornerRadiusTopStart="@dimen/child_round"
                     app:boxStrokeColor="@color/primary_tinted_outlined_text_box_colors"
-                    android:textColorHint="?attr/colorEmphasis_60"
+                    android:textColorHint="?attr/colorEditTextHint"
                     app:hintTextColor="?attr/colorSecondary"
-                    app:passwordToggleTint="?attr/colorEmphasis_60"
+                    app:passwordToggleTint="?attr/colorEditTextHint"
                     app:boxBackgroundMode="outline"
                     app:passwordToggleEnabled="true">
 
@@ -121,6 +136,7 @@
                     android:text="@string/sign_in"
                     android:enabled="false"
                     style="@style/TextButton.PrimaryButton"/>
+
             </LinearLayout>
 
             <ViewStub

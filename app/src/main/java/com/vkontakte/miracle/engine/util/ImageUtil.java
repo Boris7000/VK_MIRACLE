@@ -1,7 +1,11 @@
 package com.vkontakte.miracle.engine.util;
 
+import static android.graphics.Bitmap.Config.ARGB_8888;
+
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,6 +16,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.ColorUtils;
+
+import com.vkontakte.miracle.model.catalog.fields.Image;
+
+import java.util.ArrayList;
 
 public class ImageUtil {
 
@@ -25,7 +33,7 @@ public class ImageUtil {
                 id, context.getTheme());
 
         if(layerDrawable!=null) {
-            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Bitmap bitmap = Bitmap.createBitmap(width, height, ARGB_8888);
             layerDrawable.setBounds(0, 0, width, height);
             layerDrawable.draw(new Canvas(bitmap));
             return bitmap;
@@ -43,15 +51,20 @@ public class ImageUtil {
         }
 
         if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+            bitmap = Bitmap.createBitmap(1, 1, ARGB_8888);
         } else {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                    drawable.getIntrinsicHeight(), ARGB_8888);
         }
 
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
         return bitmap;
+    }
+
+    public static Drawable drawableFromBitmap(Resources resources, Bitmap bitmap){
+        return new BitmapDrawable(resources, bitmap);
     }
 
     @NonNull
@@ -265,6 +278,35 @@ public class ImageUtil {
         return (bitmap);
     }
 
+    public static Bitmap maskBitmap(Bitmap sentBitmap, Bitmap maskBitmap){
+        int w = sentBitmap.getWidth();
+        int h = sentBitmap.getHeight();
+        int[] pixO = new int[w * h];
+        int[] pixMO = new int[w * h];
+        maskBitmap = Bitmap.createScaledBitmap(maskBitmap, h, w, true);
+        sentBitmap.getPixels(pixO, 0, w, 0, 0, w, h);
+        maskBitmap.getPixels(pixMO, 0, w, 0, 0, w, h);
+
+        int[] pix = new int[w * h];
+        Bitmap bitmap = Bitmap.createBitmap(w,h, ARGB_8888);
+        for (int i=0; i<pixO.length;i++){
+            int maskColor = pixMO[i];
+            int maskAlpha = Color.red(maskColor);
+            if(maskAlpha==0){
+                pix[i] = Color.argb(0, 0, 0, 0);
+            } else {
+                int color = pixO[i];
+                int r = Color.red(color);
+                int g = Color.green(color);
+                int b = Color.blue(color);
+                pix[i] = Color.argb(maskAlpha, r, g, b);
+            }
+        }
+
+        bitmap.setPixels(pix, 0, w, 0, 0, w, h);
+        return (bitmap);
+    }
+
     public static float[] getAverageHSLFromBitmap(Bitmap sentBitmap){
         int redBucket = 0;
         int greenBucket = 0;
@@ -299,6 +341,72 @@ public class ImageUtil {
 
     public static int getAverageColorFromBitmap(Bitmap sentBitmap){
         return ColorUtils.HSLToColor(getAverageHSLFromBitmap(sentBitmap));
+    }
+
+    public static Image getOptimalSize(ArrayList<Image> images, int width, int height){
+
+        if(images.isEmpty()){
+            return null;
+        }
+
+        int minDif;
+        int index = 0;
+
+        Image image = images.get(0);
+
+        if(width>0&&height>0){
+            minDif = Math.abs(image.getWidth()-width) + Math.abs(image.getHeight()-height);
+            if(images.size()>1){
+                for (int i=1; i<images.size(); i++){
+                    image = images.get(i);
+                    int curr = Math.abs(image.getWidth()-width) + Math.abs(image.getHeight()-height);
+                    if(curr<minDif){
+                        minDif = curr;
+                        index = i;
+                    }
+                }
+                return images.get(index);
+            } else {
+                return image;
+            }
+        } else {
+            if(width>0){
+                minDif = Math.abs(image.getWidth()-width);
+                if(images.size()>1){
+                    for (int i=1; i<images.size(); i++){
+                        image = images.get(i);
+                        int curr = Math.abs(image.getWidth()-width);
+                        if(curr<minDif){
+                            minDif = curr;
+                            index = i;
+                        }
+                    }
+                    return images.get(index);
+                } else {
+                    return image;
+                }
+            } else {
+                if(height>0){
+                    minDif = Math.abs(image.getHeight()-height);
+                    if(images.size()>1){
+                        for (int i=1; i<images.size(); i++){
+                            image = images.get(i);
+                            int curr = Math.abs(image.getHeight()-height);
+                            if(curr<minDif){
+                                minDif = curr;
+                                index = i;
+                            }
+                        }
+                        return images.get(index);
+                    } else {
+                        return image;
+                    }
+                }
+            }
+        }
+
+        return image;
+
     }
 
 }

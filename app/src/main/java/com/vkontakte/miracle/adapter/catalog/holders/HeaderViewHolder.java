@@ -2,6 +2,7 @@ package com.vkontakte.miracle.adapter.catalog.holders;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.vkontakte.miracle.adapter.catalog.holders.CatalogButtonOpenSectionViewHolder.resolveItemClickListener;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,6 @@ import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.view.catalog.CatalogHeaderButton;
-import com.vkontakte.miracle.fragment.catalog.FragmentCatalogSection;
 import com.vkontakte.miracle.model.catalog.CatalogBlock;
 import com.vkontakte.miracle.model.catalog.fields.CatalogAction;
 import com.vkontakte.miracle.model.catalog.fields.CatalogLayout;
@@ -70,9 +70,7 @@ public class HeaderViewHolder extends MiracleViewHolder {
             button.setOnClickListener(view -> {
                 switch (catalogAction.getType()) {
                     case "open_section": {
-                        FragmentCatalogSection fragmentCatalogSection = new FragmentCatalogSection();
-                        fragmentCatalogSection.setCatalogSectionId(catalogAction.getSectionId());
-                        getMiracleActivity().addFragment(fragmentCatalogSection);
+                        resolveItemClickListener(catalogAction, getMiracleActivity());
                         break;
                     }
                     case "clear_recent_groups": {
@@ -99,7 +97,7 @@ public class HeaderViewHolder extends MiracleViewHolder {
     public static class Fabric implements ViewHolderFabric {
         @Override
         public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
-            return new HeaderViewHolder(inflater.inflate(R.layout.catalog_header, viewGroup, false));
+            return new HeaderViewHolder(inflater.inflate(R.layout.catalog_header_light, viewGroup, false));
         }
     }
 

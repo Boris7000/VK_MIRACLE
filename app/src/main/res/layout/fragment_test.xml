@@ -34,69 +34,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <EditText
+                android:id="@+id/et"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"/>
+                android:layout_height="wrap_content"/>
 
-            <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioGroup
-                android:id="@+id/light_r"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="9dp"
-                    android:orientation="horizontal">
-                    <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
-                        android:id="@+id/rb_blue"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="4.5dp"
-                        android:background="@drawable/radio_item_bg"
-                        android:padding="9dp"
-                        android:layout_weight="1">
-                    </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
-                    <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
-                        android:id="@+id/rb_emerald"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4.5dp"
-                        android:background="@drawable/radio_item_bg"
-                        android:padding="9dp"
-                        android:layout_weight="1">
-                    </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="9dp"
-                    android:orientation="horizontal">
-                    <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
-                        android:id="@+id/rb_orange"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="4.5dp"
-                        android:background="@drawable/radio_item_bg"
-                        android:padding="9dp"
-                        android:layout_weight="1">
-                    </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
-                    <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
-                        android:id="@+id/rb_crimson"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4.5dp"
-                        android:background="@drawable/radio_item_bg"
-                        android:padding="9dp"
-                        android:layout_weight="1">
-                    </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
-                </LinearLayout>
-            </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioGroup>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

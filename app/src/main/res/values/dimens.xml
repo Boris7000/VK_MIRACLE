@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="horizontalMargin">10dp</dimen>
-    <dimen name="round">18dp</dimen> <!--15dp-->
+    <dimen name="round">20dp</dimen> <!--15dp-->
     <dimen name="child_round">12dp</dimen>
     <dimen name="child_round2">9dp</dimen>
     <dimen name="translationZ">7dp</dimen>

@@ -5,13 +5,14 @@ import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
 import android.util.ArrayMap;
 
-import com.google.android.exoplayer2.util.Log;
-import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
+import com.vkontakte.miracle.engine.adapter.MiracleAsyncLoadAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.model.catalog.CatalogExtendedArrays;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.model.wall.PostItem;
+import com.vkontakte.miracle.model.wall.StoriesHolder;
 import com.vkontakte.miracle.network.methods.Execute;
 
 import org.json.JSONArray;
@@ -21,11 +22,11 @@ import java.util.ArrayList;
 
 import retrofit2.Response;
 
-public class FeedAdapter extends MiracleLoadableAdapter {
+public class FeedAdapter extends MiracleAsyncLoadAdapter {
 
     @Override
     public void onLoading() throws Exception {
-        ProfileItem profileItem = getUserItem();
+        ProfileItem profileItem = StorageUtil.get().currentUser();
         ArrayList<ItemDataHolder> holders = getItemDataHolders();
 
         int previous = holders.size();
@@ -42,19 +43,22 @@ public class FeedAdapter extends MiracleLoadableAdapter {
         for (int i = 0; i < items.length(); i++) {
             JSONObject postObject = items.getJSONObject(i);
             if(postObject.has("post_type")){
-                JSONObject jo_item = items.getJSONObject(i);
-                PostItem postItem = new PostItem(jo_item, catalogExtendedArrays);
+                PostItem postItem = new PostItem(postObject, catalogExtendedArrays);
                 postItems.add(postItem);
             }
         }
+
+        if(getLoadedCount()==0){
+            holders.add(new StoriesHolder());
+        }
+
         holders.addAll(postItems);
 
         setLoadedCount(getLoadedCount() + items.length());
+
         setAddedCount(holders.size() - previous);
 
         setNextFrom(jo_response.getString("next_from"));
-
-        Log.d("sijfijifje",jo_response.toString());
 
     }
 

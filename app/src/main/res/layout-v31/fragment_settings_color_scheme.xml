@@ -70,7 +70,7 @@
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
                             android:theme="@style/BlueTheme">
-                            <include layout="@layout/view_settings_color_scheme_circles1_merge"/>
+                            <include layout="@layout/view_settings_color_scheme_circles_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                     <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
@@ -92,7 +92,7 @@
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
                             android:theme="@style/EmeraldTheme">
-                            <include layout="@layout/view_settings_color_scheme_circles1_merge"/>
+                            <include layout="@layout/view_settings_color_scheme_circles_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                 </LinearLayout>
@@ -120,7 +120,7 @@
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
                             android:theme="@style/OrangeTheme">
-                            <include layout="@layout/view_settings_color_scheme_circles1_merge"/>
+                            <include layout="@layout/view_settings_color_scheme_circles_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                     <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
@@ -142,7 +142,7 @@
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
                             android:theme="@style/CrimsonTheme">
-                            <include layout="@layout/view_settings_color_scheme_circles1_merge"/>
+                            <include layout="@layout/view_settings_color_scheme_circles_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                 </LinearLayout>
@@ -170,7 +170,7 @@
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
                             android:theme="@style/VioletTheme">
-                            <include layout="@layout/view_settings_color_scheme_circles1_merge"/>
+                            <include layout="@layout/view_settings_color_scheme_circles_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                     <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
@@ -192,7 +192,7 @@
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
                             android:theme="@style/CarrotTheme">
-                            <include layout="@layout/view_settings_color_scheme_circles1_merge"/>
+                            <include layout="@layout/view_settings_color_scheme_circles_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                 </LinearLayout>
@@ -202,7 +202,7 @@
                     android:layout_marginBottom="9dp"
                     android:orientation="horizontal">
                     <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
-                        android:id="@+id/rb_cyberpunk"
+                        android:id="@+id/rb_eva01"
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -213,18 +213,18 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="2077"
+                            android:text="Unit-01"
                             android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
-                            android:theme="@style/CyberpunkTheme">
-                            <include layout="@layout/view_settings_color_scheme_circles2_merge"/>
+                            android:theme="@style/EVA01Theme">
+                            <include layout="@layout/view_settings_color_scheme_circles_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                     <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
-                        android:id="@+id/rb_contrast"
+                        android:id="@+id/rb_eva02"
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -235,164 +235,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Моно"
+                            android:text="Unit-02"
                             android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
-                            android:theme="@style/ContrastTheme">
-                            <include layout="@layout/view_settings_color_scheme_circles1_merge"/>
-                        </LinearLayout>
-                    </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="9dp"
-                    android:orientation="horizontal">
-                    <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
-                        android:id="@+id/rb_startNight"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="4.5dp"
-                        android:background="@drawable/radio_item_bg"
-                        android:padding="9dp"
-                        android:layout_weight="1">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Звездная ночь"
-                            android:layout_marginBottom="9dp"/>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:theme="@style/StarNightTheme">
-                            <include layout="@layout/view_settings_color_scheme_circles2_merge"/>
-                        </LinearLayout>
-                    </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
-                    <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
-                        android:id="@+id/rb_fuji"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4.5dp"
-                        android:background="@drawable/radio_item_bg"
-                        android:padding="9dp"
-                        android:layout_weight="1">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Фиджи"
-                            android:layout_marginBottom="9dp"/>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:theme="@style/FijiTheme">
-                            <include layout="@layout/view_settings_color_scheme_circles2_merge"/>
-                        </LinearLayout>
-                    </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="9dp"
-                    android:orientation="horizontal">
-                    <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
-                        android:id="@+id/rb_forest"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="4.5dp"
-                        android:background="@drawable/radio_item_bg"
-                        android:padding="9dp"
-                        android:layout_weight="1">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Лес"
-                            android:layout_marginBottom="9dp"/>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:theme="@style/ForestTheme">
-                            <include layout="@layout/view_settings_color_scheme_circles2_merge"/>
-                        </LinearLayout>
-                    </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
-                    <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
-                        android:id="@+id/rb_sailor"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4.5dp"
-                        android:background="@drawable/radio_item_bg"
-                        android:padding="9dp"
-                        android:layout_weight="1">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Сэйлор"
-                            android:layout_marginBottom="9dp"/>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:theme="@style/SailorTheme">
-                            <include layout="@layout/view_settings_color_scheme_circles2_merge"/>
-                        </LinearLayout>
-                    </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="9dp"
-                    android:orientation="horizontal">
-                    <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
-                        android:id="@+id/rb_sunset"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="4.5dp"
-                        android:background="@drawable/radio_item_bg"
-                        android:padding="9dp"
-                        android:layout_weight="1">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Закат"
-                            android:layout_marginBottom="9dp"/>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:theme="@style/SunsetTheme">
-                            <include layout="@layout/view_settings_color_scheme_circles2_merge"/>
-                        </LinearLayout>
-                    </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
-                    <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
-                        android:id="@+id/rb_neon"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4.5dp"
-                        android:background="@drawable/radio_item_bg"
-                        android:padding="9dp"
-                        android:layout_weight="1">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Неон"
-                            android:layout_marginBottom="9dp"/>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:theme="@style/NeonTheme">
-                            <include layout="@layout/view_settings_color_scheme_circles2_merge"/>
+                            android:theme="@style/EVA02Theme">
+                            <include layout="@layout/view_settings_color_scheme_circles_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                 </LinearLayout>
@@ -413,18 +263,18 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Системные цвета 1"
+                            android:text="Системные цвета"
                             android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
                             android:theme="@style/Sys1Theme">
-                            <include layout="@layout/view_settings_color_scheme_circles2_merge"/>
+                            <include layout="@layout/view_settings_color_scheme_circles_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                     <com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView
-                        android:id="@+id/rb_system2"
+                        android:id="@+id/rb_contrast"
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -435,14 +285,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Системные цвета 2"
+                            android:text="Моно"
                             android:layout_marginBottom="9dp"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
-                            android:theme="@style/Sys2Theme">
-                            <include layout="@layout/view_settings_color_scheme_circles2_merge"/>
+                            android:theme="@style/MonoTheme">
+                            <include layout="@layout/view_settings_color_scheme_circles_merge"/>
                         </LinearLayout>
                     </com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioView>
                 </LinearLayout>

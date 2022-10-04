@@ -4,11 +4,14 @@ import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
 import android.util.ArrayMap;
 
+import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.photos.holders.StackedPhotosItem;
-import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
+import com.vkontakte.miracle.engine.adapter.MiracleAsyncLoadAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes;
+import com.vkontakte.miracle.engine.adapter.holder.error.ErrorDataHolder;
+import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.model.photos.PhotoAlbumItem;
 import com.vkontakte.miracle.model.photos.PhotoItem;
 import com.vkontakte.miracle.model.users.ProfileItem;
@@ -21,25 +24,59 @@ import java.util.ArrayList;
 
 import retrofit2.Response;
 
-public class PhotoAlbumAdapter extends MiracleLoadableAdapter {
+public class PhotoAlbumAdapter extends MiracleAsyncLoadAdapter {
 
-    private final PhotoAlbumItem photoAlbumItem;
+    private final String photoAlbumId;
+    private final String ownerId;
+
+    private  PhotoAlbumItem photoAlbumItem;
     private final int rowLength = 3;
 
-    public PhotoAlbumAdapter(PhotoAlbumItem photoAlbumItem){
-        this.photoAlbumItem = photoAlbumItem;
+    public PhotoAlbumAdapter(String photoAlbumId, String ownerId) {
+        this.photoAlbumId = photoAlbumId;
+        this.ownerId = ownerId;
+    }
+
+    public PhotoAlbumItem getPhotoAlbumItem() {
+        return photoAlbumItem;
     }
 
     @Override
     public void onLoading() throws Exception {
 
-        ProfileItem profileItem = getUserItem();
+        ProfileItem profileItem = StorageUtil.get().currentUser();
         ArrayList<ItemDataHolder> holders = getItemDataHolders();
 
-        Response<JSONObject> response = Photos.get(photoAlbumItem.getOwnerId(),photoAlbumItem.getId(), getStep(),
+        Response<JSONObject> response;
+        if(!loaded()) {
+            response =  Photos.getAlbums(ownerId, photoAlbumId, profileItem.getAccessToken()).execute();
+            JSONObject jsonObject = validateBody(response);
+
+            if (jsonObject.has("response")){
+                jsonObject = jsonObject.getJSONObject("response");
+            } else {
+                holders.add(new ErrorDataHolder(R.string.album_missing));
+                setAddedCount(1);
+                setFinallyLoaded(true);
+                return;
+            }
+
+            photoAlbumItem = new PhotoAlbumItem(jsonObject.getJSONArray("items").getJSONObject(0));
+        }
+
+        response = Photos.get(ownerId, photoAlbumId, getStep(),
                 getLoadedCount(), profileItem.getAccessToken()).execute();
 
-        JSONObject jsonObject = validateBody(response).getJSONObject("response");
+        JSONObject jsonObject = validateBody(response);
+
+        if (jsonObject.has("response")){
+            jsonObject = jsonObject.getJSONObject("response");
+        } else {
+            holders.add(new ErrorDataHolder(R.string.album_missing));
+            setAddedCount(1);
+            setFinallyLoaded(true);
+            return;
+        }
 
         setTotalCount(jsonObject.getInt("count"));
 

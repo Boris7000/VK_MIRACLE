@@ -59,7 +59,7 @@
         android:singleLine="true"
         android:fontFamily="sans-serif"
         android:gravity="center_vertical"
-        android:textColor="?attr/colorEmphasis_60"
+        android:textColor="?attr/colorSubtitle"
         android:textSize="14sp"
         tools:text="Subtitle" />
 </LinearLayout>

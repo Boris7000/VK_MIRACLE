@@ -1,7 +1,6 @@
 package com.vkontakte.miracle.adapter.catalog.holders;
 
 import static com.vkontakte.miracle.engine.util.DeviceUtil.getWindowWidth;
-import static com.vkontakte.miracle.engine.util.ImageUtil.fastBlur;
 import static com.vkontakte.miracle.engine.view.PicassoDrawableCopy.setBitmap;
 
 import android.graphics.Bitmap;
@@ -20,7 +19,7 @@ import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.vkontakte.miracle.executors.image.BlurImage;
 import com.vkontakte.miracle.model.audio.ArtistItem;
 import com.vkontakte.miracle.model.catalog.CatalogBlock;
 
@@ -32,17 +31,10 @@ public class ArtistBannerViewHolder extends MiracleViewHolder {
     private final Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            new AsyncExecutor<Boolean>() {
-                Bitmap blurBitmap;
-
+            new BlurImage(bitmap, 0.2f, 4){
                 @Override
-                public Boolean inBackground() {
-                    blurBitmap = fastBlur(bitmap, 0.2f, 4);
-                    return true;
-                }
-                @Override
-                public void onExecute(Boolean object) {
-                    setBitmap(photo, getMiracleActivity(), blurBitmap);
+                public void onExecute(Bitmap object) {
+                    setBitmap(photo, getMiracleActivity(), object);
                 }
             }.start();
         }

@@ -22,8 +22,8 @@ import com.vkontakte.miracle.engine.util.LargeDataStorage;
 import com.vkontakte.miracle.engine.util.SettingsUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.engine.util.UIUtil;
-import com.vkontakte.miracle.longpoll.LongPollServiceController;
-import com.vkontakte.miracle.player.PlayerServiceController;
+import com.vkontakte.miracle.service.longpoll.LongPollServiceController;
+import com.vkontakte.miracle.service.player.PlayerServiceController;
 
 public class MiracleApp extends Application {
 

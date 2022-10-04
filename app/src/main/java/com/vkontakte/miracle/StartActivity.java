@@ -16,7 +16,7 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if(SettingsUtil.get().authorized()) {
-            Intent intent = new Intent(this, MiracleActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             this.finish();
         } else {

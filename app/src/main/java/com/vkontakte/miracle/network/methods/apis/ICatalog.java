@@ -2,12 +2,9 @@ package com.vkontakte.miracle.network.methods.apis;
 
 import org.json.JSONObject;
 
-import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 
 public interface ICatalog {
@@ -37,9 +34,41 @@ public interface ICatalog {
             @Field("v") String v);
 
     @FormUrlEncoded
+    @POST("catalog.getAudioArtist")
+    Call<JSONObject> getAudioArtistFromUrl(
+            @Field("url") String url,
+            @Field("need_blocks") int need_blocks,
+            @Field("access_token") String access_token,
+            @Field("v") String v);
+
+    @FormUrlEncoded
     @POST("catalog.getAudio")
     Call<JSONObject> getAudio(
             @Field("owner_id") String owner_id,
+            @Field("need_blocks") int need_blocks,
+            @Field("access_token") String access_token,
+            @Field("v") String v);
+
+    @FormUrlEncoded
+    @POST("catalog.getAudio")
+    Call<JSONObject> getAudio(
+            @Field("need_blocks") int need_blocks,
+            @Field("url") String url,
+            @Field("access_token") String access_token,
+            @Field("v") String v);
+
+    @FormUrlEncoded
+    @POST("catalog.getAudioSearch")
+    Call<JSONObject> getAudioSearch(
+            @Field("query") String query,
+            @Field("need_blocks") int need_blocks,
+            @Field("access_token") String access_token,
+            @Field("v") String v);
+
+    @FormUrlEncoded
+    @POST("catalog.getAudioSearch")
+    Call<JSONObject> getAudioContextSearch(
+            @Field("context") String query,
             @Field("need_blocks") int need_blocks,
             @Field("access_token") String access_token,
             @Field("v") String v);

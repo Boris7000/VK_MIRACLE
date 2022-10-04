@@ -3,7 +3,9 @@ package com.vkontakte.miracle.model.audio.fields;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Artist {
+import java.io.Serializable;
+
+public class Artist implements Serializable {
 
     private String id;
     private final String name;

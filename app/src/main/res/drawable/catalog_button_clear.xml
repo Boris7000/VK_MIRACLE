@@ -17,7 +17,7 @@
         android:gravity="center">
         <bitmap
             android:src="@drawable/ic_cancel_16"
-            android:tint="?attr/colorPrimary"/>
+            android:tint="?attr/colorSecondary"/>
 
     </item>
 

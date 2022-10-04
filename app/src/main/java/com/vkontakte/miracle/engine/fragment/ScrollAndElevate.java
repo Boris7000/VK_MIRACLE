@@ -1,5 +1,7 @@
 package com.vkontakte.miracle.engine.fragment;
 
+import static com.vkontakte.miracle.engine.util.DimensionsUtil.getDimensionByAttributeId;
+
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -7,10 +9,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.tabs.TabLayout;
 import com.vkontakte.miracle.R;
-
-import static com.vkontakte.miracle.engine.util.DimensionsUtil.getDimensionByAttributeId;
 
 public class ScrollAndElevate {
     public static void scrollAndElevate(final NestedScrollView scrollView, final AppBarLayout appBarLayout, final Context context){

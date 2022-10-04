@@ -11,13 +11,16 @@ import org.json.JSONObject;
 
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO_ALBUM;
 
-public class PhotoAlbumItem implements ItemDataHolder {
+import java.util.ArrayList;
+
+public class PhotoAlbumItem implements ItemDataHolder, PhotoWrapContainer {
 
     private final String id;
     private final String ownerId;
     private final String title;
     private final int size;
     private ArrayMap<String, Size> sizes;
+    private final ArrayList<ItemDataHolder> photos = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -37,6 +40,11 @@ public class PhotoAlbumItem implements ItemDataHolder {
 
     public ArrayMap<String, Size> getSizes() {
         return sizes;
+    }
+
+    @Override
+    public ArrayList<ItemDataHolder> getPhotoItems() {
+        return photos;
     }
 
     public PhotoAlbumItem(JSONObject jsonObject) throws JSONException{

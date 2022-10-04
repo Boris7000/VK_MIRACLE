@@ -14,7 +14,7 @@
         android:layout_marginVertical="19dp"
         android:orientation="vertical"
         android:background="@drawable/rounded_card"
-        android:padding="16dp">
+        android:padding="12dp">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -85,6 +85,31 @@ public class LoginActivity extends AppCompatActivity {
             return windowInsets;
         });
 
+        /*
+        TextViewButton showCaptcha = rootView.findViewById(R.id.showCaptcha);
+        TextViewButton showValidationCode = rootView.findViewById(R.id.showValidationCode);
+
+        showCaptcha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AuthState authState = new AuthState();
+                showCaptchaCodeFrame(authState);
+            }
+        });
+
+        showValidationCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AuthState authState = new AuthState();
+                authState.setForceCodeUnableReason(VALIDATION_CODE_HAS_ALREADY_BEEN_RESENT);
+                authState.setDelay(60);
+                authState.setResponseTime(System.currentTimeMillis());
+                authState.setValidationType(VALIDATION_TYPE_CALL);
+                showValidationCodeFrame(authState);
+            }
+        }); */
+
+
         ImageView logo = rootView.findViewById(R.id.logo);
 
         frameContainer = rootView.findViewById(R.id.frameContainer);
@@ -110,6 +135,7 @@ public class LoginActivity extends AppCompatActivity {
         };
         loginField.addTextChangedListener(textWatcher);
         passField.addTextChangedListener(textWatcher);
+
 
         KeyboardVisibilityEvent.setEventListener(this, isOpen -> {
             if(isOpen) {
@@ -218,28 +244,29 @@ public class LoginActivity extends AppCompatActivity {
             if(validationCodeFrameStub!=null) {
                 ViewGroup viewGroup = (ViewGroup) frameContainer.getParent();
                 TransitionManager.beginDelayedTransition(viewGroup);
-                loginFrame.setVisibility(View.GONE);
                 validationCodeFrame = (ValidationCodeFrame) validationCodeFrameStub.inflate();
+                validationCodeFrame.setValues(authState, this);
+                loginFrame.setVisibility(View.GONE);
+                hideCaptchaCodeFrame();
+                return;
             } else {
                 validationCodeFrame = frameContainer.findViewById(R.id.validationCodeFrame);
             }
         }
         if(validationCodeFrame.getVisibility()!=View.VISIBLE){
+            validationCodeFrame.setValues(authState, this);
             ViewGroup viewGroup = (ViewGroup) frameContainer.getParent();
             TransitionManager.beginDelayedTransition(viewGroup);
             loginFrame.setVisibility(View.GONE);
+            hideCaptchaCodeFrame();
             validationCodeFrame.setVisibility(View.VISIBLE);
         }
-        validationCodeFrame.setValues(authState, this);
     }
 
     public void hideValidationCodeFrame(){
         if(validationCodeFrame!=null) {
             if (validationCodeFrame.getVisibility() == View.VISIBLE) {
-                ViewGroup viewGroup = (ViewGroup) frameContainer.getParent();
-                TransitionManager.beginDelayedTransition(viewGroup);
-                validationCodeFrame.setVisibility(View.GONE);
-                loginFrame.setVisibility(View.VISIBLE);
+                validationCodeFrame.close();
             }
         }
     }
@@ -249,30 +276,66 @@ public class LoginActivity extends AppCompatActivity {
             if(captchaCodeFrameStub!=null) {
                 ViewGroup viewGroup = (ViewGroup) frameContainer.getParent();
                 TransitionManager.beginDelayedTransition(viewGroup);
-                loginFrame.setVisibility(View.GONE);
                 captchaCodeFrame = (CaptchaCodeFrame) captchaCodeFrameStub.inflate();
+                captchaCodeFrame.setValues(authState, this);
+                loginFrame.setVisibility(View.GONE);
+                hideValidationCodeFrame();
+                return;
             } else {
                 captchaCodeFrame = frameContainer.findViewById(R.id.captchaCodeFrame);
             }
         }
         if(captchaCodeFrame.getVisibility()!=View.VISIBLE){
+            captchaCodeFrame.setValues(authState, this);
             ViewGroup viewGroup = (ViewGroup) frameContainer.getParent();
             TransitionManager.beginDelayedTransition(viewGroup);
+            hideValidationCodeFrame();
             loginFrame.setVisibility(View.GONE);
             captchaCodeFrame.setVisibility(View.VISIBLE);
         }
-        captchaCodeFrame.setValues(authState, this);
+
     }
 
     public void hideCaptchaCodeFrame(){
         if(captchaCodeFrame!=null) {
             if (captchaCodeFrame.getVisibility() == View.VISIBLE) {
-                ViewGroup viewGroup = (ViewGroup) frameContainer.getParent();
-                TransitionManager.beginDelayedTransition(viewGroup);
-                captchaCodeFrame.setVisibility(View.GONE);
-                loginFrame.setVisibility(View.VISIBLE);
+                captchaCodeFrame.close();
             }
         }
+    }
+
+    public void backToLoginFrame(){
+
+        boolean needHideVCF = false;
+        boolean needHideCCF = false;
+
+        if(validationCodeFrame!=null) {
+            if (validationCodeFrame.getVisibility() == View.VISIBLE) {
+                needHideVCF = true;
+            }
+        }
+
+        if(captchaCodeFrame!=null) {
+            if (captchaCodeFrame.getVisibility() == View.VISIBLE) {
+                needHideCCF = true;
+
+            }
+        }
+
+        if(needHideCCF||needHideVCF){
+            ViewGroup viewGroup = (ViewGroup) frameContainer.getParent();
+            TransitionManager.beginDelayedTransition(viewGroup);
+
+            if(needHideCCF){
+                captchaCodeFrame.close();
+            }
+
+            if(needHideVCF){
+                validationCodeFrame.close();
+            }
+            loginFrame.setVisibility(View.VISIBLE);
+        }
+
     }
 
     public void setCanLogin(boolean canLogin) {

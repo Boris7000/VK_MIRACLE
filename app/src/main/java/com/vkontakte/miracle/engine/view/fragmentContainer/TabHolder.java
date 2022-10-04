@@ -1,15 +1,14 @@
 package com.vkontakte.miracle.engine.view.fragmentContainer;
 
-import com.vkontakte.miracle.engine.fragment.MiracleFragment;
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
 public class TabHolder {
 
+    private final ArrayList<Fragment> fragments = new ArrayList<>();
 
-    private final ArrayList<MiracleFragment> fragments = new ArrayList<>();
-
-    public void addFragment(MiracleFragment fragment){
+    public void addFragment(Fragment fragment){
         fragments.add(fragment);
     }
 
@@ -19,7 +18,7 @@ public class TabHolder {
         }
     }
 
-    public MiracleFragment getLastFragment(){
+    public Fragment getLastFragment(){
         if(fragments.isEmpty()){
             return null;
         }else {
@@ -27,7 +26,7 @@ public class TabHolder {
         }
     }
 
-    public MiracleFragment getFirstFragment(){
+    public Fragment getFirstFragment(){
         if(fragments.isEmpty()){
             return null;
         }else {
@@ -39,7 +38,7 @@ public class TabHolder {
         return fragments.size();
     }
 
-    public ArrayList<MiracleFragment> getFragments() {
+    public ArrayList<Fragment> getFragments() {
         return fragments;
     }
 

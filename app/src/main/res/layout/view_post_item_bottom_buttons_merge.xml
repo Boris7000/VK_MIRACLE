@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
@@ -11,7 +12,7 @@
             android:layout_height="36dp"
             android:minWidth="52dp"
             android:gravity="center"
-            android:background="@drawable/rounded_button_bg_post"
+            android:background="@drawable/rounded_button_neutral"
             android:paddingHorizontal="9dp">
 
             <ImageView
@@ -20,7 +21,7 @@
                 android:layout_height="24dp"
                 android:scaleType="centerInside"
                 app:srcCompat="@drawable/ic_like_24"
-                app:tint="?attr/colorOnButtonOnCardBackground" />
+                app:tint="?attr/colorOnButtonNeutral" />
 
             <TextView
                 android:id="@+id/likesText"
@@ -28,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:fontFamily="sans-serif-medium"
-                android:textColor="?attr/colorOnButtonOnCardBackground"
+                android:textColor="?attr/colorOnButtonNeutral"
                 android:textSize="13sp"
                 android:visibility="gone"/>
 
@@ -41,7 +42,7 @@
             android:minWidth="52dp"
             android:layout_marginStart="8dp"
             android:gravity="center"
-            android:background="@drawable/rounded_button_bg_post"
+            android:background="@drawable/rounded_button_neutral"
             android:paddingHorizontal="9dp">
 
             <ImageView
@@ -49,14 +50,14 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 app:srcCompat="@drawable/ic_comments_24"
-                app:tint="?attr/colorOnButtonOnCardBackground"/>
+                app:tint="?attr/colorOnButtonNeutral"/>
             <TextView
                 android:id="@+id/commentsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:fontFamily="sans-serif-medium"
-                android:textColor="?attr/colorOnButtonOnCardBackground"
+                android:textColor="?attr/colorOnButtonNeutral"
                 android:textSize="13sp"
                 android:visibility="gone"/>
         </LinearLayout>
@@ -68,7 +69,7 @@
             android:minWidth="52dp"
             android:layout_marginStart="8dp"
             android:gravity="center"
-            android:background="@drawable/rounded_button_bg_post"
+            android:background="@drawable/rounded_button_neutral"
             android:paddingHorizontal="9dp">
 
             <ImageView
@@ -76,14 +77,14 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 app:srcCompat="@drawable/ic_share_24"
-                app:tint="?attr/colorOnButtonOnCardBackground"/>
+                app:tint="?attr/colorOnButtonNeutral"/>
             <TextView
                 android:id="@+id/repostsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:fontFamily="sans-serif-medium"
-                android:textColor="?attr/colorOnButtonOnCardBackground"
+                android:textColor="?attr/colorOnButtonNeutral"
                 android:textSize="13sp"
                 android:visibility="gone"/>
         </LinearLayout>
@@ -102,15 +103,16 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="4dp"
             android:fontFamily="sans-serif-medium"
-            android:textColor="?attr/colorEmphasis_60"
-            android:textSize="13sp"/>
+            android:textColor="?attr/colorEmphasis_50"
+            android:textSize="13sp"
+            tools:text="252"/>
 
         <ImageView
             android:id="@+id/viewsIcon"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            app:srcCompat="@drawable/ic_views_28"
-            app:tint="?attr/colorEmphasis_60" />
+            app:srcCompat="@drawable/ic_views_outline_28"
+            app:tint="?attr/colorEmphasis_50" />
 
     </LinearLayout>
 

@@ -15,6 +15,39 @@ public class StringsUtil {
         return editText.getText().toString().trim();
     }
 
+    public static String getCatalogNameFromUrl(String url){
+        String urlTrimmed = url.trim();
+        if(urlTrimmed.contains("vk.com")){
+            String[] protocols = new String[]{"https://","http://"};
+
+            int positionOfProtocolName = -1;
+            int indexOfProtocolName = -1;
+
+            for (int i=0; i<protocols.length; i++){
+                positionOfProtocolName = url.indexOf(protocols[i]);
+                if(positionOfProtocolName>=0){
+                    indexOfProtocolName = i;
+                    break;
+                }
+            }
+
+            if(positionOfProtocolName>=0){
+                urlTrimmed = urlTrimmed.substring(protocols[indexOfProtocolName].length());
+            }
+
+            if(urlTrimmed.length()>7){
+                urlTrimmed = urlTrimmed.substring(7);
+
+                int positionOfQuestionMark = urlTrimmed.indexOf('?');
+
+                if(positionOfQuestionMark>=0){
+                    return urlTrimmed.substring(0, positionOfQuestionMark);
+                }
+            }
+        }
+        return "";
+    }
+
     public static String stringFromArrayList(ArrayList<String> strings,String divider){
         StringBuilder stringBuilder = new StringBuilder();
 

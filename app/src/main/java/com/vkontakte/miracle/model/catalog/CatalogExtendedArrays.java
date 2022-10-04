@@ -2,10 +2,14 @@ package com.vkontakte.miracle.model.catalog;
 
 import static com.vkontakte.miracle.engine.util.APIUtil.createArtistsMap;
 import static com.vkontakte.miracle.engine.util.APIUtil.createAudiosMap;
+import static com.vkontakte.miracle.engine.util.APIUtil.createCatalogBannersMap;
+import static com.vkontakte.miracle.engine.util.APIUtil.createCatalogSuggestionsMap;
 import static com.vkontakte.miracle.engine.util.APIUtil.createCatalogUsersMap;
 import static com.vkontakte.miracle.engine.util.APIUtil.createGroupsMap;
+import static com.vkontakte.miracle.engine.util.APIUtil.createLinksMap;
 import static com.vkontakte.miracle.engine.util.APIUtil.createPlaylistsMap;
 import static com.vkontakte.miracle.engine.util.APIUtil.createProfilesMap;
+import static com.vkontakte.miracle.engine.util.APIUtil.createRecommendedPlaylistsMap;
 
 import android.util.ArrayMap;
 
@@ -26,7 +30,11 @@ public class CatalogExtendedArrays {
     private ArrayMap<String, GroupItem> groupsMap;
     private ArrayMap<String, AudioItem> audiosMap;
     private ArrayMap<String, PlaylistItem> playlistsMap;
+    private ArrayMap<String, RecommendedPlaylist> recommendedPlaylistsMap;
     private ArrayMap<String, ArtistItem> artistsMap;
+    private ArrayMap<String, CatalogLink> linksMap;
+    private ArrayMap<String, CatalogBanner> bannersMap;
+    private ArrayMap<String, CatalogSuggestion> suggestionsMap;
 
     public ArrayMap<String, ProfileItem> getProfilesMap() {
         return profilesMap;
@@ -48,8 +56,24 @@ public class CatalogExtendedArrays {
         return playlistsMap;
     }
 
+    public ArrayMap<String, RecommendedPlaylist> getRecommendedPlaylistsMap() {
+        return recommendedPlaylistsMap;
+    }
+
     public ArrayMap<String, ArtistItem> getArtistsMap() {
         return artistsMap;
+    }
+
+    public ArrayMap<String, CatalogLink> getLinksMap() {
+        return linksMap;
+    }
+
+    public ArrayMap<String, CatalogBanner> getBannersMap() {
+        return bannersMap;
+    }
+
+    public ArrayMap<String, CatalogSuggestion> getSuggestionsMap() {
+        return suggestionsMap;
     }
 
     public CatalogExtendedArrays(JSONObject response) throws JSONException {
@@ -74,8 +98,25 @@ public class CatalogExtendedArrays {
             playlistsMap = createPlaylistsMap(response.getJSONArray("playlists"), profilesMap, groupsMap);
         }
 
+        if(response.has("recommended_playlists")){
+            recommendedPlaylistsMap = createRecommendedPlaylistsMap(response.getJSONArray("recommended_playlists"),
+                    playlistsMap, audiosMap);
+        }
+
         if(response.has("artists")){
             artistsMap = createArtistsMap(response.getJSONArray("artists"));
+        }
+
+        if(response.has("links")){
+            linksMap = createLinksMap(response.getJSONArray("links"));
+        }
+
+        if(response.has("catalog_banners")){
+            bannersMap = createCatalogBannersMap(response.getJSONArray("catalog_banners"));
+        }
+
+        if(response.has("suggestions")){
+            suggestionsMap = createCatalogSuggestionsMap(response.getJSONArray("suggestions"));
         }
     }
 

@@ -8,8 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.vkontakte.miracle.MiracleApp;
-import com.vkontakte.miracle.longpoll.model.MessageAddedUpdate;
-import com.vkontakte.miracle.longpoll.model.MessageReadUpdate;
+import com.vkontakte.miracle.service.longpoll.model.MessageAddedUpdate;
+import com.vkontakte.miracle.service.longpoll.model.MessageReadUpdate;
 import com.vkontakte.miracle.model.users.ProfileItem;
 
 import java.io.File;
@@ -27,6 +27,7 @@ public class StorageUtil {
     public static final String CACHES_NAME_PUBLIC = "Caches";
     public static final String USERS_NAME = "users.ser";
     public static final String SONGS_NAME = "songs.ser";
+    public static final String MP3S_NAME = "MP3s";
     public static final String PLAYLISTS_NAME = "playlists.ser";
     public static final String IMAGES_NAME = "Images";
 
@@ -76,13 +77,54 @@ public class StorageUtil {
 
         createNewDirectory(IMAGES_NAME, cachesDir);
 
+        createNewDirectory(MP3S_NAME, cachesDir);
+
         createNewFile(MESSAGE_ADDED_LONG_POLL_UPDATES_NAME,cachesDir);
 
         createNewFile(MESSAGE_READ_LONG_POLL_UPDATES_NAME,cachesDir);
     }
 
-    private File createNewFile(String name, File parent){
-        File file = new File(parent,name);
+    public void removeDirectory(@Nullable File file){
+        if(file!=null) {
+            File[] contents = file.listFiles();
+            if (contents != null) {
+                for (File f : contents) {
+                    removeDirectory(f);
+                }
+            }
+            if(file.delete()){
+                Log.d(LOG_TAG, "Deleted "+file.getAbsolutePath());
+            } else {
+                Log.d(LOG_TAG, "Unable to delete "+file.getAbsolutePath());
+            }
+        }
+    }
+
+    public void writeObject(String path, File parent, Object object){
+        ObjectOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = getOutputStream(path, parent);
+            if(fileOutputStream!=null) {
+                fileOutputStream.writeObject(object);
+                fileOutputStream.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public File createNewFile(String name, File parent){
+        return createNewFile(new File(parent,name));
+    }
+
+    public File createNewFile(File file){
         if(!file.exists()) {
             try {
                 if (file.createNewFile()) {
@@ -95,7 +137,21 @@ public class StorageUtil {
         return file;
     }
 
-    private File createNewDirectory(String name, File parent){
+    public boolean deleteFile(String name, File parent){
+        return deleteFile(new File(parent,name));
+    }
+
+    public boolean deleteFile(File file){
+        if(file.exists()) {
+            if (file.delete()) {
+                Log.d(LOG_TAG, "Deleted file "+file.getAbsolutePath());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public File createNewDirectory(String name, File parent){
         File file = new File(parent,name);
         if(!file.exists()) {
             if (file.mkdir()) {
@@ -206,10 +262,10 @@ public class StorageUtil {
 
     @NonNull
     public ArrayList<ProfileItem> loadUsers(){
-        return new ArrayListReader<ProfileItem>().read(USERS_NAME, getPublicCachesDir(), object -> (ProfileItem) object);
+        return new ArrayListReader<ProfileItem>(this)
+                .read(USERS_NAME, getPublicCachesDir(), object -> (ProfileItem) object);
     }
 
-    @Nullable
     public ProfileItem currentUser(){
         return currentUser;
     }
@@ -217,6 +273,52 @@ public class StorageUtil {
     public void saveUsers(ArrayList<ProfileItem> profileItems){
         writeObject(USERS_NAME, getPublicCachesDir(), profileItems);
         updateCurrentUser();
+    }
+
+    ////////////////////////////////////////////////////
+
+    public static class ArrayListReader<T>{
+
+        private final StorageUtil storageUtil;
+
+        public ArrayListReader(StorageUtil storageUtil) {
+            this.storageUtil = storageUtil;
+        }
+
+        public ArrayList<T> read(String path, File parent, AnonymousConverter<T> converter){
+            ObjectInputStream objectInputStream = null;
+            try {
+                objectInputStream = storageUtil.getInputStream(path, parent);
+                if(objectInputStream!=null) {
+                    ArrayList<?> objects = (ArrayList<?>) objectInputStream.readObject();
+                    objectInputStream.close();
+                    if (objects == null) {
+                        objects = new ArrayList<>();
+                    }
+                    ArrayList<T> items = new ArrayList<>();
+                    for (Object object : objects) {
+                        if(object!=null){
+                            items.add(converter.convert(object));
+                        }
+                    }
+                    return items;
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+                if (objectInputStream != null) {
+                    try {
+                        objectInputStream.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+            return new ArrayList<>();
+        }
+    }
+
+    public interface AnonymousConverter<T>{
+        T convert(Object object);
     }
 
     ////////////////////////////////////////////////////
@@ -246,6 +348,7 @@ public class StorageUtil {
                 bitmap.compress(Bitmap.CompressFormat.PNG, Bitmap.CompressFormat.PNG.ordinal(), fos);
 
                 fos.close();
+
             } catch (IOException e) {
                 e.printStackTrace();
                 if (fos != null) {
@@ -262,7 +365,7 @@ public class StorageUtil {
 
     @Nullable
     public Bitmap loadBitmap(@Nullable String path){
-        return loadBitmap(path,getCurrentUserCachesDir());
+        return loadBitmap(path, getCurrentUserCachesDir());
     }
 
     @Nullable
@@ -294,81 +397,6 @@ public class StorageUtil {
 
     ////////////////////////////////////////////////////
 
-    public void removeDirectory(@Nullable File file){
-        if(file!=null) {
-            File[] contents = file.listFiles();
-            if (contents != null) {
-                for (File f : contents) {
-                    removeDirectory(f);
-                }
-            }
-            if(file.delete()){
-                Log.d(LOG_TAG, "Deleted "+file.getAbsolutePath());
-            } else {
-                Log.d(LOG_TAG, "Unable to delete "+file.getAbsolutePath());
-            }
-        }
-    }
-
-    private void writeObject(String path, File parent, Object object){
-        ObjectOutputStream fileOutputStream = null;
-        try {
-            fileOutputStream = getOutputStream(path, parent);
-            if(fileOutputStream!=null) {
-                fileOutputStream.writeObject(object);
-                fileOutputStream.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            if (fileOutputStream != null) {
-                try {
-                    fileOutputStream.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private class ArrayListReader<T>{
-        private ArrayList<T> read(String path, File parent, AnonymousConverter<T> converter){
-            ObjectInputStream objectInputStream = null;
-            try {
-                objectInputStream = getInputStream(path, parent);
-                if(objectInputStream!=null) {
-                    ArrayList<?> objects = (ArrayList<?>) objectInputStream.readObject();
-                    objectInputStream.close();
-                    if (objects == null) {
-                        objects = new ArrayList<>();
-                    }
-                    ArrayList<T> items = new ArrayList<>();
-                    for (Object object : objects) {
-                        if(object!=null){
-                            items.add(converter.convert(object));
-                        }
-                    }
-                    return items;
-                }
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-                if (objectInputStream != null) {
-                    try {
-                        objectInputStream.close();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-            return new ArrayList<>();
-        }
-    }
-
-    private interface AnonymousConverter<T>{
-        T convert(Object object);
-    }
-
-    ////////////////////////////////////////////////////
-
     @NonNull
     public ArrayList<MessageAddedUpdate> loadMessageAddedLongPollUpdates(){
         return loadMessageAddedLongPollUpdates(getCurrentUserCachesDir());
@@ -376,12 +404,11 @@ public class StorageUtil {
 
     @NonNull
     public ArrayList<MessageAddedUpdate> loadMessageAddedLongPollUpdates(File parent){
-        return new ArrayListReader<MessageAddedUpdate>()
+        return new ArrayListReader<MessageAddedUpdate>(this)
                 .read(MESSAGE_ADDED_LONG_POLL_UPDATES_NAME, parent, object -> (MessageAddedUpdate) object);
     }
 
     public void writeMessageAddedLongPollUpdates(ArrayList<MessageAddedUpdate> longPollUpdates, File parent){
-
 
         ArrayList<MessageAddedUpdate> previousLongPollUpdates = loadMessageAddedLongPollUpdates(parent);
 
@@ -401,7 +428,7 @@ public class StorageUtil {
 
     @NonNull
     public ArrayList<MessageReadUpdate> loadMessageReadLongPollUpdates(File parent){
-        return new ArrayListReader<MessageReadUpdate>()
+        return new ArrayListReader<MessageReadUpdate>(this)
                 .read(MESSAGE_READ_LONG_POLL_UPDATES_NAME, parent, object -> (MessageReadUpdate) object);
     }
 

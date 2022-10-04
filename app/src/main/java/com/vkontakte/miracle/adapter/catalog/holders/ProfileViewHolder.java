@@ -2,7 +2,7 @@ package com.vkontakte.miracle.adapter.catalog.holders;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.vkontakte.miracle.engine.util.FragmentUtil.goToProfile;
+import static com.vkontakte.miracle.engine.util.NavigationUtil.goToProfile;
 
 import android.view.LayoutInflater;
 import android.view.View;

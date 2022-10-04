@@ -22,6 +22,7 @@ public class AudioViewHolder extends MiracleViewHolder {
     public void bind(ItemDataHolder itemDataHolder) {
         AudioItem audioItem = (AudioItem) itemDataHolder;
         audioItemView.setValues(audioItem);
+        super.bind(audioItem);
     }
 
 }

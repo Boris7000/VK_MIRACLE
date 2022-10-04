@@ -17,9 +17,10 @@
         android:layout_height="wrap_content"
         android:gravity="start"
         android:textSize="15sp"
+        android:textColor="?attr/colorSecondary"
         android:includeFontPadding="false"
         android:autoLink="web"
         app:highlightColor="?attr/colorPrimary"
         app:enableClicking="true"
-        tools:text="Описание"/>
+        tools:text="Описание https://vk.com"/>
 </FrameLayout>

@@ -3,7 +3,7 @@ package com.vkontakte.miracle.adapter.messages.holders;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO_ITEM;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
 
 import android.view.View;
@@ -79,7 +79,7 @@ public class MessageViewHolder extends MiracleViewHolder {
                     photoGridView = (PhotoGridView) photoGridViewHolder.getChildAt(0);
                     MiracleViewRecycler miracleViewRecycler =
                             getMiracleAdapter().getMiracleViewRecycler(itemDataHolder.getViewHolderType());
-                    miracleViewRecycler.setMaxRecycledViews(TYPE_PHOTO_ITEM, 15);
+                    miracleViewRecycler.setMaxRecycledViews(TYPE_PHOTO, 15);
                     photoGridView.setRecycledViewPool(miracleViewRecycler);
                 }
                 if(photoGridViewHolder.getVisibility()!=VISIBLE) {

@@ -24,7 +24,15 @@ public class ErrorViewHolder extends MiracleViewHolder {
     @Override
     public void bind(ItemDataHolder itemDataHolder) {
         if(itemDataHolder instanceof ErrorDataHolder) {
-            textView.setText(((ErrorDataHolder) itemDataHolder).getErrorString());
+            ErrorDataHolder errorDataHolder = (ErrorDataHolder) itemDataHolder;
+            if(!errorDataHolder.getErrorString().isEmpty()){
+                textView.setText(((ErrorDataHolder) itemDataHolder).getErrorString());
+            } else {
+                if(errorDataHolder.getErrorStringResource()!=0) {
+                    textView.setText(errorDataHolder.getErrorStringResource());
+                }
+            }
+
         }
     }
 

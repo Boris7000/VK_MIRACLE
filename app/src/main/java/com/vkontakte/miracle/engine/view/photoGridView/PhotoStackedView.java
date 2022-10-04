@@ -1,7 +1,7 @@
 package com.vkontakte.miracle.engine.view.photoGridView;
 
 import static com.vkontakte.miracle.engine.adapter.MiracleViewRecycler.resolveSingleTypeItems;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO_ITEM;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO;
 import static com.vkontakte.miracle.engine.util.DimensionsUtil.dpToPx;
 
 import android.content.Context;
@@ -35,7 +35,7 @@ public class PhotoStackedView extends FrameLayout {
     private final ArrayMap<Integer, ViewHolderFabric> viewHolderFabricMap = new ArrayMap<>();
     private MiracleViewRecycler recycledViewPool = new MiracleViewRecycler();
     {
-        viewHolderFabricMap.put(TYPE_PHOTO_ITEM, new PhotoGridItemViewHolder.Fabric());
+        viewHolderFabricMap.put(TYPE_PHOTO, new PhotoGridItemViewHolder.Fabric());
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////

@@ -43,8 +43,8 @@ public class HorizontalListPhotoAlbumViewHolder extends MiracleViewHolder {
 
         Context context = itemView.getContext();
 
-        HorizontalListPhotoAlbumItem horizontalListPhotoAlbumItem = (HorizontalListPhotoAlbumItem) itemDataHolder;
-        ArrayList<PhotoAlbumItem> photoAlbumItems = horizontalListPhotoAlbumItem.getPhotoAlbumItems();
+        PhotoAlbumsHolder photoAlbumsHolder = (PhotoAlbumsHolder) itemDataHolder;
+        ArrayList<PhotoAlbumItem> photoAlbumItems = photoAlbumsHolder.getPhotoAlbumItems();
         title.setText(context.getString(R.string.albums));
 
         if(badge==null) {
@@ -59,7 +59,7 @@ public class HorizontalListPhotoAlbumViewHolder extends MiracleViewHolder {
 
         recyclerView.setAdapter(new HorizontalPhotoAlbumsAdapter(photoAlbumItems,LayoutInflater.from(context)));
 
-        if(photoAlbumItems.size()<horizontalListPhotoAlbumItem.getCount()){
+        if(photoAlbumItems.size()< photoAlbumsHolder.getCount()){
             if(button.getVisibility()!=View.VISIBLE) {
                 button.setVisibility(View.VISIBLE);
             }

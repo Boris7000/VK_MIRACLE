@@ -3,11 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginHorizontal="8dp"
     android:layout_marginTop="4dp"
     android:layout_marginBottom="8dp"
-    android:translationZ="?attr/globalTranslationZ"
-    android:background="@drawable/rounded_card">
+    android:background="@drawable/rounded_card_window_color">
     <TextView
         android:id="@+id/errorText"
         android:layout_width="match_parent"

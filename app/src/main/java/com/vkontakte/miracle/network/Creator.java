@@ -13,6 +13,7 @@ import com.vkontakte.miracle.network.methods.apis.IMessage;
 import com.vkontakte.miracle.network.methods.apis.IOauth;
 import com.vkontakte.miracle.network.methods.apis.IPhotos;
 import com.vkontakte.miracle.network.methods.apis.IUsers;
+import com.vkontakte.miracle.network.methods.apis.IUtils;
 import com.vkontakte.miracle.network.methods.apis.IWall;
 
 import java.util.concurrent.TimeUnit;
@@ -98,5 +99,8 @@ public class Creator {
     }
     public static IPhotos photos(){
         return getBuilder().create(IPhotos.class);
+    }
+    public static IUtils utils(){
+        return getBuilder().create(IUtils.class);
     }
 }

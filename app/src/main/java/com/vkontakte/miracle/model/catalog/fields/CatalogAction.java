@@ -2,6 +2,7 @@ package com.vkontakte.miracle.model.catalog.fields;
 
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_CREATE_PLAYLIST;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_OPEN_SECTION;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_PLAY;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_PLAY_SHUFFLED;
 
 import android.util.Log;
@@ -22,6 +23,7 @@ public class CatalogAction implements ItemDataHolder {
     private String target;
     private String url;
     private String ownerId;
+    private String blockId;
     private final ArrayList<String> targetBlockIds = new ArrayList<>();
     private int refItemsCount;
     private String refLayoutName;
@@ -65,6 +67,10 @@ public class CatalogAction implements ItemDataHolder {
 
     public String getUrl() {
         return url;
+    }
+
+    public String getBlockId() {
+        return blockId;
     }
 
     public CatalogAction(JSONObject jsonObject) throws JSONException {
@@ -113,6 +119,10 @@ public class CatalogAction implements ItemDataHolder {
         if(jsonObject.has("ref_data_type")) {
             refDataType = jsonObject.getString("ref_data_type");
         }
+
+        if(jsonObject.has("block_id")) {
+            blockId = jsonObject.getString("block_id");
+        }
     }
 
     @Override
@@ -124,6 +134,9 @@ public class CatalogAction implements ItemDataHolder {
             }
             case "play_shuffled_audios_from_block":{
                 return TYPE_BUTTON_PLAY_SHUFFLED;
+            }
+            case "play_audios_from_block":{
+                return TYPE_BUTTON_PLAY;
             }
             case "open_section":{
                 return TYPE_BUTTON_OPEN_SECTION;

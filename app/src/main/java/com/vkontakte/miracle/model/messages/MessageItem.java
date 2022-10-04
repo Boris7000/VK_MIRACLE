@@ -6,7 +6,7 @@ import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_M
 import android.util.ArrayMap;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.longpoll.model.MessageAddedUpdate;
+import com.vkontakte.miracle.service.longpoll.model.MessageAddedUpdate;
 import com.vkontakte.miracle.model.Attachments;
 import com.vkontakte.miracle.model.Owner;
 

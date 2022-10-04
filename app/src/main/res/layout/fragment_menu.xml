@@ -115,11 +115,10 @@
                             android:scaleType="centerInside"
                             android:src="@drawable/ic_do_not_disturb_28"
                             app:icon_color="?attr/colorOnSecondary"
-                            app:background_color="?attr/colorPrimary"
+                            app:background_color="?attr/colorSecondary"
                             app:disabled_icon_color="?attr/colorOnSecondaryContainerDisabled"
                             app:disabled_background_color="?attr/colorSecondaryContainerDisabled"
-                            app:shapeAppearanceOverlay="@style/CircleShapeAppearance"
-                            app:animation_duration="1200"/>
+                            app:shapeAppearanceOverlay="@style/CircleShapeAppearance"/>
 
                         <com.miracle.button.SwitchButton
                             android:id="@+id/incognito_switch"
@@ -127,10 +126,10 @@
                             android:layout_height="54dp"
                             android:layout_marginEnd="12dp"
                             android:scaleType="centerInside"
-                            android:src="@drawable/ic_views_28"
+                            android:src="@drawable/ic_incognito_28"
                             android:enabled="false"
                             app:icon_color="?attr/colorOnSecondary"
-                            app:background_color="?attr/colorPrimary"
+                            app:background_color="?attr/colorSecondary"
                             app:disabled_icon_color="?attr/colorOnSecondaryContainerDisabled"
                             app:disabled_background_color="?attr/colorSecondaryContainerDisabled"
                             app:shapeAppearanceOverlay="@style/CircleShapeAppearance"/>
@@ -145,7 +144,7 @@
                             android:enabled="false"
                             app:auto_click_switch="false"
                             app:icon_color="?attr/colorOnSecondary"
-                            app:background_color="?attr/colorPrimary"
+                            app:background_color="?attr/colorSecondary"
                             app:disabled_icon_color="?attr/colorOnSecondaryContainerDisabled"
                             app:disabled_background_color="?attr/colorSecondaryContainerDisabled"
                             app:shapeAppearanceOverlay="@style/CircleShapeAppearance"/>
@@ -263,7 +262,7 @@
                         android:textAllCaps="false"
                         android:textSize="14sp"
                         app:drawableEndCompat="@drawable/ic_chevron_24"
-                        app:drawableStartCompat="@drawable/ic_videos_28"
+                        app:drawableStartCompat="@drawable/ic_vk_videos_outline_28"
                         app:drawableTint="?attr/colorPrimary" />
 
                     <TextView

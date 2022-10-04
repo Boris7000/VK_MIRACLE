@@ -8,12 +8,12 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 
-import com.vkontakte.miracle.MiracleActivity;
+import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.SettingsUtil;
 import com.vkontakte.miracle.engine.util.UserDataUtil;
-import com.vkontakte.miracle.longpoll.LongPollServiceController;
+import com.vkontakte.miracle.service.longpoll.LongPollServiceController;
 import com.vkontakte.miracle.model.users.ProfileItem;
 
 public class RegisterDevice extends AsyncExecutor<Boolean> {
@@ -52,7 +52,7 @@ public class RegisterDevice extends AsyncExecutor<Boolean> {
         if(object){
             SettingsUtil.get().storeAuthorized(true);
             LongPollServiceController.get().startExecuting();
-            Intent intent = new Intent(loginActivity, MiracleActivity.class);
+            Intent intent = new Intent(loginActivity, MainActivity.class);
             loginActivity.startActivity(intent);
             loginActivity.finish();
             loginActivity.overridePendingTransition(R.anim.slide_in,R.anim.slide_out);

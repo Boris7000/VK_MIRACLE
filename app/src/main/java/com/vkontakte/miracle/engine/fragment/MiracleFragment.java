@@ -1,30 +1,88 @@
 package com.vkontakte.miracle.engine.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.vkontakte.miracle.MiracleActivity;
+import com.vkontakte.miracle.MainActivity;
 
-public abstract class MiracleFragment extends Fragment {
+public abstract class MiracleFragment extends Fragment implements IMiracleFragment {
 
-    private MiracleActivity miracleActivity;
+    private MainActivity mainActivity;
+    private Bundle notUsedSavedInstanceState;
+
+    @NonNull
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        if(savedInstanceState!=null&&!savedInstanceState.isEmpty()){
+            readSavedInstance(savedInstanceState);
+        }
+
+        Bundle arguments = getArguments();
+        if(arguments!=null&&!arguments.isEmpty()){
+            readBundleArguments(arguments);
+        }
+
+        View rootView = inflateRootView(inflater, container);
+
+        findViews(rootView);
+        initViews();
+
+        return rootView;
+    }
+
+    @NonNull
+    public abstract View inflateRootView(LayoutInflater inflater, ViewGroup container);
+
+    public void findViews(@NonNull View rootView) {}
+
+    public void initViews() {}
+
+    public void readSavedInstance(Bundle savedInstanceState){}
+
+    public void readBundleArguments(Bundle arguments){}
+
+    public void onClearSavedInstance(@NonNull Bundle savedInstanceState) {}
 
     @CallSuper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        miracleActivity = (MiracleActivity) getActivity();
+        mainActivity = (MainActivity) getActivity();
     }
 
-    public MiracleActivity getMiracleActivity(){
-        return miracleActivity;
+    @CallSuper
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(notUsedSavedInstanceState !=null&&!notUsedSavedInstanceState.isEmpty()) {
+            onClearSavedInstance(notUsedSavedInstanceState);
+        }
     }
 
-    public abstract void scrollToTop();
+    @CallSuper
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        notUsedSavedInstanceState = outState;
+        super.onSaveInstanceState(outState);
+    }
 
+    @Override
+    public MainActivity getMiracleActivity(){
+        return mainActivity;
+    }
+
+    @Override
+    public void scrollToTop(){}
+
+    @Override
     public boolean notTop(){
         return false;
     }

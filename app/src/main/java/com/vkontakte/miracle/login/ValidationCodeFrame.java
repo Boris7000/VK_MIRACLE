@@ -8,8 +8,6 @@ import static com.vkontakte.miracle.login.AuthState.VALIDATION_TYPE_CALL;
 import static com.vkontakte.miracle.login.AuthState.VALIDATION_TYPE_SMS;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -21,8 +19,8 @@ import androidx.annotation.Nullable;
 
 import com.miracle.button.TextViewButton;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.TimeUtil;
+import com.vkontakte.miracle.executors.util.ListenableTimer;
 
 import java.util.Locale;
 
@@ -34,7 +32,7 @@ public class ValidationCodeFrame extends LinearLayout {
     private LinearLayout forceSMSHolder;
     private TextViewButton forceSMSButton;
     private TextView forceSMSTimer;
-    private AsyncExecutor<Boolean> timer;
+    private ListenableTimer timer;
     private AuthState authState;
 
     public ValidationCodeFrame(Context context) {
@@ -152,9 +150,15 @@ public class ValidationCodeFrame extends LinearLayout {
             stopTimer();
             loginActivity.setCanLogin(true);
             loginActivity.setText("");
-            loginActivity.hideValidationCodeFrame();
+            loginActivity.backToLoginFrame();
         });
 
+    }
+
+    public void close(){
+        validationCodeField.setText("");
+        stopTimer();
+        setVisibility(GONE);
     }
 
     public void clearFocus(){
@@ -172,28 +176,12 @@ public class ValidationCodeFrame extends LinearLayout {
         forceSMSHolder.setVisibility(VISIBLE);
         forceSMSTimer.setVisibility(VISIBLE);
         forceSMSButton.setEnabled(false);
-        final long finalRemain = Math.max(authState.getDelay()*1000L
+        long delay = Math.max(authState.getDelay()*1000L
                 -(System.currentTimeMillis()-authState.getResponseTime()),0);
-        if(finalRemain>0){
+        if(delay>0){
             if(timer == null || timer.workIsDone()) {
-                timer = new AsyncExecutor<Boolean>() {
-                    @Override
-                    public Boolean inBackground() {
-                        Locale locale = Locale.getDefault();
-                        long remain = finalRemain;
-                        while (remain>0){
-                            remain-=1000;
-                            String timerString = TimeUtil.getDurationStringMills(locale, remain);
-                            new Handler(Looper.getMainLooper()).post(() -> forceSMSTimer.setText(timerString));
-                            try {
-                                Thread.sleep(Math.max(1,Math.min(remain,1000L)));
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                                return false;
-                            }
-                        }
-                        return true;
-                    }
+                Locale locale = Locale.getDefault();
+                timer = new ListenableTimer(delay, 1000){
                     @Override
                     public void onExecute(Boolean object) {
                         if(object) {
@@ -202,6 +190,10 @@ public class ValidationCodeFrame extends LinearLayout {
                         }
                     }
                 };
+                timer.setOnTickListener((remaining, total) -> {
+                    String timerString = TimeUtil.getDurationStringMills(locale, remaining);
+                    forceSMSTimer.setText(timerString);
+                });
                 timer.start();
             }
         } else {

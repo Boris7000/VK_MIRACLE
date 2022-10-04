@@ -3,7 +3,6 @@ package com.vkontakte.miracle.fragment.messages;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.vkontakte.miracle.engine.util.APIUtil.createOwnersMap;
-import static com.vkontakte.miracle.engine.util.AdapterUtil.getVerticalLayoutManager;
 import static com.vkontakte.miracle.engine.util.ColorUtil.getColorByAttributeId;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 import static com.vkontakte.miracle.engine.util.StringsUtil.getMembersDeclensions;
@@ -35,24 +34,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
-import com.vkontakte.miracle.MiracleActivity;
+import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.messages.ChatAdapter;
 import com.vkontakte.miracle.adapter.messages.ReplySwipeCallback;
-import com.vkontakte.miracle.engine.adapter.MiracleAdapter;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.async.ExecutorConveyor;
-import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
+import com.vkontakte.miracle.engine.fragment.side.SideRecyclerFragment;
 import com.vkontakte.miracle.engine.util.LargeDataStorage;
+import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.engine.util.TimeUtil;
-import com.vkontakte.miracle.longpoll.LongPollServiceController;
-import com.vkontakte.miracle.longpoll.listeners.OnMessageTypingUpdateListener;
-import com.vkontakte.miracle.longpoll.listeners.OnUserOnlineUpdateListener;
-import com.vkontakte.miracle.longpoll.model.MessageTypingUpdate;
-import com.vkontakte.miracle.longpoll.model.UserOnlineUpdate;
 import com.vkontakte.miracle.model.Owner;
 import com.vkontakte.miracle.model.messages.ConversationItem;
 import com.vkontakte.miracle.model.messages.MessageItem;
@@ -62,6 +57,11 @@ import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.model.users.fields.LastSeen;
 import com.vkontakte.miracle.network.methods.Message;
 import com.vkontakte.miracle.network.methods.Users;
+import com.vkontakte.miracle.service.longpoll.LongPollServiceController;
+import com.vkontakte.miracle.service.longpoll.listeners.OnMessageTypingUpdateListener;
+import com.vkontakte.miracle.service.longpoll.listeners.OnUserOnlineUpdateListener;
+import com.vkontakte.miracle.service.longpoll.model.MessageTypingUpdate;
+import com.vkontakte.miracle.service.longpoll.model.UserOnlineUpdate;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -70,10 +70,10 @@ import java.util.ArrayList;
 
 import retrofit2.Response;
 
-public class FragmentChat extends SimpleMiracleFragment {
+public class FragmentChat extends SideRecyclerFragment {
 
     private View rootView;
-    private MiracleActivity miracleActivity;
+    private MainActivity mainActivity;
     private MiracleApp miracleApp;
     private ProfileItem userItem;
 
@@ -82,7 +82,6 @@ public class FragmentChat extends SimpleMiracleFragment {
 
     private ImageView imageView;
     private TextView status;
-    private TextView title;
 
     private ViewStub mutedStub;
     private ImageView muted;
@@ -101,58 +100,26 @@ public class FragmentChat extends SimpleMiracleFragment {
     private final ArrayMap<String,Owner> ownerArrayMap = new ArrayMap<>();
     private final ExecutorConveyor<Boolean> executorConveyor = new ExecutorConveyor<>();
 
-
     private boolean voiceSendButtonMode = true;
 
     public void setConversationItem(ConversationItem conversationItem) {
         this.conversationItem = conversationItem;
     }
 
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        miracleActivity = getMiracleActivity();
-        miracleActivity.hideNavigationBars();
+        mainActivity = getMiracleActivity();
+        mainActivity.hideNavigationBars();
         miracleApp = MiracleApp.getInstance();
-        userItem = miracleActivity.getUserItem();
+
+        rootView = super.onCreateView(inflater, container, savedInstanceState);
+
+
+        userItem = StorageUtil.get().currentUser();
         ownerArrayMap.put(userItem.getId(), new Owner(userItem));
 
-        rootView = inflater.inflate(R.layout.fragment_chat, container, false);
-
-        setAppBarLayout(rootView.findViewById(R.id.appbarlayout));
-        setToolBar(getAppBarLayout().findViewById(R.id.toolbar));
-        setAppbarClickToTop();
-        setBackClick();
-
-        setTitle(rootView.findViewById(R.id.title));
-        setRecyclerView(rootView.findViewById(R.id.recyclerView),
-                getVerticalLayoutManager(getMiracleActivity(), true));
-        new ItemTouchHelper(new ReplySwipeCallback(miracleApp, position -> Log.d("ABOBA","SWIPED")))
-                .attachToRecyclerView(getRecyclerView());
-        setProgressBar(rootView.findViewById(R.id.progressCircle));
-        disableScrollAndElevate();
-
-        imageView = rootView.findViewById(R.id.photo);
-        status = rootView.findViewById(R.id.chatStatus);
-        title = rootView.findViewById(R.id.title);
-        mutedStub = rootView.findViewById(R.id.mutedStub);
-        verifiedStub = rootView.findViewById(R.id.verifiedStub);
-        onlineStatusStub = rootView.findViewById(R.id.onlineStatusStub);
-        imageTextStub = rootView.findViewById(R.id.imageTextStub);
-        messageEditText = rootView.findViewById(R.id.messageEditText);
-        sendButton = rootView.findViewById(R.id.sendButton);
-
-        if(savedInstanceState!=null&&!savedInstanceState.isEmpty()){
-            String key = savedInstanceState.getString("conversationItem");
-            if(key!=null){
-                conversationItem = (ConversationItem) LargeDataStorage.get().getLargeData(key);
-                savedInstanceState.remove("conversationItem");
-            }
-        }
-
-        if(nullSavedAdapter(savedInstanceState)){
-            setAdapter(new ChatAdapter(conversationItem));
-        }
 
         switch (conversationItem.getPeer().getType()){
             case "user":{
@@ -169,6 +136,69 @@ public class FragmentChat extends SimpleMiracleFragment {
             }
         }
 
+        onMessageTypingUpdateListener = messageTypingUpdates -> {
+            ArrayList<ArrayList<MessageTypingUpdate>> arrayLists = new ArrayList<>();
+            if (messageTypingUpdates.size() > 1) {
+                ArrayMap<String, String> arrayMap = new ArrayMap<>();
+                for (int j = 0; j < messageTypingUpdates.size(); j++) {
+                    MessageTypingUpdate messageTypingUpdate = messageTypingUpdates.get(j);
+                    if (!arrayMap.containsKey(messageTypingUpdate.getPeerId())) {
+                        arrayMap.put(messageTypingUpdate.getPeerId(), messageTypingUpdate.getPeerId());
+                        if(conversationItem.getPeer().getLocalId().equals(messageTypingUpdate.getPeerId())){
+                            ArrayList<MessageTypingUpdate> arrayList = new ArrayList<>();
+                            arrayList.add(messageTypingUpdate);
+                            for (int i = j + 1; i < messageTypingUpdates.size(); i++) {
+                                MessageTypingUpdate messageTypingUpdate1 = messageTypingUpdates.get(i);
+                                if (messageTypingUpdate1.getPeerId().equals(messageTypingUpdate.getPeerId())) {
+                                    arrayList.add(messageTypingUpdate1);
+                                }
+                            }
+                            arrayLists.add(arrayList);
+                        }
+                    }
+                }
+            } else {
+                if (messageTypingUpdates.size() == 1) {
+                    ArrayList<MessageTypingUpdate> arrayList = new ArrayList<>();
+                    arrayList.add(messageTypingUpdates.get(0));
+                    arrayLists.add(arrayList);
+                }
+            }
+
+            for (ArrayList<MessageTypingUpdate> list:arrayLists) {
+                MessageTypingUpdate messageTypingUpdate = list.get(0);
+                ArrayList<String> typingIds = new ArrayList<>();
+                for (int i=0;i<list.size();i++){
+                    typingIds.addAll(messageTypingUpdate.getFromIds());
+                }
+                loadTyping(typingIds, messageTypingUpdate.isText(), conversationItem);
+            }
+
+        };
+
+        LongPollServiceController.get().addOnMessageTypingListener(onMessageTypingUpdateListener);
+
+        return rootView;
+    }
+
+    @Override
+    public void findViews(@NonNull View rootView) {
+        super.findViews(rootView);
+        imageView = rootView.findViewById(R.id.photo);
+        status = rootView.findViewById(R.id.chatStatus);
+        mutedStub = rootView.findViewById(R.id.mutedStub);
+        verifiedStub = rootView.findViewById(R.id.verifiedStub);
+        onlineStatusStub = rootView.findViewById(R.id.onlineStatusStub);
+        imageTextStub = rootView.findViewById(R.id.imageTextStub);
+        messageEditText = rootView.findViewById(R.id.messageEditText);
+        sendButton = rootView.findViewById(R.id.sendButton);
+    }
+
+    @Override
+    public void initViews() {
+        super.initViews();
+        new ItemTouchHelper(new ReplySwipeCallback(miracleApp, position -> Log.d("ABOBA","SWIPED")))
+                .attachToRecyclerView(getRecyclerView());
 
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -230,50 +260,53 @@ public class FragmentChat extends SimpleMiracleFragment {
             }
         };
         messageEditText.addTextChangedListener(textWatcher);
+    }
 
-        onMessageTypingUpdateListener = messageTypingUpdates -> {
-            ArrayList<ArrayList<MessageTypingUpdate>> arrayLists = new ArrayList<>();
-            if (messageTypingUpdates.size() > 1) {
-                ArrayMap<String, String> arrayMap = new ArrayMap<>();
-                for (int j = 0; j < messageTypingUpdates.size(); j++) {
-                    MessageTypingUpdate messageTypingUpdate = messageTypingUpdates.get(j);
-                    if (!arrayMap.containsKey(messageTypingUpdate.getPeerId())) {
-                        arrayMap.put(messageTypingUpdate.getPeerId(), messageTypingUpdate.getPeerId());
-                        if(conversationItem.getPeer().getLocalId().equals(messageTypingUpdate.getPeerId())){
-                            ArrayList<MessageTypingUpdate> arrayList = new ArrayList<>();
-                            arrayList.add(messageTypingUpdate);
-                            for (int i = j + 1; i < messageTypingUpdates.size(); i++) {
-                                MessageTypingUpdate messageTypingUpdate1 = messageTypingUpdates.get(i);
-                                if (messageTypingUpdate1.getPeerId().equals(messageTypingUpdate.getPeerId())) {
-                                    arrayList.add(messageTypingUpdate1);
-                                }
-                            }
-                            arrayLists.add(arrayList);
-                        }
-                    }
-                }
-            } else {
-                if (messageTypingUpdates.size() == 1) {
-                    ArrayList<MessageTypingUpdate> arrayList = new ArrayList<>();
-                    arrayList.add(messageTypingUpdates.get(0));
-                    arrayLists.add(arrayList);
-                }
+
+
+    @Override
+    public boolean scrollAndElevateEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean reverseRecyclerAdapter() {
+        return true;
+    }
+
+    @Override
+    public RecyclerView.Adapter<?> onCreateRecyclerAdapter() {
+        ChatAdapter chatAdapter = new ChatAdapter(conversationItem);
+        chatAdapter.setMessageAddedListener(messageItem -> addTask(new Task() {
+            @Override
+            public void func() {
+                updateConversationLastMessage(messageItem);
+                onComplete();
             }
+        }));
+        return chatAdapter;
+    }
 
-            for (ArrayList<MessageTypingUpdate> list:arrayLists) {
-                MessageTypingUpdate messageTypingUpdate = list.get(0);
-                ArrayList<String> typingIds = new ArrayList<>();
-                for (int i=0;i<list.size();i++){
-                    typingIds.addAll(messageTypingUpdate.getFromIds());
-                }
-                loadTyping(typingIds, messageTypingUpdate.isText(), conversationItem);
+    @Override
+    public String requestTitleText() {
+        switch (conversationItem.getPeer().getType()){
+            case "user":
+            case "group":{
+                Owner owner = conversationItem.getOwner();
+                return owner.getName();
             }
+            case "chat": {
+                ChatSettings chatSettings = conversationItem.getChatSettings();
+                return chatSettings.getTitle();
+            }
+        }
+        return super.requestTitleText();
+    }
 
-        };
-
-        LongPollServiceController.get().addOnMessageTypingListener(onMessageTypingUpdateListener);
-
-        return rootView;
+    @NonNull
+    @Override
+    public View inflateRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_chat, container, false);
     }
 
     private void loadTyping(ArrayList<String> typingIds, boolean isText, ConversationItem conversationItem){
@@ -433,8 +466,6 @@ public class FragmentChat extends SimpleMiracleFragment {
     }
 
     private void setInfoFromChat(ChatSettings chatSettings){
-        title.setText(chatSettings.getTitle());
-
         if(chatSettings.getPhoto200().isEmpty()){
             ColorDrawable colorDrawable = new ColorDrawable(getColorByAttributeId(miracleApp, R.attr.colorSecondary));
             imageView.setImageDrawable(colorDrawable);
@@ -590,8 +621,6 @@ public class FragmentChat extends SimpleMiracleFragment {
     }
 
     private void updateInfoFromOwner(Owner owner){
-        title.setText(owner.getName());
-
         if(!owner.getPhoto200().isEmpty()) {
             Picasso.get().load(owner.getPhoto200()).into(imageView);
         }
@@ -667,7 +696,7 @@ public class FragmentChat extends SimpleMiracleFragment {
 
     @Override
     public void onDestroy() {
-        miracleActivity.showNavigationBars();
+        mainActivity.showNavigationBars();
         LongPollServiceController longPollServiceController = LongPollServiceController.get();
         longPollServiceController.removeOnMessageTypingListener(onMessageTypingUpdateListener);
         if(onUserOnlineUpdateListener!=null){
@@ -681,47 +710,32 @@ public class FragmentChat extends SimpleMiracleFragment {
     }
 
     @Override
+    public void readSavedInstance(Bundle savedInstanceState) {
+        String key = savedInstanceState.getString("conversationItem");
+        if(key!=null){
+            conversationItem = (ConversationItem) LargeDataStorage.get().getLargeData(key);
+            savedInstanceState.remove("conversationItem");
+        }
+    }
+
+    @Override
+    public void onClearSavedInstance(@NonNull Bundle savedInstanceState) {
+        super.onClearSavedInstance(savedInstanceState);
+        String key = savedInstanceState.getString("conversationItem");
+        if (key != null) {
+            LargeDataStorage.get().removeLargeData(key);
+            savedInstanceState.remove("conversationItem");
+        }
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
         if(conversationItem !=null){
             outState.putString("conversationItem", LargeDataStorage.get().storeLargeData(conversationItem));
         }
-
-        super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public boolean notTop(){
-        if(getRecyclerView()!=null) {
-            return getRecyclerView().canScrollVertically(1);
-        }
-
-        return false;
-    }
-
-    @Override
-    public void scrollToTop() {
-        if(getRecyclerView()!=null) {
-            if(getRecyclerView().canScrollVertically(1)) {
-                getRecyclerView().scrollToPosition(0);
-            }
-        }
-    }
-
-
-    @Override
-    public void setAdapter(MiracleAdapter adapter) {
-        super.setAdapter(adapter);
-
-        ChatAdapter chatAdapter = (ChatAdapter) adapter;
-
-        chatAdapter.setMessageAddedListener(messageItem -> addTask(new Task() {
-            @Override
-            public void func() {
-                updateConversationLastMessage(messageItem);
-                onComplete();
-            }
-        }));
-    }
 
     private class MessageTypingUpdates extends AsyncExecutor<Boolean> {
 

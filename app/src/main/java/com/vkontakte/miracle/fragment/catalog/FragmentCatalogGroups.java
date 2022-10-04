@@ -1,39 +1,57 @@
 package com.vkontakte.miracle.fragment.catalog;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.vkontakte.miracle.MiracleActivity;
-import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.fragment.tabs.TabsMiracleFragment;
+import androidx.annotation.NonNull;
+
+import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.network.methods.Catalog;
 
-public class FragmentCatalogGroups extends TabsMiracleFragment {
+import org.json.JSONObject;
+
+import retrofit2.Call;
+
+public class FragmentCatalogGroups extends ASideTabsFragmentCatalogSections {
+
+    private String ownerId;
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public Call<JSONObject> requestCall() {
+        ProfileItem profileItem = StorageUtil.get().currentUser();
+        return Catalog.getGroups(ownerId, profileItem.getAccessToken());
+    }
 
-        MiracleActivity miracleActivity = getMiracleActivity();
-
-        View rootView = inflater.inflate(R.layout.fragment_with_tabs, container, false);
-
-        setAppBarLayout(rootView.findViewById(R.id.appbarlayout));
-        setToolBar(getAppBarLayout().findViewById(R.id.toolbar));
-        setBackClick();
-        setViewPager(rootView.findViewById(R.id.viewPager));
-        setTabLayout(rootView.findViewById(R.id.tabLayout));
-        setProgressBar(rootView.findViewById(R.id.progressCircle));
-
-
-        ProfileItem profileItem = miracleActivity.getUserItem();
-
-        if(nullSavedAdapter(savedInstanceState)) {
-            loadCatalogSections(Catalog.getGroups(profileItem.getId(), profileItem.getAccessToken()));
+    @Override
+    public void readSavedInstance(Bundle savedInstanceState) {
+        super.readSavedInstance(savedInstanceState);
+        String key = savedInstanceState.getString("ownerId");
+        if (key != null) {
+            ownerId = key;
+            savedInstanceState.remove("ownerId");
         }
+    }
 
-        return rootView;
+    @Override
+    public void onClearSavedInstance(@NonNull Bundle savedInstanceState) {
+        super.onClearSavedInstance(savedInstanceState);
+        savedInstanceState.remove("ownerId");
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        if(ownerId !=null){
+            outState.putString("ownerId", ownerId);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean asyncLoadTabs() {
+        return true;
     }
 }

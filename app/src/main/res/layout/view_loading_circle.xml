@@ -6,6 +6,6 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:indeterminate="true"
-    android:indeterminateTint="?attr/colorSecondaryContainer"
+    android:indeterminateTint="?attr/colorSecondary"
     android:visibility="visible" />
 

@@ -4,7 +4,6 @@ import static com.vkontakte.miracle.engine.util.UserDataUtil.removeUserData;
 import static com.vkontakte.miracle.network.Constants.fake_receipt;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

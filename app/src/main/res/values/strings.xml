@@ -7,15 +7,26 @@
     <string name="liked">Понравилось</string>
     <string name="friends">Друзья</string>
     <string name="photos">Фотографии</string>
+    <string name="audios">Аудиозапси</string>
     <string name="albums">Альбомы</string>
+    <string name="album_missing">Похоже, альбома тут нет, делся куда-то 😿</string>
     <string name="playlist">Плейлист</string>
+    <string name="playlist_missing">Похоже, плейлиста тут нет, делся куда-то 😿</string>
     <string name="videos">Видеозаписи</string>
     <string name="groups">Сообщества</string>
+    <string name="subscriptions">Подписки</string>
+    <string name="followers">Подписчики</string>
+    <string name="gifts">Подарки</string>
+    <string name="peoples">Люди</string>
     <string name="group">Сообщество</string>
     <string name="dialogs">Диалоги</string>
     <string name="message">Сообщение</string>
+    <string name="wall">Запись на стене</string>
+    <string name="wall_is_empty">Здесь пока нет записей 🙀</string>
     <string name="feed">Лента</string>
+    <string name="search">Поиск</string>
     <string name="settings">Настройки</string>
+    <string name="audio_offline">Скачанная музыка</string>
     <string name="sign_out">Выйти из аккаунта</string>
     <string name="send">Отправить</string>
     <string name="cancel">Отмена</string>
@@ -24,11 +35,12 @@
     <string name="delete">Удалить</string>
     <string name="delete_from_device">Удалить с устройтсва</string>
     <string name="back">Назад</string>
-    <string name="play_album">Слушать</string>
+    <string name="play">Слушать</string>
     <string name="play_next">Слушать далее</string>
     <string name="now_playing">Сейчас играет:</string>
     <string name="add_to_audio">Добавить в мою музыку</string>
     <string name="go_to_artist">Перейти к исполнителю</string>
+    <string name="find_artist">Найти исполнителя</string>
     <string name="go_to_album">Перейти к альбому</string>
     <string name="go_to_owner">Перейти к владельцу</string>
     <string name="play_shuffled">Перемешать все</string>
@@ -74,6 +86,8 @@
 
 
     <string name="audio_channel">Плеер VK AIR</string>
+    <string name="audio_download_channel">Кэширование аудиозаписей</string>
+    <string name="audio_erase_channel">Удаление аудиозаписей</string>
 
     <string name="last_update">Обновлен %1$s</string>
 
@@ -111,6 +125,7 @@
     <string name="formatted_year_ago">Год назад</string>
     <string name="formatted_hour_ago">Час назад</string>
     <string name="formatted_date_now">Только что</string>
+
 
     <string name="formatted_year_ago1">год назад</string>
     <string name="formatted_hour_ago1">час назад</string>

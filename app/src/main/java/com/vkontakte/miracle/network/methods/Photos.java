@@ -11,6 +11,9 @@ public class Photos {
     public static Call<JSONObject> getAlbums(String owner_id, int count, int offset, String access_token){
         return photos().getAlbums(owner_id, count,offset,1,1,1,access_token,latest_api_v);
     }
+    public static Call<JSONObject> getAlbums(String owner_id, String albums_ids, String access_token){
+        return photos().getAlbums(owner_id, albums_ids,1,0,1,access_token,latest_api_v);
+    }
     public static Call<JSONObject> getAll(String owner_id, int count, int offset, String access_token){
         return photos().getAll(owner_id,1,1,offset,count,0,1,0,access_token,latest_api_v);
     }

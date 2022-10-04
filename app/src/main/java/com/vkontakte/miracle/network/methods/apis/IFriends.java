@@ -19,4 +19,14 @@ public interface IFriends {
                                  @Field("access_token") String access_token,
                                  @Field("v") String v);
 
+    @FormUrlEncoded
+    @POST("friends.getOnline")
+    Call<JSONObject> getOnline(@Field("count") int count,
+                         @Field("offset") int offset,
+                         @Field("order") String order,
+                         @Field("user_id") String user_id,
+                         @Field("fields") String fields,
+                         @Field("access_token") String access_token,
+                         @Field("v") String v);
+
 }

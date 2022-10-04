@@ -14,13 +14,13 @@
         android:layout_marginVertical="19dp"
         android:orientation="vertical"
         android:background="@drawable/rounded_card"
-        android:paddingVertical="16dp">
+        android:paddingVertical="12dp">
 
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
+            android:layout_marginHorizontal="12dp"
             android:layout_marginBottom="8dp"
             android:padding="16dp"
             android:background="@drawable/rounded_card_child_white"
@@ -108,14 +108,15 @@
             android:id="@+id/buttonsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="8dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginBottom="8dp"
             android:orientation="vertical"/>
 
         <com.miracle.button.TextViewButton
             android:id="@+id/cancelButton"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginHorizontal="16dp"
+            android:layout_marginHorizontal="12dp"
             android:text="@string/cancel"
             style="@style/TextButton.SecondaryButton"/>
 

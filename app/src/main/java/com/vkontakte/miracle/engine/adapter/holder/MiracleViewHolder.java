@@ -6,24 +6,24 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.vkontakte.miracle.MiracleActivity;
+import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.engine.adapter.MiracleAdapter;
 
 public abstract class MiracleViewHolder extends RecyclerView.ViewHolder {
 
-    private MiracleActivity miracleActivity;
+    private MainActivity mainActivity;
     private MiracleAdapter miracleAdapter;
 
     public MiracleViewHolder(@NonNull View itemView) {
         super(itemView);
         Context context = itemView.getContext();
-        if(context instanceof MiracleActivity) {
-            miracleActivity = (MiracleActivity) context;
+        if(context instanceof MainActivity) {
+            mainActivity = (MainActivity) context;
         }
     }
 
-    public MiracleActivity getMiracleActivity() {
-        return miracleActivity;
+    public MainActivity getMiracleActivity() {
+        return mainActivity;
     }
 
     public MiracleAdapter getMiracleAdapter() {

@@ -20,10 +20,9 @@
         <item name="colorSurface">@color/neutral_10</item>
         <item name="colorOnSurface">@color/white</item>
         <item name="colorSurfaceVariant">@color/neutral_10</item>
+        <item name="colorSurfaceVariant2">@color/neutral_5</item>
         <item name="colorOnSurfaceVariant">@color/white</item>
         <item name="colorCardBackground">@color/neutral_15</item>
-        <item name="colorButtonOnCardBackground">@color/neutral_20</item>
-        <item name="colorOnButtonOnCardBackground">@color/neutral_70</item>
         <!--/////////////////////////////////////////////////////////////-->
         <item name="colorPrimary">?attr/colorPrimary_60</item>
         <item name="colorOnPrimary">@color/neutral_10</item>
@@ -68,6 +67,16 @@
         <item name="colorDivider">@color/neutral_20</item>
         <item name="colorOutline">@color/neutral_30</item>
         <!--/////////////////////////////////////////////////////////////-->
+        <item name="colorPostBackground">@color/neutral_10</item>
+        <!--/////////////////////////////////////////////////////////////-->
+        <item name="colorButtonNeutral">@color/neutral_15</item>
+        <item name="colorOnButtonNeutral">@color/neutral_60</item>
+        <item name="colorLikeButton">@color/likeContainerDark</item>
+        <item name="colorOnLikeButton">@color/like</item>
+        <item name="colorEditTextHint">@color/neutral_50</item>
+        <item name="colorEditTextStroke">@color/neutral_30</item>
+        <item name="colorSubtitle">@color/neutral_50</item>
+        <!--/////////////////////////////////////////////////////////////-->
         <item name="colorSearchTextBackground">@color/neutral_20</item>
         <item name="colorSearchTextHint">@color/neutral_60</item>
         <!--/////////////////////////////////////////////////////////////-->
@@ -87,66 +96,6 @@
     <!-- Base application theme. -->
     <style name="BaseTheme" parent="NightBaseTheme"/>
 
-    <style name="CyberpunkTheme" parent="BaseTheme">
-        <item name="colorPrimary">@color/johny_500</item>
-        <item name="colorPrimary_80">@color/johny_600</item>
-        <item name="colorPrimary_60">@color/johny_700</item>
-        <item name="colorPrimary_40">@color/johny_800</item>
-        <item name="colorPrimary_20">@color/johny_900</item>
-        <item name="colorSecondary">@color/yellow_500</item>
-        <item name="colorSecondary_80">@color/yellow_600</item>
-        <item name="colorSecondary_60">@color/yellow_700</item>
-        <item name="colorSecondary_40">@color/yellow_800</item>
-        <item name="colorSecondary_20">@color/yellow_900</item>
-    </style>
-
-    <style name="SunsetTheme" parent="BaseTheme">
-        <item name="colorPrimary">@color/pink_500</item>
-        <item name="colorPrimary_80">@color/pink_600</item>
-        <item name="colorPrimary_60">@color/pink_700</item>
-        <item name="colorPrimary_40">@color/pink_800</item>
-        <item name="colorPrimary_20">@color/pink_900</item>
-        <item name="colorSecondary">@color/skyBlue_10</item>
-        <item name="colorSecondary_80">@color/skyBlue_10</item>
-        <item name="colorSecondary_60">@color/skyBlue_10</item>
-        <item name="colorSecondary_40">@color/skyBlue_10</item>
-        <item name="colorSecondary_20">@color/skyBlue_10</item>
-    </style>
-
-
-    <style name="FijiTheme" parent="BaseTheme">
-        <item name="colorPrimary">@color/fiji_500</item>
-        <item name="colorPrimary_80">@color/fiji_600</item>
-        <item name="colorPrimary_60">@color/fiji_700</item>
-        <item name="colorPrimary_40">@color/fiji_800</item>
-        <item name="colorPrimary_20">@color/fiji_900</item>
-        <item name="colorSecondary">@color/pink_500</item>
-        <item name="colorSecondary_80">@color/pink_600</item>
-        <item name="colorSecondary_60">@color/pink_700</item>
-        <item name="colorSecondary_40">@color/pink_800</item>
-        <item name="colorSecondary_20">@color/pink_900</item>
-    </style>
-
-    <style name="SailorTheme" parent="BaseTheme">
-        <item name="colorPrimary">@color/cyprus_500</item>
-        <item name="colorPrimary_80">@color/cyprus_600</item>
-        <item name="colorPrimary_60">@color/cyprus_700</item>
-        <item name="colorPrimary_40">@color/cyprus_800</item>
-        <item name="colorPrimary_20">@color/cyprus_900</item>
-        <item name="colorSecondary">@color/crush_500</item>
-        <item name="colorSecondary_80">@color/crush_600</item>
-        <item name="colorSecondary_60">@color/crush_700</item>
-        <item name="colorSecondary_40">@color/crush_800</item>
-        <item name="colorSecondary_20">@color/crush_900</item>
-    </style>
-
-    <style name="ContrastTheme" parent="BaseTheme">
-        <item name="colorPrimary">@color/contrast_500</item>
-        <item name="colorPrimary_80">@color/contrast_600</item>
-        <item name="colorPrimary_60">@color/contrast_700</item>
-        <item name="colorPrimary_40">@color/contrast_800</item>
-        <item name="colorPrimary_20">@color/contrast_900</item>
-    </style>
 
     <style name="AppThemeStart" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:forceDarkAllowed" tools:targetApi="29">true</item>

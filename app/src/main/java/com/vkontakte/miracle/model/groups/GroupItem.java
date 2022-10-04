@@ -5,7 +5,8 @@ import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_G
 import android.util.Log;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.model.users.fields.Counters;
+import com.vkontakte.miracle.model.groups.fields.Cover;
+import com.vkontakte.miracle.model.wall.fields.Counters;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +32,7 @@ public class GroupItem implements ItemDataHolder {
     private boolean verified;
 
     private Counters counters;
+    private Cover cover;
 
     public String getId(){
         return id;
@@ -81,14 +83,25 @@ public class GroupItem implements ItemDataHolder {
         return counters;
     }
 
+    public Cover getCover() {
+        return cover;
+    }
 
     public GroupItem(String id){
-        this.id = id;
+        if(id.charAt(0)!='-'){
+            this.id = "-"+id;
+        } else {
+            this.id = id;
+        }
         this.name = "";
     }
 
     public GroupItem(String name, String id){
-        this.id = id;
+        if(id.charAt(0)!='-'){
+            this.id = "-"+id;
+        } else {
+            this.id = id;
+        }
         this.name = name;
     }
 
@@ -142,6 +155,10 @@ public class GroupItem implements ItemDataHolder {
         }
         if (jsonObject.has("description")){
             description = jsonObject.getString("description");
+        }
+
+        if(jsonObject.has("cover")){
+            cover = new Cover(jsonObject.getJSONObject("cover"));
         }
 
         if(jsonObject.has("counters")) {

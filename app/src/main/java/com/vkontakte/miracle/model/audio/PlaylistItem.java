@@ -1,13 +1,13 @@
 package com.vkontakte.miracle.model.audio;
 
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PLAYLIST;
-import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
 import android.util.ArrayMap;
 
 import androidx.annotation.Nullable;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.Owner;
 import com.vkontakte.miracle.model.audio.fields.Artist;
 import com.vkontakte.miracle.model.audio.fields.Followed;
@@ -16,7 +16,6 @@ import com.vkontakte.miracle.model.audio.fields.Original;
 import com.vkontakte.miracle.model.audio.fields.Photo;
 import com.vkontakte.miracle.model.groups.GroupItem;
 import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Audio;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,20 +23,17 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import retrofit2.Call;
-import retrofit2.Response;
-
 public class PlaylistItem implements ItemDataHolder, AudioWrapContainer {
 
     private final String id;
     private final String ownerId;
-    private final int type;
+    private int type;
     private String title;
     private String description;
     private int count;
     private int followers;
     private int plays;
-    private final long createTime;
+    private long createTime;
     private long updateTime;
     private boolean isFollowing;
     private Original original;
@@ -45,7 +41,7 @@ public class PlaylistItem implements ItemDataHolder, AudioWrapContainer {
     private Photo photo;
     private final String accessKey;
     private boolean isExplicit;
-    private final String albumType;
+    private String albumType;
 
     private ArrayList<Artist> mainArtists = new ArrayList<>();
     private ArrayList<Artist> featuredArtists = new ArrayList<>();
@@ -55,7 +51,7 @@ public class PlaylistItem implements ItemDataHolder, AudioWrapContainer {
 
     private Owner owner;
     private String subtitle;
-    private String year;
+    private String year = "";
     private String genresString;
 
     public String getId() {
@@ -171,32 +167,30 @@ public class PlaylistItem implements ItemDataHolder, AudioWrapContainer {
         this.followed = followed;
     }
 
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+        if(type==0) {
+            subtitle = owner.getName();
+        }
+    }
+
+    public PlaylistItem(String ownerId, String id, String accessKey){
+        this.ownerId = ownerId;
+        this.id = id;
+        this.accessKey = accessKey;
+    }
+
     public PlaylistItem(JSONObject jsonObject, ArrayMap<String, ProfileItem> profilesMap, ArrayMap<String, GroupItem> groupsMap) throws JSONException {
 
         id = jsonObject.getString("id");
         ownerId = jsonObject.getString("owner_id");
         type = jsonObject.getInt("type");
-        title = jsonObject.getString("title");
-        description = jsonObject.getString("description");
-        count = jsonObject.getInt("count");
-        followers = jsonObject.getInt("followers");
-        plays = jsonObject.getInt("plays");
         createTime = jsonObject.getLong("create_time");
-        updateTime = jsonObject.getLong("update_time");
-
-        isFollowing = jsonObject.getBoolean("is_following");
-
         if(jsonObject.has("original")){
             original = new Original(jsonObject.getJSONObject("original"));
         }
 
-        if(jsonObject.has("followed")){
-            followed = new Followed(jsonObject.getJSONObject("followed"));
-        }
-
-        if(jsonObject.has("photo")){
-            photo = new Photo(jsonObject.getJSONObject("photo"));
-        }
+        updateData(jsonObject);
 
         accessKey = jsonObject.getString("access_key");
 
@@ -205,7 +199,6 @@ public class PlaylistItem implements ItemDataHolder, AudioWrapContainer {
         switch (type){
             case 0:{
                 isExplicit = false;
-                year = "";
                 genresString = "";
 
                 if(original!=null){
@@ -249,12 +242,12 @@ public class PlaylistItem implements ItemDataHolder, AudioWrapContainer {
             }
             case 1:{
                 isExplicit = jsonObject.getBoolean("is_explicit");
-                year = jsonObject.getString("year");
-
+                if(jsonObject.has("year")) {
+                    year = jsonObject.getString("year");
+                }
                 if(jsonObject.has("genres")){
                     StringBuilder stringBuilder = new StringBuilder();
                     JSONArray ja_genres = jsonObject.getJSONArray("genres");
-
                     for(int i=0; i<ja_genres.length();){
                         Genre genre = new Genre(ja_genres.getJSONObject(i));
                         genres.add(genre);
@@ -265,30 +258,28 @@ public class PlaylistItem implements ItemDataHolder, AudioWrapContainer {
                             break;
                         }
                     }
-
                     genresString = stringBuilder.toString();
                 }
 
                 switch (albumType) {
                     case "main_feat": {
                         StringBuilder stringBuilder = new StringBuilder();
-                        JSONArray main_artists = jsonObject.getJSONArray("main_artists");
-
-                        for(int i=0; i<main_artists.length();){
-                            Artist artist = new Artist(main_artists.getJSONObject(i));
-                            if(artist.getId()!=null){
-                                mainArtists.add(artist);
+                        if(jsonObject.has("main_artists")) {
+                            JSONArray main_artists = jsonObject.getJSONArray("main_artists");
+                            for (int i = 0; i < main_artists.length(); ) {
+                                Artist artist = new Artist(main_artists.getJSONObject(i));
+                                if (artist.getId() != null) {
+                                    mainArtists.add(artist);
+                                }
+                                stringBuilder.append(artist.getName());
+                                if (++i < main_artists.length()) {
+                                    stringBuilder.append(", ");
+                                } else {
+                                    break;
+                                }
                             }
-                            stringBuilder.append(artist.getName());
-                            if (++i < main_artists.length()) {
-                                stringBuilder.append(", ");
-                            } else {
-                                break;
-                            }
+                            artists.addAll(mainArtists);
                         }
-
-                        artists.addAll(mainArtists);
-
                         if (jsonObject.has("featured_artists")) {
                             stringBuilder.append(" feat. ");
                             JSONArray featured_artists = jsonObject.getJSONArray("featured_artists");
@@ -312,40 +303,37 @@ public class PlaylistItem implements ItemDataHolder, AudioWrapContainer {
                     }
                     case "collection":
                     case "main_only": {
-
-                        StringBuilder stringBuilder = new StringBuilder();
-                        JSONArray main_artists = jsonObject.getJSONArray("main_artists");
-
-                        for(int i=0; i<main_artists.length();){
-                            Artist artist = new Artist(main_artists.getJSONObject(i));
-                            if(artist.getId()!=null){
-                                mainArtists.add(artist);
+                        if(jsonObject.has("main_artists")) {
+                            StringBuilder stringBuilder = new StringBuilder();
+                            JSONArray main_artists = jsonObject.getJSONArray("main_artists");
+                            for (int i = 0; i < main_artists.length(); ) {
+                                Artist artist = new Artist(main_artists.getJSONObject(i));
+                                if (artist.getId() != null) {
+                                    mainArtists.add(artist);
+                                }
+                                stringBuilder.append(artist.getName());
+                                if (++i < main_artists.length()) {
+                                    stringBuilder.append(", ");
+                                }
                             }
-                            stringBuilder.append(artist.getName());
-                            if (++i < main_artists.length()) {
-                                stringBuilder.append(", ");
-                            }
+                            artists.addAll(mainArtists);
+                            subtitle = stringBuilder.toString();
                         }
-
-                        artists.addAll(mainArtists);
-                        subtitle = stringBuilder.toString();
                         break;
                     }
                 }
-
                 break;
             }
         }
     }
 
-    public void update(JSONObject jsonObject) throws JSONException{
+    public void updateData(JSONObject jsonObject) throws JSONException{
         title = jsonObject.getString("title");
         description = jsonObject.getString("description");
         count = jsonObject.getInt("count");
         followers = jsonObject.getInt("followers");
         plays = jsonObject.getInt("plays");
         updateTime = jsonObject.getLong("update_time");
-
         isFollowing = jsonObject.getBoolean("is_following");
 
         if(jsonObject.has("followed")){
@@ -380,12 +368,29 @@ public class PlaylistItem implements ItemDataHolder, AudioWrapContainer {
         featuredArtists = new ArrayList<>(playlistItem.featuredArtists);
         artists = new ArrayList<>(playlistItem.artists);
         genres = new ArrayList<>(playlistItem.genres);
-        items = new ArrayList<>(playlistItem.items);
 
         owner = playlistItem.owner;
         subtitle = playlistItem.subtitle;
         year = playlistItem.year;
         genresString = playlistItem.genresString;
+    }
+
+    public void copyItems(PlaylistItem playlistItem){
+        items = new ArrayList<>();
+        for (ItemDataHolder itemDataHolder:playlistItem.items) {
+            DataItemWrap<?,?> dataItemWrap = (DataItemWrap<?,?>) itemDataHolder;
+            Object item = dataItemWrap.getItem();
+            if(item instanceof AudioItem){
+                DataItemWrap<AudioItem, AudioWrapContainer> dataItemWrap1 =
+                        new DataItemWrap<AudioItem, AudioWrapContainer>((AudioItem) item, this) {
+                            @Override
+                            public int getViewHolderType() {
+                                return dataItemWrap.getViewHolderType();
+                            }
+                        };
+                items.add(dataItemWrap1);
+            }
+        }
     }
 
     @Override
@@ -412,39 +417,6 @@ public class PlaylistItem implements ItemDataHolder, AudioWrapContainer {
             }
         }
         return false;
-    }
-
-    public void follow(ProfileItem userItem) throws Exception {
-        Call<JSONObject> call;
-
-        if(getOriginal()==null){
-            call = Audio.followPlaylist(getId(), getOwnerId(), getAccessKey(), userItem.getAccessToken());
-        } else {
-            call = Audio.followPlaylist(getOriginal().getId(), getOriginal().getOwnerId(),
-                    getOriginal().getAccessKey(), userItem.getAccessToken());
-        }
-
-        Response<JSONObject> response = call.execute();
-
-        JSONObject jsonObject = validateBody(response);
-        Followed followed = new Followed(jsonObject.getJSONObject("response"));
-        setFollowed(followed);
-
-    }
-
-    public void delete(ProfileItem userItem) throws Exception {
-
-        Call<JSONObject> call;
-
-        call = Audio.deletePlaylist(getFollowed().getPlaylistId(), getFollowed().getOwnerId(),
-                getAccessKey(), userItem.getAccessToken());
-
-        Response<JSONObject> response = call.execute();
-
-        JSONObject jsonObject = validateBody(response);
-
-        setFollowed(null);
-
     }
 
 }

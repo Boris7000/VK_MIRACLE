@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.vkontakte.miracle.player.view.PlayerBarView
+<com.vkontakte.miracle.service.player.view.PlayerBarView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -74,7 +74,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:fontFamily="sans-serif"
-                android:textColor="?attr/colorEmphasis_60"
+                android:textColor="?attr/colorSubtitle"
                 android:textSize="13sp"
                 tools:text="Subtitle" />
         </LinearLayout>
@@ -103,12 +103,24 @@
             android:id="@+id/nextButton"
             android:layout_width="48dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="12dp"
             android:layout_weight="0"
             android:scaleType="centerInside"
             android:src="@drawable/ic_skip_next_28"
             app:tint="?attr/colorEmphasis_60"
+            android:contentDescription="pause or play"/>
+
+        <ImageView
+            android:id="@+id/closeButton"
+            android:layout_width="48dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="0"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_cancel_28"
+            app:tint="?attr/colorEmphasis_60"
             android:contentDescription="next song"/>
+
+
     </LinearLayout>
 
-</com.vkontakte.miracle.player.view.PlayerBarView>
+</com.vkontakte.miracle.service.player.view.PlayerBarView>

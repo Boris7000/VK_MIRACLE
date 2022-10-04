@@ -1,6 +1,6 @@
 package com.vkontakte.miracle.model.photos;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO_ITEM;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO;
 
 import androidx.annotation.Nullable;
 import androidx.collection.ArrayMap;
@@ -12,7 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PhotoItem extends MediaItem {
+public class PhotoItem extends MediaItem{
 
     private final String id;
     private final String albumId;
@@ -76,6 +76,6 @@ public class PhotoItem extends MediaItem {
 
     @Override
     public int getViewHolderType() {
-        return TYPE_PHOTO_ITEM;
+        return TYPE_PHOTO;
     }
 }

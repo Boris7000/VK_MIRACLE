@@ -2,26 +2,26 @@ package com.vkontakte.miracle.model.audio;
 
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_AUDIO;
 
-import android.util.Log;
-
 import androidx.annotation.Nullable;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.util.TimeUtil;
 import com.vkontakte.miracle.model.audio.fields.Album;
 import com.vkontakte.miracle.model.audio.fields.Artist;
+import com.vkontakte.miracle.model.audio.fields.Downloaded;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class AudioItem implements ItemDataHolder{
+public class AudioItem implements Serializable, ItemDataHolder{
 
-    private final String id;
-    private final String ownerId;
+    private String id;
+    private String ownerId;
     private final String title;
     private final String artist;
     private final String url;
@@ -33,6 +33,10 @@ public class AudioItem implements ItemDataHolder{
     private final ArrayList<Artist> featuredArtists = new ArrayList<>();
     private final ArrayList<Artist> artists = new ArrayList<>();
     private Album album;
+    private Downloaded downloaded;
+    private String originalId;
+    private String originalOwnerId;
+
 
     public String getId() {
         return id;
@@ -40,6 +44,14 @@ public class AudioItem implements ItemDataHolder{
 
     public String getOwnerId() {
         return ownerId;
+    }
+
+    public String getOriginalId() {
+        return originalId;
+    }
+
+    public String getOriginalOwnerId() {
+        return originalOwnerId;
     }
 
     public String getTitle() {
@@ -82,6 +94,30 @@ public class AudioItem implements ItemDataHolder{
 
     public Album getAlbum() {
         return album;
+    }
+
+    public Downloaded getDownloaded() {
+        return downloaded;
+    }
+
+    public void setAddedIds(String ownerId, String id){
+        originalId = this.id;
+        originalOwnerId = this.ownerId;
+        this.ownerId = ownerId;
+        this.id = id;
+    }
+
+    public void restoreIds(){
+        if(id!=null&&originalId!=null) {
+            id = originalId;
+            ownerId = originalOwnerId;
+            originalId = null;
+            originalOwnerId = null;
+        }
+    }
+
+    public void setDownloaded(Downloaded downloaded) {
+        this.downloaded = downloaded;
     }
 
     public AudioItem(JSONObject jsonObject) throws JSONException {
@@ -143,7 +179,7 @@ public class AudioItem implements ItemDataHolder{
         if(obj!=null){
             if(obj instanceof AudioItem){
                 AudioItem audioItem = (AudioItem) obj;
-                return audioItem.title.equals(title)&&audioItem.artist.equals(artist);
+                return audioItem.url.equals(url);
             }
         }
         return false;

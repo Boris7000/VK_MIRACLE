@@ -2,39 +2,31 @@ package com.vkontakte.miracle.adapter.messages;
 
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CONVERSATION;
 import static com.vkontakte.miracle.engine.util.APIUtil.createOwnersMap;
-import static com.vkontakte.miracle.engine.util.APIUtil.loadOwners;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
-import static com.vkontakte.miracle.engine.util.StringsUtil.getMessageTypingDeclensions;
 
 import android.util.ArrayMap;
-import android.util.Log;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.vkontakte.miracle.MiracleApp;
-import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.messages.holders.ConversationViewHolder;
-import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
+import com.vkontakte.miracle.engine.adapter.MiracleAsyncLoadAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.longpoll.LongPollServiceController;
-import com.vkontakte.miracle.longpoll.listeners.OnMessageAddedUpdateListener;
-import com.vkontakte.miracle.longpoll.listeners.OnMessageReadUpdateListener;
-import com.vkontakte.miracle.longpoll.listeners.OnMessageTypingUpdateListener;
-import com.vkontakte.miracle.longpoll.listeners.OnUserOnlineUpdateListener;
-import com.vkontakte.miracle.longpoll.model.MessageAddedUpdate;
-import com.vkontakte.miracle.longpoll.model.MessageReadUpdate;
-import com.vkontakte.miracle.longpoll.model.MessageTypingUpdate;
-import com.vkontakte.miracle.longpoll.model.UserOnlineUpdate;
+import com.vkontakte.miracle.service.longpoll.LongPollServiceController;
+import com.vkontakte.miracle.service.longpoll.listeners.OnMessageAddedUpdateListener;
+import com.vkontakte.miracle.service.longpoll.listeners.OnMessageReadUpdateListener;
+import com.vkontakte.miracle.service.longpoll.listeners.OnMessageTypingUpdateListener;
+import com.vkontakte.miracle.service.longpoll.listeners.OnUserOnlineUpdateListener;
+import com.vkontakte.miracle.service.longpoll.model.MessageAddedUpdate;
+import com.vkontakte.miracle.service.longpoll.model.UserOnlineUpdate;
 import com.vkontakte.miracle.model.Owner;
 import com.vkontakte.miracle.model.messages.ConversationItem;
 import com.vkontakte.miracle.model.messages.MessageItem;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.model.users.fields.LastSeen;
 import com.vkontakte.miracle.network.methods.Message;
-import com.vkontakte.miracle.network.methods.Users;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,7 +36,7 @@ import java.util.Map;
 
 import retrofit2.Response;
 
-public class ConversationsAdapter extends MiracleLoadableAdapter {
+public class ConversationsAdapter extends MiracleAsyncLoadAdapter {
 
     private final ArrayMap<String,ConversationItem> conversationItemArrayMap = new ArrayMap<>();
     private final ArrayMap<String,Owner> ownerArrayMap = new ArrayMap<>();
@@ -62,7 +54,7 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
         setTimeStump(System.currentTimeMillis()/1000);
 
         Response<JSONObject> response =  Message.getConversations(holders.size(), getStep(),
-                "all", getUserItem().getAccessToken()).execute();
+                "all", StorageUtil.get().currentUser().getAccessToken()).execute();
 
         JSONObject jsonObject = validateBody(response);
 
@@ -98,7 +90,7 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
     @Override
     public void onComplete() {
 
-        if(!hasData()) {
+        if(!loaded()) {
             ArrayList<MessageAddedUpdate> storageMessageAddedUpdates = StorageUtil.get().loadMessageAddedLongPollUpdates();
             ArrayList<MessageAddedUpdate> missedMessageAddedUpdates = new ArrayList<>();
 
@@ -137,6 +129,7 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
         super.ini();
         setStep(50);
 
+        /*
         onMessageAddedUpdateListener = messageAddedUpdates -> {
 
             if(hasData()){
@@ -412,7 +405,7 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
         longPollServiceController.addOnMessageReadUpdateListener(onMessageReadUpdateListener);
         longPollServiceController.addOnMessageTypingListener(onMessageTypingUpdateListener);
         longPollServiceController.addOnUserOnlineListener(onUserOnlineUpdateListener);
-
+           */
     }
 
     private void loadTyping(ArrayList<String> typingIds, boolean isText, ConversationItem conversationItem){
@@ -420,6 +413,7 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
         String ownerId = typingIds.get(0);
         String peerId = conversationItem.getPeer().getLocalId();
 
+        /*
         switch (conversationItem.getPeer().getType()) {
             case "user":
             case "group": {
@@ -493,6 +487,8 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
                 }
             }
         }
+
+         */
     }
 
     private void updateConversationLastMessage(MessageItem messageItem, String key){
@@ -626,6 +622,7 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
         }
 
         private void setNotTypingViewHolder(){
+            /*
             if(!canceled) {
                 addTask(new Task() {
                     @Override
@@ -645,6 +642,8 @@ public class ConversationsAdapter extends MiracleLoadableAdapter {
                     }
                 });
             }
+
+             */
         }
 
         private void setIsTypingViewHolder(String ownersString){

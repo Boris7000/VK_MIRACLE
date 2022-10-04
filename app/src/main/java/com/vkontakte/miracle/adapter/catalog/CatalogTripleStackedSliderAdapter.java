@@ -14,7 +14,8 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.MiracleUniversalAdapter;
+import com.vkontakte.miracle.engine.adapter.MiracleAdapter;
+import com.vkontakte.miracle.engine.adapter.MiracleInstantLoadAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
@@ -25,122 +26,121 @@ import com.vkontakte.miracle.model.catalog.CatalogTripleStack;
 
 import java.util.ArrayList;
 
-public class CatalogTripleStackedSliderAdapter extends MiracleUniversalAdapter {
+public class CatalogTripleStackedSliderAdapter extends MiracleInstantLoadAdapter {
+
+    private CatalogBlock catalogBlock;
 
     public CatalogTripleStackedSliderAdapter(CatalogBlock catalogBlock){
-        ArrayList<ItemDataHolder> holders = catalogBlock.getItems();
-        ArrayList<ItemDataHolder> newHolders = new ArrayList<>();
-        for(int i=0;i<holders.size();){
-            CatalogTripleStack catalogTripleStack = new CatalogTripleStack();
-            for(int j=0;j<3&&i+j<holders.size();j++){
-                catalogTripleStack.addItem(holders.get(i+j));
-            }
-            i+=catalogTripleStack.getItems().size();
-            newHolders.add(catalogTripleStack);
-        }
-        getItemDataHolders().addAll(newHolders);
-        setAddedCount(newHolders.size());
+        this.catalogBlock = catalogBlock;
     }
 
-    public void setItemDataHolders(CatalogBlock catalogBlock){
-        ArrayList<ItemDataHolder> holders = getItemDataHolders();
-        ArrayList<ItemDataHolder> catalogBlockItems = catalogBlock.getItems();
-        ArrayList<ItemDataHolder> newHolders = new ArrayList<>();
-        for(int i=0;i<catalogBlockItems.size();){
-            CatalogTripleStack catalogTripleStack = new CatalogTripleStack();
-            for(int j=0;j<3&&i+j<catalogBlockItems.size();j++){
-                catalogTripleStack.addItem(catalogBlockItems.get(i+j));
-            }
-            i+=catalogTripleStack.getItems().size();
-            newHolders.add(catalogTripleStack);
-        }
-        if(newHolders.size()>0) {
-            final int oldSize = holders.size();
-            final int newSize = newHolders.size();
-            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-                @Override
-                public int getOldListSize() {
-                    return oldSize;
-                }
-
-                @Override
-                public int getNewListSize() {
-                    return newSize;
-                }
-
-                @Override
-                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    ItemDataHolder oldItem = holders.get(oldItemPosition);
-                    ItemDataHolder newItem = newHolders.get(newItemPosition);
-                    if (oldItem instanceof CatalogTripleStack && newItem instanceof CatalogTripleStack) {
-                        CatalogTripleStack oldCatalogTripleStack = (CatalogTripleStack) oldItem;
-                        CatalogTripleStack newCatalogTripleStack = (CatalogTripleStack) newItem;
-                        if(oldCatalogTripleStack.getViewHolderType()==newCatalogTripleStack.getViewHolderType()){
-                            final int oldSize1 = oldCatalogTripleStack.getSize();
-                            final int newSize1 = newCatalogTripleStack.getSize();
-                            if(oldSize1==newSize1){
-                                ArrayList<ItemDataHolder> oldStack = oldCatalogTripleStack.getItems();
-                                ArrayList<ItemDataHolder> newStack = newCatalogTripleStack.getItems();
-                                return oldStack.equals(newStack);
-                            }
-                        }
-                    }
-                    return false;
-                }
-
-                @Override
-                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    ItemDataHolder oldItem = holders.get(oldItemPosition);
-                    ItemDataHolder newItem = newHolders.get(newItemPosition);
-                    if (oldItem instanceof CatalogTripleStack && newItem instanceof CatalogTripleStack) {
-                        CatalogTripleStack oldCatalogTripleStack = (CatalogTripleStack) oldItem;
-                        CatalogTripleStack newCatalogTripleStack = (CatalogTripleStack) newItem;
-                        if(oldCatalogTripleStack.getViewHolderType()==newCatalogTripleStack.getViewHolderType()){
-                            final int oldSize1 = oldCatalogTripleStack.getSize();
-                            final int newSize1 = newCatalogTripleStack.getSize();
-                            if(oldSize1==newSize1){
-                                ArrayList<ItemDataHolder> oldStack = oldCatalogTripleStack.getItems();
-                                ArrayList<ItemDataHolder> newStack = newCatalogTripleStack.getItems();
-                                for (int i = 0; i<oldSize1; i++){
-                                    ItemDataHolder oldItem1 = oldStack.get(i);
-                                    ItemDataHolder newItem1 = newStack.get(i);
-                                    if (oldItem1 instanceof DataItemWrap && newItem1 instanceof DataItemWrap) {
-                                        oldItem1 = (ItemDataHolder) ((DataItemWrap<?, ?>) oldItem1).getItem();
-                                        newItem1 = (ItemDataHolder) ((DataItemWrap<?, ?>) newItem1).getItem();
-                                    }
-                                    if (oldItem1 instanceof AudioItem && newItem1 instanceof AudioItem) {
-                                        AudioItem oldAudioItem = (AudioItem) oldItem1;
-                                        AudioItem newAudioItem = (AudioItem) newItem1;
-                                        if(!oldAudioItem.equalsContent(newAudioItem)){
-                                            return false;
-                                        }
-                                    }
-                                }
-                                return true;
-                            }
-                        }
-                    }
-                    return false;
-                }
-            });
-            holders.clear();
-            holders.addAll(newHolders);
-            if (!hasData()) {
-                setHasData(true);
-            }
-            setItemDataHolders(holders, result);
-            getRecyclerView().scrollToPosition(0);
-        } else {
-            final int oldSize = holders.size();
-            holders.clear();
-            setHasData(false);
-            notifyItemRangeRemoved(0, oldSize);
-        }
+    public void setNewCatalogBlock(CatalogBlock catalogBlock){
+        this.catalogBlock = catalogBlock;
     }
 
     @Override
-    public void load(){
-        super.load();
+    public void onLoading() throws Exception {
+        ArrayList<ItemDataHolder> holders = getItemDataHolders();
+        ArrayList<ItemDataHolder> stacks = catalogBlock.getItems();
+        ArrayList<ItemDataHolder> newHolders = new ArrayList<>();
+        for(int i=0;i<stacks.size();){
+            CatalogTripleStack catalogTripleStack = new CatalogTripleStack();
+            for(int j=0;j<3&&i+j<stacks.size();j++){
+                catalogTripleStack.addItem(stacks.get(i+j));
+            }
+            i+=catalogTripleStack.getItems().size();
+            newHolders.add(catalogTripleStack);
+        }
+
+        if(holders.isEmpty()){
+            holders.addAll(newHolders);
+            setAddedCount(newHolders.size());
+        } else {
+            if(newHolders.isEmpty()){
+                int oldSize = holders.size();
+                holders.clear();
+                setAddedCount(-oldSize);
+                setFinallyLoaded(true);
+            } else {
+                DiffUtil.DiffResult diffResult = calculateDifference(holders, newHolders);
+                holders.clear();
+                holders.addAll(newHolders);
+                setDiffResult(diffResult);
+            }
+        }
+        setFinallyLoaded(true);
+    }
+
+    private DiffUtil.DiffResult calculateDifference(ArrayList<ItemDataHolder> holders,
+                                                    ArrayList<ItemDataHolder> newHolders){
+        final int oldSize = holders.size();
+        final int newSize = newHolders.size();
+        return DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return oldSize;
+            }
+
+            @Override
+            public int getNewListSize() {
+                return newSize;
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                ItemDataHolder oldItem = holders.get(oldItemPosition);
+                ItemDataHolder newItem = newHolders.get(newItemPosition);
+                if (oldItem instanceof CatalogTripleStack && newItem instanceof CatalogTripleStack) {
+                    CatalogTripleStack oldCatalogTripleStack = (CatalogTripleStack) oldItem;
+                    CatalogTripleStack newCatalogTripleStack = (CatalogTripleStack) newItem;
+                    if(oldCatalogTripleStack.getViewHolderType()==newCatalogTripleStack.getViewHolderType()){
+                        final int oldSize1 = oldCatalogTripleStack.getSize();
+                        final int newSize1 = newCatalogTripleStack.getSize();
+                        if(oldSize1==newSize1){
+                            ArrayList<ItemDataHolder> oldStack = oldCatalogTripleStack.getItems();
+                            ArrayList<ItemDataHolder> newStack = newCatalogTripleStack.getItems();
+                            return oldStack.equals(newStack);
+                        }
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                ItemDataHolder oldItem = holders.get(oldItemPosition);
+                ItemDataHolder newItem = newHolders.get(newItemPosition);
+                if (oldItem instanceof CatalogTripleStack && newItem instanceof CatalogTripleStack) {
+                    CatalogTripleStack oldCatalogTripleStack = (CatalogTripleStack) oldItem;
+                    CatalogTripleStack newCatalogTripleStack = (CatalogTripleStack) newItem;
+                    if(oldCatalogTripleStack.getViewHolderType()==newCatalogTripleStack.getViewHolderType()){
+                        final int oldSize1 = oldCatalogTripleStack.getSize();
+                        final int newSize1 = newCatalogTripleStack.getSize();
+                        if(oldSize1==newSize1){
+                            ArrayList<ItemDataHolder> oldStack = oldCatalogTripleStack.getItems();
+                            ArrayList<ItemDataHolder> newStack = newCatalogTripleStack.getItems();
+                            for (int i = 0; i<oldSize1; i++){
+                                ItemDataHolder oldItem1 = oldStack.get(i);
+                                ItemDataHolder newItem1 = newStack.get(i);
+                                if (oldItem1 instanceof DataItemWrap && newItem1 instanceof DataItemWrap) {
+                                    oldItem1 = (ItemDataHolder) ((DataItemWrap<?, ?>) oldItem1).getItem();
+                                    newItem1 = (ItemDataHolder) ((DataItemWrap<?, ?>) newItem1).getItem();
+                                }
+                                if (oldItem1 instanceof AudioItem && newItem1 instanceof AudioItem) {
+                                    AudioItem oldAudioItem = (AudioItem) oldItem1;
+                                    AudioItem newAudioItem = (AudioItem) newItem1;
+                                    if(!oldAudioItem.equalsContent(newAudioItem)){
+                                        return false;
+                                    }
+                                }
+                            }
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -182,19 +182,28 @@ public class CatalogTripleStackedSliderAdapter extends MiracleUniversalAdapter {
             }
 
             RecyclerView.Adapter<?> adapter = recyclerView.getAdapter();
+            CatalogTripleStackedAdapter catalogTripleStackedAdapter;
             if(adapter instanceof CatalogTripleStackedAdapter){
-                ((CatalogTripleStackedAdapter)recyclerView.getAdapter()).setNewItemDataHolders(catalogTripleStack.getItems());
+                catalogTripleStackedAdapter = ((CatalogTripleStackedAdapter) recyclerView.getAdapter());
+                catalogTripleStackedAdapter.iniFromFragment(getMiracleFragment());
+                catalogTripleStackedAdapter.setNewItemDataHolders(catalogTripleStack.getItems());
             } else {
-                CatalogTripleStackedAdapter catalogTripleStackedAdapter = new CatalogTripleStackedAdapter(catalogTripleStack);
-                catalogTripleStackedAdapter.iniFromActivity(getMiracleActivity());
+                if(adapter instanceof MiracleAdapter){
+                    MiracleAdapter miracleAdapter = (MiracleAdapter) adapter;
+                    miracleAdapter.setRecyclerView(null);
+                }
+                catalogTripleStackedAdapter = new CatalogTripleStackedAdapter(catalogTripleStack.getItems());
+                catalogTripleStackedAdapter.iniFromFragment(getMiracleFragment());
                 catalogTripleStackedAdapter.setRecyclerView(recyclerView);
                 catalogTripleStackedAdapter.ini();
                 recyclerView.setAdapter(catalogTripleStackedAdapter);
-                catalogTripleStackedAdapter.load();
             }
+            catalogTripleStackedAdapter.load();
 
             if(changedType){
-                recyclerView.setHasFixedSize(true);
+                if(!recyclerView.hasFixedSize()) {
+                    recyclerView.setHasFixedSize(true);
+                }
             }
         }
     }

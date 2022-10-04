@@ -2,8 +2,8 @@ package com.vkontakte.miracle.adapter.audio.holders;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.vkontakte.miracle.engine.util.FragmentUtil.goToArtist;
-import static com.vkontakte.miracle.engine.util.FragmentUtil.goToOwner;
+import static com.vkontakte.miracle.engine.util.NavigationUtil.goToArtist;
+import static com.vkontakte.miracle.engine.util.NavigationUtil.goToOwner;
 import static com.vkontakte.miracle.engine.util.TimeUtil.getUpdatedDateString;
 
 import android.content.Context;
@@ -19,21 +19,22 @@ import androidx.annotation.NonNull;
 import com.miracle.button.Button;
 import com.miracle.button.TextViewButton;
 import com.squareup.picasso.Picasso;
-import com.vkontakte.miracle.MiracleActivity;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.dialog.audio.PlaylistDialog;
 import com.vkontakte.miracle.dialog.audio.PlaylistDialogActionListener;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
-import com.vkontakte.miracle.engine.util.FragmentUtil;
+import com.vkontakte.miracle.engine.util.NavigationUtil;
+import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.engine.util.StringsUtil;
+import com.vkontakte.miracle.executors.audio.DeletePlaylist;
+import com.vkontakte.miracle.executors.audio.FollowPlaylist;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.model.audio.fields.Photo;
 import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.player.AudioPlayerData;
-import com.vkontakte.miracle.player.PlayerServiceController;
+import com.vkontakte.miracle.service.player.AudioPlayerData;
+import com.vkontakte.miracle.service.player.PlayerServiceController;
 
 public class PlaylistLargeViewHolder extends MiracleViewHolder {
     private final ImageView imageView;
@@ -46,9 +47,15 @@ public class PlaylistLargeViewHolder extends MiracleViewHolder {
     private final Button addButton;
 
     private PlaylistItem playlistItem;
+    private final ProfileItem userItem;
+
+    private final static int STATE_FOLLOWED = 0;
+    private final static int STATE_NOT_FOLLOWED = 1;
+    private final static int STATE_LOADING = 2;
 
     public PlaylistLargeViewHolder(@NonNull View itemView) {
         super(itemView);
+        userItem = StorageUtil.get().currentUser();
         imageView = itemView.findViewById(R.id.photo);
         title = itemView.findViewById(R.id.title);
         subtitle = itemView.findViewById(R.id.subtitle);
@@ -62,48 +69,18 @@ public class PlaylistLargeViewHolder extends MiracleViewHolder {
         playButton.setOnClickListener(view -> PlayerServiceController.get().
                 playNewAudio(new AudioPlayerData(playlistItem.getAudioItems().get(0))));
         optionsButton.setOnClickListener(view -> {
-            MiracleActivity miracleActivity = getMiracleActivity();
-            final ProfileItem userItem = miracleActivity.getUserItem();
-            PlaylistDialog playlistDialog = new PlaylistDialog(miracleActivity, playlistItem, userItem);
+            PlaylistDialog playlistDialog = new PlaylistDialog(view.getContext(), playlistItem);
             playlistDialog.setDialogActionListener(new PlaylistDialogActionListener() {
                 @Override
                 public void follow() {
-                    playlistItem.setFollowing(true);
-                    switchAddButtonState(true, true);
-                    new AsyncExecutor<Integer>(){
-                        @Override
-                        public Integer inBackground() {
-                            try {
-                                playlistItem.follow(userItem);
-                                return 1;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            return -1;
-                        }
-                        @Override
-                        public void onExecute(Integer object) { }
-                    }.start();
+                    switchAddButtonState(2, false);
+                    resolveFollow();
                 }
 
                 @Override
                 public void delete() {
-                    playlistItem.setFollowing(false);
-                    switchAddButtonState(false, true);
-                    new AsyncExecutor<Integer>(){
-                        @Override
-                        public Integer inBackground() {
-                            try {
-                                playlistItem.delete(userItem);
-                                return 1;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            return -1;
-                        }
-                        @Override
-                        public void onExecute(Integer object) { }
-                    }.start();
+                    switchAddButtonState(2, false);
+                    resolveDelete();
                 }
 
                 @Override
@@ -113,40 +90,26 @@ public class PlaylistLargeViewHolder extends MiracleViewHolder {
 
                 @Override
                 public void goToArtist() {
-                    FragmentUtil.goToArtist(playlistItem, getMiracleActivity());
+                    NavigationUtil.goToArtist(playlistItem, getMiracleActivity());
                 }
 
                 @Override
                 public void goToOwner() {
-                    FragmentUtil.goToOwner(playlistItem, getMiracleActivity());
+                    NavigationUtil.goToOwner(playlistItem, getMiracleActivity());
                 }
             });
             playlistDialog.show(itemView.getContext());
         });
 
         addButton.setOnClickListener(v -> {
-            playlistItem.setFollowing(!playlistItem.isFollowing());
-            switchAddButtonState(playlistItem.isFollowing(), true);
-            final ProfileItem userItem = getMiracleActivity().getUserItem();
-            new AsyncExecutor<Integer>(){
-                @Override
-                public Integer inBackground() {
-                    try {
-                        if(playlistItem.isFollowing()){
-                            playlistItem.follow(userItem);
-                        } else {
-                            playlistItem.delete(userItem);
-                        }
-                        return 1;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return -1;
-                }
-                @Override
-                public void onExecute(Integer object) { }
-            }.start();
 
+            switchAddButtonState(2, false);
+
+            if(playlistItem.isFollowing()){
+               resolveDelete();
+            } else {
+                resolveFollow();
+            }
         });
     }
 
@@ -161,7 +124,11 @@ public class PlaylistLargeViewHolder extends MiracleViewHolder {
         subtitle.setText(playlistItem.getSubtitle());
 
         if(playlistItem.getType()==1){
-            subtitle.setOnClickListener(v -> goToArtist(playlistItem, getMiracleActivity()));
+            if(playlistItem.getArtists().isEmpty()){
+               //TODO сделай тут поиск
+            } else {
+                subtitle.setOnClickListener(v -> goToArtist(playlistItem, getMiracleActivity()));
+            }
         } else {
             subtitle.setOnClickListener(v -> goToOwner(playlistItem, getMiracleActivity()));
         }
@@ -234,8 +201,6 @@ public class PlaylistLargeViewHolder extends MiracleViewHolder {
         subtitle3Text.append(StringsUtil.getAudiosDeclensions(context, playlistItem.getCount()));
         subtitle3.setText(subtitle3Text.toString());
 
-        ProfileItem userItem = getMiracleActivity().getUserItem();
-
         if((playlistItem.getOriginal()==null&&playlistItem.getOwnerId().equals(userItem.getId()))
                 ||(playlistItem.getOriginal()!=null&&playlistItem.getOriginal().getOwnerId().equals(userItem.getId()))){
             if(addButton.getVisibility()!=GONE) {
@@ -251,19 +216,63 @@ public class PlaylistLargeViewHolder extends MiracleViewHolder {
 
     }
 
-    private void switchAddButtonState(boolean added){
-        switchAddButtonState(added, false);
+    private void resolveFollow(){
+        new FollowPlaylist(playlistItem){
+            @Override
+            public void onExecute(Boolean object) {
+                super.onExecute(object);
+                if(playlistItem.isFollowing()){
+                    switchAddButtonState(0,true);
+                } else {
+                    switchAddButtonState(1, true);
+                }
+            }
+        }.start();
     }
 
-    private void switchAddButtonState(boolean added, boolean animate){
+    private void resolveDelete(){
+        new DeletePlaylist(playlistItem){
+            @Override
+            public void onExecute(Boolean object) {
+                super.onExecute(object);
+                if(playlistItem.isFollowing()){
+                    switchAddButtonState(0,true);
+                } else {
+                    switchAddButtonState(1, true);
+                }
+            }
+        }.start();
+    }
+
+    private void switchAddButtonState(boolean added){
         if(added){
-            addButton.setIconImageResource(R.drawable.ic_done_28, animate);
-            addButton.setEnabled(true, animate);
+            switchAddButtonState(STATE_FOLLOWED, false);
         } else {
-            addButton.setEnabled(false, animate);
-            addButton.setIconImageResource( R.drawable.ic_add_28, animate);
+            switchAddButtonState(STATE_NOT_FOLLOWED, false);
         }
     }
+
+    private void switchAddButtonState(int added, boolean animate){
+        switch (added){
+            case STATE_FOLLOWED:{
+                addButton.setIconImageResource(R.drawable.ic_done_28, animate);
+                addButton.setClickable(true);
+                addButton.setEnabled(true, animate);
+                break;
+            }
+            case STATE_NOT_FOLLOWED:{
+                addButton.setIconImageResource( R.drawable.ic_add_28, animate);
+                addButton.setClickable(true);
+                addButton.setEnabled(false, animate);
+                break;
+            }
+            case STATE_LOADING:{
+                addButton.setClickable(false);
+                break;
+            }
+        }
+    }
+
 
     public static class Fabric implements ViewHolderFabric {
         @Override

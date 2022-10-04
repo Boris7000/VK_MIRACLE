@@ -1,7 +1,7 @@
 package com.vkontakte.miracle.engine.view.photoGridView;
 
 import static com.vkontakte.miracle.engine.adapter.MiracleViewRecycler.resolveSingleTypeItems;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO_ITEM;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO;
 import static com.vkontakte.miracle.engine.util.DeviceUtil.getWindowHeight;
 import static com.vkontakte.miracle.engine.util.DimensionsUtil.dpToPx;
 
@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.ArrayMap;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ public class PhotoGridView extends FrameLayout{
     private final ArrayMap<Integer, ViewHolderFabric> viewHolderFabricMap = new ArrayMap<>();
     private MiracleViewRecycler recycledViewPool = new MiracleViewRecycler();
     {
-        viewHolderFabricMap.put(TYPE_PHOTO_ITEM, new PhotoGridViewHolderFabric());
+        viewHolderFabricMap.put(TYPE_PHOTO, new PhotoGridViewHolderFabric());
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,7 +96,7 @@ public class PhotoGridView extends FrameLayout{
         }
 
         for (int p = 0; p < photoGridItems.size(); p++) {
-
+            Log.d("eojfiejgoejgoejmg","5");
             PhotoGridItem photoGridItem = photoGridItems.get(p);
             PhotoGridItemViewHolder viewHolder = (PhotoGridItemViewHolder) cache.get(p);
             viewHolder.bind(photoGridItem);
@@ -126,7 +127,7 @@ public class PhotoGridView extends FrameLayout{
         }
 
         for (int p = 0; p < photoGridItems.size(); p++) {
-
+            Log.d("eojfiejgoejgoejmg","4");
             PhotoGridItem photoGridItem = photoGridItems.get(p);
             PhotoGridItemViewHolder viewHolder = (PhotoGridItemViewHolder) cache.get(p);
             viewHolder.bind(photoGridItem);
@@ -153,6 +154,7 @@ public class PhotoGridView extends FrameLayout{
                 viewHolderFabricMap, inflater);
 
         for(int i=0;i<cache.size();i++){
+            Log.d("eojfiejgoejgoejmg","1");
             final int finalI = i;
             cache.get(i).itemView.setOnClickListener(view -> {
                 ArrayList<PhotoViewerItem> photoViewerItems = new ArrayList<>();
@@ -187,6 +189,7 @@ public class PhotoGridView extends FrameLayout{
         needChanges = true;
         photoGridItems.clear();
         for(ItemDataHolder itemDataHolder : itemDataHolders){
+            Log.d("eojfiejgoejgoejmg","2");
             PhotoGridItem photoGridItem = new PhotoGridItem();
             photoGridItem.mediaItem = (MediaItem) itemDataHolder;
             photoGridItems.add(photoGridItem);

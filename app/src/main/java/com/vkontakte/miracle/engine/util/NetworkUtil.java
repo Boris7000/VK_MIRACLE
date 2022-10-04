@@ -40,8 +40,8 @@ public class NetworkUtil {
         }
         JSONObject jsonObject = response.body();
         if(jsonObject.has("response")&&(jsonObject.get("response") instanceof JSONObject)) {
-            JSONObject responseO = jsonObject.getJSONObject("response");
-            if (responseO.has("error")) {
+            JSONObject jo_response = jsonObject.getJSONObject("response");
+            if (jo_response.has("error")) {
                 throwError(response);
                 return new JSONObject();
             }
@@ -49,16 +49,26 @@ public class NetworkUtil {
         return jsonObject;
     }
 
+
     public static void throwError(Response<JSONObject> response) throws Exception {
         JSONObject jsonObject;
         if (response.errorBody() != null) {
             jsonObject = new JSONObject(response.errorBody().string());
-            throw new Exception(jsonObject.getString("error_description"));
+            if(jsonObject.has("error_description")){
+                throw new Exception(jsonObject.getString("error_description"));
+            } else {
+                throw new Exception("Error without description.\nhahaha, VK moment...\n\uD83D\uDE02\uD83E\uDD23\uD83D\uDE06\uD83D\uDE02\uD83E\uDD23\uD83D\uDE06\uD83D\uDE02\uD83E\uDD23\uD83D\uDE06");
+            }
         } else {
             jsonObject = response.body();
             if(jsonObject!=null&&jsonObject.has("response")&&(jsonObject.get("response") instanceof JSONObject)){
-                throw new Exception(jsonObject.getJSONObject("response").getString("error_description"));
-            }else throw new Exception("just_error");
+                jsonObject = jsonObject.getJSONObject("response");
+                if(jsonObject.has("error_description")){
+                    throw new Exception(jsonObject.getString("error_description"));
+                } else {
+                    throw new Exception("Error without description.\nhahaha, VK moment...\n\uD83D\uDE02\uD83E\uDD23\uD83D\uDE06\uD83D\uDE02\uD83E\uDD23\uD83D\uDE06\uD83D\uDE02\uD83E\uDD23\uD83D\uDE06");
+                }
+            }
         }
     }
 

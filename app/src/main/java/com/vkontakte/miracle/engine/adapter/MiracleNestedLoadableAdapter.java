@@ -6,7 +6,7 @@ import android.util.ArrayMap;
 
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 
-public abstract class MiracleNestedLoadableAdapter extends MiracleLoadableAdapter {
+public abstract class MiracleNestedLoadableAdapter extends MiracleAsyncLoadAdapter {
     @Override
     public ArrayMap<Integer, ViewHolderFabric> getViewHolderFabricMap(){
         return getHorizontalFabrics();

@@ -4,8 +4,6 @@ import org.json.JSONObject;
 
 public class AuthState {
 
-    //TODO переделать ОТПРАВИТЬ НОВЫЙ КОД
-
     public final static int STATE_NONE = 0;
     public final static int STATE_SUCCESS = 1;
     public final static int STATE_NEED_VALIDATION = 2;
@@ -91,10 +89,6 @@ public class AuthState {
         delay = jsonObject.getInt("delay");
     }
 
-    public void setForceCodeUnableReason(int forceCodeUnableReason) {
-        this.forceCodeUnableReason = forceCodeUnableReason;
-    }
-
     public void updateCaptcha(JSONObject jsonObject) throws JSONException {
         resetValidation();
         resetForceCode();
@@ -164,6 +158,22 @@ public class AuthState {
 
     public int getForceCodeUnableReason() {
         return forceCodeUnableReason;
+    }
+
+    public void setForceCodeUnableReason(int forceCodeUnableReason) {
+        this.forceCodeUnableReason = forceCodeUnableReason;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
+    }
+
+    public void setResponseTime(long responseTime) {
+        this.responseTime = responseTime;
+    }
+
+    public void setValidationType(String validationType) {
+        this.validationType = validationType;
     }
 
     public void setState(int state) {

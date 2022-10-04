@@ -20,9 +20,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
-            android:foreground="@drawable/blur"
+            tools:foreground="@drawable/blur"
             tools:foregroundTint="@color/black"
-            tools:srcCompat="@tools:sample/avatars[0]"/>
+            tools:srcCompat="@tools:sample/avatars"/>
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/photo"
             android:layout_width="match_parent"

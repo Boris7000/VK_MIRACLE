@@ -2,13 +2,11 @@ package com.vkontakte.miracle.adapter.wall.holders;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO_ITEM;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
-import static com.vkontakte.miracle.engine.util.ColorUtil.getColorByAttributeId;
-import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
+import static com.vkontakte.miracle.engine.util.NavigationUtil.goToOwner;
 import static com.vkontakte.miracle.engine.util.StringsUtil.reduceTheNumber;
 
-import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -25,6 +23,7 @@ import android.view.ViewStub;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,22 +39,20 @@ import com.vkontakte.miracle.engine.adapter.MiracleViewRecycler;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.vkontakte.miracle.engine.util.ColorUtil;
+import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.engine.util.TimeUtil;
 import com.vkontakte.miracle.engine.view.AudioListView;
 import com.vkontakte.miracle.engine.view.PostTextView;
 import com.vkontakte.miracle.engine.view.photoGridView.PhotoGridView;
+import com.vkontakte.miracle.executors.wall.AddLike;
+import com.vkontakte.miracle.executors.wall.DeleteLike;
+import com.vkontakte.miracle.fragment.wall.FragmentWall;
 import com.vkontakte.miracle.model.Attachments;
 import com.vkontakte.miracle.model.Owner;
-import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.model.wall.PostItem;
-import com.vkontakte.miracle.network.methods.Likes;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import retrofit2.Response;
 
 public class PostViewHolder extends MiracleViewHolder {
 
@@ -72,10 +69,12 @@ public class PostViewHolder extends MiracleViewHolder {
     private final ViewStub audiosViewStub;
     private ImageView verified;
 
+    private final FrameLayout header;
     private final LinearLayout likesHolder;
     private final LinearLayout commentsHolder;
     private final LinearLayout repostsHolder;
     private final LinearLayout viewsHolder;
+    private final LinearLayout ownerDataHolder;
     private final ImageView likesIcon;
     private final TextView likesText;
     private final TextView commentsText;
@@ -83,15 +82,23 @@ public class PostViewHolder extends MiracleViewHolder {
     private final TextView viewsText;
 
     private PostItem postItem;
+    private Owner owner;
 
     private int color;
 
     public PostViewHolder(@NonNull View itemView) {
         super(itemView);
-        imageView = itemView.findViewById(R.id.photo);
-        title = itemView.findViewById(R.id.title);
-        date = itemView.findViewById(R.id.date);
-        verifiedStub = itemView.findViewById(R.id.verifiedStub);
+
+
+
+        header = itemView.findViewById(R.id.post_header);
+
+        ownerDataHolder = header.findViewById(R.id.post_owner_link);
+
+        imageView = ownerDataHolder.findViewById(R.id.photo);
+        title = ownerDataHolder.findViewById(R.id.title);
+        date = ownerDataHolder.findViewById(R.id.date);
+        verifiedStub = ownerDataHolder.findViewById(R.id.verifiedStub);
         textStub = itemView.findViewById(R.id.textStub);
         photosViewStub = itemView.findViewById(R.id.photosViewStub);
         audiosViewStub = itemView.findViewById(R.id.audiosViewStub);
@@ -107,60 +114,48 @@ public class PostViewHolder extends MiracleViewHolder {
         repostsText = repostsHolder.findViewById(R.id.repostsText);
         viewsText = viewsHolder.findViewById(R.id.viewsText);
 
-        likesHolder.setOnClickListener(v -> {
-            if(postItem!=null){
+        likesHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 final PostItem finalPostItem = PostViewHolder.this.postItem;
-                postItem.setUserLikes(!postItem.getUserLikes());
-                if(postItem.getUserLikes()){
-                    postItem.setLikesCount(postItem.getLikesCount()+1);
-                } else {
+                if(finalPostItem.getUserLikes()){
+                    postItem.setUserLikes(false);
                     postItem.setLikesCount(Math.max(0, postItem.getLikesCount()-1));
+                    new DeleteLike(postItem){
+                        @Override
+                        public void onExecute(Boolean object) {
+                            super.onExecute(object);
+                            if(object) {
+                                if (finalPostItem.getId().equals(postItem.getId())) {
+                                    updateLikesCount(true);
+                                }
+                            }
+                        }
+                    }.start();
+                } else {
+                    postItem.setUserLikes(true);
+                    postItem.setLikesCount(postItem.getLikesCount()+1);
+                    new AddLike(postItem){
+                        @Override
+                        public void onExecute(Boolean object) {
+                            super.onExecute(object);
+                            if(object) {
+                                if (finalPostItem.getId().equals(postItem.getId())) {
+                                    updateLikesCount(true);
+                                }
+                            }
+                        }
+                    }.start();
                 }
                 updateLikesCount(true);
                 colorLikesButton(true);
-                new AsyncExecutor<Integer>(){
-                    @Override
-                    public Integer inBackground() {
-                        try {
-
-                            Owner owner = postItem.getFrom();
-                            if(owner==null){
-                                owner = postItem.getSource();
-                            }
-                            if(owner==null){
-                                owner = postItem.getOwner();
-                            }
-
-                            ProfileItem profileItem = getMiracleActivity().getUserItem();
-                            Response<JSONObject> response =  (postItem.getUserLikes() ?
-                                    Likes.add("post", postItem.getId(),
-                                            owner.getId(),profileItem.getAccessToken())
-                            :Likes.delete("post", postItem.getId(),
-                                    owner.getId(),profileItem.getAccessToken())).execute();
-
-                            JSONObject jsonObject = validateBody(response);
-
-                            if(jsonObject.has("response")) {
-                                jsonObject = validateBody(response).getJSONObject("response");
-                                return jsonObject.getInt("likes");
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        return -1;
-                    }
-                    @Override
-                    public void onExecute(Integer object) {
-                        if(finalPostItem.getId().equals(postItem.getId())){
-                            if (object > -1) {
-                                postItem.setLikesCount(object);
-                                updateLikesCount(true);
-                            }
-                        }
-                    }
-                }.start();
             }
         });
+
+        ownerDataHolder.setOnClickListener(view -> goToOwner(owner, getMiracleActivity()));
+
+        header.setOnClickListener(view -> NavigationUtil.goToWall(postItem, getMiracleActivity()));
+
 
     }
 
@@ -170,7 +165,7 @@ public class PostViewHolder extends MiracleViewHolder {
 
         postItem = (PostItem) itemDataHolder;
 
-        Owner owner = postItem.getFrom();
+        owner = postItem.getFrom();
         if(owner==null){
             owner = postItem.getSource();
         }
@@ -235,7 +230,7 @@ public class PostViewHolder extends MiracleViewHolder {
                     photoGridView = (PhotoGridView) photoGridViewHolder.getChildAt(0);
                     MiracleViewRecycler miracleViewRecycler =
                             getMiracleAdapter().getMiracleViewRecycler(itemDataHolder.getViewHolderType());
-                    miracleViewRecycler.setMaxRecycledViews(TYPE_PHOTO_ITEM, 15);
+                    miracleViewRecycler.setMaxRecycledViews(TYPE_PHOTO, 15);
                     photoGridView.setRecycledViewPool(miracleViewRecycler);
                 }
                 if(photoGridViewHolder.getVisibility()!=VISIBLE) {
@@ -371,55 +366,55 @@ public class PostViewHolder extends MiracleViewHolder {
     private void colorLikesButton(boolean animate){
         Context context = itemView.getContext();
 
-        int colorButtonOnCardBackground = getColorByAttributeId(context, R.attr.colorButtonOnCardBackground);
-        int colorOnButtonOnCardBackground = getColorByAttributeId(context, R.attr.colorOnButtonOnCardBackground);
-
         if(postItem.getUserLikes()){
 
-            ArgbEvaluator colorEvaluator = new ArgbEvaluator();
+            int onLikeButton = ColorUtil.getColorByAttributeId(context.getTheme(), R.attr.colorOnLikeButton);
+            int likeButton = ColorUtil.getColorByAttributeId(context.getTheme(), R.attr.colorLikeButton);
 
-            int colorLike = ResourcesCompat.getColor(context.getResources(), R.color.like, context.getTheme());
-
-            int likeIconColor = (int) colorEvaluator.evaluate(0.875f, colorOnButtonOnCardBackground, colorLike);
             Drawable drawable = ResourcesCompat.getDrawable(context.getResources(),
                     R.drawable.ic_like_filled_24, context.getTheme());
             if(drawable!=null) {
                 drawable = DrawableCompat.wrap(drawable).mutate();
-                drawable.setColorFilter(new PorterDuffColorFilter(likeIconColor, PorterDuff.Mode.SRC_IN));
+                drawable.setColorFilter(new PorterDuffColorFilter(onLikeButton, PorterDuff.Mode.SRC_IN));
             }
 
             likesIcon.setImageDrawable(drawable);
-            likesText.setTextColor(likeIconColor);
+            likesText.setTextColor(onLikeButton);
 
-            int likeHolderColor = (int) colorEvaluator.evaluate(0.125f, colorButtonOnCardBackground, colorLike);
+
             if(animate) {
-                animateToColor(likeHolderColor);
+                animateToColor(likeButton);
                 Animation bounceAnimation = AnimationUtils.loadAnimation(context, R.anim.like_bounce);
                 likesIcon.startAnimation(bounceAnimation);
             } else {
-                this.color = likeHolderColor;
-                PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(likeHolderColor, PorterDuff.Mode.SRC_IN);
+                this.color = likeButton;
+                PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(likeButton, PorterDuff.Mode.SRC_IN);
                 likesHolder.getBackground().setColorFilter(colorFilter);
             }
         } else {
+
+            int onLikeButton = ColorUtil.getColorByAttributeId(context.getTheme(), R.attr.colorOnButtonNeutral);
+            int likeButton = ColorUtil.getColorByAttributeId(context.getTheme(), R.attr.colorButtonNeutral);
+
             Drawable drawable = ResourcesCompat.getDrawable(context.getResources(),
                     R.drawable.ic_like_24, context.getTheme());
+
             if(drawable!=null) {
                 drawable = DrawableCompat.wrap(drawable).mutate();
-                drawable.setColorFilter(new PorterDuffColorFilter(colorOnButtonOnCardBackground, PorterDuff.Mode.SRC_IN));
+                drawable.setColorFilter(new PorterDuffColorFilter(onLikeButton, PorterDuff.Mode.SRC_IN));
             }
 
             likesIcon.setImageDrawable(drawable);
-            likesText.setTextColor(colorOnButtonOnCardBackground);
+            likesText.setTextColor(onLikeButton);
+
 
             if(animate) {
-                animateToColor(colorButtonOnCardBackground);
+                animateToColor(likeButton);
                 Animation bounceAnimation = AnimationUtils.loadAnimation(context, R.anim.like_bounce);
                 likesIcon.startAnimation(bounceAnimation);
             } else {
-                this.color = colorButtonOnCardBackground;
-                PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(colorButtonOnCardBackground,
-                        PorterDuff.Mode.SRC_IN);
+                this.color = likeButton;
+                PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(likeButton, PorterDuff.Mode.SRC_IN);
                 likesHolder.getBackground().setColorFilter(colorFilter);
             }
         }
@@ -441,7 +436,7 @@ public class PostViewHolder extends MiracleViewHolder {
     public static class Fabric implements ViewHolderFabric {
         @Override
         public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
-            return new PostViewHolder(inflater.inflate(R.layout.view_post_item_1, viewGroup, false));
+            return new PostViewHolder(inflater.inflate(R.layout.view_post_item, viewGroup, false));
         }
     }
 

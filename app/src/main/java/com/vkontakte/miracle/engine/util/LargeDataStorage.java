@@ -1,6 +1,7 @@
 package com.vkontakte.miracle.engine.util;
 
 import android.util.ArrayMap;
+import android.util.Log;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -25,13 +26,19 @@ public class LargeDataStorage {
     public String storeLargeData(Object data){
         String key = createUniqueKey();
         sparseArray.put(key,data);
+        Log.d("eihieigheihgihg",data.toString()+" added, size = "+sparseArray.entrySet().size());
         return key;
     }
 
     public Object getLargeData(String key){
-        Object controller = sparseArray.get(key);
+        Object object = sparseArray.get(key);
+        removeLargeData(key);
+        return object;
+    }
+
+    public void removeLargeData(String key){
         sparseArray.remove(key);
-        return controller;
+        Log.d("eihieigheihgihg","removed, size = "+sparseArray.entrySet().size());
     }
 
     public String createUniqueKey(){

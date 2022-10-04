@@ -1,8 +1,10 @@
 package com.vkontakte.miracle.fragment.base;
 
 import static android.view.View.VISIBLE;
-import static com.vkontakte.miracle.engine.fragment.ScrollAndElevate.scrollAndElevate;
-import static com.vkontakte.miracle.engine.util.FragmentUtil.goToProfile;
+import static com.vkontakte.miracle.engine.util.NavigationUtil.goToOwnerFriends;
+import static com.vkontakte.miracle.engine.util.NavigationUtil.goToOwnerGroups;
+import static com.vkontakte.miracle.engine.util.NavigationUtil.goToOwnerPhotos;
+import static com.vkontakte.miracle.engine.util.NavigationUtil.goToProfile;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,53 +19,38 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.miracle.button.SwitchButton;
 import com.miracle.button.TextViewButton;
-import com.vkontakte.miracle.MiracleActivity;
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.fragment.FragmentFabric;
 import com.vkontakte.miracle.engine.fragment.MiracleFragment;
-import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
-import com.vkontakte.miracle.engine.util.DeviceUtil;
+import com.vkontakte.miracle.engine.fragment.base.BaseRefreshListFragment;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.fragment.catalog.FragmentCatalogFriends;
-import com.vkontakte.miracle.fragment.catalog.FragmentCatalogGroups;
-import com.vkontakte.miracle.fragment.photos.FragmentUserPhotos;
 import com.vkontakte.miracle.fragment.settings.FragmentSettings;
 import com.vkontakte.miracle.login.UpdateCurrentUserData;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.model.users.fields.LastSeen;
 
-public class FragmentMenu extends SimpleMiracleFragment {
+public class FragmentMenu extends BaseRefreshListFragment {
 
     private View rootView;
-    private MiracleApp miracleApp;
-    private MiracleActivity miracleActivity;
     private LinearLayout blockScreen;
     private UpdateCurrentUserData updateCurrentUserData;
+    private UpdateCurrentUserData.onCompleteListener onCompleteListener;
     private SwitchButton nightModeSwitchButton;
 
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        miracleApp = MiracleApp.getInstance();
-        miracleActivity = getMiracleActivity();
+        rootView = super.onCreateView(inflater, container, savedInstanceState);
 
-        rootView = inflater.inflate(R.layout.fragment_menu, container, false);
-
-        setAppBarLayout(rootView.findViewById(R.id.appbarlayout));
-        setToolBar(getAppBarLayout().findViewById(R.id.toolbar));
-        setAppbarClickToTop();
-        setScrollView(rootView.findViewById(R.id.scrollView));
-        scrollAndElevate(getScrollView(), getAppBarLayout(), miracleActivity);
-        blockScreen = rootView.findViewById(R.id.fragmentBlockScreen);
-
-        UpdateCurrentUserData.onCompleteListener onCompleteListener = (profileItem, hasChanges) -> {
+        onCompleteListener = (profileItem, hasChanges) -> {
             getSwipeRefreshLayout().setRefreshing(false);
             if(hasChanges){
-                miracleActivity.setUserItem(profileItem);
                 setParameters();
             }
         };
@@ -73,26 +60,6 @@ public class FragmentMenu extends SimpleMiracleFragment {
             block();
         }
 
-        setSwipeRefreshLayout(rootView.findViewById(R.id.refreshLayout), () ->{
-            if(updateCurrentUserData == null || updateCurrentUserData.workIsDone()){
-                (updateCurrentUserData = new UpdateCurrentUserData(onCompleteListener)).start();
-            }
-        });
-
-        nightModeSwitchButton = rootView.findViewById(R.id.dark_theme_switch);
-        nightModeSwitchButton.setChecked(miracleApp.nightMode());
-        nightModeSwitchButton.setOnClickListener(view -> {
-            if (updateCurrentUserData != null && !updateCurrentUserData.workIsDone()) {
-                return;
-            }
-            nightModeSwitchButton.setOnClickListener(null);
-            nightModeSwitchButton.setChecked(!miracleApp.nightMode(), true);
-            block();
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                miracleApp.swapNightMode();
-            }, nightModeSwitchButton.getAnimationDuration());
-        });
-
         setButtons();
 
         setParameters();
@@ -100,8 +67,47 @@ public class FragmentMenu extends SimpleMiracleFragment {
         return rootView;
     }
 
+    @NonNull
+    @Override
+    public View inflateRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_menu, container, false);
+    }
+
+    @Override
+    public void findViews(@NonNull View rootView) {
+        super.findViews(rootView);
+        blockScreen = rootView.findViewById(R.id.fragmentBlockScreen);
+        nightModeSwitchButton = rootView.findViewById(R.id.dark_theme_switch);
+    }
+
+    @Override
+    public void initViews() {
+        super.initViews();
+        nightModeSwitchButton.setChecked(MiracleApp.getInstance().nightMode());
+        nightModeSwitchButton.setOnClickListener(view -> {
+            if (updateCurrentUserData != null && !updateCurrentUserData.workIsDone()) {
+                return;
+            }
+            nightModeSwitchButton.setOnClickListener(null);
+            nightModeSwitchButton.setChecked(!MiracleApp.getInstance().nightMode(), true);
+            block();
+            new Handler(Looper.getMainLooper()).postDelayed(() ->
+                    MiracleApp.getInstance().swapNightMode(),
+                    nightModeSwitchButton.getAnimationDuration());
+        });
+    }
+
+    @Override
+    public SwipeRefreshLayout.OnRefreshListener requestOnRefreshListener() {
+        return () ->{
+            if(updateCurrentUserData == null || updateCurrentUserData.workIsDone()){
+                (updateCurrentUserData = new UpdateCurrentUserData(onCompleteListener)).start();
+            }
+        };
+    }
+
     private void setParameters(){
-        ProfileItem profileItem = miracleActivity.getUserItem();
+        ProfileItem profileItem = StorageUtil.get().currentUser();
         FrameLayout frameLayout = rootView.findViewById(R.id.profileLink);
 
         frameLayout.setOnClickListener(view -> goToProfile(profileItem,getMiracleActivity()));
@@ -128,22 +134,24 @@ public class FragmentMenu extends SimpleMiracleFragment {
     }
 
     private void setButtons(){
+        ProfileItem profileItem = StorageUtil.get().currentUser();
+
         TextView settingsButton = rootView.findViewById(R.id.settings);
-        settingsButton.setOnClickListener(v -> miracleActivity.addFragment(new FragmentSettings()));
+        settingsButton.setOnClickListener(v -> getMiracleActivity().addFragment(new FragmentSettings()));
 
         TextView photosButton = rootView.findViewById(R.id.photos);
-        photosButton.setOnClickListener(v -> miracleActivity.addFragment(new FragmentUserPhotos()));
+        photosButton.setOnClickListener(v -> goToOwnerPhotos(profileItem.getId(), getMiracleActivity()));
 
         TextView groupsButton = rootView.findViewById(R.id.groups);
-        groupsButton.setOnClickListener(v -> miracleActivity.addFragment(new FragmentCatalogGroups()));
+        groupsButton.setOnClickListener(v -> goToOwnerGroups(profileItem.getId(), getMiracleActivity()));
 
         TextView friendsButton = rootView.findViewById(R.id.friends);
-        friendsButton.setOnClickListener(v -> miracleActivity.addFragment(new FragmentCatalogFriends()));
+        friendsButton.setOnClickListener(v -> goToOwnerFriends(profileItem.getId(), getMiracleActivity()));
 
         TextViewButton exitButton = rootView.findViewById(R.id.exit);
         exitButton.setOnClickListener(v -> {
             block();
-            miracleActivity.exitFromAccount();
+            getMiracleActivity().exitFromAccount();
         });
     }
 
@@ -158,7 +166,6 @@ public class FragmentMenu extends SimpleMiracleFragment {
             return new FragmentMenu();
         }
     }
-
 
     @Override
     public void onViewStateRestored(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {

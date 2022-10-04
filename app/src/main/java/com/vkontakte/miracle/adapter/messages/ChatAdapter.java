@@ -4,7 +4,6 @@ import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_M
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_MESSAGE_OUT;
 import static com.vkontakte.miracle.engine.util.APIUtil.createOwnersMap;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
-import static com.vkontakte.miracle.engine.util.StringsUtil.stringFromArrayList;
 
 import android.util.ArrayMap;
 import android.view.ViewGroup;
@@ -16,16 +15,14 @@ import com.vkontakte.miracle.adapter.messages.holders.MessageInChatViewHolder;
 import com.vkontakte.miracle.adapter.messages.holders.MessageInViewHolder;
 import com.vkontakte.miracle.adapter.messages.holders.MessageOutViewHolder;
 import com.vkontakte.miracle.adapter.messages.holders.MessageViewHolder;
-import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
+import com.vkontakte.miracle.engine.adapter.MiracleAsyncLoadAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.longpoll.LongPollServiceController;
-import com.vkontakte.miracle.longpoll.listeners.OnMessageAddedUpdateListener;
-import com.vkontakte.miracle.longpoll.listeners.OnMessageReadUpdateListener;
-import com.vkontakte.miracle.longpoll.model.MessageAddedUpdate;
-import com.vkontakte.miracle.longpoll.model.MessageReadUpdate;
+import com.vkontakte.miracle.service.longpoll.LongPollServiceController;
+import com.vkontakte.miracle.service.longpoll.listeners.OnMessageAddedUpdateListener;
+import com.vkontakte.miracle.service.longpoll.listeners.OnMessageReadUpdateListener;
+import com.vkontakte.miracle.service.longpoll.model.MessageAddedUpdate;
 import com.vkontakte.miracle.model.Owner;
 import com.vkontakte.miracle.model.messages.ConversationItem;
 import com.vkontakte.miracle.model.messages.MessageItem;
@@ -40,7 +37,7 @@ import java.util.ArrayList;
 
 import retrofit2.Response;
 
-public class ChatAdapter extends MiracleLoadableAdapter {
+public class ChatAdapter extends MiracleAsyncLoadAdapter {
 
     private final ConversationItem conversationItem;
     private OnMessageReadUpdateListener onMessageReadUpdateListener;
@@ -56,7 +53,7 @@ public class ChatAdapter extends MiracleLoadableAdapter {
     @Override
     public void onLoading() throws Exception {
 
-        ProfileItem profileItem = getUserItem();
+        ProfileItem profileItem = StorageUtil.get().currentUser();
         ArrayList<ItemDataHolder> holders = getItemDataHolders();
 
         MessageItem messageItem = conversationItem.getLastMessage();
@@ -93,7 +90,7 @@ public class ChatAdapter extends MiracleLoadableAdapter {
     @Override
     public void onComplete() {
 
-        if(!hasData()) {
+        if(!loaded()) {
             ArrayList<MessageAddedUpdate> messageAddedUpdates = StorageUtil.get().loadMessageAddedLongPollUpdates();
             ArrayList<MessageAddedUpdate> missedMessageAddedUpdates = new ArrayList<>();
 
@@ -130,10 +127,11 @@ public class ChatAdapter extends MiracleLoadableAdapter {
     public void ini() {
         super.ini();
         setStep(75);
+        /*
         LongPollServiceController longPollServiceController = LongPollServiceController.get();
 
         onMessageReadUpdateListener = messageReadUpdates -> {
-            if(hasData()){
+            if(loaded()){
                 ArrayList<ArrayList<MessageReadUpdate>> arrayLists = new ArrayList<>();
                 if(messageReadUpdates.size()>1) {
                     ArrayMap<String, String> arrayMap = new ArrayMap<>();
@@ -203,7 +201,7 @@ public class ChatAdapter extends MiracleLoadableAdapter {
         longPollServiceController.addOnMessageReadUpdateListener(onMessageReadUpdateListener);
 
         onMessageAddedUpdateListener = messageAddedUpdates -> {
-            if(hasData()) {
+            if(loaded()) {
                 ArrayList<String> newMessagesIds = new ArrayList<>();
 
                 for (MessageAddedUpdate messageAddedUpdate : messageAddedUpdates) {
@@ -259,6 +257,8 @@ public class ChatAdapter extends MiracleLoadableAdapter {
         };
         longPollServiceController.addOnMessageAddedUpdateListener(onMessageAddedUpdateListener);
 
+
+         */
     }
 
     private void addNewMessage(MessageItem messageItem){

@@ -47,10 +47,9 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:singleLine="true"
                 android:fontFamily="sans-serif"
                 android:textSize="16sp"
+                android:gravity="center"
                 tools:text="Title" />
 
             <ViewStub
@@ -82,7 +81,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:fontFamily="sans-serif"
-            android:textColor="?attr/colorEmphasis_60"
+            android:textColor="?attr/colorSubtitle"
             android:textSize="15sp"
             tools:text="Subtitle" />
 
@@ -93,7 +92,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:fontFamily="sans-serif"
-            android:textColor="?attr/colorEmphasis_60"
+            android:textColor="?attr/colorSubtitle"
             android:textSize="15sp"
             tools:text="Subtitle" />
     </LinearLayout>

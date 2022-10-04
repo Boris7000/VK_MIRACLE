@@ -31,7 +31,7 @@
         app:boxCornerRadiusBottomStart="@dimen/child_round"
         app:boxCornerRadiusTopStart="@dimen/child_round"
         app:boxStrokeColor="@color/primary_tinted_outlined_text_box_colors"
-        android:textColorHint="?attr/colorEmphasis_60"
+        android:textColorHint="?attr/colorEditTextHint"
         app:hintTextColor="?attr/colorSecondary"
         app:boxBackgroundMode="outline">
 

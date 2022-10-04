@@ -1,16 +1,12 @@
 package com.vkontakte.miracle.adapter.audio.holders;
 
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 
 public class PlaylistViewHolder extends PlaylistViewHolderHorizontal {

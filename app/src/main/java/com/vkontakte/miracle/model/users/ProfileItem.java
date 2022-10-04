@@ -2,10 +2,13 @@ package com.vkontakte.miracle.model.users;
 
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PROFILE;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.model.users.fields.Counters;
+import com.vkontakte.miracle.model.groups.fields.Cover;
+import com.vkontakte.miracle.model.wall.fields.Counters;
 import com.vkontakte.miracle.model.users.fields.LastSeen;
 import com.vkontakte.miracle.model.users.fields.OnlineInfo;
 import com.vkontakte.miracle.model.users.fields.RelationPartner;
@@ -43,6 +46,7 @@ public class ProfileItem implements Serializable, ItemDataHolder {
     private OnlineInfo onlineInfo;
     private RelationPartner relationPartner;
     private Counters counters;
+    private Cover cover;
 
     public String getId(){
         return id;
@@ -117,6 +121,9 @@ public class ProfileItem implements Serializable, ItemDataHolder {
     public Counters getCounters() {
         return counters;
     }
+    public Cover getCover() {
+        return cover;
+    }
     public LastSeen getLastSeen() {
         return lastSeen;
     }
@@ -151,7 +158,7 @@ public class ProfileItem implements Serializable, ItemDataHolder {
     }
 
     public ProfileItem(JSONObject jsonObject)throws JSONException {
-
+        Log.d("gugugugu",jsonObject.toString());
         id = jsonObject.getString("id");
         firstName = jsonObject.getString("first_name");
         lastName = jsonObject.getString("last_name");
@@ -206,6 +213,11 @@ public class ProfileItem implements Serializable, ItemDataHolder {
             if(jsonObject.has("online_info")){
                 onlineInfo = new OnlineInfo(jsonObject.getJSONObject("online_info"));
             }
+
+            if(jsonObject.has("cover")){
+                cover = new Cover(jsonObject.getJSONObject("cover"));
+            }
+
             if(jsonObject.has("counters")) {
                 Object counters = jsonObject.get("counters");
                 if (counters instanceof JSONObject) {

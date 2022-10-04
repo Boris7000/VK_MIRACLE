@@ -14,28 +14,24 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.graphics.ColorUtils;
 
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
+import com.vkontakte.miracle.engine.fragment.side.SideListFragment;
 
-public class FragmentColorSchemeGenerator  extends SimpleMiracleFragment {
+public class FragmentColorSchemeGenerator extends SideListFragment {
 
     private View rootView;
     private float maxS = 100;
     private float minS = 30;
     private float h = 0;
 
-
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.fragment_settings_color_scheme_generator, container, false);
-
-        setAppBarLayout(rootView.findViewById(R.id.appbarlayout));
-        setToolBar(getAppBarLayout().findViewById(R.id.toolbar));
-        setAppbarClickToTop();
-        setBackClick();
+        rootView = super.onCreateView(inflater, container, savedInstanceState);
 
         LinearLayout linearLayout = rootView.findViewById(R.id.layout);
 
@@ -158,6 +154,14 @@ public class FragmentColorSchemeGenerator  extends SimpleMiracleFragment {
 
         return rootView;
     }
+
+    @NonNull
+    @Override
+    public View inflateRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_settings_color_scheme_generator, container, false);
+    }
+
+
 
     public void generateColors(){
 

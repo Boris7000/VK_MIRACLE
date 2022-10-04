@@ -3,7 +3,9 @@ package com.vkontakte.miracle.model.audio.fields;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Photo {
+import java.io.Serializable;
+
+public class Photo implements Serializable {
 
     private final int width;
     private final int height;
@@ -76,6 +78,34 @@ public class Photo {
         }
         if (jsonObject.has("photo_1200")) {
             photo1200 = jsonObject.getString("photo_1200");
+        }
+    }
+
+    public String getOptimalSizeUrl(int size){
+        if(size>51){
+            if(size>102){
+                if(size>203){
+                    if(size>285){
+                        if(size>450){
+                            if(size>900){
+                                return photo1200;
+                            } else {
+                                return photo600;
+                            }
+                        } else {
+                            return photo300;
+                        }
+                    } else {
+                        return photo270;
+                    }
+                } else {
+                    return photo135;
+                }
+            } else {
+                return photo68;
+            }
+        } else {
+            return photo34;
         }
     }
 }

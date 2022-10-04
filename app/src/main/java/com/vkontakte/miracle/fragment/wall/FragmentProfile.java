@@ -1,69 +1,100 @@
 package com.vkontakte.miracle.fragment.wall;
 
-import static com.vkontakte.miracle.engine.fragment.ScrollAndElevate.scrollAndElevate;
+import static com.vkontakte.miracle.engine.adapter.AdapterStates.SATE_FIRST_LOADING_COMPLETE;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.wall.ProfileAdapter;
-import com.vkontakte.miracle.engine.fragment.SimpleMiracleFragment;
-import com.vkontakte.miracle.engine.util.LargeDataStorage;
+import com.vkontakte.miracle.engine.fragment.side.SideRecyclerFragment;
 import com.vkontakte.miracle.model.users.ProfileItem;
 
-public class FragmentProfile extends SimpleMiracleFragment {
+public class FragmentProfile extends SideRecyclerFragment {
 
-    private ProfileItem profileItem;
+    private String profileId;
+    private String profileName;
 
-    public void setProfileItem(ProfileItem profileItem) {
-        this.profileItem = profileItem;
+    public void setProfileId(String profileId) {
+        this.profileId = profileId;
+    }
+
+    public void setProfileName(String profileName) {
+        this.profileName = profileName;
+    }
+
+    @NonNull
+    @Override
+    public View inflateRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_with_recycleview_dark, container, false);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public RecyclerView.Adapter<?> onCreateRecyclerAdapter() {
+        return new ProfileAdapter(profileId);
+    }
 
-        View rootView = inflater.inflate(R.layout.fragment_with_recycleview, container, false);
+    @Override
+    public String requestTitleText() {
+        if(profileName!=null){
+            return profileName;
+        }
+        return super.requestTitleText();
+    }
 
-        setAppBarLayout(rootView.findViewById(R.id.appbarlayout));
-        setToolBar(getAppBarLayout().findViewById(R.id.toolbar));
-        setAppbarClickToTop();
-        setBackClick();
-        setTitle(rootView.findViewById(R.id.title));
-        setRecyclerView(rootView.findViewById(R.id.recyclerView));
-        scrollAndElevate(getRecyclerView(),getAppBarLayout(), getMiracleActivity());
-        setProgressBar(rootView.findViewById(R.id.progressCircle));
-
-        if(savedInstanceState!=null&&!savedInstanceState.isEmpty()){
-            String key = savedInstanceState.getString("profileItem");
-            if(key!=null){
-                profileItem = (ProfileItem) LargeDataStorage.get().getLargeData(key);
-                savedInstanceState.remove("profileItem");
+    @CallSuper
+    @Override
+    public void onRecyclerAdapterStateChange(int state) {
+        if (state == SATE_FIRST_LOADING_COMPLETE) {
+            if(profileName==null||profileName.isEmpty()) {
+                RecyclerView.Adapter<?> adapter = getRecyclerView().getAdapter();
+                if(adapter instanceof ProfileAdapter){
+                    ProfileAdapter profileAdapter = (ProfileAdapter) adapter;
+                    ProfileItem profileItem = profileAdapter.getProfileItem();
+                    if(profileItem!=null){
+                        profileName = profileItem.getFullName();
+                    }
+                }
             }
         }
+        super.onRecyclerAdapterStateChange(state);
+    }
 
-        if(profileItem !=null){
-            setTitleText(profileItem.getFullName());
-            if(nullSavedAdapter(savedInstanceState)){
-                setAdapter(new ProfileAdapter(profileItem));
-            }
+    @Override
+    public void readSavedInstance(Bundle savedInstanceState) {
+        String key = savedInstanceState.getString("profileId");
+        if(key!=null){
+            profileId = key;
+            savedInstanceState.remove("profileId");
         }
+        key = savedInstanceState.getString("profileName");
+        if(key!=null){
+            profileName = key;
+            savedInstanceState.remove("profileName");
+        }
+    }
 
-        setSwipeRefreshLayout(rootView.findViewById(R.id.refreshLayout), this::reloadAdapter);
-
-        return rootView;
+    @Override
+    public void onClearSavedInstance(@NonNull Bundle savedInstanceState) {
+        super.onClearSavedInstance(savedInstanceState);
+        savedInstanceState.remove("profileId");
+        savedInstanceState.remove("profileName");
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-
-        if(profileItem !=null){
-            outState.putString("profileItem", LargeDataStorage.get().storeLargeData(profileItem));
+        if(profileId !=null){
+            outState.putString("profileId", profileId);
         }
-
+        if(profileName !=null){
+            outState.putString("profileName", profileName);
+        }
         super.onSaveInstanceState(outState);
     }
 }

@@ -6,10 +6,14 @@ import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_E
 
 public class ErrorDataHolder implements ItemDataHolder {
 
-    private final String errorString;
+    private String errorString = "";
+    private int errorStringResource = 0;
 
     public ErrorDataHolder(String errorString){
         this.errorString = errorString;
+    }
+    public ErrorDataHolder(int errorStringResource){
+        this.errorStringResource = errorStringResource;
     }
 
     @Override
@@ -19,5 +23,9 @@ public class ErrorDataHolder implements ItemDataHolder {
 
     public String getErrorString() {
         return errorString;
+    }
+
+    public int getErrorStringResource() {
+        return errorStringResource;
     }
 }

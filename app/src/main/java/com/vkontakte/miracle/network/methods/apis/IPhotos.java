@@ -20,6 +20,16 @@ public interface IPhotos {
                          @Field("v") String v);
 
     @FormUrlEncoded
+    @POST("photos.getAlbums")
+    Call<JSONObject> getAlbums(@Field("owner_id") String user_ids,
+                               @Field("album_ids") String album_ids,
+                               @Field("need_system") Integer need_system,
+                               @Field("need_covers") Integer needCovers,
+                               @Field("photo_sizes") Integer photoSizes,
+                               @Field("access_token") String access_token,
+                               @Field("v") String v);
+
+    @FormUrlEncoded
     @POST("photos.getAll")
     Call<JSONObject> getAll(@Field("owner_id") String ownerId,
                             @Field("extended") Integer extended,

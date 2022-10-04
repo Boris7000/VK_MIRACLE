@@ -102,6 +102,19 @@ public interface IAudio {
                              @Field("v") String v);
 
     @FormUrlEncoded
+    @POST("audio.get")
+    Call<JSONObject> get(@Field("owner_id") String owner_id,
+                         @Field("playlist_id") String playlist_id,
+                         @Field("count") int count,
+                         @Field("offset") int offset,
+                         @Field("access_key") String access_key,
+                         @Field("extended") int extended,
+                         @Field("shuffle") int shuffle,
+                         @Field("shuffle_seed") int shuffle_seed,
+                         @Field("access_token") String access_token,
+                         @Field("v") String v);
+
+    @FormUrlEncoded
     @POST("audio.getPlaylists")
     Call<JSONObject> getPlaylists(@Field("owner_id") String owner_id,
                                   @Field("count") int count,

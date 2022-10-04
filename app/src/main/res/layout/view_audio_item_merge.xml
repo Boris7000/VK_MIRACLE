@@ -66,7 +66,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:fontFamily="sans-serif"
-                android:textColor="?attr/colorEmphasis_60"
+                android:textColor="?attr/colorSubtitle"
                 android:textSize="14sp"
                 tools:text="Subtitle" />
         </LinearLayout>
@@ -79,7 +79,7 @@
             android:ellipsize="end"
             android:fontFamily="sans-serif"
             android:singleLine="true"
-            android:textColor="?attr/colorEmphasis_60"
+            android:textColor="?attr/colorSubtitle"
             android:textSize="13sp"
             tools:text="00:00" />
     </LinearLayout>

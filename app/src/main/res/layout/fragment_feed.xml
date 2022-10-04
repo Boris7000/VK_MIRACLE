@@ -34,7 +34,8 @@
             android:overScrollMode="ifContentScrolls"
             android:scrollbarStyle="insideOverlay"
             android:scrollbarThumbVertical="@drawable/scroll_bar_drawable"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical"
+            android:background="?attr/colorSurfaceVariant2"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <attr name="colorButtonNeutral" format="color"/>
+    <attr name="colorOnButtonNeutral" format="color"/>
+
+    <attr name="colorLikeButton" format="color"/>
+    <attr name="colorOnLikeButton" format="color"/>
+
+    <attr name="colorEditTextStroke" format="color"/>
+    <attr name="colorEditTextHint" format="color"/>
+
+    <attr name="colorSubtitle" format="color"/>
+    <attr name="colorSubtitle2" format="color"/>
+    <attr name="colorSubtitle3" format="color"/>
+
     <attr name="colorPrimary_10" format="color"/>
     <attr name="colorPrimary_20" format="color"/>
     <attr name="colorPrimary_25" format="color"/>
@@ -54,9 +67,10 @@
     <attr name="colorStroke" format="color"/>
     <attr name="colorDivider" format="color"/>
 
-    <attr name="colorOnButtonOnCardBackground" format="color"/>
-    <attr name="colorButtonOnCardBackground" format="color"/>
     <attr name="colorCardBackground" format="color"/>
+    <attr name="colorSurfaceVariant2" format="color"/>
+    <attr name="colorPostBackground" format="color"/>
+
 
     <attr name="colorMessageInContainer" format="color"/>
     <attr name="colorOnMessageIn" format="color"/>
@@ -73,6 +87,7 @@
     <attr name="globalTranslationZ" format="dimension"/>
     <attr name="swipeRefreshCircleColor" format="color"/>
     <attr name="scrollBarColor" format="color"/>
+
 
     <declare-styleable name="MiracleBottomNavigationView">
         <attr name="selectedColor" format="color"/>
@@ -161,6 +176,10 @@
 
     <declare-styleable name="AudioItemView">
         <attr name="placeHolderDrawable" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="MaskImageView">
+        <attr name="maskBitmap" format="reference"/>
     </declare-styleable>
 
 </resources>

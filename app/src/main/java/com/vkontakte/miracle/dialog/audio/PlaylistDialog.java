@@ -1,7 +1,6 @@
 package com.vkontakte.miracle.dialog.audio;
 
 import static com.vkontakte.miracle.engine.util.ImageUtil.bitmapFromLayerDrawable;
-import static com.vkontakte.miracle.engine.util.ImageUtil.getAverageHSLFromBitmap;
 import static com.vkontakte.miracle.engine.view.PicassoDrawableCopy.setBitmap;
 
 import android.animation.ValueAnimator;
@@ -26,9 +25,10 @@ import com.miracle.button.TextViewButton;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.dialog.MiracleBottomDialog;
 import com.vkontakte.miracle.engine.util.DimensionsUtil;
+import com.vkontakte.miracle.engine.util.StorageUtil;
+import com.vkontakte.miracle.executors.color.CalculateAverage;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.model.audio.fields.Photo;
 import com.vkontakte.miracle.model.users.ProfileItem;
@@ -45,21 +45,11 @@ public class PlaylistDialog extends MiracleBottomDialog {
     private final Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            new AsyncExecutor<Boolean>() {
-                int averageColor;
+            new CalculateAverage(bitmap){
                 @Override
-                public Boolean inBackground() {
-                    Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 50, 50, false);
-                    float[] hsl = getAverageHSLFromBitmap(scaled);
-                    hsl[1] =  Math.min(hsl[1],0.52f);
-                    hsl[2] = Math.max(Math.min(hsl[2],0.43f),0.23f);
-                    averageColor = ColorUtils.HSLToColor(hsl);
-                    return true;
-                }
-                @Override
-                public void onExecute(Boolean object) {
+                public void onExecute(Integer object) {
                     setBitmap(imageView, getContext(), bitmap);
-                    animateToColor(averageColor);
+                    animateToColor(object);
                 }
             }.start();
         }
@@ -74,10 +64,10 @@ public class PlaylistDialog extends MiracleBottomDialog {
         }
     };
 
-    public PlaylistDialog(@NonNull Context context, PlaylistItem playlistItem, ProfileItem userItem) {
+    public PlaylistDialog(@NonNull Context context, PlaylistItem playlistItem) {
         super(context);
         this.playlistItem = playlistItem;
-        this.userItem = userItem;
+        this.userItem = StorageUtil.get().currentUser();
     }
 
     @Override

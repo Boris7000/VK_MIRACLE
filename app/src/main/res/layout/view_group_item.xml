@@ -61,7 +61,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:fontFamily="sans-serif"
-            android:textColor="?attr/colorEmphasis_60"
+            android:textColor="?attr/colorSubtitle"
             android:textSize="15sp"
             tools:text="Subtitle" />
     </LinearLayout>

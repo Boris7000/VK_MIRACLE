@@ -21,9 +21,6 @@
         <meta-data android:name="asset_statements" android:resource="@string/asset_statements" />
 
         <activity
-            android:name="com.vkontakte.miracle.MiracleActivity"/>
-
-        <activity
             android:name="com.vkontakte.miracle.login.LoginActivity" />
 
         <activity
@@ -37,7 +34,19 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.vkontakte.miracle.player.AudioPlayerService"
+        <activity android:name="com.vkontakte.miracle.MainActivity"/>
+
+        <service android:name=".service.downloads.audio.AudioDownloadService"
+            android:enabled="true"
+            android:exported="false">
+        </service>
+
+        <service android:name=".service.downloads.audio.AudioEraseService"
+            android:enabled="true"
+            android:exported="false">
+        </service>
+
+        <service android:name=".service.player.AudioPlayerService"
             android:enabled="true"
             android:exported="false">
             <!--<intent-filter>
@@ -65,7 +74,7 @@
             </intent-filter>
         </service>
 
-        <service android:name=".longpoll.LongPollService"
+        <service android:name=".service.longpoll.LongPollService"
             android:enabled="true"
             android:exported="false">
         </service>

@@ -5,10 +5,12 @@ import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
 import android.util.ArrayMap;
 
-import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
+import com.vkontakte.miracle.R;
+import com.vkontakte.miracle.engine.adapter.MiracleAsyncLoadAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.adapter.holder.error.ErrorDataHolder;
+import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.model.catalog.CatalogExtendedArrays;
 import com.vkontakte.miracle.model.groups.GroupItem;
 import com.vkontakte.miracle.model.users.ProfileItem;
@@ -23,23 +25,30 @@ import java.util.ArrayList;
 
 import retrofit2.Response;
 
-public class GroupAdapter extends MiracleLoadableAdapter {
+public class GroupAdapter extends MiracleAsyncLoadAdapter {
+
+    private final String groupId;
 
     private GroupItem groupItem;
-    public GroupAdapter(GroupItem groupItem){
-        this.groupItem = groupItem;
+
+    public GroupAdapter(String groupId){
+        this.groupId = groupId;
+    }
+
+    public GroupItem getGroupItem() {
+        return groupItem;
     }
 
     @Override
     public void onLoading() throws Exception {
-        ProfileItem userItem = getUserItem();
+        ProfileItem userItem = StorageUtil.get().currentUser();
         ArrayList<ItemDataHolder> holders = getItemDataHolders();
 
         int previous = holders.size();
         Response<JSONObject> response;
-        if(!hasData()) {
+        if(!loaded()) {
 
-            response =  Groups.get(groupItem.getId().substring(1),userItem.getAccessToken()).execute();
+            response =  Groups.get(groupId.substring(1),userItem.getAccessToken()).execute();
 
             JSONObject jo_response = validateBody(response).getJSONObject("response");
 
@@ -50,7 +59,8 @@ public class GroupAdapter extends MiracleLoadableAdapter {
             holders.add(groupItem);
         }
 
-        response = Wall.get(groupItem.getId(),getNextFrom(), getStep(), userItem.getAccessToken()).execute();
+        response = Wall.get(groupId,getNextFrom(), getStep(), userItem.getAccessToken()).execute();
+
         JSONObject jo_response = validateBody(response).getJSONObject("response");
 
         setTotalCount(jo_response.getInt("count"));
@@ -63,8 +73,7 @@ public class GroupAdapter extends MiracleLoadableAdapter {
             for (int i = 0; i < items.length(); i++) {
                 JSONObject postObject = items.getJSONObject(i);
                 if (postObject.has("post_type")) {
-                    JSONObject jo_item = items.getJSONObject(i);
-                    PostItem postItem = new PostItem(jo_item, catalogExtendedArrays);
+                    PostItem postItem = new PostItem(postObject, catalogExtendedArrays);
                     postItems.add(postItem);
                 }
             }
@@ -75,7 +84,7 @@ public class GroupAdapter extends MiracleLoadableAdapter {
             setNextFrom(jo_response.getString("next_from"));
         } else {
             if(getLoadedCount()==0) {
-                holders.add(new ErrorDataHolder("Здесь пока нет записей"));
+                holders.add(new ErrorDataHolder(R.string.wall_is_empty));
             }
         }
 

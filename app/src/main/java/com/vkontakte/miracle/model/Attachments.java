@@ -1,11 +1,13 @@
 package com.vkontakte.miracle.model;
 
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_PHOTO;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.AudioWrapContainer;
 import com.vkontakte.miracle.model.photos.PhotoItem;
+import com.vkontakte.miracle.model.photos.PhotoWrapContainer;
 import com.vkontakte.miracle.model.wall.LinkItem;
 
 import org.json.JSONArray;
@@ -14,7 +16,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Attachments implements AudioWrapContainer {
+public class Attachments implements AudioWrapContainer, PhotoWrapContainer {
 
     private final ArrayList<ItemDataHolder> audios = new ArrayList<>();
 
@@ -37,6 +39,7 @@ public class Attachments implements AudioWrapContainer {
 
     private final ArrayList<ItemDataHolder> photos = new ArrayList<>();
 
+    @Override
     public ArrayList<ItemDataHolder> getPhotoItems() {
         return photos;
     }
@@ -49,6 +52,13 @@ public class Attachments implements AudioWrapContainer {
             switch (type){
                 case "photo":{
                     PhotoItem photoItem = new PhotoItem(jsonObject.getJSONObject("photo"));
+                    DataItemWrap<PhotoItem, PhotoWrapContainer> dataItemWrap =
+                            new DataItemWrap<PhotoItem, PhotoWrapContainer>(photoItem, this) {
+                                @Override
+                                public int getViewHolderType() {
+                                    return TYPE_WRAPPED_PHOTO;
+                                }
+                            };
                     photos.add(photoItem);
                     mediaItems.add(photoItem);
                     break;

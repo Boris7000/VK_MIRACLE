@@ -83,10 +83,16 @@ public class CaptchaCodeFrame extends LinearLayout {
         cancelButton.setOnClickListener(view -> {
             loginActivity.setCanLogin(true);
             loginActivity.setText("");
-            loginActivity.hideCaptchaCodeFrame();
+            loginActivity.backToLoginFrame();
         });
 
         Picasso.get().load(authState.getCaptchaImg()).into(captchaImage);
+    }
+
+
+    public void close(){
+        validationCodeField.setText("");
+        setVisibility(GONE);
     }
 
     public void clearFocus(){

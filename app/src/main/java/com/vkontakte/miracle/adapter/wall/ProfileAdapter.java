@@ -1,17 +1,32 @@
 package com.vkontakte.miracle.adapter.wall;
 
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WALL_COUNTER;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WALL_COUNTERS;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.getWallFabrics;
+import static com.vkontakte.miracle.engine.util.AdapterUtil.getHorizontalLayoutManager;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
 import android.util.ArrayMap;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.vkontakte.miracle.engine.adapter.MiracleLoadableAdapter;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.vkontakte.miracle.R;
+import com.vkontakte.miracle.engine.adapter.MiracleAdapter;
+import com.vkontakte.miracle.engine.adapter.MiracleAsyncLoadAdapter;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.adapter.holder.error.ErrorDataHolder;
+import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.model.catalog.CatalogExtendedArrays;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.model.wall.PostItem;
+import com.vkontakte.miracle.model.wall.fields.Counter;
+import com.vkontakte.miracle.model.wall.fields.Counters;
 import com.vkontakte.miracle.network.methods.Users;
 import com.vkontakte.miracle.network.methods.Wall;
 
@@ -22,32 +37,50 @@ import java.util.ArrayList;
 
 import retrofit2.Response;
 
-public class ProfileAdapter extends MiracleLoadableAdapter {
+public class ProfileAdapter extends MiracleAsyncLoadAdapter {
 
+    private final String profileId;
     private ProfileItem profileItem;
-    public ProfileAdapter(ProfileItem profileItem){
-        this.profileItem = profileItem;
+
+    public ProfileAdapter(String profileId){
+        this.profileId = profileId;
+    }
+
+    public ProfileItem getProfileItem() {
+        return profileItem;
     }
 
     @Override
     public void onLoading() throws Exception {
-        ProfileItem userItem = getUserItem();
+        ProfileItem userItem = StorageUtil.get().currentUser();
         ArrayList<ItemDataHolder> holders = getItemDataHolders();
 
         int previous = holders.size();
         Response<JSONObject> response;
-        if(!hasData()) {
+        if(!loaded()) {
 
-            response =  Users.get(profileItem.getId(),userItem.getAccessToken()).execute();
+            response =  Users.get(profileId,userItem.getAccessToken()).execute();
 
             JSONArray ja_response = validateBody(response).getJSONArray("response");
-
             profileItem = new ProfileItem(ja_response.getJSONObject(0));
 
             holders.add(profileItem);
+
+            //TODO WHAT THE HELL WITH COUNTERS?
+            if(profileItem.getCounters()!=null){
+                Counters counters = profileItem.getCounters();
+                ArrayList<ItemDataHolder> counterArrayList = counters.getCounters();
+                if(!counterArrayList.isEmpty()){
+                    for (ItemDataHolder idh: counterArrayList){
+                        ((Counter)idh).setOwnerId(profileItem.getId());
+                    }
+                }
+                holders.add(profileItem.getCounters());
+            }
         }
 
-        response = Wall.get(profileItem.getId(),getNextFrom(), getStep(), userItem.getAccessToken()).execute();
+        response = Wall.get(profileId,getNextFrom(), getStep(), userItem.getAccessToken()).execute();
+
         JSONObject jo_response = validateBody(response).getJSONObject("response");
 
         setTotalCount(jo_response.getInt("count"));
@@ -60,8 +93,7 @@ public class ProfileAdapter extends MiracleLoadableAdapter {
             for (int i = 0; i < items.length(); i++) {
                 JSONObject postObject = items.getJSONObject(i);
                 if (postObject.has("post_type")) {
-                    JSONObject jo_item = items.getJSONObject(i);
-                    PostItem postItem = new PostItem(jo_item, catalogExtendedArrays);
+                    PostItem postItem = new PostItem(postObject, catalogExtendedArrays);
                     postItems.add(postItem);
                 }
             }
@@ -72,7 +104,7 @@ public class ProfileAdapter extends MiracleLoadableAdapter {
             setNextFrom(jo_response.getString("next_from"));
         } else {
             if(getLoadedCount()==0) {
-                holders.add(new ErrorDataHolder("Здесь пока нет записей"));
+                holders.add(new ErrorDataHolder(R.string.wall_is_empty));
             }
         }
 
@@ -92,7 +124,61 @@ public class ProfileAdapter extends MiracleLoadableAdapter {
 
     @Override
     public ArrayMap<Integer, ViewHolderFabric> getViewHolderFabricMap() {
-        return getWallFabrics();
+        ArrayMap<Integer, ViewHolderFabric> arrayMap = getWallFabrics();
+        arrayMap.put(TYPE_WALL_COUNTERS, new WallCountersSliderViewHolderFabric());
+        return arrayMap;
+    }
+
+    public class WallCountersSliderViewHolder extends MiracleViewHolder {
+
+        private final RecyclerView recyclerView;
+
+        public WallCountersSliderViewHolder(@NonNull View itemView){
+            super(itemView);
+            recyclerView = ((RecyclerView)itemView);
+            recyclerView.setLayoutManager(getHorizontalLayoutManager(itemView.getContext()));
+            RecyclerView.RecycledViewPool recycledViewPool = getNestedRecycledViewPool(TYPE_WALL_COUNTERS);
+            recycledViewPool.setMaxRecycledViews(TYPE_WALL_COUNTER, 7);
+            recyclerView.setRecycledViewPool(recycledViewPool);
+        }
+
+        @Override
+        public void bind(ItemDataHolder itemDataHolder) {
+            Counters counters = (Counters) itemDataHolder;
+
+            RecyclerView.Adapter<?> adapter = recyclerView.getAdapter();
+            CountersAdapter countersAdapter;
+            if(adapter instanceof CountersAdapter){
+                countersAdapter = ((CountersAdapter)recyclerView.getAdapter());
+                countersAdapter.iniFromFragment(getMiracleFragment());
+                countersAdapter.setNewCounters(counters);
+            } else {
+                if(adapter instanceof MiracleAdapter){
+                    MiracleAdapter miracleAdapter = (MiracleAdapter) adapter;
+                    miracleAdapter.setRecyclerView(null);
+                }
+                countersAdapter = new CountersAdapter(counters);
+                countersAdapter.iniFromFragment(getMiracleFragment());
+                countersAdapter.setRecyclerView(recyclerView);
+                countersAdapter.ini();
+                if(recyclerView.hasFixedSize()) {
+                    recyclerView.setHasFixedSize(false);
+                }
+                recyclerView.setAdapter(countersAdapter);
+                if(!recyclerView.hasFixedSize()) {
+                    recyclerView.setHasFixedSize(true);
+                }
+            }
+            countersAdapter.load();
+        }
+    }
+
+    public class WallCountersSliderViewHolderFabric implements ViewHolderFabric {
+        @Override
+        public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
+            return new WallCountersSliderViewHolder(inflater.inflate(R.layout.view_wall_counters_slider,
+                    viewGroup, false));
+        }
     }
 
 }
