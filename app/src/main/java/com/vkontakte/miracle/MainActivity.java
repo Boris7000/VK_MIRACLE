@@ -44,6 +44,7 @@ import com.vkontakte.miracle.engine.fragment.FragmentFabric;
 import com.vkontakte.miracle.engine.fragment.tabs.adapters.SimpleTabsAdapter;
 import com.vkontakte.miracle.engine.picasso.ATarget;
 import com.vkontakte.miracle.engine.util.IMEUtil;
+import com.vkontakte.miracle.engine.util.LargeDataStorage;
 import com.vkontakte.miracle.engine.util.SettingsUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.engine.view.fragmentContainer.TabsFragmentContainer;
@@ -75,7 +76,7 @@ public class MainActivity extends TabsActivity {
 
     ///Всякие плеерные дела
     private FrameLayout playerBar;
-    private ViewPager2 viewPager2;
+    private ViewPager2 viewPager;
     private boolean showingPlayer = false;
     private int color;
     private Bitmap placeholderImage;
@@ -180,10 +181,10 @@ public class MainActivity extends TabsActivity {
                         if(!MiracleApp.getInstance().nightMode()) {
                             clearLightStatusBar(getWindow().getDecorView());
                         }
-                        if(viewPager2.getVisibility()!=View.VISIBLE) {
-                            viewPager2.setVisibility(View.VISIBLE);
+                        if(viewPager.getVisibility()!=View.VISIBLE) {
+                            viewPager.setVisibility(View.VISIBLE);
                         }
-                        viewPager2.setAlpha(1);
+                        viewPager.setAlpha(1);
                         getTabsActivityController().getNavigationBarView().setAlpha(0);
                         playerBar.setAlpha(0);
                         break;
@@ -192,11 +193,11 @@ public class MainActivity extends TabsActivity {
                         if(!MiracleApp.getInstance().nightMode()) {
                             setLightStatusBar(getWindow().getDecorView());
                         }
-                        if(viewPager2.getVisibility()!=View.GONE) {
-                            viewPager2.setVisibility(View.GONE);
+                        if(viewPager.getVisibility()!=View.GONE) {
+                            viewPager.setVisibility(View.GONE);
                         }
-                        viewPager2.setAlpha(0);
-                        viewPager2.setCurrentItem(0,false);
+                        viewPager.setAlpha(0);
+                        viewPager.setCurrentItem(0,false);
                         getTabsActivityController().getNavigationBarView().setAlpha(1);
                         playerBar.setAlpha(1);
                         break;
@@ -208,8 +209,8 @@ public class MainActivity extends TabsActivity {
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 float alpha = 1f-slideOffset;
                 if(slideOffset>0){
-                    if(viewPager2.getVisibility()!=View.VISIBLE) {
-                        viewPager2.setVisibility(View.VISIBLE);
+                    if(viewPager.getVisibility()!=View.VISIBLE) {
+                        viewPager.setVisibility(View.VISIBLE);
                     }
                 }
 
@@ -219,7 +220,7 @@ public class MainActivity extends TabsActivity {
                 NavigationBarView navigationBarView = getTabsActivityController().getNavigationBarView();
                 navigationBarView.setAlpha(alpha);
                 navigationBarView.setTranslationY(transitionPercent*navigationBarView.getHeight());
-                viewPager2.setAlpha(slideOffset);
+                viewPager.setAlpha(slideOffset);
             }
         });
     }
@@ -509,13 +510,13 @@ public class MainActivity extends TabsActivity {
         playerBottomSheet = (FrameLayout) playerBottomSheetStub.inflate();
 
         playerBar = playerBottomSheet.findViewById(R.id.playerBar);
-        viewPager2 = playerBottomSheet.findViewById(R.id.viewPager);
-        viewPager2.setTag(target);
+        viewPager = playerBottomSheet.findViewById(R.id.viewPager);
+        viewPager.setTag(target);
         applyColor(color = ColorUtils.HSLToColor(new float[]{0,0,0.13f}));
 
         bottomSheetCallback.onStateChanged(playerBottomSheet, playerBottomSheetBehavior.getState());
 
-        View child = viewPager2.getChildAt(0);
+        View child = viewPager.getChildAt(0);
         if (child instanceof RecyclerView) {
             child.setOverScrollMode(View.OVER_SCROLL_NEVER);
             child.setNestedScrollingEnabled(false);
@@ -527,7 +528,7 @@ public class MainActivity extends TabsActivity {
         fabrics.add(new FragmentPlaying.Fabric());
         //very laggy
         //viewPager2.setOffscreenPageLimit(1);
-        viewPager2.setAdapter(new SimpleTabsAdapter(getSupportFragmentManager(), getLifecycle(), fabrics));
+        viewPager.setAdapter(new SimpleTabsAdapter(getSupportFragmentManager(), getLifecycle(), fabrics));
 
         playerBar.setOnClickListener(view -> playerBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED));
     }
@@ -643,8 +644,8 @@ public class MainActivity extends TabsActivity {
 
     private void applyColor(int color){
         PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN);
-        if(viewPager2!=null){
-            viewPager2.getBackground().setColorFilter(colorFilter);
+        if(viewPager !=null){
+            viewPager.getBackground().setColorFilter(colorFilter);
         }
     }
 
@@ -722,6 +723,11 @@ public class MainActivity extends TabsActivity {
     public void onClearSavedInstance(@NonNull Bundle savedInstanceState) {
         super.onClearSavedInstance(savedInstanceState);
         savedInstanceState.remove("playerSheetBehaviorState");
+        String key = savedInstanceState.getString("Adapter");
+        if(key!=null){
+            LargeDataStorage.get().removeLargeData(key);
+            savedInstanceState.remove("Adapter");
+        }
     }
 
     @CallSuper
@@ -729,6 +735,12 @@ public class MainActivity extends TabsActivity {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("playerSheetBehaviorState", playerBottomSheetBehavior.getState());
+        if(viewPager!=null){
+            Object object = viewPager.getAdapter();
+            if(object!=null) {
+                outState.putString("Adapter", LargeDataStorage.get().storeLargeData(object));
+            }
+        }
     }
 
 }

@@ -27,7 +27,7 @@ public abstract class BaseRefreshListFragment extends RefreshListFragment implem
         getBaseFragmentController().onCreateView(rootView, savedInstanceState);
 
         if(scrollAndElevateEnabled()) {
-            ScrollAndElevate.scrollAndElevate(getScrollView(), getAppBarLayout(), getMiracleActivity());
+            ScrollAndElevate.scrollAndElevate(getScrollView(), getAppBarLayout());
         }
 
         return rootView;

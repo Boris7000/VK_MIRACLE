@@ -31,7 +31,7 @@ public abstract class BaseRecyclerFragment extends RecyclerFragment implements I
         getBaseFragmentController().onCreateView(rootView, savedInstanceState);
 
         if(scrollAndElevateEnabled()) {
-            ScrollAndElevate.scrollAndElevate(getRecyclerView(), getAppBarLayout(), getMiracleActivity());
+            ScrollAndElevate.scrollAndElevate(getRecyclerView(), getAppBarLayout());
         }
 
         return rootView;

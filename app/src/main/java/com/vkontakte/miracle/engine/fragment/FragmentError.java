@@ -53,7 +53,7 @@ public class FragmentError extends NestedFragment {
 
     public static class Fabric extends NestedMiracleFragmentFabric {
         private final String error;
-        public Fabric(String error,String title, int icon) {
+        public Fabric(String error, String title, int icon) {
             super(title, icon);
             this.error = error;
         }

@@ -12,17 +12,17 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.vkontakte.miracle.R;
 
 public class ScrollAndElevate {
-    public static void scrollAndElevate(final NestedScrollView scrollView, final AppBarLayout appBarLayout, final Context context){
+    public static void scrollAndElevate(final NestedScrollView scrollView, final AppBarLayout appBarLayout){
         scrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
             if(!scrollView.canScrollVertically(-1)) {
                 appBarLand(appBarLayout);
             } else {
-                appBarElevate(appBarLayout,context);
+                appBarElevate(appBarLayout, appBarLayout.getContext());
             }
         });
     }
 
-    public static void scrollAndElevate(RecyclerView recyclerView, final AppBarLayout appBarLayout, final Context context){
+    public static void scrollAndElevate(RecyclerView recyclerView, final AppBarLayout appBarLayout){
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -30,7 +30,7 @@ public class ScrollAndElevate {
                 if (!recyclerView.canScrollVertically(-1)) {
                     appBarLand(appBarLayout);
                 } else {
-                    appBarElevate(appBarLayout, context);
+                    appBarElevate(appBarLayout, appBarLayout.getContext());
                 }
             }
         });

@@ -36,6 +36,7 @@ public class FragmentPlaying extends RecyclerFragment {
                 playingAdapter.setNewAudioPlayerData(playerData);
                 playingAdapter.load();
             }
+            getRecyclerView().scrollToPosition(playerData.getCurrentItemIndex());
         }
     };
     private final OnApplyWindowInsetsListener onApplyWindowInsetsListener = (v, windowInsets) -> {

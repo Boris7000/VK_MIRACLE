@@ -27,7 +27,7 @@ public abstract class BaseListFragment extends ListFragment implements IBaseFrag
         getBaseFragmentController().onCreateView(rootView, savedInstanceState);
 
         if(scrollAndElevateEnabled()) {
-            ScrollAndElevate.scrollAndElevate(getScrollView(), getAppBarLayout(), getMiracleActivity());
+            ScrollAndElevate.scrollAndElevate(getScrollView(), getAppBarLayout());
         }
 
         return rootView;

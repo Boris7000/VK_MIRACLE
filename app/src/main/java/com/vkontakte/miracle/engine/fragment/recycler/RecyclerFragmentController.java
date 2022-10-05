@@ -66,7 +66,7 @@ public abstract class RecyclerFragmentController extends MiracleFragmentControll
         if(recyclerView!=null) {
             recyclerView.setLayoutManager(
                     getVerticalLayoutManager(
-                            getMiracleFragment().getMiracleActivity(),
+                            recyclerView.getContext(),
                             recyclerFragment.reverseRecyclerAdapter()));
 
             recyclerView.setHasFixedSize(true);

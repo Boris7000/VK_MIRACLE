@@ -117,8 +117,15 @@ public class AudioPlayerService extends Service implements ExoPlayer.Listener, A
             if(playerData.getRepeatMode()==Player.REPEAT_MODE_ONE) {
                 changeRepeatMode(Player.REPEAT_MODE_OFF);
             }
-            AudioPlayerService.this.playerData = playerData;
-            playerServiceController.getOnPlayerEventListener().onSongChange(playerData, animate);
+            if(playerData.getCurrentItemIndex()>=playerData.getItems().size()-3){
+                playerData.loadMoreItems(() -> {
+                    AudioPlayerService.this.playerData = playerData;
+                    playerServiceController.getOnPlayerEventListener().onSongChange(playerData, animate);
+                });
+            } else {
+                AudioPlayerService.this.playerData = playerData;
+                playerServiceController.getOnPlayerEventListener().onSongChange(playerData, animate);
+            }
         }
 
         @Override
@@ -641,7 +648,6 @@ public class AudioPlayerService extends Service implements ExoPlayer.Listener, A
             transportControls.stop();
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////////////
 

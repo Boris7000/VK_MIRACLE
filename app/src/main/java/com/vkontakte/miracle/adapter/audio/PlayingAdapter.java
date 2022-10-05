@@ -24,9 +24,6 @@ public class PlayingAdapter extends MiracleInstantLoadAdapter {
 
     private AudioPlayerData playerData;
 
-    //TODO сделать прокрутку до текущего плейлиста
-    //getRecyclerView().scrollToPosition(playerData.getCurrentItemIndex());
-
     public PlayingAdapter(AudioPlayerData playerData){
         this.playerData=playerData;
     }

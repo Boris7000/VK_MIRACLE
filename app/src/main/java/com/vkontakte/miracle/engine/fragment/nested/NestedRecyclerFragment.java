@@ -33,8 +33,7 @@ public abstract class NestedRecyclerFragment extends RecyclerFragment implements
             if (iTabsFragment instanceof IBaseFragment) {
                 IBaseFragment iBaseFragment = (IBaseFragment) iTabsFragment;
                 if (iBaseFragment.scrollAndElevateEnabled()) {
-                    ScrollAndElevate.scrollAndElevate(getRecyclerView(),
-                            iBaseFragment.getAppBarLayout(), getMiracleActivity());
+                    ScrollAndElevate.scrollAndElevate(getRecyclerView(), iBaseFragment.getAppBarLayout());
                 }
             }
         }

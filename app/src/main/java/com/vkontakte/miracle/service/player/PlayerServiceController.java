@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
@@ -17,9 +16,9 @@ import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.executors.audio.LoadShuffledPlaylist;
 import com.vkontakte.miracle.executors.catalog.LoadCatalogBlock;
-import com.vkontakte.miracle.model.audio.AudioWrapContainer;
 import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.audio.AudioItem;
+import com.vkontakte.miracle.model.audio.AudioWrapContainer;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.model.audio.PlaylistShuffleItem;
 import com.vkontakte.miracle.model.catalog.CatalogBlock;
@@ -36,13 +35,24 @@ import java.util.ArrayList;
 
 import retrofit2.Response;
 
-
-//TODO тут намешано всего
 public class PlayerServiceController {
+
+    private static PlayerServiceController instance;
+
+    public PlayerServiceController(){
+        instance = this;
+    }
+
+    public static PlayerServiceController getInstance(){
+        return new PlayerServiceController();
+    }
+
 
     private AudioPlayerService audioPLayerService;
     private AudioPlayerData playerData;
     private final ArrayList<OnPlayerEventListener> onPlayerEventListeners = new ArrayList<>();
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
 
     private final OnPlayerEventListener onPlayerEventListener = new OnPlayerEventListener() {
         @Override
@@ -107,16 +117,6 @@ public class PlayerServiceController {
         return listeners;
     }
 
-    private static PlayerServiceController instance;
-
-    public PlayerServiceController(){
-        instance = this;
-    }
-
-    public static PlayerServiceController getInstance(){
-        return new PlayerServiceController();
-    }
-
     public void addOnPlayerEventListener(OnPlayerEventListener onPlayerEventListener){
         if(playerData !=null) {
             onPlayerEventListener.onSongChange(playerData, false);
@@ -135,6 +135,8 @@ public class PlayerServiceController {
     public OnPlayerEventListener getOnPlayerEventListener() {
         return onPlayerEventListener;
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
 
     private void startAndPlay(AudioPlayerData audioPlayerData){
 
@@ -168,13 +170,6 @@ public class PlayerServiceController {
     public void playNewAudio(AudioPlayerData audioPlayerData){
 
         AudioWrapContainer container = audioPlayerData.getContainer();
-
-        Log.d("oifirjfijrifjrif", "PlayerServiceController");
-        for (ItemDataHolder itdh: container.getAudioItems()) {
-            ItemDataHolder newItem = (ItemDataHolder) ((DataItemWrap<?, ?>) itdh).getItem();
-            AudioItem newAudioItem = (AudioItem) newItem;
-            Log.d("oifirjfijrifjrif", newAudioItem.getTitle());
-        }
 
         if(container instanceof PlaylistItem){
             PlaylistItem playlistItem = (PlaylistItem) container;
@@ -223,7 +218,6 @@ public class PlayerServiceController {
     }
 
     private void loadAndPlayNewAudio(AudioPlayerData audioPlayerData){
-
         new AsyncExecutor<AudioPlayerData>() {
             @Override
             public AudioPlayerData inBackground() {
