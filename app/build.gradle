@@ -40,10 +40,10 @@ dependencies {
     implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.7'
-    //noinspection GradleDependency
-    implementation 'com.squareup.picasso:picasso:2.8'
     implementation project(path: ':miracle-buttons')
     implementation project(path: ':firebase-installations')
+    //noinspection GradleDependency
+    implementation 'com.squareup.picasso:picasso:2.8'
     //noinspection GradleDependency
     implementation 'com.google.android.gms:play-services-auth:20.0.1'
     //noinspection GradleDependency
