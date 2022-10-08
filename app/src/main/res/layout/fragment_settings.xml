@@ -144,7 +144,7 @@
                         android:ellipsize="end"
                         android:fontFamily="sans-serif"
                         android:singleLine="true"
-                        android:text="@string/debug"
+                        android:text="@string/debug "
                         android:textSize="16sp" />
 
                     <TextView
