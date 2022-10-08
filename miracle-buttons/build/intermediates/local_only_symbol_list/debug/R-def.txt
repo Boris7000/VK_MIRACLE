@@ -1,0 +1,44 @@
+R_DEF: Internal format may change without notice
+local
+attr animation_duration
+attr? auto_click_switch
+attr background_color
+attr? dash_color
+attr? dash_enabled
+attr disable_auto_background
+attr disable_auto_ripple
+attr? disabled_alpha
+attr disabled_background_color
+attr disabled_icon_color
+attr? disabled_icon_end_color
+attr? disabled_icon_start_color
+attr disabled_ripple_color
+attr disabled_stroke_color
+attr disabled_text_color
+attr icon_color
+attr? icon_end
+attr? icon_end_color
+attr? icon_end_gravity
+attr? icon_end_size
+attr? icon_gravity
+attr icon_spacing
+attr? icon_start
+attr? icon_start_color
+attr? icon_start_gravity
+attr? icon_start_size
+attr ripple_alpha
+attr ripple_color
+attr save_colors
+attr shapeAppearanceOverlay
+attr stroke_color
+attr stroke_width
+attr text_color
+id end
+id start
+id text_end
+id text_start
+layout icon_view
+layout text_view
+styleable Button icon_color disabled_icon_color text_color disabled_text_color ripple_color disabled_ripple_color ripple_alpha stroke_color disabled_stroke_color background_color disabled_background_color animation_duration shapeAppearanceOverlay android:text android:textSize android:textAppearance android:src android:gravity stroke_width icon_spacing icon_gravity save_colors disable_auto_background disable_auto_ripple android:enabled
+styleable SwitchButton icon_color disabled_icon_color dash_color ripple_color disabled_ripple_color ripple_alpha stroke_color disabled_stroke_color background_color disabled_background_color animation_duration shapeAppearanceOverlay stroke_width disabled_alpha auto_click_switch dash_enabled save_colors disable_auto_background disable_auto_ripple android:enabled
+styleable TextViewButton text_color disabled_text_color ripple_color disabled_ripple_color ripple_alpha stroke_color disabled_stroke_color background_color disabled_background_color animation_duration shapeAppearanceOverlay android:gravity stroke_width save_colors disable_auto_background disable_auto_ripple android:enabled icon_start_size icon_end_size icon_spacing icon_start_color icon_end_color disabled_icon_start_color disabled_icon_end_color icon_start icon_end icon_start_gravity icon_end_gravity

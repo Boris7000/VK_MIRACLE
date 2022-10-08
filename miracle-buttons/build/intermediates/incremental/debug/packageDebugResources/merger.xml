@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\boris\AndroidStudioProjects\VK_MIRACLE\miracle-buttons\src\main\res"/><source path="C:\Users\boris\AndroidStudioProjects\VK_MIRACLE\miracle-buttons\build\generated\res\rs\debug"/><source path="C:\Users\boris\AndroidStudioProjects\VK_MIRACLE\miracle-buttons\build\generated\res\resValues\debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\boris\AndroidStudioProjects\VK_MIRACLE\miracle-buttons\src\main\res"><file name="icon_view" path="C:\Users\boris\AndroidStudioProjects\VK_MIRACLE\miracle-buttons\src\main\res\layout\icon_view.xml" qualifiers="" type="layout"/><file name="text_view" path="C:\Users\boris\AndroidStudioProjects\VK_MIRACLE\miracle-buttons\src\main\res\layout\text_view.xml" qualifiers="" type="layout"/><file path="C:\Users\boris\AndroidStudioProjects\VK_MIRACLE\miracle-buttons\src\main\res\values\attrs.xml" qualifiers=""><attr format="boolean" name="save_colors"/><attr format="boolean" name="disable_auto_ripple"/><attr format="boolean" name="disable_auto_background"/><attr format="color" name="text_color"/><attr format="color" name="disabled_text_color"/><attr format="color" name="ripple_color"/><attr format="color" name="disabled_ripple_color"/><attr format="float" name="ripple_alpha"/><attr format="color" name="icon_color"/><attr format="color" name="background_color"/><attr format="color" name="disabled_icon_color"/><attr format="color" name="disabled_background_color"/><attr format="color" name="stroke_color"/><attr format="color" name="disabled_stroke_color"/><attr format="integer" name="animation_duration"/><attr name="stroke_width"/><attr format="reference" name="shapeAppearanceOverlay"/><attr format="dimension" name="icon_spacing"/><declare-styleable name="SwitchButton">
+        <attr name="icon_color"/>
+        <attr name="disabled_icon_color"/>
+        <attr format="color" name="dash_color"/>
+        <attr name="ripple_color"/>
+        <attr name="disabled_ripple_color"/>
+        <attr name="ripple_alpha"/>
+        <attr name="stroke_color"/>
+        <attr name="disabled_stroke_color"/>
+        <attr name="background_color"/>
+        <attr name="disabled_background_color"/>
+        <attr name="animation_duration"/>
+        <attr name="shapeAppearanceOverlay"/>
+        <attr name="stroke_width"/>
+        <attr format="float" name="disabled_alpha"/>
+        <attr format="boolean" name="auto_click_switch"/>
+        <attr format="boolean" name="dash_enabled"/>
+        <attr name="save_colors"/>
+        <attr name="disable_auto_background"/>
+        <attr name="disable_auto_ripple"/>
+        <attr format="boolean" name="android:enabled"/>
+    </declare-styleable><declare-styleable name="Button">
+        <attr name="icon_color"/>
+        <attr name="disabled_icon_color"/>
+        <attr name="text_color"/>
+        <attr name="disabled_text_color"/>
+        <attr name="ripple_color"/>
+        <attr name="disabled_ripple_color"/>
+        <attr name="ripple_alpha"/>
+        <attr name="stroke_color"/>
+        <attr name="disabled_stroke_color"/>
+        <attr name="background_color"/>
+        <attr name="disabled_background_color"/>
+        <attr name="animation_duration"/>
+        <attr name="shapeAppearanceOverlay"/>
+        <attr format="string" name="android:text"/>
+        <attr format="dimension" name="android:textSize"/>
+        <attr format="reference" name="android:textAppearance"/>
+        <attr format="reference" name="android:src"/>
+        <attr format="integer" name="android:gravity"/>
+        <attr name="stroke_width"/>
+        <attr name="icon_spacing"/>
+        <attr format="enum" name="icon_gravity">
+            <enum name="start" value="0"/>
+            <enum name="end" value="1"/>
+        </attr>
+        <attr name="save_colors"/>
+        <attr name="disable_auto_background"/>
+        <attr name="disable_auto_ripple"/>
+        <attr format="boolean" name="android:enabled"/>
+    </declare-styleable><declare-styleable name="TextViewButton">
+        <attr name="text_color"/>
+        <attr name="disabled_text_color"/>
+        <attr name="ripple_color"/>
+        <attr name="disabled_ripple_color"/>
+        <attr name="ripple_alpha"/>
+        <attr name="stroke_color"/>
+        <attr name="disabled_stroke_color"/>
+        <attr name="background_color"/>
+        <attr name="disabled_background_color"/>
+        <attr name="animation_duration"/>
+        <attr name="shapeAppearanceOverlay"/>
+        <attr format="integer" name="android:gravity"/>
+        <attr name="stroke_width"/>
+        <attr name="save_colors"/>
+        <attr name="disable_auto_background"/>
+        <attr name="disable_auto_ripple"/>
+        <attr format="boolean" name="android:enabled"/>
+        <attr format="dimension" name="icon_start_size"/>
+        <attr format="dimension" name="icon_end_size"/>
+        <attr name="icon_spacing"/>
+        <attr format="color" name="icon_start_color"/>
+        <attr format="color" name="icon_end_color"/>
+        <attr format="color" name="disabled_icon_start_color"/>
+        <attr format="color" name="disabled_icon_end_color"/>
+        <attr format="reference" name="icon_start"/>
+        <attr format="reference" name="icon_end"/>
+        <attr format="enum" name="icon_start_gravity">
+            <enum name="start" value="0x1"/>
+            <enum name="text_start" value="0x2"/>
+        </attr>
+        <attr format="enum" name="icon_end_gravity">
+            <enum name="end" value="0x3"/>
+            <enum name="text_end" value="0x4"/>
+        </attr>
+    </declare-styleable></file></source><source path="C:\Users\boris\AndroidStudioProjects\VK_MIRACLE\miracle-buttons\build\generated\res\rs\debug"/><source path="C:\Users\boris\AndroidStudioProjects\VK_MIRACLE\miracle-buttons\build\generated\res\resValues\debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\boris\AndroidStudioProjects\VK_MIRACLE\miracle-buttons\src\debug\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\boris\AndroidStudioProjects\VK_MIRACLE\miracle-buttons\src\debug\res"/></dataSet><mergedItems><configuration qualifiers=""><declare-styleable name="Button">
+        <attr name="icon_color"/>
+        <attr name="disabled_icon_color"/>
+        <attr name="text_color"/>
+        <attr name="disabled_text_color"/>
+        <attr name="ripple_color"/>
+        <attr name="disabled_ripple_color"/>
+        <attr name="ripple_alpha"/>
+        <attr name="stroke_color"/>
+        <attr name="disabled_stroke_color"/>
+        <attr name="background_color"/>
+        <attr name="disabled_background_color"/>
+        <attr name="animation_duration"/>
+        <attr name="shapeAppearanceOverlay"/>
+        <attr format="string" name="android:text"/>
+        <attr format="dimension" name="android:textSize"/>
+        <attr format="reference" name="android:textAppearance"/>
+        <attr format="reference" name="android:src"/>
+        <attr format="integer" name="android:gravity"/>
+        <attr name="stroke_width"/>
+        <attr name="icon_spacing"/>
+        <attr format="enum" name="icon_gravity">
+            <enum name="start" value="0"/>
+            <enum name="end" value="1"/>
+        </attr>
+        <attr name="save_colors"/>
+        <attr name="disable_auto_background"/>
+        <attr name="disable_auto_ripple"/>
+        <attr format="boolean" name="android:enabled"/>
+    </declare-styleable><declare-styleable name="SwitchButton">
+        <attr name="icon_color"/>
+        <attr name="disabled_icon_color"/>
+        <attr format="color" name="dash_color"/>
+        <attr name="ripple_color"/>
+        <attr name="disabled_ripple_color"/>
+        <attr name="ripple_alpha"/>
+        <attr name="stroke_color"/>
+        <attr name="disabled_stroke_color"/>
+        <attr name="background_color"/>
+        <attr name="disabled_background_color"/>
+        <attr name="animation_duration"/>
+        <attr name="shapeAppearanceOverlay"/>
+        <attr name="stroke_width"/>
+        <attr format="float" name="disabled_alpha"/>
+        <attr format="boolean" name="auto_click_switch"/>
+        <attr format="boolean" name="dash_enabled"/>
+        <attr name="save_colors"/>
+        <attr name="disable_auto_background"/>
+        <attr name="disable_auto_ripple"/>
+        <attr format="boolean" name="android:enabled"/>
+    </declare-styleable><declare-styleable name="TextViewButton">
+        <attr name="text_color"/>
+        <attr name="disabled_text_color"/>
+        <attr name="ripple_color"/>
+        <attr name="disabled_ripple_color"/>
+        <attr name="ripple_alpha"/>
+        <attr name="stroke_color"/>
+        <attr name="disabled_stroke_color"/>
+        <attr name="background_color"/>
+        <attr name="disabled_background_color"/>
+        <attr name="animation_duration"/>
+        <attr name="shapeAppearanceOverlay"/>
+        <attr format="integer" name="android:gravity"/>
+        <attr name="stroke_width"/>
+        <attr name="save_colors"/>
+        <attr name="disable_auto_background"/>
+        <attr name="disable_auto_ripple"/>
+        <attr format="boolean" name="android:enabled"/>
+        <attr format="dimension" name="icon_start_size"/>
+        <attr format="dimension" name="icon_end_size"/>
+        <attr name="icon_spacing"/>
+        <attr format="color" name="icon_start_color"/>
+        <attr format="color" name="icon_end_color"/>
+        <attr format="color" name="disabled_icon_start_color"/>
+        <attr format="color" name="disabled_icon_end_color"/>
+        <attr format="reference" name="icon_start"/>
+        <attr format="reference" name="icon_end"/>
+        <attr format="enum" name="icon_start_gravity">
+            <enum name="start" value="0x1"/>
+            <enum name="text_start" value="0x2"/>
+        </attr>
+        <attr format="enum" name="icon_end_gravity">
+            <enum name="end" value="0x3"/>
+            <enum name="text_end" value="0x4"/>
+        </attr>
+    </declare-styleable></configuration></mergedItems></merger>
