@@ -4,8 +4,8 @@
 4
 5    <uses-sdk
 6        android:minSdkVersion="23"
-6-->C:\Users\boris\AndroidStudioProjects\VK_MIRACLE\miracle-buttons\src\main\AndroidManifest.xml
+6-->D:\project\VK_MIRACLE\miracle-buttons\src\main\AndroidManifest.xml
 7        android:targetSdkVersion="33" />
-7-->C:\Users\boris\AndroidStudioProjects\VK_MIRACLE\miracle-buttons\src\main\AndroidManifest.xml
+7-->D:\project\VK_MIRACLE\miracle-buttons\src\main\AndroidManifest.xml
 8
 9</manifest>

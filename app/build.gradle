@@ -24,6 +24,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'com.vkontakte.miracle'
 }
 
 dependencies {
@@ -44,15 +45,11 @@ dependencies {
     implementation project(path: ':firebase-installations')
     //noinspection GradleDependency
     implementation 'com.squareup.picasso:picasso:2.8'
-    //noinspection GradleDependency
-    implementation 'com.google.android.gms:play-services-auth:20.0.1'
-    //noinspection GradleDependency
-    implementation 'com.google.android.exoplayer:exoplayer:2.16.1'
-    //noinspection GradleDependency
-    implementation ('com.google.firebase:firebase-messaging:23.0.0') {
+    implementation 'com.google.android.gms:play-services-auth:20.3.0'
+    implementation 'com.google.android.exoplayer:exoplayer:2.18.1'
+    implementation ('com.google.firebase:firebase-messaging:23.0.8') {
         exclude group: "com.google.firebase", module: "firebase-installations"
     }
-
 }
 repositories {
     mavenCentral()

@@ -8,9 +8,6 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 33
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -23,6 +20,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'com.miracle.button'
 }
 
 dependencies {
