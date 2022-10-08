@@ -7,10 +7,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.fragment.side.SideListFragment;
-import com.vkontakte.miracle.fragment.base.FragmentTest;
+import com.vkontakte.miracle.engine.util.NavigationUtil;
 
 public class FragmentSettings extends SideListFragment {
 
@@ -20,19 +19,12 @@ public class FragmentSettings extends SideListFragment {
 
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
-        MainActivity mainActivity = getMiracleActivity();
-
         View interfaceSettings = rootView.findViewById(R.id.settings_interface);
-        interfaceSettings.setOnClickListener(view -> mainActivity.addFragment(new FragmentInterfaceSettings()));
+        interfaceSettings.setOnClickListener(view -> NavigationUtil.goToInterfaceSettings(getContext()));
 
-        View colorSchemeGenerator = rootView.findViewById(R.id.color_generator);
-        colorSchemeGenerator.setOnClickListener(view -> mainActivity.addFragment(new FragmentColorSchemeGenerator()));
+        View test = rootView.findViewById(R.id.debug);
+        test.setOnClickListener(view -> NavigationUtil.goToDebug(getContext()));
 
-        View test = rootView.findViewById(R.id.test);
-        test.setOnClickListener(view -> mainActivity.addFragment(new FragmentTest()));
-
-        View urlTest = rootView.findViewById(R.id.url_test);
-        urlTest.setOnClickListener(view -> mainActivity.addFragment(new FragmentUrlOpenTest()));
 
         return rootView;
     }

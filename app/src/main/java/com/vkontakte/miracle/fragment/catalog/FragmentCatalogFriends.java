@@ -1,5 +1,6 @@
 package com.vkontakte.miracle.fragment.catalog;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,7 +29,11 @@ public class FragmentCatalogFriends extends SideRecyclerFragment {
 
     @Override
     public String requestTitleText() {
-        return getMiracleActivity().getString(R.string.friends);
+        Context context = getContext();
+        if(context!=null){
+            return context.getString(R.string.friends);
+        }
+        return super.requestTitleText();
     }
 
     @Override

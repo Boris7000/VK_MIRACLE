@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.vkontakte.miracle.MainActivity;
+import com.vkontakte.miracle.engine.activity.MiracleActivity;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
@@ -41,7 +41,7 @@ public abstract class MiracleAdapter extends RecyclerView.Adapter<RecyclerView.V
     private final androidx.collection.ArrayMap<Integer, RecyclerView.RecycledViewPool> nestedRecycledViewPoolMap = new androidx.collection.ArrayMap<>();
 
     private IMiracleFragment iMiracleFragment;
-    private MainActivity mainActivity;
+    private MiracleActivity miracleActivity;
 
     /////////////////////////////////
     private String error = "";
@@ -53,11 +53,10 @@ public abstract class MiracleAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public void iniFromFragment(IMiracleFragment iMiracleFragment){
         this.iMiracleFragment = iMiracleFragment;
-        mainActivity = iMiracleFragment.getMiracleActivity();
     }
 
-    public void iniFromActivity(MainActivity mainActivity){
-        this.mainActivity = mainActivity;
+    public void iniFromActivity(MiracleActivity miracleActivity){
+        this.miracleActivity = miracleActivity;
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -325,8 +324,9 @@ public abstract class MiracleAdapter extends RecyclerView.Adapter<RecyclerView.V
     public IMiracleFragment getMiracleFragment() {
         return iMiracleFragment;
     }
-    public MainActivity getMiracleActivity(){
-        return mainActivity;
+
+    public MiracleActivity getMiracleActivity() {
+        return miracleActivity;
     }
     /////////////////////////////////////////////////////////////////////////////////////
 }

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.audio.DownloadedAdapter;
 import com.vkontakte.miracle.dialog.audio.AudioDialog;
@@ -57,16 +56,16 @@ public class WrappedAudioViewHolder extends AudioViewHolder{
                         public void addToPlaylist() { }
                         @Override
                         public void goToAlbum() {
-                            resolveGoToAlbum(itemWrap, getMiracleActivity());
+                            NavigationUtil.goToAlbum(itemWrap, getContext());
                         }
                         @Override
                         public void goToArtist() {
-                            resolveGoToArtist(itemWrap, getMiracleActivity());
+                            NavigationUtil.goToArtist(itemWrap, getContext());
                         }
 
                         @Override
                         public void findArtist() {
-                            resolveFindArtist(itemWrap, getMiracleActivity());
+                            NavigationUtil.goToArtistSearch(itemWrap, getContext());
                         }
 
                         @Override
@@ -162,21 +161,6 @@ public class WrappedAudioViewHolder extends AudioViewHolder{
         if(audioItem.isLicensed()) {
             PlayerServiceController.get().playNewAudio(new AudioPlayerData(itemWrap));
         }
-    }
-
-    public static void resolveGoToAlbum(DataItemWrap<?,?> itemWrap, MainActivity mainActivity){
-        AudioItem audioItem = (AudioItem) itemWrap.getItem();
-        NavigationUtil.goToAlbum(audioItem, mainActivity);
-    }
-
-    public static void resolveGoToArtist(DataItemWrap<?,?> itemWrap, MainActivity mainActivity){
-        AudioItem audioItem = (AudioItem) itemWrap.getItem();
-        NavigationUtil.goToArtist(audioItem, mainActivity);
-    }
-
-    public static void resolveFindArtist(DataItemWrap<?,?> itemWrap, MainActivity mainActivity){
-        AudioItem audioItem = (AudioItem) itemWrap.getItem();
-        NavigationUtil.goToArtistSearch(audioItem.getArtist(), mainActivity);
     }
 
     public static void showAudioDialog(AudioItem audioItem, Context context,

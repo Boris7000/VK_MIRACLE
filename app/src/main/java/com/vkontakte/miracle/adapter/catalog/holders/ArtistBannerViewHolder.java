@@ -35,7 +35,7 @@ public class ArtistBannerViewHolder extends MiracleViewHolder {
             new BlurImage(bitmap, 0.2f, 4){
                 @Override
                 public void onExecute(Bitmap object) {
-                    setBitmap(photo, getMiracleActivity(), object);
+                    setBitmap(photo, getContext(), object);
                 }
             }.start();
         }

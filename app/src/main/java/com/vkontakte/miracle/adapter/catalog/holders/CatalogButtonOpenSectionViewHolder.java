@@ -6,12 +6,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.fragment.catalog.FragmentCatalogSection;
+import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.model.catalog.fields.CatalogAction;
 
 public class CatalogButtonOpenSectionViewHolder extends MiracleViewHolder {
@@ -20,18 +19,12 @@ public class CatalogButtonOpenSectionViewHolder extends MiracleViewHolder {
 
     public CatalogButtonOpenSectionViewHolder(@NonNull View itemView) {
         super(itemView);
-        itemView.setOnClickListener(view -> resolveItemClickListener(catalogAction, getMiracleActivity()));
+        itemView.setOnClickListener(view -> NavigationUtil.goToCatalogSection(catalogAction, getContext()));
     }
 
     @Override
     public void bind(ItemDataHolder itemDataHolder) {
         catalogAction = (CatalogAction) itemDataHolder;
-    }
-
-    public static void resolveItemClickListener(CatalogAction catalogAction, MainActivity mainActivity){
-        FragmentCatalogSection fragmentCatalogSection = new FragmentCatalogSection();
-        fragmentCatalogSection.setCatalogSectionId(catalogAction.getSectionId());
-        mainActivity.addFragment(fragmentCatalogSection);
     }
 
     public static class Fabric implements ViewHolderFabric {

@@ -39,6 +39,10 @@ public abstract class RecyclerFragmentController extends MiracleFragmentControll
         recyclerFragment = (IRecyclerFragment) miracleFragment;
     }
 
+    public final IRecyclerFragment getRecyclerFragment() {
+        return recyclerFragment;
+    }
+
     @Override
     public void onCreateView(@NonNull View rootView, Bundle savedInstanceState){
         if(recyclerFragment.saveRecyclerAdapterSate()) {
@@ -73,7 +77,7 @@ public abstract class RecyclerFragmentController extends MiracleFragmentControll
         }
         if(swipeRefreshLayout!=null){
             FragmentUtil.setDefaultSwipeRefreshLayoutStyle(
-                    swipeRefreshLayout, getMiracleFragment().getMiracleActivity());
+                    swipeRefreshLayout, swipeRefreshLayout.getContext());
             swipeRefreshLayout.setOnRefreshListener(this::reloadRecyclerAdapter);
         }
     }

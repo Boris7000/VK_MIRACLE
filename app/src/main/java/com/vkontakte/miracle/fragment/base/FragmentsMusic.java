@@ -1,5 +1,6 @@
 package com.vkontakte.miracle.fragment.base;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +12,10 @@ import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.fragment.FragmentFabric;
 import com.vkontakte.miracle.engine.fragment.MiracleFragment;
 import com.vkontakte.miracle.engine.fragment.NestedMiracleFragmentFabric;
+import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.fragment.audio.FragmentOfflineAudioNested;
 import com.vkontakte.miracle.fragment.catalog.ABaseTabsFragmentCatalogSections;
-import com.vkontakte.miracle.fragment.catalog.FragmentAudioSearch;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.network.methods.Catalog;
 
@@ -33,7 +34,7 @@ public class FragmentsMusic extends ABaseTabsFragmentCatalogSections {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
         View searchEditText = rootView.findViewById(R.id.searchBar);
-        searchEditText.setOnClickListener(view -> getMiracleActivity().addFragment(new FragmentAudioSearch()));
+        searchEditText.setOnClickListener(view -> NavigationUtil.goToAudioSearch(null, getContext()));
 
         return rootView;
     }
@@ -41,7 +42,12 @@ public class FragmentsMusic extends ABaseTabsFragmentCatalogSections {
     @Override
     public ArrayList<NestedMiracleFragmentFabric> getErrorTabs() {
         ArrayList<NestedMiracleFragmentFabric> fabrics = new ArrayList<>();
-        fabrics.add(new FragmentOfflineAudioNested.Fabric(getMiracleActivity().getString(R.string.audio_offline)));
+        String title="";
+        Context context = getContext();
+        if(context!=null){
+            title = context.getString(R.string.audio_offline);
+        }
+        fabrics.add(new FragmentOfflineAudioNested.Fabric(title));
         return fabrics;
     }
 

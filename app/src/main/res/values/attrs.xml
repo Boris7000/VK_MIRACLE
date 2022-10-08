@@ -105,26 +105,6 @@
         <attr name="si_no_dash" format="boolean"/>
     </declare-styleable>
 
-    <declare-styleable name="MiracleButton">
-        <attr name="active" format="boolean"/>
-        <attr name="outline" format="boolean"/>
-        <attr name="transparent" format="boolean"/>
-        <attr name="secondary" format="boolean"/>
-        <attr name="activeBackgroundColor" format="color"/>
-        <attr name="disabledBackgroundColor" format="color"/>
-        <attr name="activeTextColor" format="color"/>
-        <attr name="disabledTextColor" format="color"/>
-        <attr name="activeImageColor" format="color"/>
-        <attr name="disabledImageColor" format="color"/>
-        <attr name="text" format="string"/>
-        <attr name="imageResource" format="reference"/>
-        <attr name="imageGravity" format="enum">
-            <enum name="start" value="0"/>
-            <enum name="end" value="1"/>
-        </attr>
-        <attr name="imageSpacing" format="dimension"/>
-    </declare-styleable>
-
     <declare-styleable name="MiracleRadioView">
         <attr name="CompoundButton_checked" format="boolean"/>
     </declare-styleable>

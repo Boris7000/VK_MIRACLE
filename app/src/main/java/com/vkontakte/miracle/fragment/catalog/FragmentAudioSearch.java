@@ -1,5 +1,7 @@
 package com.vkontakte.miracle.fragment.catalog;
 
+import android.content.Context;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vkontakte.miracle.R;
@@ -24,7 +26,11 @@ public class FragmentAudioSearch extends SearchSideRecyclerFragment {
 
     @Override
     public String requestTitleText() {
-        return getMiracleActivity().getString(R.string.search);
+        Context context = getContext();
+        if(context!=null){
+            return context.getString(R.string.search);
+        }
+        return super.requestTitleText();
     }
 
 

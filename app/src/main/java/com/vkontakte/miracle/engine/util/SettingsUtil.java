@@ -18,6 +18,7 @@ public class SettingsUtil {
 
     public SettingsUtil(Context context){
         instance = this;
+        //TODO исправить на com.vkontakte.miracle.STORAGE
         String STORAGE = "com.example.vk_air.music.STORAGE";
         preferences =context.getSharedPreferences(STORAGE,MODE_PRIVATE);
     }

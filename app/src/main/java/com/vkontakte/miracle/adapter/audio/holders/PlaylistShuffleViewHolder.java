@@ -25,7 +25,6 @@ public class PlaylistShuffleViewHolder extends MiracleViewHolder {
     @Override
     public void bind(ItemDataHolder itemDataHolder) {
         playlistShuffleItem = (PlaylistShuffleItem) itemDataHolder;
-
     }
 
     public static class Fabric implements ViewHolderFabric {

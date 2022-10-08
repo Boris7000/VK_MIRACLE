@@ -37,6 +37,10 @@ public abstract class TabsFragmentController extends MiracleFragmentController {
         tabsFragment = (ITabsFragment) miracleFragment;
     }
 
+    public final ITabsFragment getTabsFragment() {
+        return tabsFragment;
+    }
+
     @Override
     public void onCreateView(@NonNull View rootView, Bundle savedInstanceState){
         if(!hasSavedAdapter(savedInstanceState)){

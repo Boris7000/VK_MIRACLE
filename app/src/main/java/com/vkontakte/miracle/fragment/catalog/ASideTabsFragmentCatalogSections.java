@@ -2,6 +2,7 @@ package com.vkontakte.miracle.fragment.catalog;
 
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.CallSuper;
@@ -80,7 +81,12 @@ public abstract class ASideTabsFragmentCatalogSections extends SideTabsFragment 
     @Override
     public ArrayList<NestedMiracleFragmentFabric> getErrorTabs() {
         ArrayList<NestedMiracleFragmentFabric> fabrics = new ArrayList<>();
-        fabrics.add(new FragmentError.Fabric(exString, getMiracleActivity().getString(R.string.error),-1));
+        String title="";
+        Context context = getContext();
+        if(context!=null){
+            title = context.getString(R.string.error);
+        }
+        fabrics.add(new FragmentError.Fabric(exString, title,-1));
         return fabrics;
     }
 

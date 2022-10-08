@@ -1,7 +1,5 @@
 package com.vkontakte.miracle.adapter.audio.holders;
 
-import static com.vkontakte.miracle.engine.util.NavigationUtil.goToPlaylist;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.dialog.audio.PlaylistDialog;
 import com.vkontakte.miracle.dialog.audio.PlaylistDialogActionListener;
@@ -29,7 +26,7 @@ public class WrappedPlaylistViewHolderHorizontal extends PlaylistViewHolderHoriz
 
     public WrappedPlaylistViewHolderHorizontal(@NonNull View itemView) {
         super(itemView);
-        itemView.setOnClickListener(view -> resolveItemClickListener(itemWrap, getMiracleActivity()));
+        itemView.setOnClickListener(view -> NavigationUtil.goToPlaylist(itemWrap, getContext()));
         itemView.setOnLongClickListener(view -> {
             PlaylistItem playlistItem = (PlaylistItem) itemWrap.getItem();
             showPlaylistDialog(playlistItem, view.getContext(),
@@ -51,12 +48,12 @@ public class WrappedPlaylistViewHolderHorizontal extends PlaylistViewHolderHoriz
 
                 @Override
                 public void goToArtist() {
-                    NavigationUtil.goToArtist(playlistItem, getMiracleActivity());
+                    NavigationUtil.goToArtist(playlistItem, getContext());
                 }
 
                 @Override
                 public void goToOwner() {
-                    NavigationUtil.goToOwner(playlistItem, getMiracleActivity());
+                    NavigationUtil.goToOwner(playlistItem, getContext());
                 }
             });
             itemView.getParent().requestDisallowInterceptTouchEvent(true);
@@ -88,11 +85,6 @@ public class WrappedPlaylistViewHolderHorizontal extends PlaylistViewHolderHoriz
     public static void resolveDelete(DataItemWrap<?,?> itemWrap){
         PlaylistItem playlistItem = (PlaylistItem) itemWrap.getItem();
         new DeletePlaylist(playlistItem).start();
-    }
-
-    public static void resolveItemClickListener(DataItemWrap<?,?> itemWrap, MainActivity mainActivity){
-        PlaylistItem playlistItem = (PlaylistItem) itemWrap.getItem();
-        goToPlaylist(playlistItem, mainActivity);
     }
 
     public static void showPlaylistDialog(PlaylistItem playlistItem, Context context,

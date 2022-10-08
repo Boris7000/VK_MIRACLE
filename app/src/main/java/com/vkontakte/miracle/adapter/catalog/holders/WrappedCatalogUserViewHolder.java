@@ -2,13 +2,13 @@ package com.vkontakte.miracle.adapter.catalog.holders;
 
 import static com.vkontakte.miracle.engine.util.NavigationUtil.goToProfile;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
@@ -23,7 +23,7 @@ public class WrappedCatalogUserViewHolder extends CatalogUserViewHolder{
 
     public WrappedCatalogUserViewHolder(@NonNull View itemView) {
         super(itemView);
-        itemView.setOnClickListener(view -> resolveItemClickListener(itemWrap, getMiracleActivity()));
+        itemView.setOnClickListener(view -> resolveItemClickListener(itemWrap, getContext()));
     }
 
     @Override
@@ -42,10 +42,10 @@ public class WrappedCatalogUserViewHolder extends CatalogUserViewHolder{
         }
     }
 
-    public static void resolveItemClickListener(DataItemWrap<?,?> itemWrap, MainActivity mainActivity){
+    public static void resolveItemClickListener(DataItemWrap<?,?> itemWrap, Context context){
         CatalogUser catalogUser = (CatalogUser) itemWrap.getItem();
         ProfileItem profileItem = catalogUser.getProfileItem();
-        goToProfile(profileItem, mainActivity);
+        goToProfile(profileItem, context);
     }
 
 }

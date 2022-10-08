@@ -22,7 +22,7 @@ import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.fragment.messages.FragmentChat;
+import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.model.Owner;
 import com.vkontakte.miracle.model.messages.ConversationItem;
 import com.vkontakte.miracle.model.messages.MessageItem;
@@ -175,11 +175,7 @@ public class ConversationViewHolder extends MiracleViewHolder {
             }
         }
 
-        itemView.setOnClickListener(view -> {
-            FragmentChat fragmentChat = new FragmentChat();
-            fragmentChat.setConversationItem(conversationItem);
-            getMiracleActivity().addFragment(fragmentChat);
-        });
+        itemView.setOnClickListener(view -> NavigationUtil.goToChat(conversationItem, getContext()));
 
     }
 

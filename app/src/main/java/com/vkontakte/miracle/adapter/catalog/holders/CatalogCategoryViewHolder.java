@@ -1,12 +1,11 @@
 package com.vkontakte.miracle.adapter.catalog.holders;
 
 import static com.vkontakte.miracle.engine.util.DimensionsUtil.dpToPx;
-import static com.vkontakte.miracle.engine.util.NavigationUtil.hardResolveVKURL;
 import static com.vkontakte.miracle.engine.util.ImageUtil.drawableFromBitmap;
 import static com.vkontakte.miracle.engine.util.ImageUtil.getOptimalSize;
+import static com.vkontakte.miracle.engine.util.NavigationUtil.hardResolveVKURL;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +39,7 @@ public class CatalogCategoryViewHolder extends MiracleViewHolder {
     public CatalogCategoryViewHolder(@NonNull View itemView) {
         super(itemView);
         textViewButton = (TextViewButton) itemView;
-        itemView.setOnClickListener(view -> hardResolveVKURL(catalogLink.getUrl(), getMiracleActivity()));
+        itemView.setOnClickListener(view -> hardResolveVKURL(catalogLink.getUrl(), getContext()));
     }
 
     @Override

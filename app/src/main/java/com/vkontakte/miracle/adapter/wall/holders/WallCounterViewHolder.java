@@ -17,6 +17,7 @@ import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.model.wall.fields.Counter;
 
 public class WallCounterViewHolder extends MiracleViewHolder {
@@ -41,7 +42,7 @@ public class WallCounterViewHolder extends MiracleViewHolder {
             case "audios":{
                 imageResource = R.drawable.ic_vk_music_outline_28;
                 stringResource = R.string.audios;
-                itemView.setOnClickListener(view -> goToOwnerMusic(counter.getOwnerId(), getMiracleActivity()));
+                itemView.setOnClickListener(view -> NavigationUtil.goToOwnerMusic(counter.getOwnerId(), getContext()));
                 break;
             }
             case "videos":{
@@ -52,7 +53,7 @@ public class WallCounterViewHolder extends MiracleViewHolder {
             case "photos":{
                 imageResource = R.drawable.ic_photos_28;
                 stringResource = R.string.photos;
-                itemView.setOnClickListener(view -> goToOwnerPhotos(counter.getOwnerId(), getMiracleActivity()));
+                itemView.setOnClickListener(view -> NavigationUtil.goToOwnerPhotos(counter.getOwnerId(), getContext()));
                 break;
             }
             case "gifts":{
@@ -63,7 +64,7 @@ public class WallCounterViewHolder extends MiracleViewHolder {
             case "friends":{
                 imageResource = R.drawable.ic_friends_28;
                 stringResource = R.string.friends;
-                itemView.setOnClickListener(view -> goToOwnerFriends(counter.getOwnerId(), getMiracleActivity()));
+                itemView.setOnClickListener(view -> NavigationUtil.goToOwnerFriends(counter.getOwnerId(), getContext()));
                 break;
             }
             case "subscriptions":{
@@ -74,7 +75,7 @@ public class WallCounterViewHolder extends MiracleViewHolder {
             case "groups":{
                 imageResource = R.drawable.ic_users_28;
                 stringResource = R.string.groups;
-                itemView.setOnClickListener(view -> goToOwnerGroups(counter.getOwnerId(), getMiracleActivity()));
+                itemView.setOnClickListener(view -> NavigationUtil.goToOwnerGroups(counter.getOwnerId(), getContext()));
                 break;
             }
             case "pages":{

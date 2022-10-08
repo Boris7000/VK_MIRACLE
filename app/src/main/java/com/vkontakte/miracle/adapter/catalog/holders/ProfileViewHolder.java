@@ -102,7 +102,7 @@ public class ProfileViewHolder extends MiracleViewHolder {
             }
         }
 
-        itemView.setOnClickListener(view -> goToProfile(profileItem, getMiracleActivity()));
+        itemView.setOnClickListener(view -> goToProfile(profileItem, getContext()));
 
     }
 

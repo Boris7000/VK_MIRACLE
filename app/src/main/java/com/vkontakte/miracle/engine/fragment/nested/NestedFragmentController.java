@@ -20,6 +20,14 @@ public abstract class NestedFragmentController extends MiracleFragmentController
         nestedFragment = (INestedFragment) miracleFragment;
     }
 
+    public final INestedFragment getNestedFragment() {
+        return nestedFragment;
+    }
+
+    public final ITabsFragment getTabsFragment() {
+        return tabsFragment;
+    }
+
     @Override
     public void onCreateView(@NonNull View rootView, Bundle savedInstanceState){
         Fragment fragment = nestedFragment.getParentFragment();
@@ -35,8 +43,4 @@ public abstract class NestedFragmentController extends MiracleFragmentController
 
     @Override
     public void initViews(){}
-
-    public ITabsFragment getTabsFragment() {
-        return tabsFragment;
-    }
 }

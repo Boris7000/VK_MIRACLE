@@ -1,5 +1,6 @@
 package com.vkontakte.miracle.engine.fragment.base;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,7 +83,10 @@ public abstract class BaseTabsFragment extends TabsFragment implements IBaseFrag
                     RecyclerView recyclerView = recyclerFragment.getRecyclerView();
                     if (recyclerView != null) {
                         if (recyclerView.canScrollVertically(-1)) {
-                            ScrollAndElevate.appBarElevate(getAppBarLayout(), getMiracleActivity());
+                            Context context = getContext();
+                            if(context!=null) {
+                                ScrollAndElevate.appBarElevate(getAppBarLayout(), context);
+                            }
                         } else {
                             ScrollAndElevate.appBarLand(getAppBarLayout());
                         }

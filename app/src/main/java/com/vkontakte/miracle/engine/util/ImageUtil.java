@@ -39,6 +39,24 @@ public class ImageUtil {
         }else return null;
     }
 
+    public static Bitmap bitmapFromDrawable(Drawable drawable, int width, int height) {
+        Bitmap bitmap;
+
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if(bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        bitmap = Bitmap.createBitmap(width, height, ARGB_8888);
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
     public static Bitmap bitmapFromDrawable(Drawable drawable) {
         Bitmap bitmap;
 

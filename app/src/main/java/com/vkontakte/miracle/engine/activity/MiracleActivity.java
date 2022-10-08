@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
+import com.vkontakte.miracle.engine.context.ContextExtractor;
 import com.vkontakte.miracle.engine.view.ActivityRootView;
 
 import java.util.ArrayList;
@@ -46,7 +47,10 @@ public abstract class MiracleActivity extends AppCompatActivity {
             readBundleArguments(arguments);
         }
 
-        setTheme(MiracleApp.getInstance().getThemeRecourseId());
+        MiracleApp miracleApp = ContextExtractor.extractMiracleApp(getApplicationContext());
+        if(miracleApp!=null) {
+            setTheme(miracleApp.getThemeRecourseId());
+        }
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 

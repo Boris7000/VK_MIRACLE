@@ -22,6 +22,10 @@ public abstract class RefreshFragmentController extends MiracleFragmentControlle
         refreshFragment = (IRefreshFragment) miracleFragment;
     }
 
+    public final IRefreshFragment getRefreshFragment() {
+        return refreshFragment;
+    }
+
     @Override
     public void onCreateView(@NonNull View rootView, Bundle savedInstanceState){}
 
@@ -34,7 +38,7 @@ public abstract class RefreshFragmentController extends MiracleFragmentControlle
     public void initViews(){
         if(swipeRefreshLayout!=null) {
             FragmentUtil.setDefaultSwipeRefreshLayoutStyle(
-                    swipeRefreshLayout, getMiracleFragment().getMiracleActivity());
+                    swipeRefreshLayout, swipeRefreshLayout.getContext());
             swipeRefreshLayout.setOnRefreshListener(refreshFragment.requestOnRefreshListener());
         }
     }

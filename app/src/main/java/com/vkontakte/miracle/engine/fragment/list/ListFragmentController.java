@@ -21,6 +21,10 @@ public abstract class ListFragmentController extends MiracleFragmentController {
         listFragment = (IListFragment) miracleFragment;
     }
 
+    public final IListFragment getListFragment() {
+        return listFragment;
+    }
+
     @Override
     public void onCreateView(@NonNull View rootView, Bundle savedInstanceState){}
 

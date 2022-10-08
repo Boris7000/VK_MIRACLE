@@ -26,6 +26,7 @@
     <string name="feed">Лента</string>
     <string name="search">Поиск</string>
     <string name="settings">Настройки</string>
+    <string name="debug">Отладка</string>
     <string name="audio_offline">Скачанная музыка</string>
     <string name="sign_out">Выйти из аккаунта</string>
     <string name="send">Отправить</string>
@@ -50,7 +51,7 @@
     <string name="default_timer">0:00</string>
 
     <string name="error">Ошибка</string>
-    <string name="unknownError">Что-то пошло не так :(</string>
+    <string name="unknownError">Что-то пошло не так 🤔</string>
     <string name="authorization">Авторизация</string>
     <string name="login">Логин</string>
     <string name="password">Пароль</string>

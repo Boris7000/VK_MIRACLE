@@ -2,27 +2,21 @@ package com.vkontakte.miracle.adapter.audio.holders;
 
 import static com.vkontakte.miracle.adapter.audio.holders.WrappedPlaylistViewHolderHorizontal.resolveDelete;
 import static com.vkontakte.miracle.adapter.audio.holders.WrappedPlaylistViewHolderHorizontal.resolveFollow;
-import static com.vkontakte.miracle.adapter.audio.holders.WrappedPlaylistViewHolderHorizontal.resolveItemClickListener;
 import static com.vkontakte.miracle.adapter.audio.holders.WrappedPlaylistViewHolderHorizontal.showPlaylistDialog;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.dialog.audio.AudioDialog;
-import com.vkontakte.miracle.dialog.audio.AudioDialogActionListener;
 import com.vkontakte.miracle.dialog.audio.PlaylistDialogActionListener;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.model.DataItemWrap;
-import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.service.player.PlayerServiceController;
 
@@ -32,7 +26,7 @@ public class WrappedPlaylistViewHolder extends PlaylistViewHolder{
 
     public WrappedPlaylistViewHolder(@NonNull View itemView) {
         super(itemView);
-        itemView.setOnClickListener(view -> resolveItemClickListener(itemWrap, getMiracleActivity()));
+        itemView.setOnClickListener(view -> NavigationUtil.goToPlaylist(itemWrap, getContext()));
         itemView.setOnLongClickListener(view -> {
             PlaylistItem playlistItem = (PlaylistItem) itemWrap.getItem();
             showPlaylistDialog(playlistItem, view.getContext(),
@@ -54,12 +48,12 @@ public class WrappedPlaylistViewHolder extends PlaylistViewHolder{
 
                         @Override
                         public void goToArtist() {
-                            NavigationUtil.goToArtist(playlistItem, getMiracleActivity());
+                            NavigationUtil.goToArtist(playlistItem, getContext());
                         }
 
                         @Override
                         public void goToOwner() {
-                            NavigationUtil.goToOwner(playlistItem, getMiracleActivity());
+                            NavigationUtil.goToOwner(playlistItem, getContext());
                         }
                     });
             itemView.getParent().requestDisallowInterceptTouchEvent(true);

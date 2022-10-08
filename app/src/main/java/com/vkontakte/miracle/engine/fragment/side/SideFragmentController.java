@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.vkontakte.miracle.engine.fragment.IMiracleFragment;
 import com.vkontakte.miracle.engine.fragment.MiracleFragmentController;
 import com.vkontakte.miracle.engine.fragment.base.IBaseFragment;
+import com.vkontakte.miracle.engine.util.NavigationUtil;
 
 public abstract class SideFragmentController extends MiracleFragmentController {
 
@@ -19,6 +20,14 @@ public abstract class SideFragmentController extends MiracleFragmentController {
         super(miracleFragment);
         baseFragment = (IBaseFragment) miracleFragment;
         sideFragment = (ISideFragment) miracleFragment;
+    }
+
+    public final IBaseFragment getBaseFragment() {
+        return baseFragment;
+    }
+
+    public final ISideFragment getSideFragment() {
+        return sideFragment;
     }
 
     @Override
@@ -35,7 +44,7 @@ public abstract class SideFragmentController extends MiracleFragmentController {
     public void initViews(){
         Toolbar toolbar = baseFragment.getToolBar();
         if(toolbar!=null) {
-            toolbar.setNavigationOnClickListener(v -> getMiracleFragment().getMiracleActivity().onBackPressed());
+            toolbar.setNavigationOnClickListener(v -> NavigationUtil.back(toolbar.getContext()));
         }
     }
 

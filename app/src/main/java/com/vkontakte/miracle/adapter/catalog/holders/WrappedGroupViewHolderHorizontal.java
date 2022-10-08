@@ -13,6 +13,7 @@ import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.groups.GroupItem;
 
@@ -22,7 +23,7 @@ public class WrappedGroupViewHolderHorizontal extends GroupViewHolderHorizontal 
 
     public WrappedGroupViewHolderHorizontal(@NonNull View itemView) {
         super(itemView);
-        itemView.setOnClickListener(view -> resolveItemClickListener(itemWrap, getMiracleActivity()));
+        itemView.setOnClickListener(view -> NavigationUtil.goToGroup(itemWrap, getContext()));
     }
 
     @Override

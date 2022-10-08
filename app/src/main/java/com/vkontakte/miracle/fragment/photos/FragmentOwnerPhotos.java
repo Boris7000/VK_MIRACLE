@@ -1,5 +1,6 @@
 package com.vkontakte.miracle.fragment.photos;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,7 +25,11 @@ public class FragmentOwnerPhotos extends SideRecyclerFragment {
 
     @Override
     public String requestTitleText() {
-        return getMiracleActivity().getString(R.string.photos);
+        Context context = getContext();
+        if(context!=null) {
+            return context.getString(R.string.photos);
+        }
+        return super.requestTitleText();
     }
 
     @Override

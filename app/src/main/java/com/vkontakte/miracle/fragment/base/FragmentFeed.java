@@ -1,5 +1,6 @@
 package com.vkontakte.miracle.fragment.base;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,11 @@ public class FragmentFeed extends BaseRecyclerFragment {
 
     @Override
     public String requestTitleText() {
-        return getMiracleActivity().getString(R.string.feed);
+        Context context = getContext();
+        if(context!=null){
+            return context.getString(R.string.feed);
+        }
+        return super.requestTitleText();
     }
 
     public static class Fabric implements FragmentFabric {

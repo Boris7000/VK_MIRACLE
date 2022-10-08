@@ -39,7 +39,7 @@ public class MiracleApp extends Application {
 
         iniFirebaseApp();
 
-        SettingsUtil settingsUtil = SettingsUtil.getInstance();
+        SettingsUtil settingsUtil = new SettingsUtil(this);
 
         int currentNightMode = settingsUtil.nightMode();
 

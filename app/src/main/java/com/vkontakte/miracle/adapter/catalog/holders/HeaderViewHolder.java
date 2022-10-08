@@ -2,7 +2,6 @@ package com.vkontakte.miracle.adapter.catalog.holders;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.vkontakte.miracle.adapter.catalog.holders.CatalogButtonOpenSectionViewHolder.resolveItemClickListener;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,7 @@ import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.engine.view.catalog.CatalogHeaderButton;
 import com.vkontakte.miracle.model.catalog.CatalogBlock;
 import com.vkontakte.miracle.model.catalog.fields.CatalogAction;
@@ -70,7 +70,7 @@ public class HeaderViewHolder extends MiracleViewHolder {
             button.setOnClickListener(view -> {
                 switch (catalogAction.getType()) {
                     case "open_section": {
-                        resolveItemClickListener(catalogAction, getMiracleActivity());
+                        NavigationUtil.goToCatalogSection(catalogAction, getContext());
                         break;
                     }
                     case "clear_recent_groups": {

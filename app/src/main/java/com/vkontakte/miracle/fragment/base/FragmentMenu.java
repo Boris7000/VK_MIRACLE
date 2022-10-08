@@ -1,10 +1,6 @@
 package com.vkontakte.miracle.fragment.base;
 
 import static android.view.View.VISIBLE;
-import static com.vkontakte.miracle.engine.util.NavigationUtil.goToOwnerFriends;
-import static com.vkontakte.miracle.engine.util.NavigationUtil.goToOwnerGroups;
-import static com.vkontakte.miracle.engine.util.NavigationUtil.goToOwnerPhotos;
-import static com.vkontakte.miracle.engine.util.NavigationUtil.goToProfile;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,13 +19,16 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.miracle.button.SwitchButton;
 import com.miracle.button.TextViewButton;
+import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
+import com.vkontakte.miracle.engine.activity.MiracleActivity;
+import com.vkontakte.miracle.engine.context.ContextExtractor;
 import com.vkontakte.miracle.engine.fragment.FragmentFabric;
 import com.vkontakte.miracle.engine.fragment.MiracleFragment;
 import com.vkontakte.miracle.engine.fragment.base.BaseRefreshListFragment;
+import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.fragment.settings.FragmentSettings;
 import com.vkontakte.miracle.login.UpdateCurrentUserData;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.model.users.fields.LastSeen;
@@ -110,7 +109,7 @@ public class FragmentMenu extends BaseRefreshListFragment {
         ProfileItem profileItem = StorageUtil.get().currentUser();
         FrameLayout frameLayout = rootView.findViewById(R.id.profileLink);
 
-        frameLayout.setOnClickListener(view -> goToProfile(profileItem,getMiracleActivity()));
+        frameLayout.setOnClickListener(view -> NavigationUtil.goToProfile(profileItem, getContext()));
 
         TextView username = frameLayout.findViewById(R.id.current_user_name);
         username.setText(profileItem.getFullName());
@@ -137,21 +136,24 @@ public class FragmentMenu extends BaseRefreshListFragment {
         ProfileItem profileItem = StorageUtil.get().currentUser();
 
         TextView settingsButton = rootView.findViewById(R.id.settings);
-        settingsButton.setOnClickListener(v -> getMiracleActivity().addFragment(new FragmentSettings()));
+        settingsButton.setOnClickListener(v -> NavigationUtil.goToSettings(getContext()));
 
         TextView photosButton = rootView.findViewById(R.id.photos);
-        photosButton.setOnClickListener(v -> goToOwnerPhotos(profileItem.getId(), getMiracleActivity()));
+        photosButton.setOnClickListener(v -> NavigationUtil.goToOwnerPhotos(profileItem.getId(), getContext()));
 
         TextView groupsButton = rootView.findViewById(R.id.groups);
-        groupsButton.setOnClickListener(v -> goToOwnerGroups(profileItem.getId(), getMiracleActivity()));
+        groupsButton.setOnClickListener(v -> NavigationUtil.goToOwnerGroups(profileItem.getId(), getContext()));
 
         TextView friendsButton = rootView.findViewById(R.id.friends);
-        friendsButton.setOnClickListener(v -> goToOwnerFriends(profileItem.getId(), getMiracleActivity()));
+        friendsButton.setOnClickListener(v -> NavigationUtil.goToOwnerFriends(profileItem.getId(), getContext()));
 
         TextViewButton exitButton = rootView.findViewById(R.id.exit);
         exitButton.setOnClickListener(v -> {
             block();
-            getMiracleActivity().exitFromAccount();
+            MainActivity mainActivity = ContextExtractor.extractMainActivity(getContext());
+            if(mainActivity!=null) {
+                mainActivity.exitFromAccount();
+            }
         });
     }
 

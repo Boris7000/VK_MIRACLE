@@ -2,7 +2,6 @@ package com.vkontakte.miracle.adapter.friends.holders;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.vkontakte.miracle.engine.util.NavigationUtil.goToProfile;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,7 @@ import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.model.users.fields.LastSeen;
 import com.vkontakte.miracle.model.users.fields.OnlineInfo;
@@ -40,7 +40,7 @@ public class ProfileViewHolder extends MiracleViewHolder {
         subtitle.setVisibility(GONE);
         onlineStatusStub = itemView.findViewById(R.id.onlineStatusStub);
         verifiedStub = itemView.findViewById(R.id.verifiedStub);
-        itemView.setOnClickListener(view -> goToProfile(profileItem, getMiracleActivity()));
+        itemView.setOnClickListener(view -> NavigationUtil.goToProfile(profileItem, getContext()));
     }
 
     @Override

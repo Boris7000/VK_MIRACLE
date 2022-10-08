@@ -30,7 +30,7 @@ public class CatalogLinkViewHolderHorizontal extends MiracleViewHolder {
         super(itemView);
         photo = itemView.findViewById(R.id.photo);
         title = itemView.findViewById(R.id.title);
-        itemView.setOnClickListener(view -> hardResolveVKURL(catalogLink.getUrl(), getMiracleActivity()));
+        itemView.setOnClickListener(view -> hardResolveVKURL(catalogLink.getUrl(), getContext()));
     }
 
     @Override

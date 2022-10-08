@@ -90,12 +90,12 @@ public class PlaylistLargeViewHolder extends MiracleViewHolder {
 
                 @Override
                 public void goToArtist() {
-                    NavigationUtil.goToArtist(playlistItem, getMiracleActivity());
+                    NavigationUtil.goToArtist(playlistItem, getContext());
                 }
 
                 @Override
                 public void goToOwner() {
-                    NavigationUtil.goToOwner(playlistItem, getMiracleActivity());
+                    NavigationUtil.goToOwner(playlistItem, getContext());
                 }
             });
             playlistDialog.show(itemView.getContext());
@@ -123,10 +123,10 @@ public class PlaylistLargeViewHolder extends MiracleViewHolder {
 
         if(playlistItem.getType()==1){
             if(!playlistItem.getArtists().isEmpty()){
-                subtitle.setOnClickListener(v -> goToArtist(playlistItem, getMiracleActivity()));
+                subtitle.setOnClickListener(v -> goToArtist(playlistItem, getContext()));
             }
         } else {
-            subtitle.setOnClickListener(v -> goToOwner(playlistItem, getMiracleActivity()));
+            subtitle.setOnClickListener(v -> goToOwner(playlistItem, getContext()));
         }
 
         Picasso.get().cancelRequest(imageView);

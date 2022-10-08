@@ -1,6 +1,5 @@
 package com.vkontakte.miracle.adapter.catalog.holders;
 
-import static com.vkontakte.miracle.adapter.catalog.holders.CatalogButtonOpenSectionViewHolder.resolveItemClickListener;
 import static com.vkontakte.miracle.engine.util.ImageUtil.getOptimalSize;
 import static com.vkontakte.miracle.engine.util.NavigationUtil.hardResolveVKURL;
 
@@ -19,6 +18,7 @@ import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.util.DimensionsUtil;
+import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.model.catalog.CatalogBanner;
 import com.vkontakte.miracle.model.catalog.fields.CatalogAction;
 import com.vkontakte.miracle.model.catalog.fields.Image;
@@ -63,11 +63,11 @@ public class CatalogBannerViewHolder extends MiracleViewHolder {
                 CatalogAction catalogAction = catalogBanner.getClickAction();
                 switch (catalogAction.getType()) {
                     case "open_url": {
-                        hardResolveVKURL(catalogAction.getUrl(), getMiracleActivity());
+                        hardResolveVKURL(catalogAction.getUrl(), getContext());
                         break;
                     }
                     case "open_section": {
-                        resolveItemClickListener(catalogAction, getMiracleActivity());
+                        NavigationUtil.goToCatalogSection(catalogAction, getContext());
                         break;
                     }
                     case "clear_recent_groups": {

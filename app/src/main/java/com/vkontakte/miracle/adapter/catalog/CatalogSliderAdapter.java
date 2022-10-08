@@ -194,11 +194,10 @@ public class CatalogSliderAdapter extends MiracleNestedLoadableAdapter {
             percentage = itemView.findViewById(R.id.percentage);
             percentageTitle = itemView.findViewById(R.id.percentageTitle);
             itemView.setOnClickListener(view ->
-                    goToPlaylist(recommendedPlaylist, getMiracleActivity()));
+                    goToPlaylist(recommendedPlaylist, getContext()));
             itemView.setOnLongClickListener(view -> {
-                MainActivity mainActivity = getMiracleActivity();
                 final PlaylistItem playlistItem = recommendedPlaylist;
-                PlaylistDialog playlistDialog = new PlaylistDialog(mainActivity, playlistItem);
+                PlaylistDialog playlistDialog = new PlaylistDialog(getContext(), playlistItem);
                 playlistDialog.setDialogActionListener(new PlaylistDialogActionListener() {
                     @Override
                     public void follow() {
@@ -217,12 +216,12 @@ public class CatalogSliderAdapter extends MiracleNestedLoadableAdapter {
 
                     @Override
                     public void goToArtist() {
-                        NavigationUtil.goToArtist(playlistItem, getMiracleActivity());
+                        NavigationUtil.goToArtist(playlistItem, getContext());
                     }
 
                     @Override
                     public void goToOwner() {
-                        NavigationUtil.goToOwner(playlistItem, getMiracleActivity());
+                        NavigationUtil.goToOwner(playlistItem, getContext());
                     }
                 });
                 playlistDialog.show(view.getContext());

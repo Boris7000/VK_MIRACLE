@@ -69,12 +69,11 @@ import java.util.ArrayList;
 
 public class MainActivity extends TabsActivity {
 
+    ///Всякие плеерные дела
     private ViewStub playerBottomSheetStub;
     private FrameLayout playerBottomSheet;
     private BottomSheetBehavior<ViewStub> playerBottomSheetBehavior;
     private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback;
-
-    ///Всякие плеерные дела
     private FrameLayout playerBar;
     private ViewPager2 viewPager;
     private boolean showingPlayer = false;

@@ -3,9 +3,6 @@ package com.vkontakte.miracle.fragment.player;
 import static com.vkontakte.miracle.adapter.audio.holders.WrappedAudioViewHolder.resolveAdd;
 import static com.vkontakte.miracle.adapter.audio.holders.WrappedAudioViewHolder.resolveDelete;
 import static com.vkontakte.miracle.adapter.audio.holders.WrappedAudioViewHolder.resolveDownload;
-import static com.vkontakte.miracle.adapter.audio.holders.WrappedAudioViewHolder.resolveFindArtist;
-import static com.vkontakte.miracle.adapter.audio.holders.WrappedAudioViewHolder.resolveGoToAlbum;
-import static com.vkontakte.miracle.adapter.audio.holders.WrappedAudioViewHolder.resolveGoToArtist;
 import static com.vkontakte.miracle.adapter.audio.holders.WrappedAudioViewHolder.resolvePlayNext;
 import static com.vkontakte.miracle.adapter.audio.holders.WrappedAudioViewHolder.showAudioDialog;
 import static com.vkontakte.miracle.engine.util.ColorUtil.getColorByResId;
@@ -34,16 +31,18 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.exoplayer2.Player;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
-import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.dialog.audio.AudioDialogActionListener;
+import com.vkontakte.miracle.engine.activity.MiracleActivity;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.vkontakte.miracle.engine.context.ContextExtractor;
 import com.vkontakte.miracle.engine.fragment.FragmentFabric;
 import com.vkontakte.miracle.engine.fragment.MiracleFragment;
 import com.vkontakte.miracle.engine.picasso.ATarget;
 import com.vkontakte.miracle.engine.util.DimensionsUtil;
 import com.vkontakte.miracle.engine.util.ImageUtil;
+import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.engine.util.SettingsUtil;
 import com.vkontakte.miracle.engine.util.TimeUtil;
 import com.vkontakte.miracle.model.DataItemWrap;
@@ -59,7 +58,6 @@ import java.util.Locale;
 
 public class FragmentPlayer extends MiracleFragment {
 
-    private MainActivity mainActivity;
     private MiracleApp miracleApp;
     private final PlayerServiceController playerServiceController = PlayerServiceController.get();
     private AudioPlayerData playerData;
@@ -131,8 +129,22 @@ public class FragmentPlayer extends MiracleFragment {
         @Override
         public void onPlayWhenReadyChange(AudioPlayerData playerData, boolean animate) {
             FragmentPlayer.this.playerData = playerData;
-            pausePlayButton.setImageDrawable(playerData.getPlayWhenReady()?
-                    pause_drawable_48:play_drawable_48);
+            int alpha;
+            float size;
+            Drawable drawable;
+            if(playerData.getPlayWhenReady()){
+                alpha = 1;
+                size = 1;
+                drawable = pause_drawable_48;
+            } else {
+                alpha = 0;
+                size = 0.9f;
+                drawable = play_drawable_48;
+            }
+            pausePlayButton.setImageDrawable(drawable);
+            image.animate().scaleX(size).scaleY(size);
+            blur.animate().alpha(alpha);
+
         }
 
         @Override
@@ -183,7 +195,6 @@ public class FragmentPlayer extends MiracleFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        mainActivity = getMiracleActivity();
         miracleApp = MiracleApp.getInstance();
 
         rootView = super.onCreateView(inflater, container, savedInstanceState);
@@ -193,11 +204,17 @@ public class FragmentPlayer extends MiracleFragment {
 
         int size = (int) DimensionsUtil.dpToPx(miracleApp, 280);
         placeholderImage = bitmapFromLayerDrawable(
-                miracleApp, R.drawable.audio_placeholder_image_colored_large, size, size);
+                miracleApp, R.drawable.audio_placeholder_image_colored_large,
+                size, size);
+        size = (int) DimensionsUtil.dpToPx(miracleApp, 320);
         maskBitmap = ImageUtil.bitmapFromDrawable(ResourcesCompat.getDrawable(
-                miracleApp.getResources(), R.drawable.blur_mask, null));
+                miracleApp.getResources(), R.drawable.blur_mask_nine_patch, null),
+                size,size);
 
-        mainActivity.addOnApplyWindowInsetsListener(onApplyWindowInsetsListener);
+        MiracleActivity miracleActivity = ContextExtractor.extractMiracleActivity(getContext());
+        if(miracleActivity!=null) {
+            miracleActivity.addOnApplyWindowInsetsListener(onApplyWindowInsetsListener);
+        }
 
         playerServiceController.addOnPlayerEventListener(onPlayerEventListener);
 
@@ -237,9 +254,9 @@ public class FragmentPlayer extends MiracleFragment {
                 AudioItem audioItem = playerData.getCurrentItem();
                 DataItemWrap<?,?> itemWrap = playerData.getCurrentItemWrap();
                 if(audioItem.getArtists().isEmpty()){
-                    resolveFindArtist(itemWrap, getMiracleActivity());
+                    NavigationUtil.goToArtistSearch(itemWrap, getContext());
                 } else {
-                    resolveGoToArtist(itemWrap, getMiracleActivity());
+                    NavigationUtil.goToArtist(itemWrap, getContext());
                 }
             }
         });
@@ -289,17 +306,17 @@ public class FragmentPlayer extends MiracleFragment {
 
                     @Override
                     public void goToAlbum() {
-                        resolveGoToAlbum(itemWrap, getMiracleActivity());
+                        NavigationUtil.goToAlbum(itemWrap, getContext());
                     }
 
                     @Override
                     public void goToArtist() {
-                        resolveGoToArtist(itemWrap, getMiracleActivity());
+                        NavigationUtil.goToArtist(itemWrap, getContext());
                     }
 
                     @Override
                     public void findArtist() {
-                        resolveFindArtist(itemWrap, getMiracleActivity());
+                        NavigationUtil.goToArtistSearch(itemWrap, getContext());
                     }
 
                     @Override
@@ -398,7 +415,10 @@ public class FragmentPlayer extends MiracleFragment {
 
     @Override
     public void onDestroy() {
-        mainActivity.removeOnApplyWindowInsetsListener(onApplyWindowInsetsListener);
+        MiracleActivity miracleActivity = ContextExtractor.extractMiracleActivity(getContext());
+        if(miracleActivity!=null) {
+            miracleActivity.removeOnApplyWindowInsetsListener(onApplyWindowInsetsListener);
+        }
         playerServiceController.removeOnPlayerEventListener(onPlayerEventListener);
         super.onDestroy();
     }

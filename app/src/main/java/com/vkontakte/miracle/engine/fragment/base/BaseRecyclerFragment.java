@@ -3,6 +3,7 @@ package com.vkontakte.miracle.engine.fragment.base;
 import static com.vkontakte.miracle.engine.adapter.AdapterStates.SATE_FIRST_LOADING_COMPLETE;
 import static com.vkontakte.miracle.engine.adapter.AdapterStates.SATE_LOADING_ERROR;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,7 +98,10 @@ public abstract class BaseRecyclerFragment extends RecyclerFragment implements I
             case SATE_LOADING_ERROR:{
                 if (getRecyclerFragmentController().adapterErrorWasThrown()) {
                     if(needChangeTitleText()) {
-                        getBaseFragmentController().setTitleText(getMiracleActivity().getString(R.string.error));
+                        Context context = getContext();
+                        if(context!=null) {
+                            getBaseFragmentController().setTitleText(context.getString(R.string.error));
+                        }
                     }
                 }
                 break;

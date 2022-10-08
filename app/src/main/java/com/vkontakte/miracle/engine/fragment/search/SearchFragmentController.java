@@ -1,18 +1,17 @@
 package com.vkontakte.miracle.engine.fragment.search;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.vkontakte.miracle.R;
+import com.vkontakte.miracle.engine.context.ContextExtractor;
 import com.vkontakte.miracle.engine.fragment.IMiracleFragment;
 import com.vkontakte.miracle.engine.fragment.MiracleFragmentController;
 import com.vkontakte.miracle.engine.util.IMEUtil;
@@ -33,6 +32,10 @@ public abstract class SearchFragmentController extends MiracleFragmentController
         searchFragment = (ISearchFragment) miracleFragment;
     }
 
+    public final ISearchFragment getSearchFragment() {
+        return searchFragment;
+    }
+
     @Override
     public void onCreateView(@NonNull View rootView, Bundle savedInstanceState) {
         query = "";
@@ -40,7 +43,11 @@ public abstract class SearchFragmentController extends MiracleFragmentController
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if(initialQuery.isEmpty()){
-            showKeyboard();
+            searchEditText.requestFocus();
+            Activity activity = ContextExtractor.extractActivity(searchEditText.getContext());
+            if(activity!=null) {
+                IMEUtil.showKeyboard(searchEditText, activity);
+            }
         } else {
             handleInput = false;
             searchEditText.setText(initialQuery);
@@ -103,7 +110,10 @@ public abstract class SearchFragmentController extends MiracleFragmentController
     }
 
     public void setQuery(String query) {
-        IMEUtil.hideKeyboard(getMiracleFragment().getMiracleActivity());
+        Activity activity = ContextExtractor.extractActivity(searchEditText.getContext());
+        if(activity!=null) {
+            IMEUtil.hideKeyboard(activity);
+        }
         handleInput = false;
         this.query = query;
         this.contextQuery = "";
@@ -119,7 +129,10 @@ public abstract class SearchFragmentController extends MiracleFragmentController
     }
 
     public void setContextQuery(String contextQuery, String query) {
-        IMEUtil.hideKeyboard(getMiracleFragment().getMiracleActivity());
+        Activity activity = ContextExtractor.extractActivity(searchEditText.getContext());
+        if(activity!=null) {
+            IMEUtil.hideKeyboard(activity);
+        }
         handleInput = false;
         this.query = query;
         this.contextQuery = contextQuery;
@@ -136,14 +149,6 @@ public abstract class SearchFragmentController extends MiracleFragmentController
             timer.interrupt();
             timer = null;
         }
-    }
-
-    @CallSuper
-    public void showKeyboard(){
-        searchEditText.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getMiracleFragment()
-                .getMiracleActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(searchEditText, 0);
     }
 
     public void readBundleArguments(Bundle arguments) {

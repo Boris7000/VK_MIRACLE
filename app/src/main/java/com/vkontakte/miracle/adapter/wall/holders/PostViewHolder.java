@@ -4,7 +4,6 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
-import static com.vkontakte.miracle.engine.util.NavigationUtil.goToOwner;
 import static com.vkontakte.miracle.engine.util.StringsUtil.reduceTheNumber;
 
 import android.animation.ValueAnimator;
@@ -151,9 +150,9 @@ public class PostViewHolder extends MiracleViewHolder {
             }
         });
 
-        ownerDataHolder.setOnClickListener(view -> goToOwner(owner, getMiracleActivity()));
+        ownerDataHolder.setOnClickListener(view -> NavigationUtil.goToOwner(owner, getContext()));
 
-        header.setOnClickListener(view -> NavigationUtil.goToWall(postItem, getMiracleActivity()));
+        header.setOnClickListener(view -> NavigationUtil.goToWall(postItem, getContext()));
 
 
     }

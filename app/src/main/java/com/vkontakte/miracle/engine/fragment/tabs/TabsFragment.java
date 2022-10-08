@@ -1,5 +1,6 @@
 package com.vkontakte.miracle.engine.fragment.tabs;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,8 +61,14 @@ public abstract class TabsFragment extends MiracleFragment implements ITabsFragm
     @Override
     public ArrayList<NestedMiracleFragmentFabric> getErrorTabs() {
         ArrayList<NestedMiracleFragmentFabric> fabrics = new ArrayList<>();
-        fabrics.add(new FragmentError.Fabric("Тут что-то должно быть, но его нет \uD83E\uDD14",
-                getMiracleActivity().getString(R.string.error),-1));
+        Context context = getContext();
+        String title="";
+        String text="";
+        if(context!=null){
+            title = context.getString(R.string.error);
+            text = context.getString(R.string.unknownError);
+        }
+        fabrics.add(new FragmentError.Fabric(text, title,-1));
         return fabrics;
     }
 

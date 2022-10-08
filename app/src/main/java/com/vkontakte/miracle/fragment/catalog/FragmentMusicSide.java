@@ -1,5 +1,6 @@
 package com.vkontakte.miracle.fragment.catalog;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.fragment.NestedMiracleFragmentFabric;
+import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.fragment.audio.FragmentOfflineAudioNested;
 import com.vkontakte.miracle.model.users.ProfileItem;
@@ -28,7 +30,7 @@ public class FragmentMusicSide extends ASideTabsFragmentCatalogSections {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
         View searchEditText = rootView.findViewById(R.id.searchBar);
-        searchEditText.setOnClickListener(view -> getMiracleActivity().addFragment(new FragmentAudioSearch()));
+        searchEditText.setOnClickListener(view -> NavigationUtil.goToAudioSearch(null, getContext()));
 
         return rootView;
     }
@@ -36,7 +38,12 @@ public class FragmentMusicSide extends ASideTabsFragmentCatalogSections {
     @Override
     public ArrayList<NestedMiracleFragmentFabric> getErrorTabs() {
         ArrayList<NestedMiracleFragmentFabric> fabrics = new ArrayList<>();
-        fabrics.add(new FragmentOfflineAudioNested.Fabric(getMiracleActivity().getString(R.string.audio_offline)));
+        String title="";
+        Context context = getContext();
+        if(context!=null){
+            title = context.getString(R.string.audio_offline);
+        }
+        fabrics.add(new FragmentOfflineAudioNested.Fabric(title));
         return fabrics;
     }
 

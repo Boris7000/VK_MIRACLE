@@ -349,6 +349,7 @@
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/dialog_photo_viewer.xml" value="0.25" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_catalog_search.xml" value="0.21823554242296328" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_chat.xml" value="0.335" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_debug_settings.xml" value="0.22008547008547008" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_dialogs.xml" value="0.195357833655706" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_error.xml" value="0.26927083333333335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_feed.xml" value="0.25" />
@@ -360,9 +361,12 @@
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_settings.xml" value="0.375" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_settings_color_scheme.xml" value="0.335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_settings_color_scheme_generator.xml" value="0.14027777777777778" />
-        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_settings_interface.xml" value="0.5" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_settings_debug.xml" value="0.22094017094017093" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_settings_interface.xml" value="0.335" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_system_theme.xml" value="0.2201795639162035" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_teleport.xml" value="0.335" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_test.xml" value="0.15707620528771385" />
+        <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_theme_extractor.xml" value="0.2201795639162035" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_url_test.xml" value="0.2201795639162035" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_with_recyclerview_search.xml" value="0.22103463018383926" />
         <entry key="..\:/project/VKMIRACLE/app/src/main/res/layout/fragment_with_recycleview.xml" value="0.23634881825590873" />
