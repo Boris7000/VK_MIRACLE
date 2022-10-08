@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.fragment.side.SideListFragment;
+import com.vkontakte.miracle.engine.util.NavigationUtil;
 
 public class FragmentInterfaceSettings extends SideListFragment {
 
@@ -19,10 +20,8 @@ public class FragmentInterfaceSettings extends SideListFragment {
 
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
-        MainActivity mainActivity = getMiracleActivity();
-
         View colorSchemeSettings = rootView.findViewById(R.id.settings_color_scheme);
-        colorSchemeSettings.setOnClickListener(view -> mainActivity.addFragment(new FragmentColorSchemeSettings()));
+        colorSchemeSettings.setOnClickListener(view -> NavigationUtil.goToThemeSettings(getContext()));
 
         return rootView;
     }

@@ -44,6 +44,7 @@ import com.vkontakte.miracle.adapter.messages.ChatAdapter;
 import com.vkontakte.miracle.adapter.messages.ReplySwipeCallback;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.async.ExecutorConveyor;
+import com.vkontakte.miracle.engine.context.ContextExtractor;
 import com.vkontakte.miracle.engine.fragment.side.SideRecyclerFragment;
 import com.vkontakte.miracle.engine.util.LargeDataStorage;
 import com.vkontakte.miracle.engine.util.StorageUtil;
@@ -73,7 +74,6 @@ import retrofit2.Response;
 public class FragmentChat extends SideRecyclerFragment {
 
     private View rootView;
-    private MainActivity mainActivity;
     private MiracleApp miracleApp;
     private ProfileItem userItem;
 
@@ -110,8 +110,11 @@ public class FragmentChat extends SideRecyclerFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        mainActivity = getMiracleActivity();
-        mainActivity.hideNavigationBars();
+        MainActivity mainActivity = ContextExtractor.extractMainActivity(getContext());
+        if(mainActivity!=null) {
+            mainActivity.hideNavigationBars();
+        }
+
         miracleApp = MiracleApp.getInstance();
 
         rootView = super.onCreateView(inflater, container, savedInstanceState);
@@ -357,7 +360,7 @@ public class FragmentChat extends SideRecyclerFragment {
                                     if(profileItem!=null){
                                         Owner owner = new Owner(profileItem);
                                         ownerArrayMap.put(ownerId,owner);
-                                        updateConversationMessageTyping(getMessageTypingDeclensions(getMiracleActivity(), owner, isText,
+                                        updateConversationMessageTyping(getMessageTypingDeclensions(getContext(), owner, isText,
                                                 typingIds.size()-1), typingIds, isText);
                                     }
                                     onComplete();
@@ -369,7 +372,7 @@ public class FragmentChat extends SideRecyclerFragment {
                     addTask(new Task() {
                         @Override
                         public void func() {
-                            updateConversationMessageTyping(getMessageTypingDeclensions(getMiracleActivity(),owner, isText,
+                            updateConversationMessageTyping(getMessageTypingDeclensions(getContext(),owner, isText,
                                     typingIds.size()-1), typingIds, isText);
                             onComplete();
                         }
@@ -696,7 +699,10 @@ public class FragmentChat extends SideRecyclerFragment {
 
     @Override
     public void onDestroy() {
-        mainActivity.showNavigationBars();
+        MainActivity mainActivity = ContextExtractor.extractMainActivity(getContext());
+        if(mainActivity!=null) {
+            mainActivity.showNavigationBars();
+        }
         LongPollServiceController longPollServiceController = LongPollServiceController.get();
         longPollServiceController.removeOnMessageTypingListener(onMessageTypingUpdateListener);
         if(onUserOnlineUpdateListener!=null){

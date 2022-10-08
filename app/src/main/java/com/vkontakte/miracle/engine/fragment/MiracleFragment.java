@@ -7,14 +7,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import com.vkontakte.miracle.MainActivity;
 
 public abstract class MiracleFragment extends Fragment implements IMiracleFragment {
 
-    private MainActivity mainActivity;
     private Bundle notUsedSavedInstanceState;
 
     @NonNull
@@ -53,13 +49,6 @@ public abstract class MiracleFragment extends Fragment implements IMiracleFragme
 
     @CallSuper
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mainActivity = (MainActivity) getActivity();
-    }
-
-    @CallSuper
-    @Override
     public void onResume() {
         super.onResume();
         if(notUsedSavedInstanceState !=null&&!notUsedSavedInstanceState.isEmpty()) {
@@ -72,11 +61,6 @@ public abstract class MiracleFragment extends Fragment implements IMiracleFragme
     public void onSaveInstanceState(@NonNull Bundle outState) {
         notUsedSavedInstanceState = outState;
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public MainActivity getMiracleActivity(){
-        return mainActivity;
     }
 
     @Override

@@ -11,6 +11,7 @@ import static com.vkontakte.miracle.engine.util.UIUtil.THEME_ORANGE;
 import static com.vkontakte.miracle.engine.util.UIUtil.THEME_SYSTEM1;
 import static com.vkontakte.miracle.engine.util.UIUtil.THEME_VIOLET;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.ArrayMap;
 import android.view.LayoutInflater;
@@ -21,7 +22,6 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.fragment.side.SideListFragment;
@@ -30,7 +30,6 @@ import com.vkontakte.miracle.engine.view.radioGroup.MiracleRadioGroup;
 
 public class FragmentColorSchemeSettings extends SideListFragment {
 
-    private MainActivity mainActivity;
     private LinearLayout blockScreen;
     private final ArrayMap<Integer, Integer> themes = new ArrayMap<>();
     private final ArrayMap<Integer, Integer> buttons = new ArrayMap<>();
@@ -63,8 +62,6 @@ public class FragmentColorSchemeSettings extends SideListFragment {
         buttons.put(THEME_CONTRAST, R.id.rb_contrast);
         buttons.put(THEME_SYSTEM1, R.id.rb_system1);
 
-        mainActivity = getMiracleActivity();
-
         if(savedInstanceState!=null){
             block();
         }
@@ -86,7 +83,10 @@ public class FragmentColorSchemeSettings extends SideListFragment {
                 themeId = THEME_BLUE;
             }
             MiracleApp.getInstance().updateThemeRecourseId(themeId);
-            mainActivity.recreate();
+            Activity activity = getActivity();
+            if(activity!=null) {
+                activity.recreate();
+            }
         });
 
         return rootView;

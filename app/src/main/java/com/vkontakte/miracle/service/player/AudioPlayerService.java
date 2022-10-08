@@ -55,7 +55,7 @@ import com.vkontakte.miracle.engine.picasso.ATarget;
 import com.vkontakte.miracle.engine.util.DimensionsUtil;
 import com.vkontakte.miracle.engine.util.SettingsUtil;
 import com.vkontakte.miracle.executors.audio.SendTrackEvents;
-import com.vkontakte.miracle.executors.util.SimpleTimer;
+import com.vkontakte.miracle.engine.async.baseExecutors.SimpleTimer;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.fields.Album;
 import com.vkontakte.miracle.model.audio.fields.Photo;

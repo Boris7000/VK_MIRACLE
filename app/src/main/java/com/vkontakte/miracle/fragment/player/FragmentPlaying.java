@@ -10,9 +10,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.audio.PlayingAdapter;
+import com.vkontakte.miracle.engine.activity.MiracleActivity;
+import com.vkontakte.miracle.engine.context.ContextExtractor;
 import com.vkontakte.miracle.engine.fragment.FragmentFabric;
 import com.vkontakte.miracle.engine.fragment.MiracleFragment;
 import com.vkontakte.miracle.engine.fragment.recycler.RecyclerFragment;
@@ -24,7 +25,6 @@ import com.vkontakte.miracle.service.player.PlayerServiceController;
 public class FragmentPlaying extends RecyclerFragment {
 
     private View rootView;
-    private MainActivity mainActivity;
     private PlayingAdapter playingAdapter;
     private final OnPlayerEventListener onPlayerEventListener = new AOnPlayerEventListener() {
         @Override
@@ -48,12 +48,13 @@ public class FragmentPlaying extends RecyclerFragment {
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        mainActivity = getMiracleActivity();
         
         rootView = super.onCreateView(inflater, container, savedInstanceState);
-        
-        mainActivity.addOnApplyWindowInsetsListener(onApplyWindowInsetsListener);
+
+        MiracleActivity miracleActivity = ContextExtractor.extractMiracleActivity(getContext());
+        if(miracleActivity!=null) {
+            miracleActivity.addOnApplyWindowInsetsListener(onApplyWindowInsetsListener);
+        }
         
         PlayerServiceController.get().addOnPlayerEventListener(onPlayerEventListener);
         
@@ -78,7 +79,10 @@ public class FragmentPlaying extends RecyclerFragment {
 
     @Override
     public void onDestroy() {
-        mainActivity.removeOnApplyWindowInsetsListener(onApplyWindowInsetsListener);
+        MiracleActivity miracleActivity = ContextExtractor.extractMiracleActivity(getContext());
+        if(miracleActivity!=null) {
+            miracleActivity.removeOnApplyWindowInsetsListener(onApplyWindowInsetsListener);
+        }
         PlayerServiceController.get().removeOnPlayerEventListener(onPlayerEventListener);
         super.onDestroy();
     }

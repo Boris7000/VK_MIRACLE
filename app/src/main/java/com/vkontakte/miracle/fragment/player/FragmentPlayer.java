@@ -283,7 +283,7 @@ public class FragmentPlayer extends MiracleFragment {
             if(playerData!=null){
                 AudioItem audioItem = playerData.getCurrentItem();
                 DataItemWrap<?,?> itemWrap = playerData.getCurrentItemWrap();
-                showAudioDialog(audioItem, getMiracleActivity(), new AudioDialogActionListener() {
+                showAudioDialog(audioItem, getContext(), new AudioDialogActionListener() {
                     @Override
                     public void add() {
                         resolveAdd(itemWrap);

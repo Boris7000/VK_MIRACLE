@@ -9,6 +9,7 @@ import com.vkontakte.miracle.engine.activity.tabs.TabsActivity;
 import com.vkontakte.miracle.engine.context.ContextExtractor;
 import com.vkontakte.miracle.fragment.audio.FragmentOfflineAudio;
 import com.vkontakte.miracle.fragment.audio.FragmentPlaylist;
+import com.vkontakte.miracle.fragment.settings.FragmentColorSchemeSettings;
 import com.vkontakte.miracle.fragment.settings.FragmentTest;
 import com.vkontakte.miracle.fragment.catalog.FragmentAudioSearch;
 import com.vkontakte.miracle.fragment.catalog.FragmentCatalogArtist;
@@ -69,6 +70,14 @@ public class NavigationUtil {
         if(tabsActivity!=null) {
             FragmentInterfaceSettings fragmentSettings = new FragmentInterfaceSettings();
             tabsActivity.addFragment(fragmentSettings);
+        }
+    }
+
+    public static void goToThemeSettings(Context context){
+        TabsActivity tabsActivity = ContextExtractor.extractTabsActivity(context);
+        if(tabsActivity!=null) {
+            FragmentColorSchemeSettings fragmentColorSchemeSettings = new FragmentColorSchemeSettings();
+            tabsActivity.addFragment(fragmentColorSchemeSettings);
         }
     }
 

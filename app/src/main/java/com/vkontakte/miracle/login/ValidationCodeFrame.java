@@ -20,7 +20,7 @@ import androidx.annotation.Nullable;
 import com.miracle.button.TextViewButton;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.util.TimeUtil;
-import com.vkontakte.miracle.executors.util.ListenableTimer;
+import com.vkontakte.miracle.engine.async.baseExecutors.ListenableTimer;
 
 import java.util.Locale;
 

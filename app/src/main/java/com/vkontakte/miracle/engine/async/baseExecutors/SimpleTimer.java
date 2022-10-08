@@ -1,4 +1,4 @@
-package com.vkontakte.miracle.executors.util;
+package com.vkontakte.miracle.engine.async.baseExecutors;
 
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 

@@ -15,7 +15,7 @@ import com.vkontakte.miracle.engine.context.ContextExtractor;
 import com.vkontakte.miracle.engine.fragment.IMiracleFragment;
 import com.vkontakte.miracle.engine.fragment.MiracleFragmentController;
 import com.vkontakte.miracle.engine.util.IMEUtil;
-import com.vkontakte.miracle.executors.util.SimpleTimer;
+import com.vkontakte.miracle.engine.async.baseExecutors.SimpleTimer;
 
 public abstract class SearchFragmentController extends MiracleFragmentController {
 
