@@ -1,14 +1,11 @@
 package com.vkontakte.miracle.adapter.catalog.holders;
 
-import static com.vkontakte.miracle.engine.util.NavigationUtil.goToGroup;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
@@ -41,10 +38,4 @@ public class WrappedGroupViewHolderHorizontal extends GroupViewHolderHorizontal 
             return new WrappedGroupViewHolderHorizontal(inflater.inflate(R.layout.view_group_item_horizontal, viewGroup, false));
         }
     }
-
-    public static void resolveItemClickListener(DataItemWrap<?,?> itemWrap, MainActivity mainActivity){
-        GroupItem groupItem = (GroupItem) itemWrap.getItem();
-        goToGroup(groupItem, mainActivity);
-    }
-
 }
