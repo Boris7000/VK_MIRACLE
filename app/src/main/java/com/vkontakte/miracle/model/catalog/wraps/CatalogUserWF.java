@@ -1,6 +1,6 @@
 package com.vkontakte.miracle.model.catalog.wraps;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_CATALOG_USER;
 
 import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.ItemDataWrapFabric;
@@ -12,7 +12,7 @@ public class CatalogUserWF implements ItemDataWrapFabric<CatalogUser, CatalogUse
         return new DataItemWrap<CatalogUser, CatalogUserWC>(item, holder) {
             @Override
             public int getViewHolderType() {
-                return TYPE_WRAPPED_AUDIO;
+                return TYPE_WRAPPED_CATALOG_USER;
             }
         };
     }
