@@ -129,21 +129,27 @@ public class FragmentPlayer extends MiracleFragment {
         @Override
         public void onPlayWhenReadyChange(AudioPlayerData playerData, boolean animate) {
             FragmentPlayer.this.playerData = playerData;
-            int alpha;
+            float alpha;
             float size;
             Drawable drawable;
             if(playerData.getPlayWhenReady()){
-                alpha = 1;
-                size = 1;
+                alpha = 1f;
+                size = 1f;
                 drawable = pause_drawable_48;
             } else {
-                alpha = 0;
+                alpha = 0f;
                 size = 0.9f;
                 drawable = play_drawable_48;
             }
             pausePlayButton.setImageDrawable(drawable);
-            image.animate().scaleX(size).scaleY(size);
-            blur.animate().alpha(alpha);
+            if(animate) {
+                image.animate().scaleX(size).scaleY(size);
+                blur.animate().alpha(alpha);
+            } else {
+                image.setScaleX(size);
+                image.setScaleY(size);
+                blur.setAlpha(alpha);
+            }
 
         }
 
