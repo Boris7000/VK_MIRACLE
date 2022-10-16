@@ -1,9 +1,9 @@
-package com.vkontakte.miracle.model.audio;
+package com.vkontakte.miracle.model.audio.wraps;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 
 import java.util.ArrayList;
 
-public interface PlaylistWrapContainer {
+public interface PlaylistItemWC {
     ArrayList<ItemDataHolder> getPlaylistItems();
 }

@@ -1,10 +1,11 @@
 package com.vkontakte.miracle.model.audio;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.vkontakte.miracle.model.audio.wraps.AudioItemWC;
 
 import java.util.ArrayList;
 
-public class DownloadedAudios implements AudioWrapContainer {
+public class DownloadedAudios implements AudioItemWC {
 
     private final ArrayList<ItemDataHolder> items;
 

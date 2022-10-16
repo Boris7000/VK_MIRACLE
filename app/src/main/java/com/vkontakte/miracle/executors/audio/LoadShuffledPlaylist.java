@@ -1,14 +1,12 @@
 package com.vkontakte.miracle.executors.audio;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.audio.AudioItem;
-import com.vkontakte.miracle.model.audio.AudioWrapContainer;
+import com.vkontakte.miracle.model.audio.wraps.AudioItemWF;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.network.methods.Audio;
@@ -67,17 +65,11 @@ public class LoadShuffledPlaylist extends AsyncExecutor<PlaylistItem> {
                 PlaylistItem playlistItem = new PlaylistItem(this.playlistItem);
 
                 ArrayList<ItemDataHolder> audioItems = new ArrayList<>();
+                AudioItemWF audioItemWF = new AudioItemWF();
                 for (int i = 0; i < items.length(); i++) {
                     JSONObject jo_item = items.getJSONObject(i);
                     AudioItem audioItem = new AudioItem(jo_item);
-                    DataItemWrap<AudioItem, AudioWrapContainer> dataItemWrap =
-                            new DataItemWrap<AudioItem, AudioWrapContainer>(audioItem, playlistItem) {
-                                @Override
-                                public int getViewHolderType() {
-                                    return TYPE_WRAPPED_AUDIO;
-                                }
-                            };
-                    audioItems.add(dataItemWrap);
+                    audioItems.add(audioItemWF.create(audioItem, playlistItem));
                 }
 
                 playlistItem.getAudioItems().addAll(audioItems);

@@ -2,10 +2,12 @@ package com.vkontakte.miracle.adapter.wall.holders;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.vkontakte.miracle.engine.util.ImageUtil.fastBlur;
 import static com.vkontakte.miracle.engine.util.ImageUtil.getOptimalSize;
-import static com.vkontakte.miracle.engine.util.StringsUtil.reduceTheNumber;
+import static com.vkontakte.miracle.engine.view.PicassoDrawableCopy.setBitmap;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,17 +19,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.vkontakte.miracle.engine.picasso.ATarget;
 import com.vkontakte.miracle.engine.util.DeviceUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.engine.util.TimeUtil;
 import com.vkontakte.miracle.model.catalog.fields.Image;
-import com.vkontakte.miracle.model.wall.fields.Cover;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.model.users.fields.LastSeen;
+import com.vkontakte.miracle.model.wall.fields.Cover;
 
 public class ProfileLargeViewHolder extends MiracleViewHolder {
 
@@ -46,6 +52,26 @@ public class ProfileLargeViewHolder extends MiracleViewHolder {
     private LinearLayout userButtonsHolder;
     private final ProfileItem userItem;
 
+    private final Target target = new ATarget() {
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            new AsyncExecutor<Boolean>() {
+                Bitmap blurBitmap;
+                @Override
+                public Boolean inBackground() {
+                    Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 255, 255, false);
+                    blurBitmap = fastBlur(scaled, 1, 30);
+                    return true;
+                }
+                @Override
+                public void onExecute(Boolean object) {
+                    MiracleApp miracleApp = MiracleApp.getInstance();
+                    setBitmap(coverImage, miracleApp, blurBitmap);
+                }
+            }.start();
+        }
+    };
+
     public ProfileLargeViewHolder(@NonNull View itemView) {
         super(itemView);
         userItem = StorageUtil.get().currentUser();
@@ -58,6 +84,7 @@ public class ProfileLargeViewHolder extends MiracleViewHolder {
         verifiedStub = itemView.findViewById(R.id.verifiedStub);
         profileButtonsStub = itemView.findViewById(R.id.profileButtonsStub);
         userButtonsStub = itemView.findViewById(R.id.userButtonsStub);
+        coverImage.setTag(target);
     }
 
     @Override
@@ -170,8 +197,13 @@ public class ProfileLargeViewHolder extends MiracleViewHolder {
             }
         }
 
-        Picasso.get().cancelRequest(coverImage);
+        setCover(profileItem);
 
+    }
+
+    private void setCover(ProfileItem profileItem){
+        Picasso.get().cancelRequest(target);
+        Picasso.get().cancelRequest(coverImage);
         if(profileItem.getCover()!=null){
             Cover cover = profileItem.getCover();
             if(cover.getEnabled()){
@@ -181,25 +213,13 @@ public class ProfileLargeViewHolder extends MiracleViewHolder {
                             itemView.getHeight());
                     if (image != null) {
                         Picasso.get().load(image.getUrl()).into(coverImage);
+                        return;
                     }
                 }
             }
         }
-
-    }
-
-    private  static boolean processCounter(int count, LinearLayout holder, TextView counter){
-        if(count!=0){
-            if(holder.getVisibility()!=VISIBLE) {
-                holder.setVisibility(VISIBLE);
-            }
-            counter.setText(reduceTheNumber(count));
-            return true;
-        } else {
-            if(holder.getVisibility()!=GONE) {
-                holder.setVisibility(GONE);
-            }
-            return false;
+        if(!profileItem.getPhotoMax().isEmpty()){
+            Picasso.get().load(profileItem.getPhotoMax()).into(target);
         }
     }
 

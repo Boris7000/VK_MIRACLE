@@ -1,6 +1,5 @@
 package com.vkontakte.miracle.service.player;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
 import androidx.annotation.NonNull;
@@ -12,7 +11,8 @@ import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.audio.AudioItem;
-import com.vkontakte.miracle.model.audio.AudioWrapContainer;
+import com.vkontakte.miracle.model.audio.wraps.AudioItemWF;
+import com.vkontakte.miracle.model.audio.wraps.AudioItemWC;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.model.catalog.CatalogBlock;
 import com.vkontakte.miracle.model.catalog.CatalogExtendedArrays;
@@ -35,7 +35,7 @@ public class AudioPlayerData {
     private int repeatMode;
     private boolean playWhenReady = true;
     private int currentItemIndex;
-    private final AudioWrapContainer container;
+    private final AudioItemWC container;
     private final ArrayList<ItemDataHolder> items;
     private AudioItem currentItem;
     private DataItemWrap<?,?> currentItemWrap;
@@ -43,7 +43,7 @@ public class AudioPlayerData {
 
     public AudioPlayerData(ItemDataHolder itemDataHolder){
         currentItemWrap = (DataItemWrap<?,?>) itemDataHolder;
-        container = (AudioWrapContainer) currentItemWrap.getHolder();
+        container = (AudioItemWC) currentItemWrap.getHolder();
         currentItem = (AudioItem) currentItemWrap.getItem();
         items = new ArrayList<>(container.getAudioItems());
         currentItemIndex = items.indexOf(currentItemWrap);
@@ -107,7 +107,7 @@ public class AudioPlayerData {
         return currentItemWrap;
     }
 
-    public AudioWrapContainer getContainer() {
+    public AudioItemWC getContainer() {
         return container;
     }
 
@@ -217,17 +217,11 @@ public class AudioPlayerData {
             JSONArray items = jo_response.getJSONArray("audios");
 
             ArrayList<ItemDataHolder> audioItems = new ArrayList<>();
+            AudioItemWF audioItemWF = new AudioItemWF();
             for (int i = 0; i < items.length(); i++) {
                 JSONObject jo_item = items.getJSONObject(i);
                 AudioItem audioItem = new AudioItem(jo_item);
-                DataItemWrap<AudioItem, AudioWrapContainer> dataItemWrap =
-                        new DataItemWrap<AudioItem, AudioWrapContainer>(audioItem, playlistItem) {
-                            @Override
-                            public int getViewHolderType() {
-                                return TYPE_WRAPPED_AUDIO;
-                            }
-                        };
-                audioItems.add(dataItemWrap);
+                audioItems.add(audioItemWF.create(audioItem, playlistItem));
             }
             playlistItem.getAudioItems().addAll(audioItems);
             return audioItems;

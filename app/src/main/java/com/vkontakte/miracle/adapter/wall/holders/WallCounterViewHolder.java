@@ -1,10 +1,5 @@
 package com.vkontakte.miracle.adapter.wall.holders;
 
-import static com.vkontakte.miracle.engine.util.NavigationUtil.goToOwnerFriends;
-import static com.vkontakte.miracle.engine.util.NavigationUtil.goToOwnerGroups;
-import static com.vkontakte.miracle.engine.util.NavigationUtil.goToOwnerMusic;
-import static com.vkontakte.miracle.engine.util.NavigationUtil.goToOwnerPhotos;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +14,8 @@ import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.model.wall.fields.Counter;
+
+import java.util.Locale;
 
 public class WallCounterViewHolder extends MiracleViewHolder {
 
@@ -98,7 +95,9 @@ public class WallCounterViewHolder extends MiracleViewHolder {
 
         Context context = itemView.getContext();
         if(stringResource>0){
-            textViewButton.setText(context.getString(stringResource)+" | "+ counter.getCount());
+            String string = String.format(Locale.getDefault(),
+                    "%s | %d", context.getString(stringResource), counter.getCount());
+            textViewButton.setText(string);
         } else {
             textViewButton.setText(String.valueOf(counter.getCount()));
         }

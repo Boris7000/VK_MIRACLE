@@ -22,7 +22,6 @@ import com.miracle.button.TextViewButton;
 import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.activity.MiracleActivity;
 import com.vkontakte.miracle.engine.context.ContextExtractor;
 import com.vkontakte.miracle.engine.fragment.FragmentFabric;
 import com.vkontakte.miracle.engine.fragment.MiracleFragment;

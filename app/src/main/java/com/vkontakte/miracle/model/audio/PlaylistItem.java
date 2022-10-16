@@ -14,6 +14,8 @@ import com.vkontakte.miracle.model.audio.fields.Followed;
 import com.vkontakte.miracle.model.audio.fields.Genre;
 import com.vkontakte.miracle.model.audio.fields.Original;
 import com.vkontakte.miracle.model.audio.fields.Photo;
+import com.vkontakte.miracle.model.audio.wraps.AudioItemWF;
+import com.vkontakte.miracle.model.audio.wraps.AudioItemWC;
 import com.vkontakte.miracle.model.groups.GroupItem;
 import com.vkontakte.miracle.model.users.ProfileItem;
 
@@ -23,7 +25,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class PlaylistItem implements ItemDataHolder, AudioWrapContainer {
+public class PlaylistItem implements ItemDataHolder, AudioItemWC {
 
     private final String id;
     private final String ownerId;
@@ -377,18 +379,12 @@ public class PlaylistItem implements ItemDataHolder, AudioWrapContainer {
 
     public void copyItems(PlaylistItem playlistItem){
         items = new ArrayList<>();
+        AudioItemWF audioItemWF = new AudioItemWF();
         for (ItemDataHolder itemDataHolder:playlistItem.items) {
             DataItemWrap<?,?> dataItemWrap = (DataItemWrap<?,?>) itemDataHolder;
             Object item = dataItemWrap.getItem();
             if(item instanceof AudioItem){
-                DataItemWrap<AudioItem, AudioWrapContainer> dataItemWrap1 =
-                        new DataItemWrap<AudioItem, AudioWrapContainer>((AudioItem) item, this) {
-                            @Override
-                            public int getViewHolderType() {
-                                return dataItemWrap.getViewHolderType();
-                            }
-                        };
-                items.add(dataItemWrap1);
+                items.add(audioItemWF.create((AudioItem) item, this));
             }
         }
     }

@@ -25,7 +25,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.vkontakte.miracle.MainActivity;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.audio.holders.WrappedPlaylistViewHolderHorizontal;
 import com.vkontakte.miracle.adapter.catalog.holders.CatalogBannerViewHolder;

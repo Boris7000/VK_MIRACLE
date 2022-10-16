@@ -18,9 +18,8 @@ import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.adapter.holder.error.ErrorDataHolder;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.audio.AudioItem;
-import com.vkontakte.miracle.model.audio.AudioWrapContainer;
+import com.vkontakte.miracle.model.audio.wraps.AudioItemWF;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.model.audio.PlaylistShuffleItem;
 import com.vkontakte.miracle.model.audio.fields.Description;
@@ -117,17 +116,11 @@ public class PlaylistAdapter extends MiracleAsyncLoadAdapter {
         JSONArray items = jo_response.getJSONArray("audios");
 
         ArrayList<ItemDataHolder> audioItems = new ArrayList<>();
+        AudioItemWF audioItemWF = new AudioItemWF();
         for (int i = 0; i < items.length(); i++) {
             JSONObject jo_item = items.getJSONObject(i);
             AudioItem audioItem = new AudioItem(jo_item);
-            DataItemWrap<AudioItem, AudioWrapContainer> dataItemWrap =
-                    new DataItemWrap<AudioItem, AudioWrapContainer>(audioItem, playlistItem) {
-                        @Override
-                        public int getViewHolderType() {
-                            return TYPE_WRAPPED_AUDIO;
-                        }
-                    };
-            audioItems.add(dataItemWrap);
+            audioItems.add(audioItemWF.create(audioItem, playlistItem));
         }
 
         holders.addAll(audioItems);

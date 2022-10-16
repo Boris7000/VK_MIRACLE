@@ -1,6 +1,5 @@
 package com.vkontakte.miracle.service.player;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
 import android.content.ComponentName;
@@ -16,9 +15,9 @@ import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.executors.audio.LoadShuffledPlaylist;
 import com.vkontakte.miracle.executors.catalog.LoadCatalogBlock;
-import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.audio.AudioItem;
-import com.vkontakte.miracle.model.audio.AudioWrapContainer;
+import com.vkontakte.miracle.model.audio.wraps.AudioItemWF;
+import com.vkontakte.miracle.model.audio.wraps.AudioItemWC;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.model.audio.PlaylistShuffleItem;
 import com.vkontakte.miracle.model.catalog.CatalogBlock;
@@ -169,7 +168,7 @@ public class PlayerServiceController {
 
     public void playNewAudio(AudioPlayerData audioPlayerData){
 
-        AudioWrapContainer container = audioPlayerData.getContainer();
+        AudioItemWC container = audioPlayerData.getContainer();
 
         if(container instanceof PlaylistItem){
             PlaylistItem playlistItem = (PlaylistItem) container;
@@ -189,7 +188,7 @@ public class PlayerServiceController {
 
     public void setPlayNext(AudioPlayerData audioPlayerData){
 
-        AudioWrapContainer container = audioPlayerData.getContainer();
+        AudioItemWC container = audioPlayerData.getContainer();
         if(container instanceof PlaylistItem){
             PlaylistItem playlistItem = (PlaylistItem) container;
             if(playlistItem.getAudioItems().size()<25&&playlistItem.getAudioItems().size()<playlistItem.getCount()){
@@ -222,7 +221,7 @@ public class PlayerServiceController {
             @Override
             public AudioPlayerData inBackground() {
                 try {
-                    AudioWrapContainer container = audioPlayerData.getContainer();
+                    AudioItemWC container = audioPlayerData.getContainer();
                     if(container instanceof PlaylistItem) {
                         PlaylistItem playlistItem = copyPlaylist((PlaylistItem) container);
                         loadAudiosToPlaylist(playlistItem);
@@ -253,7 +252,7 @@ public class PlayerServiceController {
             @Override
             public AudioPlayerData inBackground() {
                 try {
-                    AudioWrapContainer container = audioPlayerData.getContainer();
+                    AudioItemWC container = audioPlayerData.getContainer();
                     if(container instanceof PlaylistItem) {
                         PlaylistItem playlistItem = copyPlaylist((PlaylistItem) container);
                         loadAudiosToPlaylist(playlistItem);
@@ -345,17 +344,11 @@ public class PlayerServiceController {
             JSONArray items = jo_response.getJSONArray("audios");
 
             ArrayList<ItemDataHolder> audioItems = new ArrayList<>();
+            AudioItemWF audioItemWF = new AudioItemWF();
             for (int i = 0; i < items.length(); i++) {
                 JSONObject jo_item = items.getJSONObject(i);
                 AudioItem audioItem = new AudioItem(jo_item);
-                DataItemWrap<AudioItem, AudioWrapContainer> dataItemWrap =
-                        new DataItemWrap<AudioItem, AudioWrapContainer>(audioItem, playlistItem) {
-                            @Override
-                            public int getViewHolderType() {
-                                return TYPE_WRAPPED_AUDIO;
-                            }
-                        };
-                audioItems.add(dataItemWrap);
+                audioItems.add(audioItemWF.create(audioItem, playlistItem));
             }
             playlistItem.getAudioItems().addAll(audioItems);
         }

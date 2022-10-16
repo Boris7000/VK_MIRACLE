@@ -403,7 +403,7 @@ public class AudioPlayerService extends Service implements ExoPlayer.Listener, A
         if(player==null){
             player = new ExoPlayer.Builder(this).build();
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setUsage(C.USAGE_MEDIA).setContentType(C.CONTENT_TYPE_MUSIC).build();
+                    .setUsage(C.USAGE_MEDIA).setContentType(C.AUDIO_CONTENT_TYPE_MUSIC).build();
             player.setAudioAttributes(audioAttributes,true);
             player.addListener(this);
             player.addAnalyticsListener(this);

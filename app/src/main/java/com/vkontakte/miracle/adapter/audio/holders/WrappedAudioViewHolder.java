@@ -21,7 +21,7 @@ import com.vkontakte.miracle.executors.audio.AddAudio;
 import com.vkontakte.miracle.executors.audio.DeleteAudio;
 import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.audio.AudioItem;
-import com.vkontakte.miracle.model.audio.AudioWrapContainer;
+import com.vkontakte.miracle.model.audio.wraps.AudioItemWC;
 import com.vkontakte.miracle.service.downloads.audio.AudioDownloadServiceController;
 import com.vkontakte.miracle.service.downloads.audio.AudioEraseServiceController;
 import com.vkontakte.miracle.service.player.AudioPlayerData;
@@ -125,7 +125,7 @@ public class WrappedAudioViewHolder extends AudioViewHolder{
                 ArrayList<ItemDataHolder> itemDataHolders = adapter.getItemDataHolders();
                 int pos = itemDataHolders.indexOf(itemWrap);
                 itemDataHolders.remove(itemWrap);
-                ((AudioWrapContainer) itemWrap.getHolder()).getAudioItems().remove(itemWrap);
+                ((AudioItemWC) itemWrap.getHolder()).getAudioItems().remove(itemWrap);
                 adapter.notifyItemRemoved(pos);
             }
         }
@@ -145,7 +145,7 @@ public class WrappedAudioViewHolder extends AudioViewHolder{
                 ArrayList<ItemDataHolder> itemDataHolders = downloadedAdapter.getItemDataHolders();
                 int pos = itemDataHolders.indexOf(itemWrap);
                 itemDataHolders.remove(itemWrap);
-                ((AudioWrapContainer) itemWrap.getHolder()).getAudioItems().remove(itemWrap);
+                ((AudioItemWC) itemWrap.getHolder()).getAudioItems().remove(itemWrap);
                 downloadedAdapter.notifyItemRemoved(pos);
             }
         }

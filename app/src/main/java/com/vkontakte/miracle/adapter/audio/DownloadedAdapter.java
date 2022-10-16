@@ -14,9 +14,8 @@ import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.adapter.holder.error.ErrorViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.loading.LoadingViewHolder;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.audio.AudioItem;
-import com.vkontakte.miracle.model.audio.AudioWrapContainer;
+import com.vkontakte.miracle.model.audio.wraps.AudioItemWF;
 import com.vkontakte.miracle.model.audio.DownloadedAudios;
 import com.vkontakte.miracle.model.users.ProfileItem;
 
@@ -54,16 +53,10 @@ public class DownloadedAdapter extends MiracleInstantLoadAdapter {
 
         DownloadedAudios downloadedAudios = new DownloadedAudios(audiosWraps);
 
+        AudioItemWF audioItemWF = new AudioItemWF();
         for (ItemDataHolder itemDataHolder: audios){
             AudioItem audioItem = (AudioItem) itemDataHolder;
-            DataItemWrap<AudioItem, AudioWrapContainer> dataItemWrap =
-                    new DataItemWrap<AudioItem, AudioWrapContainer>(audioItem, downloadedAudios) {
-                        @Override
-                        public int getViewHolderType() {
-                            return TYPE_WRAPPED_AUDIO;
-                        }
-                    };
-            audiosWraps.add(dataItemWrap);
+            audiosWraps.add(audioItemWF.create(audioItem, downloadedAudios));
         }
 
         return downloadedAudios;

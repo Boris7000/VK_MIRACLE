@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.audio.DownloadedAdapter;
 import com.vkontakte.miracle.engine.fragment.side.SideRecyclerFragment;
-import com.vkontakte.miracle.network.Constants;
 
 public class FragmentOfflineAudio extends SideRecyclerFragment {
     @Override
