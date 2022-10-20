@@ -1,6 +1,6 @@
 package com.vkontakte.miracle.engine.view.photoGridView;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_PHOTO;
 import static com.vkontakte.miracle.engine.util.DimensionsUtil.dpToPx;
 
 import android.content.Context;
@@ -18,12 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.photos.holders.PhotoGridItemViewHolder;
+import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.recycler.IRecyclerView;
 import com.vkontakte.miracle.engine.recycler.MiracleViewRecycler;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.recycler.RecyclerController;
 import com.vkontakte.miracle.fragment.photos.FragmentPhotoViewerDialog;
-import com.vkontakte.miracle.fragment.photos.PhotoViewerItem;
+import com.vkontakte.miracle.fragment.photos.PhotoDialogItem;
+import com.vkontakte.miracle.model.DataItemWrap;
+import com.vkontakte.miracle.model.photos.wraps.PhotoItemWC;
 
 import java.util.ArrayList;
 
@@ -36,8 +38,12 @@ public class PhotoStackedView extends FrameLayout implements IRecyclerView {
     private final int spacing;
     private int measuredWidth = -1;
     private int rowLength;
+    //calculation result
     private final ArrayList<PhotoGridItem> photoGridItems = new ArrayList<>();
+    //enter data
     private ArrayList<ItemDataHolder> itemDataHolders = new ArrayList<>();
+    //clear media data
+    private final ArrayList<MediaItem> mediaItems = new ArrayList<>();
     private boolean canApplyChanges = true;
     private boolean needChanges = false;
 
@@ -49,7 +55,7 @@ public class PhotoStackedView extends FrameLayout implements IRecyclerView {
         super(context, attrs);
         recyclerController = new RecyclerController(LayoutInflater.from(context));
         recyclerController.getViewHolderFabricMap()
-                .put(TYPE_PHOTO, new PhotoGridItemViewHolder.Fabric());
+                .put(TYPE_WRAPPED_PHOTO, new PhotoGridItemViewHolder.Fabric());
         if(attrs!=null) {
             TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.PhotoStackedView, 0, 0);
 
@@ -64,17 +70,20 @@ public class PhotoStackedView extends FrameLayout implements IRecyclerView {
     }
 
     public void calculate(){
-        int count = photoGridItems.size();
+        int count = mediaItems.size();
         int childWidth = (measuredWidth-(spacing*(rowLength-1)))/rowLength;
 
-        for (int p = 0; p < count; p++) {
-            PhotoGridItem photoGridItem = photoGridItems.get(p);
+        photoGridItems.clear();
+        for (int i = 0; i < count; i++) {
+            PhotoGridItem photoGridItem = new PhotoGridItem();
+            photoGridItem.itemDataHolder = itemDataHolders.get(i);
             PhotoGridPosition photoGridPosition = new PhotoGridPosition();
             photoGridPosition.sizeX = childWidth;
             photoGridPosition.sizeY = childWidth;
             photoGridPosition.marginY = spacing;
-            photoGridPosition.marginX = p*(spacing+photoGridPosition.sizeX);
+            photoGridPosition.marginX = i*(spacing+photoGridPosition.sizeX);
             photoGridItem.gridPosition = photoGridPosition;
+            photoGridItems.add(photoGridItem);
         }
         needChanges = false;
     }
@@ -148,48 +157,66 @@ public class PhotoStackedView extends FrameLayout implements IRecyclerView {
 
         canApplyChanges = false;
 
+        ///////////////////////////////////////////////////////////
         recyclerController.resolveSingleTypeItems(this, itemDataHolders, this.itemDataHolders);
 
         ArrayList<RecyclerView.ViewHolder> buffer = recyclerController.getBuffer();
         for(int i=0;i<buffer.size();i++){
             final int finalI = i;
             buffer.get(i).itemView.setOnClickListener(view -> {
-                ArrayList<PhotoViewerItem> photoViewerItems = new ArrayList<>();
-                for(int j=0; j<buffer.size(); j++){
-                    RecyclerView.ViewHolder viewHolder = buffer.get(j);
-                    if(viewHolder instanceof PhotoGridItemViewHolder){
-                        PhotoGridItem photoGridItem = photoGridItems.get(j);
-                        PhotoGridPosition gridPosition = photoGridItem.getGridPosition();
-                        PhotoGridItemViewHolder wrappedPhotoGridItemViewHolder = (PhotoGridItemViewHolder) viewHolder;
-                        View child = wrappedPhotoGridItemViewHolder.itemView;
-                        int[]location = new int[2];
-                        child.getLocationInWindow(location);
-                        int rawX = location[0];
-                        int rawY = location[1];
-                        Drawable drawable = wrappedPhotoGridItemViewHolder.getDrawable();
-                        Drawable drwNewCopy = drawable==null?null:drawable
-                                .getConstantState().newDrawable().mutate();
-                        photoViewerItems.add(new PhotoViewerItem(photoGridItem.mediaItem, drwNewCopy,
-                                rawX, rawY, gridPosition.sizeX,gridPosition.sizeY));
+                ItemDataHolder itemDataHolder = this.itemDataHolders.get(finalI);
+                DataItemWrap<?,?> dataItemWrap = (DataItemWrap<?,?>) itemDataHolder;
+                PhotoItemWC photoItemWC = (PhotoItemWC) dataItemWrap.getHolder();
+                ArrayList<ItemDataHolder> mediaItems = photoItemWC.getPhotoItems();
+                ArrayList<PhotoDialogItem> photoDialogItems = new ArrayList<>();
+                for (int j=0; j<mediaItems.size();j++){
+                    ItemDataHolder mediaItem = mediaItems.get(j);
+                    PhotoDialogItem photoDialogItem = new PhotoDialogItem(mediaItem);
+                    int itemIndex = itemDataHolders.indexOf(mediaItem);
+                    if(itemIndex>-1){
+                        RecyclerView.ViewHolder viewHolder = buffer.get(itemIndex);
+                        if(viewHolder instanceof PhotoGridItemViewHolder) {
+                            PhotoGridItem photoGridItem = photoGridItems.get(itemIndex);
+                            PhotoGridPosition gridPosition = photoGridItem.getGridPosition();
+                            PhotoGridItemViewHolder wrappedPhotoGridItemViewHolder = (PhotoGridItemViewHolder) viewHolder;
+                            View child = wrappedPhotoGridItemViewHolder.itemView;
+                            int[] location = new int[2];
+                            child.getLocationInWindow(location);
+                            int rawX = location[0];
+                            int rawY = location[1];
+                            Drawable drawable = wrappedPhotoGridItemViewHolder.getDrawable();
+                            Drawable drwNewCopy = drawable == null ? null : drawable
+                                    .getConstantState().newDrawable().mutate();
+                            photoDialogItem.setWidth(gridPosition.sizeX);
+                            photoDialogItem.setHeight(gridPosition.sizeY);
+                            photoDialogItem.setRawX(rawX);
+                            photoDialogItem.setRawY(rawY);
+                            photoDialogItem.setPreview(drwNewCopy);
+                        }
                     }
+                    photoDialogItems.add(photoDialogItem);
                 }
+
+                int itemIndex = mediaItems.indexOf(itemDataHolder);
+
                 FragmentPhotoViewerDialog.PhotoViewerData photoViewerData =
-                        new FragmentPhotoViewerDialog.PhotoViewerData(photoViewerItems, finalI);
+                        new FragmentPhotoViewerDialog.PhotoViewerData(photoDialogItems, itemIndex);
                 new FragmentPhotoViewerDialog(photoViewerData).show(((AppCompatActivity)getContext())
                         .getSupportFragmentManager(),"");
             });
         }
 
         this.itemDataHolders = itemDataHolders;
+        ///////////////////////////////////////////////////////////
 
         this.rowLength = rowLength;
         canApplyChanges = true;
         needChanges = true;
-        photoGridItems.clear();
+        mediaItems.clear();
         for(ItemDataHolder itemDataHolder : itemDataHolders){
-            PhotoGridItem photoGridItem = new PhotoGridItem();
-            photoGridItem.mediaItem = (MediaItem) itemDataHolder;
-            photoGridItems.add(photoGridItem);
+            DataItemWrap<?,?> dataItemWrap = (DataItemWrap<?,?>) itemDataHolder;
+            MediaItem mediaItem = (MediaItem) dataItemWrap.getItem();
+            mediaItems.add(mediaItem);
         }
         requestLayout();
     }

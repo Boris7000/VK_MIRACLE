@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -18,11 +17,8 @@ import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.view.photoGridView.MediaItem;
 import com.vkontakte.miracle.engine.view.photoGridView.PhotoGridItem;
 import com.vkontakte.miracle.engine.view.photoGridView.PhotoGridPosition;
-import com.vkontakte.miracle.fragment.photos.FragmentPhotoViewerDialog;
-import com.vkontakte.miracle.fragment.photos.PhotoViewerItem;
+import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.photos.fields.Size;
-
-import java.util.ArrayList;
 
 public class PhotoGridItemViewHolder extends MiracleViewHolder {
 
@@ -38,7 +34,9 @@ public class PhotoGridItemViewHolder extends MiracleViewHolder {
     public void bind(ItemDataHolder itemDataHolder) {
 
         PhotoGridItem photoGridItem = (PhotoGridItem) itemDataHolder;
-        MediaItem mediaItem = photoGridItem.mediaItem;
+        ItemDataHolder mediaItemData = photoGridItem.getItemDataHolder();
+        DataItemWrap<?,?> dataItemWrap = (DataItemWrap<?,?>)mediaItemData;
+        MediaItem mediaItem = (MediaItem) dataItemWrap.getItem();
         PhotoGridPosition photoGridPosition = photoGridItem.gridPosition;
         Size newSize = mediaItem.getSizeForWidth(photoGridPosition.sizeX, false);
 

@@ -2,19 +2,20 @@ package com.vkontakte.miracle.fragment.photos;
 
 import android.graphics.drawable.Drawable;
 
+import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.view.photoGridView.MediaItem;
 
 public class PhotoViewerItem {
 
-    private final MediaItem mediaItem;
+    private final ItemDataHolder itemDataHolder;
     private Drawable preview;
     private final float rawX;
     private final float rawY;
     private final int width;
     private final int height;
 
-    public PhotoViewerItem(MediaItem mediaItem, Drawable preview, float rawX, float rawY, int width, int height){
-        this.mediaItem = mediaItem;
+    public PhotoViewerItem(ItemDataHolder itemDataHolder, Drawable preview, float rawX, float rawY, int width, int height){
+        this.itemDataHolder = itemDataHolder;
         this.preview = preview;
         this.rawX = rawX;
         this.rawY = rawY;
@@ -22,8 +23,8 @@ public class PhotoViewerItem {
         this.height = height;
     }
 
-    public MediaItem getMediaItem() {
-        return mediaItem;
+    public ItemDataHolder getItemDataHolder() {
+        return itemDataHolder;
     }
 
     public Drawable getPreview() {

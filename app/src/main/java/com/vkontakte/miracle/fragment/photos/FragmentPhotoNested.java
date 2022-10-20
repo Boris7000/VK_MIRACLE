@@ -19,14 +19,17 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.vkontakte.miracle.MiracleApp;
 import com.vkontakte.miracle.R;
+import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.fragment.FragmentFabric;
 import com.vkontakte.miracle.engine.fragment.MiracleFragment;
 import com.vkontakte.miracle.engine.util.LargeDataStorage;
+import com.vkontakte.miracle.engine.view.photoGridView.MediaItem;
 import com.vkontakte.miracle.engine.view.zoomableImageView.ZoomableImageView2;
+import com.vkontakte.miracle.model.DataItemWrap;
 
 public class FragmentPhotoNested extends MiracleFragment {
 
-    private PhotoViewerItem photoViewerItem;
+    private PhotoDialogItem photoDialogItem;
     private ZoomableImageView2 image;
     private ProgressBar progressBar;
 
@@ -68,13 +71,13 @@ public class FragmentPhotoNested extends MiracleFragment {
             image.setOnPhotoActionListener(parentFragment);
         }
 
-        if(photoViewerItem.getPreview()!=null) {
+        if(photoDialogItem.getPreview()!=null) {
             image.setZoomable(false);
-            image.setImageDrawable(photoViewerItem.getPreview());
+            image.setImageDrawable(photoDialogItem.getPreview());
             show();
         }
 
-        createTarget(photoViewerItem);
+        createTarget(photoDialogItem);
 
         return rootView;
     }
@@ -104,28 +107,30 @@ public class FragmentPhotoNested extends MiracleFragment {
     }
 
 
-    private void createTarget(PhotoViewerItem photoViewerItem){
+    private void createTarget(PhotoDialogItem photoDialogItem){
         Picasso.get().cancelRequest(target);
         int displayWidth = getWindowWidth(MiracleApp.getInstance());
-        String url = photoViewerItem.getMediaItem().
-                getSizeForWidth(displayWidth, false).getUrl();
+        ItemDataHolder mediaItemData = photoDialogItem.getItemDataHolder();
+        DataItemWrap<?,?> dataItemWrap = (DataItemWrap<?,?>)mediaItemData;
+        MediaItem mediaItem = (MediaItem) dataItemWrap.getItem();
+        String url = mediaItem.getSizeForWidth(displayWidth, false).getUrl();
         if(url!=null){
             Picasso.get().load(url).into(target);
         }
     }
 
-    public void setPhotoViewerItem(PhotoViewerItem photoViewerItem) {
-        this.photoViewerItem = photoViewerItem;
+    public void setPhotoDialogItem(PhotoDialogItem photoDialogItem) {
+        this.photoDialogItem = photoDialogItem;
     }
 
     @Override
     public void readSavedInstance(Bundle savedInstanceState) {
-        String key = savedInstanceState.getString("photoViewerItem");
+        String key = savedInstanceState.getString("photoDialogItem");
         if (key!= null) {
-            PhotoViewerItem photoViewerItem = (PhotoViewerItem) LargeDataStorage.get().getLargeData(key);
-            savedInstanceState.remove("photoViewerItem");
-            if (photoViewerItem != null) {
-                setPhotoViewerItem(photoViewerItem);
+            PhotoDialogItem photoDialogItem = (PhotoDialogItem) LargeDataStorage.get().getLargeData(key);
+            savedInstanceState.remove("photoDialogItem");
+            if (photoDialogItem != null) {
+                setPhotoDialogItem(photoDialogItem);
             }
         }
     }
@@ -133,34 +138,34 @@ public class FragmentPhotoNested extends MiracleFragment {
     @Override
     public void onClearSavedInstance(@NonNull Bundle savedInstanceState) {
         super.onClearSavedInstance(savedInstanceState);
-        String key = savedInstanceState.getString("photoViewerItem");
+        String key = savedInstanceState.getString("photoDialogItem");
         if (key != null) {
             LargeDataStorage.get().removeLargeData(key);
-            savedInstanceState.remove("photoViewerItem");
+            savedInstanceState.remove("photoDialogItem");
         }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(photoViewerItem !=null) {
-            outState.putString("photoViewerItem", LargeDataStorage.get().storeLargeData(photoViewerItem));
+        if(photoDialogItem !=null) {
+            outState.putString("photoDialogItem", LargeDataStorage.get().storeLargeData(photoDialogItem));
         }
     }
 
     public static class Fabric implements FragmentFabric {
 
-        private final PhotoViewerItem photoViewerItem;
+        private final PhotoDialogItem photoDialogItem;
 
-        public Fabric(PhotoViewerItem photoViewerItem1){
-            this.photoViewerItem = photoViewerItem1;
+        public Fabric(PhotoDialogItem photoDialogItem){
+            this.photoDialogItem = photoDialogItem;
         }
 
         @NonNull
         @Override
         public MiracleFragment createFragment() {
             FragmentPhotoNested fragmentPhotoNested = new FragmentPhotoNested();
-            fragmentPhotoNested.setPhotoViewerItem(photoViewerItem);
+            fragmentPhotoNested.setPhotoDialogItem(photoDialogItem);
             return fragmentPhotoNested;
         }
     }

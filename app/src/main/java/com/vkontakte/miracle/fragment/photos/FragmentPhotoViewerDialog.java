@@ -124,8 +124,8 @@ public class FragmentPhotoViewerDialog extends DialogFragment implements OnPhoto
 
         if(nullSavedAdapter(savedInstanceState)) {
             ArrayList<FragmentFabric> fabrics = new ArrayList<>();
-            for (PhotoViewerItem photoViewerItem: photoViewerData.getPhotoViewerItems()) {
-                fabrics.add(new FragmentPhotoNested.Fabric(photoViewerItem));
+            for (PhotoDialogItem photoDialogItem: photoViewerData.getPhotoDialogItems()) {
+                fabrics.add(new FragmentPhotoNested.Fabric(photoDialogItem));
             }
             setAdapter(new SimpleTabsAdapter(getChildFragmentManager(), getLifecycle(),  fabrics));
         }
@@ -382,54 +382,56 @@ public class FragmentPhotoViewerDialog extends DialogFragment implements OnPhoto
             animateUITranslationY(duration2, topToolBar.getTranslationY(), bottomToolBar.getTranslationY(), -topToolBar.getHeight(),bottomToolBar.getHeight());
         }
 
-        ZoomableImageView2 zoomableImageView2 = (((ViewGroup)viewPager.getChildAt(0)).getChildAt(0)).findViewById(R.id.photo);
+
+        ZoomableImageView2 zoomableImageView2 = (((ViewGroup) viewPager.getChildAt(0)).getChildAt(0)).findViewById(R.id.photo);
         zoomableImageView2.setZoomInterpolator(new LinearInterpolator());
         zoomableImageView2.setZoomDuration(duration1);
-        zoomableImageView2.setScale(1,true);
+        zoomableImageView2.setScale(1, true);
 
-        PhotoViewerItem photoViewerItem = photoViewerData.getPhotoViewerItems().get(viewPager.getCurrentItem());
+        PhotoDialogItem photoDialogItem = photoViewerData.getPhotoDialogItems().get(viewPager.getCurrentItem());
+        if(photoDialogItem.getWidth()>0) {
+            int[] displaySize = new int[]{rootView.getWidth(), rootView.getHeight()};
+            float displayRatio = (float) displaySize[0] / (float) displaySize[1];
 
-        int[] displaySize = new int[]{rootView.getWidth(), rootView.getHeight()};
-        float displayRatio = (float)displaySize[0]/(float)displaySize[1];
+            if (displayRatio == this.displayRatio) {
+                float defX = (photoDialogItem.getWidth() / 2f + photoDialogItem.getRawX()) - displaySize[0] / 2f;
+                float defY = (photoDialogItem.getHeight() / 2f + photoDialogItem.getRawY()) - displaySize[1] / 2f;
 
-        if(displayRatio==this.displayRatio) {
-            float defX = (photoViewerItem.getWidth() / 2f + photoViewerItem.getRawX()) - displaySize[0] / 2f;
-            float defY = (photoViewerItem.getHeight() / 2f + photoViewerItem.getRawY()) - displaySize[1] / 2f;
+                ValueAnimator va = ValueAnimator.ofFloat(viewPager.getX(), defX);
+                va.setDuration(duration1);
+                va.addUpdateListener(animation -> viewPager.setX((float) animation.getAnimatedValue()));
+                va.start();
+                va = ValueAnimator.ofFloat(viewPager.getY(), defY);
+                va.setDuration(duration1);
+                va.addUpdateListener(animation -> viewPager.setY((float) animation.getAnimatedValue()));
+                va.start();
 
-            ValueAnimator va = ValueAnimator.ofFloat(viewPager.getX(), defX);
-            va.setDuration(duration1);
-            va.addUpdateListener(animation -> viewPager.setX((float) animation.getAnimatedValue()));
-            va.start();
-            va = ValueAnimator.ofFloat(viewPager.getY(), defY);
-            va.setDuration(duration1);
-            va.addUpdateListener(animation -> viewPager.setY((float) animation.getAnimatedValue()));
-            va.start();
+                float imageRatio = (float) photoDialogItem.getWidth() / (float) photoDialogItem.getHeight();
 
-            float imageRatio = (float) photoViewerItem.getWidth() / (float) photoViewerItem.getHeight();
+                float scale;
 
-            float scale;
+                if (imageRatio < displayRatio) {
+                    scale = (float) photoDialogItem.getHeight() / (float) displaySize[1];
+                } else {
+                    scale = (float) photoDialogItem.getWidth() / (float) displaySize[0];
+                }
 
-            if (imageRatio < displayRatio) {
-                scale = (float) photoViewerItem.getHeight() / (float) displaySize[1];
-            } else {
-                scale = (float) photoViewerItem.getWidth() / (float) displaySize[0];
+                va = ValueAnimator.ofFloat(viewPager.getScaleX(), scale);
+                va.setDuration(duration1);
+                va.addUpdateListener(animation -> {
+                    viewPager.setScaleY((float) animation.getAnimatedValue());
+                    viewPager.setScaleX((float) animation.getAnimatedValue());
+                });
+                va.addListener(listener);
+                va.start();
+                return;
             }
-
-            va = ValueAnimator.ofFloat(viewPager.getScaleX(), scale);
-            va.setDuration(duration1);
-            va.addUpdateListener(animation -> {
-                viewPager.setScaleY((float) animation.getAnimatedValue());
-                viewPager.setScaleX((float) animation.getAnimatedValue());
-            });
-            va.addListener(listener);
-            va.start();
-        } else {
-            ValueAnimator va = ValueAnimator.ofFloat(1f, 0);
-            va.setDuration(duration1);
-            va.addUpdateListener(animation -> viewPager.setAlpha((float) animation.getAnimatedValue()));
-            va.addListener(listener);
-            va.start();
         }
+        ValueAnimator va = ValueAnimator.ofFloat(1f, 0);
+        va.setDuration(duration1);
+        va.addUpdateListener(animation -> viewPager.setAlpha((float) animation.getAnimatedValue()));
+        va.addListener(listener);
+        va.start();
     }
 
     private void animateOpen(){
@@ -450,55 +452,58 @@ public class FragmentPhotoViewerDialog extends DialogFragment implements OnPhoto
         animateUIAlpha(duration1, 0, 1);
         animateUITranslationY(duration2, -topToolBar.getHeight(), bottomToolBar.getHeight(), 0, 0);
 
-        PhotoViewerItem photoViewerItem = photoViewerData.getPhotoViewerItems().get(viewPager.getCurrentItem());
+        PhotoDialogItem photoDialogItem = photoViewerData.getPhotoDialogItems().get(viewPager.getCurrentItem());
 
-        if(photoViewerItem.getPreview()!=null) {
-            int[] displaySize = new int[]{rootView.getWidth(), rootView.getHeight()};
-            displayRatio = (float) displaySize[0] / (float) displaySize[1];
-            float defX = (photoViewerItem.getWidth() / 2f + photoViewerItem.getRawX()) - displaySize[0] / 2f;
-            float defY = (photoViewerItem.getHeight() / 2f + photoViewerItem.getRawY()) - displaySize[1] / 2f;
+        if(photoDialogItem.getWidth()>0) {
+            if (photoDialogItem.getPreview() != null) {
+                int[] displaySize = new int[]{rootView.getWidth(), rootView.getHeight()};
+                displayRatio = (float) displaySize[0] / (float) displaySize[1];
+                float defX = (photoDialogItem.getWidth() / 2f + photoDialogItem.getRawX()) - displaySize[0] / 2f;
+                float defY = (photoDialogItem.getHeight() / 2f + photoDialogItem.getRawY()) - displaySize[1] / 2f;
 
-            ValueAnimator va = ValueAnimator.ofFloat(defX, viewPager.getX());
-            va.setDuration(duration1);
-            va.addUpdateListener(animation -> viewPager.setX((float) animation.getAnimatedValue()));
-            va.start();
-            va = ValueAnimator.ofFloat(defY, viewPager.getY());
-            va.setDuration(duration1);
-            va.addUpdateListener(animation -> viewPager.setY((float) animation.getAnimatedValue()));
-            va.start();
+                ValueAnimator va = ValueAnimator.ofFloat(defX, viewPager.getX());
+                va.setDuration(duration1);
+                va.addUpdateListener(animation -> viewPager.setX((float) animation.getAnimatedValue()));
+                va.start();
+                va = ValueAnimator.ofFloat(defY, viewPager.getY());
+                va.setDuration(duration1);
+                va.addUpdateListener(animation -> viewPager.setY((float) animation.getAnimatedValue()));
+                va.start();
 
-            float scale;
-            float imageRatio = (float) photoViewerItem.getWidth() / (float) photoViewerItem.getHeight();
+                float scale;
+                float imageRatio = (float) photoDialogItem.getWidth() / (float) photoDialogItem.getHeight();
 
-            if (imageRatio < displayRatio) {
-                scale = (float) photoViewerItem.getHeight() / (float) displaySize[1];
+                if (imageRatio < displayRatio) {
+                    scale = (float) photoDialogItem.getHeight() / (float) displaySize[1];
+                } else {
+                    scale = (float) photoDialogItem.getWidth() / (float) displaySize[0];
+                }
+
+                va = ValueAnimator.ofFloat(scale, 1);
+                va.setDuration(duration1);
+                va.addUpdateListener(animation -> {
+                    viewPager.setScaleY((float) animation.getAnimatedValue());
+                    viewPager.setScaleX((float) animation.getAnimatedValue());
+                });
+                va.addListener(listener);
+                va.start();
             } else {
-                scale = (float) photoViewerItem.getWidth() / (float) displaySize[0];
+                ValueAnimator va = ValueAnimator.ofFloat(0f, 1);
+                va.setDuration(duration1);
+                va.addUpdateListener(animation -> viewPager.setAlpha((float) animation.getAnimatedValue()));
+                va.addListener(listener);
+                va.start();
             }
-
-            va = ValueAnimator.ofFloat(scale, 1);
-            va.setDuration(duration1);
-            va.addUpdateListener(animation -> {
-                viewPager.setScaleY((float) animation.getAnimatedValue());
-                viewPager.setScaleX((float) animation.getAnimatedValue());
-            });
-            va.addListener(listener);
-            va.start();
-        } else {
-            ValueAnimator va = ValueAnimator.ofFloat(0f, 1);
-            va.setDuration(duration1);
-            va.addUpdateListener(animation -> viewPager.setAlpha((float) animation.getAnimatedValue()));
-            va.addListener(listener);
-            va.start();
         }
+
     }
 
     public static class PhotoViewerData{
-        private final ArrayList<PhotoViewerItem> photoViewerItems;
+        private final ArrayList<PhotoDialogItem> photoDialogItems;
         private int itemIndex;
 
-        public PhotoViewerData(ArrayList<PhotoViewerItem> photoViewerItems, int itemIndex){
-            this.photoViewerItems = photoViewerItems;
+        public PhotoViewerData(ArrayList<PhotoDialogItem> photoDialogItems, int itemIndex){
+            this.photoDialogItems = photoDialogItems;
             this.itemIndex = itemIndex;
         }
 
@@ -506,10 +511,9 @@ public class FragmentPhotoViewerDialog extends DialogFragment implements OnPhoto
             this.itemIndex = itemIndex;
         }
 
-        public ArrayList<PhotoViewerItem> getPhotoViewerItems() {
-            return photoViewerItems;
+        public ArrayList<PhotoDialogItem> getPhotoDialogItems() {
+            return photoDialogItems;
         }
-
 
         public int getItemIndex() {
             return itemIndex;

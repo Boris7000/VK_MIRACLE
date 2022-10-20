@@ -9,8 +9,7 @@ import java.util.ArrayList;
 
 public class GridCalculator {
 
-    private final ArrayList<PhotoGridItem> items;
-    private final ArrayList<CalculationItem> cItems = new ArrayList<>();
+    private final ArrayList<CalculationItem> items = new ArrayList<>();
     private final int count;
 
     private double maxAspectRatioDelta = 0;
@@ -19,23 +18,17 @@ public class GridCalculator {
 
     private float totalVerticalAspectRatio = 0f;
 
-    /*
     public GridCalculator(ArrayList<MediaItem> mediaItems){
         count = mediaItems.size();
         for(MediaItem mediaItem:mediaItems){
-            photoGridItem.temp = photoGridItem.mediaItem.getSizeForWidth(604, false);
-        }
-    }*/
-
-    public GridCalculator(ArrayList<PhotoGridItem> items){
-        count = items.size();
-        this.items = items;
-        for(PhotoGridItem photoGridItem:items){
-            photoGridItem.temp = photoGridItem.mediaItem.getSizeForWidth(604, false);
+            CalculationItem calculationItem = new CalculationItem();
+            calculationItem.size =  mediaItem.getSizeForWidth(604, false);
+            items.add(calculationItem);
         }
     }
 
-    public void calculateGrid(int maxWidth, int maxHeight, int spacing){
+
+    public ArrayList<CalculationItem> calculateGrid(int maxWidth, int maxHeight, int spacing){
         if(count==1){
             calculateForSingle(maxWidth, maxHeight);
         } else {
@@ -49,11 +42,12 @@ public class GridCalculator {
                 }
             }
         }
+        return items;
     }
 
     private void calculateForSingle(int maxWidth, int maxHeight){
-        PhotoGridItem photoGridItem = items.get(0);
-        Size size = photoGridItem.temp;
+        CalculationItem calculationItem = items.get(0);
+        Size size = calculationItem.size;
         int width;
         int height;
 
@@ -80,7 +74,7 @@ public class GridCalculator {
         photoGridPosition.sizeY = height;
         photoGridPosition.marginY = 0;
         photoGridPosition.marginX = 0;
-        photoGridItem.gridPosition = photoGridPosition;
+        calculationItem.gridPosition = photoGridPosition;
     }
 
     private void calculateForDouble(int maxWidth, int maxHeight, int spacing){
@@ -193,7 +187,7 @@ public class GridCalculator {
                     putIndex = minRow.size();
                 }
 
-                PhotoGridItem removeItem = maxRow.items.get(removeIndex);
+                CalculationItem removeItem = maxRow.items.get(removeIndex);
 
                 minRow.addItem(putIndex, removeItem);
                 if(maxRow.size()>1) {
@@ -218,8 +212,8 @@ public class GridCalculator {
     private ArrayList<GridRow> createSingleRowGrid(){
         ArrayList<GridRow> rowsHorizontal = new ArrayList<>();
         GridRow singleGridRow = new GridRow();
-        for(PhotoGridItem photoGridItem:items){
-            singleGridRow.addItem(photoGridItem);
+        for(CalculationItem calculationItem:items){
+            singleGridRow.addItem(calculationItem);
         }
         rowsHorizontal.add(singleGridRow);
         return rowsHorizontal;
@@ -227,9 +221,9 @@ public class GridCalculator {
 
     private ArrayList<GridRow> createVerticalGrid(){
         ArrayList<GridRow> rowsVertical = new ArrayList<>();
-        for(PhotoGridItem photoGridItem:items){
+        for(CalculationItem calculationItem:items){
             GridRow gridRow = new GridRow();
-            gridRow.addItem(photoGridItem);
+            gridRow.addItem(calculationItem);
             rowsVertical.add(gridRow);
         }
         return rowsVertical;
@@ -295,10 +289,10 @@ public class GridCalculator {
             float aspectRatio = gridRow.aspectRatio;
             float verticalAspectRatio = gridRow.getVerticalAspectRatio();
 
-            PhotoGridItem item1=null;
-            PhotoGridItem item2=null;
-            PhotoGridItem item3=null;
-            PhotoGridItem item4=null;
+            CalculationItem item1=null;
+            CalculationItem item2=null;
+            CalculationItem item3=null;
+            CalculationItem item4=null;
 
             if(index-1>=0){
                 GridRow gridRow1 = rows.get(index-1);
@@ -315,7 +309,7 @@ public class GridCalculator {
             if(item1!=null){
 
                 GridRow gridRow1 = rows.get(index-1);
-                double itemAspectRatio = item1.temp.getAspectRatio();
+                double itemAspectRatio = item1.size.getAspectRatio();
 
                 float newVerticalAspectRatio = totalVerticalAspectRatio;
                 newVerticalAspectRatio-=gridRow1.getVerticalAspectRatio();
@@ -350,7 +344,7 @@ public class GridCalculator {
             if(item2!=null){
 
                 GridRow gridRow1 = rows.get(index+1);
-                double itemAspectRatio = item2.temp.getAspectRatio();
+                double itemAspectRatio = item2.size.getAspectRatio();
 
                 float newVerticalAspectRatio = totalVerticalAspectRatio;
                 newVerticalAspectRatio-=gridRow1.getVerticalAspectRatio();
@@ -385,7 +379,7 @@ public class GridCalculator {
             if(item3!=null){
 
                 GridRow gridRow1 = rows.get(index-1);
-                double itemAspectRatio = item3.temp.getAspectRatio();
+                double itemAspectRatio = item3.size.getAspectRatio();
 
                 float newVerticalAspectRatio = totalVerticalAspectRatio;
                 newVerticalAspectRatio-=gridRow1.getVerticalAspectRatio();
@@ -421,7 +415,7 @@ public class GridCalculator {
             if(item4!=null){
 
                 GridRow gridRow1 = rows.get(index+1);
-                double itemAspectRatio = item4.temp.getAspectRatio();
+                double itemAspectRatio = item4.size.getAspectRatio();
 
                 float newVerticalAspectRatio = totalVerticalAspectRatio;
                 newVerticalAspectRatio-=gridRow1.getVerticalAspectRatio();
@@ -464,9 +458,9 @@ public class GridCalculator {
             int rowWidthPxSum = 0;
             int rowHeight = 0;
 
-            for(PhotoGridItem photoGridItem:gridRow.items){
+            for(CalculationItem calculationItem:gridRow.items){
 
-                Size size = photoGridItem.temp;
+                Size size = calculationItem.size;
 
                 if(rowHeight==0){
                     rowHeight = size.getHeight();
@@ -478,7 +472,7 @@ public class GridCalculator {
                 PhotoGridPosition photoGridPosition = new PhotoGridPosition();
                 photoGridPosition.sizeX = newImageWidth;
                 photoGridPosition.sizeY = rowHeight;
-                photoGridItem.gridPosition = photoGridPosition;
+                calculationItem.gridPosition = photoGridPosition;
                 rowWidthPxSum+=newImageWidth;
 
             }
@@ -487,8 +481,8 @@ public class GridCalculator {
             rowHeight*=rowMultiply;
             int marginX = 0;
 
-            for(PhotoGridItem photoGridItem:gridRow.items){
-                PhotoGridPosition photoGridPosition = photoGridItem.gridPosition;
+            for(CalculationItem calculationItem:gridRow.items){
+                PhotoGridPosition photoGridPosition = calculationItem.gridPosition;
                 photoGridPosition.sizeX*=rowMultiply;
                 photoGridPosition.sizeY = rowHeight;
                 photoGridPosition.marginY = rowsHeightPxSum;
@@ -509,20 +503,20 @@ public class GridCalculator {
 
         private float aspectRatio = 0;
 
-        private final ArrayList<PhotoGridItem> items = new ArrayList<>();
+        private final ArrayList<CalculationItem> items = new ArrayList<>();
 
-        public void addItem(int index,PhotoGridItem photoGridItem){
-            aspectRatio+=photoGridItem.temp.getAspectRatio();
-            items.add(index, photoGridItem);
+        public void addItem(int index, CalculationItem item){
+            aspectRatio+=item.size.getAspectRatio();
+            items.add(index, item);
         }
 
-        public void addItem(PhotoGridItem photoGridItem){
-            aspectRatio+=photoGridItem.temp.getAspectRatio();
-            items.add(photoGridItem);
+        public void addItem(CalculationItem item){
+            aspectRatio+=item.size.getAspectRatio();
+            items.add(item);
         }
-        public void removeItem(PhotoGridItem photoGridItem){
-            aspectRatio-=photoGridItem.temp.getAspectRatio();
-            items.remove(photoGridItem);
+        public void removeItem(CalculationItem item){
+            aspectRatio-=item.size.getAspectRatio();
+            items.remove(item);
         }
 
         public int size(){

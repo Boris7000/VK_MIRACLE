@@ -1,15 +1,12 @@
 package com.vkontakte.miracle.engine.view.photoGridView;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.model.photos.fields.Size;
 
 public class PhotoGridItem implements ItemDataHolder {
-    public MediaItem mediaItem;
+    public ItemDataHolder itemDataHolder;
     public PhotoGridPosition gridPosition;
-    public Size temp;
-
-    public MediaItem getMediaItem() {
-        return mediaItem;
+    public ItemDataHolder getItemDataHolder() {
+        return itemDataHolder;
     }
 
     public PhotoGridPosition getGridPosition() {
@@ -18,6 +15,6 @@ public class PhotoGridItem implements ItemDataHolder {
 
     @Override
     public int getViewHolderType() {
-        return mediaItem.getViewHolderType();
+        return itemDataHolder.getViewHolderType();
     }
 }

@@ -3,6 +3,7 @@ package com.vkontakte.miracle.adapter.photos.holders;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_PHOTO;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +31,7 @@ public class StackedPhotosViewHolder extends MiracleViewHolder {
 
         MiracleViewRecycler miracleViewRecycler =
                 getMiracleAdapter().getMiracleViewRecycler(itemDataHolder.getViewHolderType());
-        miracleViewRecycler.setMaxRecycledViews(TYPE_PHOTO, 15);
+        miracleViewRecycler.setMaxRecycledViews(TYPE_WRAPPED_PHOTO, 15);
 
         PhotoStackedView photoStackedView = (PhotoStackedView) itemView;
 

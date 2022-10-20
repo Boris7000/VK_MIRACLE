@@ -12,8 +12,11 @@ import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes;
 import com.vkontakte.miracle.engine.adapter.holder.error.ErrorDataHolder;
 import com.vkontakte.miracle.engine.util.StorageUtil;
+import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.photos.PhotoAlbumItem;
 import com.vkontakte.miracle.model.photos.PhotoItem;
+import com.vkontakte.miracle.model.photos.wraps.PhotoItemWC;
+import com.vkontakte.miracle.model.photos.wraps.PhotoItemWF;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.network.methods.Photos;
 
@@ -29,7 +32,7 @@ public class PhotoAlbumAdapter extends MiracleAsyncLoadAdapter {
     private final String photoAlbumId;
     private final String ownerId;
 
-    private  PhotoAlbumItem photoAlbumItem;
+    private PhotoAlbumItem photoAlbumItem;
     private final int rowLength = 3;
 
     public PhotoAlbumAdapter(String photoAlbumId, String ownerId) {
@@ -85,11 +88,12 @@ public class PhotoAlbumAdapter extends MiracleAsyncLoadAdapter {
         setAddedCount(jsonArray.length() / rowLength);
 
         for (int i = 0; i < jsonArray.length(); ) {
-
             ArrayList<ItemDataHolder> arrayList = new ArrayList<>();
-
             for (int j = 0; j < rowLength && i < jsonArray.length(); j++) {
-                arrayList.add(new PhotoItem(jsonArray.getJSONObject(i)));
+                PhotoItem photoItem = new PhotoItem(jsonArray.getJSONObject(i));
+                DataItemWrap<PhotoItem, PhotoItemWC> wrap = new PhotoItemWF().create(photoItem, photoAlbumItem);
+                photoAlbumItem.getPhotoItems().add(wrap);
+                arrayList.add(wrap);
                 i++;
             }
             holders.add(new StackedPhotosItem(arrayList, rowLength));

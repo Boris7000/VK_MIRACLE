@@ -43,6 +43,8 @@ public class Attachments implements AudioItemWC, PhotoItemWC {
         return photos;
     }
 
+    public Attachments() {}
+
     public Attachments(JSONArray jsonArray) throws JSONException {
         for (int i=0; i<jsonArray.length();i++){
 
