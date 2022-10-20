@@ -1,7 +1,6 @@
 package com.vkontakte.miracle.engine.view.photoGridView;
 
-import static com.vkontakte.miracle.engine.adapter.MiracleViewRecycler.resolveSingleTypeItems;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO;
+import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_PHOTO;
 import static com.vkontakte.miracle.engine.util.DeviceUtil.getWindowHeight;
 import static com.vkontakte.miracle.engine.util.DimensionsUtil.dpToPx;
 
@@ -9,9 +8,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.util.ArrayMap;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,23 +20,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.photos.holders.PhotoGridItemViewHolder;
-import com.vkontakte.miracle.engine.adapter.MiracleViewRecycler;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.vkontakte.miracle.engine.recycler.IRecyclerView;
+import com.vkontakte.miracle.engine.recycler.MiracleViewRecycler;
+import com.vkontakte.miracle.engine.recycler.RecyclerController;
+import com.vkontakte.miracle.engine.view.photoGridView.calculator.GridCalculator;
 import com.vkontakte.miracle.fragment.photos.FragmentPhotoViewerDialog;
 import com.vkontakte.miracle.fragment.photos.PhotoViewerItem;
+import com.vkontakte.miracle.model.DataItemWrap;
 
 import java.util.ArrayList;
 
-public class PhotoGridView extends FrameLayout{
+public class PhotoGridView extends FrameLayout implements IRecyclerView {
 
-    private final LayoutInflater inflater;
-    private final ArrayList<RecyclerView.ViewHolder> cache = new ArrayList<>();
-    private final ArrayMap<Integer, ViewHolderFabric> viewHolderFabricMap = new ArrayMap<>();
-    private MiracleViewRecycler recycledViewPool = new MiracleViewRecycler();
-    {
-        viewHolderFabricMap.put(TYPE_PHOTO, new PhotoGridViewHolderFabric());
-    }
+    private final RecyclerController recyclerController;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -61,7 +56,10 @@ public class PhotoGridView extends FrameLayout{
 
     public PhotoGridView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        inflater = LayoutInflater.from(context);
+        recyclerController = new RecyclerController(LayoutInflater.from(context));
+        recyclerController.getViewHolderFabricMap()
+                .put(TYPE_WRAPPED_PHOTO, new PhotoGridViewHolderFabric());
+
         maxHeight = (int) (getWindowHeight(context)*0.75f);
         if(attrs!=null) {
             TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.PhotoGridView, 0, 0);
@@ -95,10 +93,10 @@ public class PhotoGridView extends FrameLayout{
             calculate();
         }
 
+        ArrayList<RecyclerView.ViewHolder> buffer = recyclerController.getBuffer();
         for (int p = 0; p < photoGridItems.size(); p++) {
-            Log.d("eojfiejgoejgoejmg","5");
             PhotoGridItem photoGridItem = photoGridItems.get(p);
-            PhotoGridItemViewHolder viewHolder = (PhotoGridItemViewHolder) cache.get(p);
+            PhotoGridItemViewHolder viewHolder = (PhotoGridItemViewHolder) buffer.get(p);
             viewHolder.bind(photoGridItem);
 
             View itemView = viewHolder.itemView;
@@ -126,10 +124,10 @@ public class PhotoGridView extends FrameLayout{
             calculate();
         }
 
+        ArrayList<RecyclerView.ViewHolder> buffer = recyclerController.getBuffer();
         for (int p = 0; p < photoGridItems.size(); p++) {
-            Log.d("eojfiejgoejgoejmg","4");
             PhotoGridItem photoGridItem = photoGridItems.get(p);
-            PhotoGridItemViewHolder viewHolder = (PhotoGridItemViewHolder) cache.get(p);
+            PhotoGridItemViewHolder viewHolder = (PhotoGridItemViewHolder) buffer.get(p);
             viewHolder.bind(photoGridItem);
 
             View itemView = viewHolder.itemView;
@@ -150,16 +148,15 @@ public class PhotoGridView extends FrameLayout{
 
         canApplyChanges = false;
 
-        resolveSingleTypeItems(this, itemDataHolders, this.itemDataHolders, cache, recycledViewPool,
-                viewHolderFabricMap, inflater);
+        recyclerController.resolveSingleTypeItems(this, itemDataHolders, this.itemDataHolders);
 
-        for(int i=0;i<cache.size();i++){
-            Log.d("eojfiejgoejgoejmg","1");
+        ArrayList<RecyclerView.ViewHolder> buffer = recyclerController.getBuffer();
+        for(int i=0;i<buffer.size();i++){
             final int finalI = i;
-            cache.get(i).itemView.setOnClickListener(view -> {
+            buffer.get(i).itemView.setOnClickListener(view -> {
                 ArrayList<PhotoViewerItem> photoViewerItems = new ArrayList<>();
-                for(int j=0; j<cache.size(); j++){
-                    RecyclerView.ViewHolder viewHolder = cache.get(j);
+                for(int j=0; j<buffer.size(); j++){
+                    RecyclerView.ViewHolder viewHolder = buffer.get(j);
                     if(viewHolder instanceof PhotoGridItemViewHolder){
                         PhotoGridItem photoGridItem = photoGridItems.get(j);
                         PhotoGridPosition gridPosition = photoGridItem.getGridPosition();
@@ -189,16 +186,22 @@ public class PhotoGridView extends FrameLayout{
         needChanges = true;
         photoGridItems.clear();
         for(ItemDataHolder itemDataHolder : itemDataHolders){
-            Log.d("eojfiejgoejgoejmg","2");
+            DataItemWrap<?,?> dataItemWrap = (DataItemWrap<?,?>) itemDataHolder;
             PhotoGridItem photoGridItem = new PhotoGridItem();
-            photoGridItem.mediaItem = (MediaItem) itemDataHolder;
+            photoGridItem.mediaItem = (MediaItem) dataItemWrap.getItem();
             photoGridItems.add(photoGridItem);
         }
         requestLayout();
     }
 
+    @Override
+    public MiracleViewRecycler getRecycledViewPool() {
+        return null;
+    }
+
+    @Override
     public void setRecycledViewPool(MiracleViewRecycler recycledViewPool) {
-        this.recycledViewPool = recycledViewPool;
+        recyclerController.setRecycledViewPool(recycledViewPool);
     }
 
     public class PhotoGridViewHolderFabric implements ViewHolderFabric {

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.MiracleViewRecycler;
+import com.vkontakte.miracle.engine.recycler.MiracleViewRecycler;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;

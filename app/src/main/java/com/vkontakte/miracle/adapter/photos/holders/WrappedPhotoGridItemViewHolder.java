@@ -8,7 +8,7 @@ import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.view.photoGridView.PhotoGridItem;
 import com.vkontakte.miracle.fragment.photos.PhotoViewerItem;
 import com.vkontakte.miracle.model.DataItemWrap;
-import com.vkontakte.miracle.model.photos.PhotoWrapContainer;
+import com.vkontakte.miracle.model.photos.wraps.PhotoItemWC;
 
 import java.util.ArrayList;
 
@@ -32,7 +32,7 @@ public class WrappedPhotoGridItemViewHolder extends PhotoGridItemViewHolder{
 
     public static void resolveItemClickListener(DataItemWrap<?,?> itemWrap){
         PhotoGridItem photoGridItem = (PhotoGridItem) itemWrap.getItem();
-        PhotoWrapContainer photoWrapContainer = (PhotoWrapContainer) itemWrap.getHolder();
+        PhotoItemWC photoItemWC = (PhotoItemWC) itemWrap.getHolder();
         ArrayList<PhotoViewerItem> photoViewerItems = new ArrayList<>();
     }
 

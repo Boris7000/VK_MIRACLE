@@ -65,4 +65,8 @@ public class PostTextView extends LinearLayout {
             }
        // });
     }
+
+    public MiracleTextView getPostTextView() {
+        return postTextView;
+    }
 }

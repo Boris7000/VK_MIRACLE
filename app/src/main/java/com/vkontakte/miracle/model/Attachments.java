@@ -1,13 +1,12 @@
 package com.vkontakte.miracle.model;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_PHOTO;
-
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.audio.AudioItem;
-import com.vkontakte.miracle.model.audio.wraps.AudioItemWF;
 import com.vkontakte.miracle.model.audio.wraps.AudioItemWC;
+import com.vkontakte.miracle.model.audio.wraps.AudioItemWF;
 import com.vkontakte.miracle.model.photos.PhotoItem;
-import com.vkontakte.miracle.model.photos.PhotoWrapContainer;
+import com.vkontakte.miracle.model.photos.wraps.PhotoItemWC;
+import com.vkontakte.miracle.model.photos.wraps.PhotoItemWF;
 import com.vkontakte.miracle.model.wall.LinkItem;
 
 import org.json.JSONArray;
@@ -16,7 +15,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Attachments implements AudioItemWC, PhotoWrapContainer {
+public class Attachments implements AudioItemWC, PhotoItemWC {
 
     private final ArrayList<ItemDataHolder> audios = new ArrayList<>();
 
@@ -52,15 +51,9 @@ public class Attachments implements AudioItemWC, PhotoWrapContainer {
             switch (type){
                 case "photo":{
                     PhotoItem photoItem = new PhotoItem(jsonObject.getJSONObject("photo"));
-                    DataItemWrap<PhotoItem, PhotoWrapContainer> dataItemWrap =
-                            new DataItemWrap<PhotoItem, PhotoWrapContainer>(photoItem, this) {
-                                @Override
-                                public int getViewHolderType() {
-                                    return TYPE_WRAPPED_PHOTO;
-                                }
-                            };
-                    photos.add(photoItem);
-                    mediaItems.add(photoItem);
+                    DataItemWrap<PhotoItem, PhotoItemWC> wrap = new PhotoItemWF().create(photoItem, this);
+                    photos.add(wrap);
+                    mediaItems.add(wrap);
                     break;
                 }
                 case "link":{

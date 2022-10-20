@@ -24,6 +24,7 @@ import com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes;
 import com.vkontakte.miracle.engine.adapter.holder.error.ErrorDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.error.ErrorViewHolder;
 import com.vkontakte.miracle.engine.fragment.IMiracleFragment;
+import com.vkontakte.miracle.engine.recycler.MiracleViewRecycler;
 
 import java.util.ArrayList;
 

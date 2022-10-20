@@ -14,6 +14,7 @@ import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
 
 import com.vkontakte.miracle.R;
+import com.vkontakte.miracle.engine.util.NavigationUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

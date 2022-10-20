@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.model.audio.AudioItem;
-import com.vkontakte.miracle.model.audio.view.AudioItemView;
+import com.vkontakte.miracle.engine.view.AudioItemView;
 
 public class AudioViewHolder extends MiracleViewHolder {
 

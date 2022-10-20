@@ -1,7 +1,5 @@
 package com.vkontakte.miracle.adapter.catalog;
 
-import static com.vkontakte.miracle.engine.adapter.MiracleViewRecycler.resolveMultiTypeItems;
-import static com.vkontakte.miracle.engine.adapter.MiracleViewRecycler.resolveSingleTypeItems;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_ARTIST_BANNER;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_CREATE_PLAYLIST;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_OPEN_SECTION;
@@ -54,10 +52,10 @@ import com.vkontakte.miracle.adapter.catalog.holders.WrappedCatalogUserViewHolde
 import com.vkontakte.miracle.adapter.catalog.holders.WrappedGroupViewHolder;
 import com.vkontakte.miracle.engine.adapter.MiracleAdapter;
 import com.vkontakte.miracle.engine.adapter.MiracleAsyncLoadAdapter;
-import com.vkontakte.miracle.engine.adapter.MiracleViewRecycler;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.vkontakte.miracle.engine.recycler.RecyclerController;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.model.catalog.CatalogBlock;
 import com.vkontakte.miracle.model.catalog.CatalogExtendedArrays;
@@ -333,13 +331,14 @@ public class CatalogSectionAdapter extends MiracleAsyncLoadAdapter {
 
     public class HorizontalButtonsViewHolder extends MiracleViewHolder {
 
-        private final ArrayList<RecyclerView.ViewHolder> cache = new ArrayList<>();
-        private final ArrayMap<Integer, ViewHolderFabric> viewHolderFabricMap = new ArrayMap<>();
+        private final RecyclerController recyclerController;
 
         private ArrayList<ItemDataHolder> actions = new ArrayList<>();
 
         public HorizontalButtonsViewHolder(@NonNull View itemView) {
             super(itemView);
+            recyclerController = new RecyclerController(getInflater());
+            ArrayMap<Integer, ViewHolderFabric> viewHolderFabricMap = recyclerController.getViewHolderFabricMap();
             viewHolderFabricMap.put(TYPE_BUTTON_OPEN_SECTION, new CatalogButtonOpenSectionViewHolder.Fabric());
             viewHolderFabricMap.put(TYPE_BUTTON_PLAY_SHUFFLED, new CatalogButtonPlayShuffledViewHolder.Fabric());
             viewHolderFabricMap.put(TYPE_BUTTON_PLAY, new CatalogButtonPlayViewHolder.Fabric());
@@ -354,14 +353,14 @@ public class CatalogSectionAdapter extends MiracleAsyncLoadAdapter {
             CatalogBlock catalogBlock = (CatalogBlock) itemDataHolder;
             ArrayList<ItemDataHolder> actions = catalogBlock.getActions();
 
-            MiracleViewRecycler miracleViewRecycler =
-                    getMiracleAdapter().getMiracleViewRecycler(itemDataHolder.getViewHolderType());
+            recyclerController.setRecycledViewPool(getMiracleAdapter()
+                    .getMiracleViewRecycler(itemDataHolder.getViewHolderType()));
 
-            resolveMultiTypeItems((ViewGroup) itemView, actions, this.actions, cache,
-                    miracleViewRecycler, viewHolderFabricMap, getInflater());
+            recyclerController.resolveMultiTypeItems((ViewGroup) itemView, actions, this.actions);
 
-            for(int i=0; i<actions.size(); i++){
-                MiracleViewHolder miracleViewHolder = (MiracleViewHolder) cache.get(i);
+            ArrayList<RecyclerView.ViewHolder> buffer = recyclerController.getBuffer();
+            for(int i=0; i<buffer.size(); i++){
+                MiracleViewHolder miracleViewHolder = (MiracleViewHolder) buffer.get(i);
                 miracleViewHolder.bind(actions.get(i));
             }
 
@@ -379,15 +378,14 @@ public class CatalogSectionAdapter extends MiracleAsyncLoadAdapter {
 
     public class CategoriesListViewHolder extends MiracleViewHolder {
 
-        private final ArrayList<RecyclerView.ViewHolder> cache = new ArrayList<>();
-        private final ArrayMap<Integer, ViewHolderFabric> viewHolderFabricMap = new ArrayMap<>();
-
+        private final RecyclerController recyclerController;
         private ArrayList<ItemDataHolder> itemDataHolders = new ArrayList<>();
 
         public CategoriesListViewHolder(@NonNull View itemView) {
             super(itemView);
-            viewHolderFabricMap.put(TYPE_CATALOG_LINK, new CatalogCategoryViewHolder.Fabric());
-
+            recyclerController = new RecyclerController(getInflater());
+            recyclerController.getViewHolderFabricMap()
+                    .put(TYPE_CATALOG_LINK, new CatalogCategoryViewHolder.Fabric());
         }
 
         @Override
@@ -397,14 +395,13 @@ public class CatalogSectionAdapter extends MiracleAsyncLoadAdapter {
             CatalogBlock catalogBlock = (CatalogBlock) itemDataHolder;
             ArrayList<ItemDataHolder> itemDataHolders = catalogBlock.getItems();
 
-            MiracleViewRecycler miracleViewRecycler =
-                    getMiracleAdapter().getMiracleViewRecycler(itemDataHolder.getViewHolderType());
+            recyclerController.setRecycledViewPool(getMiracleAdapter()
+                    .getMiracleViewRecycler(itemDataHolder.getViewHolderType()));
+            recyclerController.resolveSingleTypeItems((ViewGroup) itemView, itemDataHolders, this.itemDataHolders);
 
-            resolveSingleTypeItems((ViewGroup) itemView, itemDataHolders, this.itemDataHolders, cache,
-                    miracleViewRecycler, viewHolderFabricMap, getInflater());
-
-            for(int i=0; i<itemDataHolders.size(); i++){
-                MiracleViewHolder miracleViewHolder = (MiracleViewHolder) cache.get(i);
+            ArrayList<RecyclerView.ViewHolder> buffer = recyclerController.getBuffer();
+            for(int i=0; i<buffer.size(); i++){
+                MiracleViewHolder miracleViewHolder = (MiracleViewHolder)buffer.get(i);
                 miracleViewHolder.bind(itemDataHolders.get(i));
             }
 

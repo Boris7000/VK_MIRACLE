@@ -16,7 +16,6 @@ public class PhotoGridItem implements ItemDataHolder {
         return gridPosition;
     }
 
-
     @Override
     public int getViewHolderType() {
         return mediaItem.getViewHolderType();

@@ -4,6 +4,7 @@ import androidx.collection.ArrayMap;
 
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.photos.fields.Size;
+import com.vkontakte.miracle.model.photos.wraps.PhotoItemWC;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,7 +14,7 @@ import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_P
 
 import java.util.ArrayList;
 
-public class PhotoAlbumItem implements ItemDataHolder, PhotoWrapContainer {
+public class PhotoAlbumItem implements ItemDataHolder, PhotoItemWC {
 
     private final String id;
     private final String ownerId;

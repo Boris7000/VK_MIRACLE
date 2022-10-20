@@ -1,4 +1,4 @@
-package com.vkontakte.miracle.model.audio.view;
+package com.vkontakte.miracle.engine.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

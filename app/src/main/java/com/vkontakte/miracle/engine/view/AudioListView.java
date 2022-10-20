@@ -1,11 +1,9 @@
 package com.vkontakte.miracle.engine.view;
 
-import static com.vkontakte.miracle.engine.adapter.MiracleViewRecycler.resolveSingleTypeItems;
 import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.util.ArrayMap;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,22 +15,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.audio.holders.WrappedAudioViewHolder;
-import com.vkontakte.miracle.engine.adapter.MiracleViewRecycler;
+import com.vkontakte.miracle.engine.recycler.IRecyclerView;
+import com.vkontakte.miracle.engine.recycler.MiracleViewRecycler;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.vkontakte.miracle.engine.recycler.RecyclerController;
 
 import java.util.ArrayList;
 
-public class AudioListView extends LinearLayout{
+public class AudioListView extends LinearLayout implements IRecyclerView {
 
-    private final LayoutInflater inflater;
-    private final ArrayList<RecyclerView.ViewHolder> cache = new ArrayList<>();
-    private final ArrayMap<Integer, ViewHolderFabric> viewHolderFabricMap = new ArrayMap<>();
-    private MiracleViewRecycler recycledViewPool = new MiracleViewRecycler();
-    {
-        viewHolderFabricMap.put(TYPE_WRAPPED_AUDIO, new AudioListViewHolderFabric());
-    }
+    private final RecyclerController recyclerController;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -48,7 +42,10 @@ public class AudioListView extends LinearLayout{
 
     public AudioListView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        inflater = LayoutInflater.from(context);
+        recyclerController = new RecyclerController(LayoutInflater.from(context));
+        recyclerController.getViewHolderFabricMap()
+                .put(TYPE_WRAPPED_AUDIO, new AudioListViewHolderFabric());
+
         if(attrs!=null){
             TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.AudioListView, 0, 0);
             layoutResId = attributes.getResourceId(R.styleable.AudioListView_listItemLayout, DEFAULT_LAYOUT_RES);
@@ -93,11 +90,11 @@ public class AudioListView extends LinearLayout{
 
         canApplyChanges = false;
 
-        resolveSingleTypeItems(this, itemDataHolders, this.itemDataHolders, cache, recycledViewPool,
-                viewHolderFabricMap, inflater);
+        recyclerController.resolveSingleTypeItems(this, itemDataHolders, this.itemDataHolders);
 
-        for(int i=0; i<cache.size(); i++){
-            WrappedAudioViewHolder wrappedAudioViewHolder = (WrappedAudioViewHolder) cache.get(i);
+        ArrayList<RecyclerView.ViewHolder> buffer = recyclerController.getBuffer();
+        for(int i=0; i<buffer.size(); i++){
+            WrappedAudioViewHolder wrappedAudioViewHolder = (WrappedAudioViewHolder) buffer.get(i);
             wrappedAudioViewHolder.bind(itemDataHolders.get(i));
         }
 
@@ -105,8 +102,14 @@ public class AudioListView extends LinearLayout{
         canApplyChanges = true;
     }
 
+    @Override
+    public MiracleViewRecycler getRecycledViewPool() {
+        return null;
+    }
+
+    @Override
     public void setRecycledViewPool(MiracleViewRecycler recycledViewPool) {
-        this.recycledViewPool = recycledViewPool;
+        recyclerController.setRecycledViewPool(recycledViewPool);
     }
 
     public class AudioListViewHolderFabric implements ViewHolderFabric {

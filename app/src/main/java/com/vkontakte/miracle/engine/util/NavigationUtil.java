@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.vkontakte.miracle.dialog.audio.GoToArtistDialog;
 import com.vkontakte.miracle.engine.activity.tabs.TabsActivity;
 import com.vkontakte.miracle.engine.context.ContextExtractor;
+import com.vkontakte.miracle.engine.view.textView.OwnerLink;
 import com.vkontakte.miracle.fragment.audio.FragmentOfflineAudio;
 import com.vkontakte.miracle.fragment.audio.FragmentPlaylist;
 import com.vkontakte.miracle.fragment.settings.FragmentColorSchemeSettings;
@@ -118,6 +119,15 @@ public class NavigationUtil {
     public static void goToOwner(PlaylistItem playlistItem, Context context){
         if(playlistItem.getOwner()!=null){
             goToOwner(playlistItem.getOwner(), context);
+        }
+    }
+
+    public static void goToOwner(OwnerLink ownerLink, Context context){
+        String ownerId = ownerLink.ownerId;
+        if(ownerId.charAt(0)=='-'){
+            goToGroup(ownerId, null, context);
+        } else {
+            goToProfile(ownerId, null, context);
         }
     }
 

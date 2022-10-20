@@ -34,7 +34,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.MiracleViewRecycler;
+import com.vkontakte.miracle.engine.recycler.MiracleViewRecycler;
 import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
@@ -67,7 +67,6 @@ public class PostViewHolder extends MiracleViewHolder {
     private final ViewStub audiosViewStub;
     private ImageView verified;
 
-    private final FrameLayout header;
     private final LinearLayout likesHolder;
     private final LinearLayout commentsHolder;
     private final LinearLayout repostsHolder;
@@ -87,10 +86,7 @@ public class PostViewHolder extends MiracleViewHolder {
     public PostViewHolder(@NonNull View itemView) {
         super(itemView);
 
-
-
-        header = itemView.findViewById(R.id.post_header);
-
+        FrameLayout header = itemView.findViewById(R.id.post_header);
         ownerDataHolder = header.findViewById(R.id.post_owner_link);
 
         imageView = ownerDataHolder.findViewById(R.id.photo);
@@ -157,6 +153,29 @@ public class PostViewHolder extends MiracleViewHolder {
 
     }
 
+    private void stubText(){
+        if(text==null) {
+            if(textStub!=null) {
+                text = (PostTextView) textStub.inflate();
+            } else {
+                text = itemView.findViewById(R.id.text);
+            }
+            text.setParent((ViewGroup) itemView.getParent());
+            text.getPostTextView().setOnOwnerClickListener(ownerLink ->
+                    NavigationUtil.goToOwner(ownerLink, getContext()));
+        }
+    }
+
+    private void stubVerified(){
+        if(verified==null) {
+            if(verifiedStub!=null) {
+                verified = (ImageView) verifiedStub.inflate();
+            } else {
+                verified = itemView.findViewById(R.id.verified);
+            }
+        }
+    }
+
     @Override
     public void bind(ItemDataHolder itemDataHolder) {
         super.bind(itemDataHolder);
@@ -180,13 +199,7 @@ public class PostViewHolder extends MiracleViewHolder {
         }
 
         if(owner.isVerified()){
-            if(verified==null) {
-                if(verifiedStub!=null) {
-                    verified = (ImageView) verifiedStub.inflate();
-                } else {
-                    verified = itemView.findViewById(R.id.verified);
-                }
-            }
+            stubVerified();
             if(verified.getVisibility()!=VISIBLE) {
                 verified.setVisibility(VISIBLE);
             }
@@ -197,14 +210,7 @@ public class PostViewHolder extends MiracleViewHolder {
         }
 
         if(!postItem.getText().isEmpty()){
-            if(text==null) {
-                if(textStub!=null) {
-                    text = (PostTextView) textStub.inflate();
-                } else {
-                    text = itemView.findViewById(R.id.text);
-                }
-                text.setParent((ViewGroup) itemView.getParent());
-            }
+            stubText();
             if(text.getVisibility()!=VISIBLE) {
                 text.setVisibility(VISIBLE);
             }

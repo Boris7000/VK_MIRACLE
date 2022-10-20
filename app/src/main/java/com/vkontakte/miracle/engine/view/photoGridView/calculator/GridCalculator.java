@@ -1,5 +1,8 @@
-package com.vkontakte.miracle.engine.view.photoGridView;
+package com.vkontakte.miracle.engine.view.photoGridView.calculator;
 
+import com.vkontakte.miracle.engine.view.photoGridView.MediaItem;
+import com.vkontakte.miracle.engine.view.photoGridView.PhotoGridItem;
+import com.vkontakte.miracle.engine.view.photoGridView.PhotoGridPosition;
 import com.vkontakte.miracle.model.photos.fields.Size;
 
 import java.util.ArrayList;
@@ -7,6 +10,7 @@ import java.util.ArrayList;
 public class GridCalculator {
 
     private final ArrayList<PhotoGridItem> items;
+    private final ArrayList<CalculationItem> cItems = new ArrayList<>();
     private final int count;
 
     private double maxAspectRatioDelta = 0;
@@ -15,9 +19,17 @@ public class GridCalculator {
 
     private float totalVerticalAspectRatio = 0f;
 
+    /*
+    public GridCalculator(ArrayList<MediaItem> mediaItems){
+        count = mediaItems.size();
+        for(MediaItem mediaItem:mediaItems){
+            photoGridItem.temp = photoGridItem.mediaItem.getSizeForWidth(604, false);
+        }
+    }*/
+
     public GridCalculator(ArrayList<PhotoGridItem> items){
-        this.items = items;
         count = items.size();
+        this.items = items;
         for(PhotoGridItem photoGridItem:items){
             photoGridItem.temp = photoGridItem.mediaItem.getSizeForWidth(604, false);
         }
