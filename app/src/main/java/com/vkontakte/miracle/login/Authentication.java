@@ -12,8 +12,8 @@ import static com.vkontakte.miracle.network.Creator.oauthMethod;
 import android.util.Log;
 import android.view.View;
 
+import com.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
 
 import org.json.JSONObject;
 
@@ -155,6 +155,7 @@ public class Authentication extends AsyncExecutor<Boolean> {
         HashMap<String,Object> fields = defaultValidatePhoneFields();
         return oauthMethod().validatePhone(
                 authState.getValidationSid(),
+                getDeviceId(loginActivity.getApplicationContext()),
                 fields);
     }
 

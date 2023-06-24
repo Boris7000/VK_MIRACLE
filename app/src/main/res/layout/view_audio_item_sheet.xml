@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.vkontakte.miracle.engine.view.AudioItemView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="12dp"
     android:paddingVertical="9dp"
-    app:placeHolderDrawable="@drawable/audio_placeholder_image_transluent_small">
+    tools:background="?attr/colorMessageOutContainer">
     <include layout="@layout/view_audio_item_sheet_merge"/>
-</com.vkontakte.miracle.engine.view.AudioItemView>
+</FrameLayout>

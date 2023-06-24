@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="iconsTint" format="color"/>
+    <attr name="iconsTintMode">
+        <enum name="src_over" value="3"/>
+        <enum name="src_in" value="5"/>
+        <enum name="src_atop" value="9"/>
+        <enum name="multiply" value="14"/>
+        <enum name="screen" value="15"/>
+        <enum name="add" value="16"/>
+    </attr>
+    <attr name="iconsSize" format="dimension"/>
+    <attr name="iconsStickingToText" format="boolean"/>
+
+    <attr name="iconTop" format="reference|color"/>
+    <attr name="iconTopTint" format="color"/>
+    <attr name="iconTopTintMode">
+        <enum name="src_over" value="3"/>
+        <enum name="src_in" value="5"/>
+        <enum name="src_atop" value="9"/>
+        <enum name="multiply" value="14"/>
+        <enum name="screen" value="15"/>
+        <enum name="add" value="16"/>
+    </attr>
+    <attr name="iconTopSize" format="dimension"/>
+    <attr name="iconTopStickingToText" format="boolean"/>
+
+    <attr name="iconBottom" format="reference|color"/>
+    <attr name="iconBottomTint" format="color"/>
+    <attr name="iconBottomTintMode">
+        <enum name="src_over" value="3"/>
+        <enum name="src_in" value="5"/>
+        <enum name="src_atop" value="9"/>
+        <enum name="multiply" value="14"/>
+        <enum name="screen" value="15"/>
+        <enum name="add" value="16"/>
+    </attr>
+    <attr name="iconBottomSize" format="dimension"/>
+    <attr name="iconBottomStickingToText" format="boolean"/>
+
+    <attr name="iconLeft" format="reference|color"/>
+    <attr name="iconLeftTint" format="color"/>
+    <attr name="iconLeftTintMode">
+        <enum name="src_over" value="3"/>
+        <enum name="src_in" value="5"/>
+        <enum name="src_atop" value="9"/>
+        <enum name="multiply" value="14"/>
+        <enum name="screen" value="15"/>
+        <enum name="add" value="16"/>
+    </attr>
+    <attr name="iconLeftSize" format="dimension"/>
+    <attr name="iconLeftStickingToText" format="boolean"/>
+
+    <attr name="iconRight" format="reference|color"/>
+    <attr name="iconRightTint" format="color"/>
+    <attr name="iconRightTintMode">
+        <enum name="src_over" value="3"/>
+        <enum name="src_in" value="5"/>
+        <enum name="src_atop" value="9"/>
+        <enum name="multiply" value="14"/>
+        <enum name="screen" value="15"/>
+        <enum name="add" value="16"/>
+    </attr>
+    <attr name="iconRightSize" format="dimension"/>
+    <attr name="iconRightStickingToText" format="boolean"/>
+
+
+    <declare-styleable name="ExtendedTextView">
+
+        <attr name="iconsTint"/>
+        <attr name="iconsTintMode"/>
+        <attr name="iconsSize"/>
+        <attr name="iconsStickingToText"/>
+
+        <attr name="iconTop"/>
+        <attr name="iconTopTint"/>
+        <attr name="iconTopTintMode"/>
+        <attr name="iconTopSize"/>
+        <attr name="iconTopStickingToText"/>
+
+        <attr name="iconBottom"/>
+        <attr name="iconBottomTint"/>
+        <attr name="iconBottomTintMode"/>
+        <attr name="iconBottomSize"/>
+        <attr name="iconBottomStickingToText"/>
+
+        <attr name="iconLeft"/>
+        <attr name="iconLeftTint"/>
+        <attr name="iconLeftTintMode"/>
+        <attr name="iconLeftSize"/>
+        <attr name="iconLeftStickingToText"/>
+
+        <attr name="iconRight"/>
+        <attr name="iconRightTint"/>
+        <attr name="iconRightTintMode"/>
+        <attr name="iconRightSize"/>
+        <attr name="iconRightStickingToText"/>
+
+    </declare-styleable>
+
+    <declare-styleable name="ExtendedAppCompatTextView">
+
+        <attr name="iconsTint"/>
+        <attr name="iconsTintMode"/>
+        <attr name="iconsSize"/>
+        <attr name="iconsStickingToText"/>
+
+        <attr name="iconTop"/>
+        <attr name="iconTopTint"/>
+        <attr name="iconTopTintMode"/>
+        <attr name="iconTopSize"/>
+        <attr name="iconTopStickingToText"/>
+
+        <attr name="iconBottom"/>
+        <attr name="iconBottomTint"/>
+        <attr name="iconBottomTintMode"/>
+        <attr name="iconBottomSize"/>
+        <attr name="iconBottomStickingToText"/>
+
+        <attr name="iconLeft"/>
+        <attr name="iconLeftTint"/>
+        <attr name="iconLeftTintMode"/>
+        <attr name="iconLeftSize"/>
+        <attr name="iconLeftStickingToText"/>
+
+        <attr name="iconRight"/>
+        <attr name="iconRightTint"/>
+        <attr name="iconRightTintMode"/>
+        <attr name="iconRightSize"/>
+        <attr name="iconRightStickingToText"/>
+
+    </declare-styleable>
+
+    <declare-styleable name="ExtendedAppCompatButton">
+
+        <attr name="iconsTint"/>
+        <attr name="iconsTintMode"/>
+        <attr name="iconsSize"/>
+        <attr name="iconsStickingToText"/>
+
+        <attr name="iconTop"/>
+        <attr name="iconTopTint"/>
+        <attr name="iconTopTintMode"/>
+        <attr name="iconTopSize"/>
+        <attr name="iconTopStickingToText"/>
+
+        <attr name="iconBottom"/>
+        <attr name="iconBottomTint"/>
+        <attr name="iconBottomTintMode"/>
+        <attr name="iconBottomSize"/>
+        <attr name="iconBottomStickingToText"/>
+
+        <attr name="iconLeft"/>
+        <attr name="iconLeftTint"/>
+        <attr name="iconLeftTintMode"/>
+        <attr name="iconLeftSize"/>
+        <attr name="iconLeftStickingToText"/>
+
+        <attr name="iconRight"/>
+        <attr name="iconRightTint"/>
+        <attr name="iconRightTintMode"/>
+        <attr name="iconRightSize"/>
+        <attr name="iconRightStickingToText"/>
+
+    </declare-styleable>
+
+    <declare-styleable name="ExtendedMaterialButton">
+
+        <attr name="android:animationDuration"/>
+
+        <attr name="android:checked"/>
+
+        <attr name="iconsTint"/>
+        <attr name="iconsTintMode"/>
+        <attr name="iconsSize"/>
+        <attr name="iconsStickingToText"/>
+
+        <attr name="iconTop"/>
+        <attr name="iconTopTint"/>
+        <attr name="iconTopTintMode"/>
+        <attr name="iconTopSize"/>
+        <attr name="iconTopStickingToText"/>
+
+        <attr name="iconBottom"/>
+        <attr name="iconBottomTint"/>
+        <attr name="iconBottomTintMode"/>
+        <attr name="iconBottomSize"/>
+        <attr name="iconBottomStickingToText"/>
+
+        <attr name="iconLeft"/>
+        <attr name="iconLeftTint"/>
+        <attr name="iconLeftTintMode"/>
+        <attr name="iconLeftSize"/>
+        <attr name="iconLeftStickingToText"/>
+
+        <attr name="iconRight"/>
+        <attr name="iconRightTint"/>
+        <attr name="iconRightTintMode"/>
+        <attr name="iconRightSize"/>
+        <attr name="iconRightStickingToText"/>
+
+    </declare-styleable>
+
+</resources>

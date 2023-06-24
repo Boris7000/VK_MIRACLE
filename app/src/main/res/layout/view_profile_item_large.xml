@@ -12,12 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="184dp"
         android:scaleType="centerCrop"
-        app:srcCompat="?attr/colorSurfaceVariant2"/>
+        app:srcCompat="?attr/colorBackgroundDarkest"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="160dp"
+        android:paddingBottom="12dp"
         android:layout_gravity="bottom"
         android:background="@drawable/rounded_card_window_color"
         android:orientation="vertical"
@@ -97,6 +98,39 @@
                 android:layout="@layout/view_online_status_stub"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginHorizontal="6dp">
+
+            <ViewStub
+                android:id="@+id/placeStub"
+                android:inflatedId="@+id/place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout="@layout/view_profile_item_place_stub"/>
+
+            <ViewStub
+                android:id="@+id/workStub"
+                android:inflatedId="@+id/work"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout="@layout/view_profile_item_work_stub"/>
+
+            <ViewStub
+                android:id="@+id/educationStub"
+                android:inflatedId="@+id/university"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout="@layout/view_profile_item_education_stub"/>
+
+        </LinearLayout>
+
         <ViewStub
             android:id="@+id/userButtonsStub"
             android:inflatedId="@+id/userButtonsHolder"
@@ -115,7 +149,7 @@
             android:layout_marginHorizontal="12dp"
             android:layout="@layout/view_profile_item_large_profile_buttons_stub"/>
 
-        <View
+        <!--<View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="12dp"
@@ -133,7 +167,7 @@
             android:text="Подробнее"
             android:drawablePadding="8dp"
             app:drawableStartCompat="@drawable/ic_info_20"
-            app:drawableTint="?attr/colorSubtitle" />
+            app:drawableTint="?attr/colorSubtitle" />-->
 
     </LinearLayout>
 

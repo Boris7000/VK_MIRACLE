@@ -50,7 +50,7 @@
                 android:inflatedId="@+id/audiosView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout="@layout/view_message_item_audios_in_stub"/>
+                android:layout="@layout/view_message_item_audios_stub"/>
 
         </LinearLayout>
 

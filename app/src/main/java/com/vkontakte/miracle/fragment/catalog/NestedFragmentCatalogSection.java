@@ -3,12 +3,12 @@ package com.vkontakte.miracle.fragment.catalog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.fragment.tabs.nested.NestedMiracleFragmentFabric;
+import com.miracle.engine.fragment.tabs.nested.templates.NestedRecyclerFragment;
 import com.vkontakte.miracle.adapter.catalog.CatalogSectionAdapter;
-import com.vkontakte.miracle.engine.fragment.MiracleFragment;
-import com.vkontakte.miracle.engine.fragment.NestedMiracleFragmentFabric;
-import com.vkontakte.miracle.engine.fragment.nested.NestedRecyclerFragment;
 
 public class NestedFragmentCatalogSection extends NestedRecyclerFragment {
 
@@ -58,7 +58,7 @@ public class NestedFragmentCatalogSection extends NestedRecyclerFragment {
 
         @NonNull
         @Override
-        public MiracleFragment createFragment() {
+        public Fragment createFragment() {
             NestedFragmentCatalogSection nestedFragmentCatalogSection = new NestedFragmentCatalogSection();
             nestedFragmentCatalogSection.setCatalogSectionId(catalogSectionId);
             return nestedFragmentCatalogSection;

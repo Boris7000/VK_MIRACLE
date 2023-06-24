@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
-import com.vkontakte.miracle.engine.util.DimensionsUtil;
+import com.miracle.engine.util.DimensionsUtil;
 
 public class MiracleBottomToolBar extends LinearLayout{
 

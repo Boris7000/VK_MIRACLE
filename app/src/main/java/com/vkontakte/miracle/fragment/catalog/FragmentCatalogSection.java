@@ -2,13 +2,12 @@ package com.vkontakte.miracle.fragment.catalog;
 
 import android.os.Bundle;
 
-import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vkontakte.miracle.adapter.catalog.CatalogSectionAdapter;
 
-public class FragmentCatalogSection extends AFragmentCatalogSection {
+public class FragmentCatalogSection extends ARecyclerFragmentCatalogSection {
 
     private String catalogSectionId;
 
@@ -21,14 +20,14 @@ public class FragmentCatalogSection extends AFragmentCatalogSection {
         this.catalogSectionId = catalogSectionId;
     }
 
-    @CallSuper
+    @Override
     public void readSavedInstance(Bundle savedInstanceState){
+        super.readSavedInstance(savedInstanceState);
         String key = savedInstanceState.getString("catalogSectionId");
         if (key!=null) {
             catalogSectionId = key;
             savedInstanceState.remove("catalogSectionId");
         }
-        super.readSavedInstance(savedInstanceState);
     }
 
     @Override

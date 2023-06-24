@@ -2,7 +2,7 @@ package com.vkontakte.miracle.engine.view.photoGridView;
 
 import androidx.collection.ArrayMap;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.photos.fields.Size;
 
 public abstract class MediaItem implements ItemDataHolder {

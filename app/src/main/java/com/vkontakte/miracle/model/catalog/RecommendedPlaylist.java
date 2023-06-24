@@ -1,6 +1,6 @@
 package com.vkontakte.miracle.model.catalog;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PLAYLIST_RECOMMENDATION;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_PLAYLIST_RECOMMENDATION;
 
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 

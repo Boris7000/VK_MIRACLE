@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="9dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/photo"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_gravity="center_vertical"
+        android:padding="@dimen/imageBorderWidth"
+        android:background="?attr/colorPlaceholder"
+        app:shapeAppearanceOverlay="@style/CircleShapeAppearance"
+        app:strokeColor="?attr/colorStroke"
+        app:strokeWidth="@dimen/imageBorderWidth"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="102dp"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:fontFamily="sans-serif"
+            android:textSize="16sp"
+            tools:text="Title" />
+
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:fontFamily="sans-serif"
+            android:textColor="?attr/colorSubtitle"
+            android:textSize="15sp"
+            tools:text="Subtitle" />
+
+        <TextView
+            android:id="@+id/subtitle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:fontFamily="sans-serif"
+            android:textColor="?attr/colorSubtitle"
+            android:textSize="15sp"
+            tools:text="Subtitle2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
+            <com.miracle.widget.ExtendedMaterialButton
+                android:id="@+id/addButton"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:padding="0dp"
+                android:layout_marginEnd="12dp"
+                android:text="@string/add"
+                app:shapeAppearance="@style/ChildShapeAppearance"
+                style="@style/Button"/>
+            <com.miracle.widget.ExtendedMaterialButton
+                android:id="@+id/hideButton"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:padding="0dp"
+                android:layout_marginEnd="12dp"
+                android:text="@string/hide"
+                app:shapeAppearance="@style/ChildShapeAppearance"
+                style="@style/TonalButton"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

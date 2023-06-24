@@ -2,13 +2,13 @@ package com.vkontakte.miracle.executors.catalog;
 
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.model.catalog.CatalogBlock;
-import com.vkontakte.miracle.model.catalog.CatalogExtendedArrays;
-import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Catalog;
+import com.vkontakte.miracle.model.ExtendedArrays;
+import com.vkontakte.miracle.model.users.User;
+import com.vkontakte.miracle.network.api.Catalog;
 
 import org.json.JSONObject;
 
@@ -19,26 +19,26 @@ import retrofit2.Response;
 public class LoadCatalogBlockItems extends AsyncExecutor<CatalogBlock> {
 
     private final CatalogBlock catalogBlock;
-    private final ProfileItem profileItem;
+    private final User user;
 
     public LoadCatalogBlockItems(CatalogBlock catalogBlock) {
         this.catalogBlock = catalogBlock;
-        profileItem = StorageUtil.get().currentUser();
+        user = StorageUtil.get().currentUser();
     }
 
     @Override
     public CatalogBlock inBackground() {
         try {
-            if(profileItem!=null) {
+            if(user !=null) {
                 Response<JSONObject> response = Catalog.getBlockItems(catalogBlock.getId(),
-                        catalogBlock.getNextFrom(), profileItem.getAccessToken()).execute();
+                        catalogBlock.getNextFrom(), user.getAccessToken()).execute();
 
                 JSONObject jo_response = validateBody(response).getJSONObject("response");
                 JSONObject block = jo_response.getJSONObject("block");
 
-                CatalogExtendedArrays catalogExtendedArrays = new CatalogExtendedArrays(jo_response);
+                ExtendedArrays extendedArrays = new ExtendedArrays(jo_response);
 
-                ArrayList<ItemDataHolder> itemDataHolders = catalogBlock.findItems(block, catalogExtendedArrays);
+                ArrayList<ItemDataHolder> itemDataHolders = extendedArrays.extractForBlock(catalogBlock, block);
 
                 catalogBlock.getItems().addAll(itemDataHolders);
 

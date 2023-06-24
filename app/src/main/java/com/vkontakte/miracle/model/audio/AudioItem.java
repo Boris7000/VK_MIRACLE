@@ -1,11 +1,11 @@
 package com.vkontakte.miracle.model.audio;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_AUDIO;
+import static com.miracle.engine.util.TimeUtil.getDurationStringSecs;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_AUDIO;
 
 import androidx.annotation.Nullable;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.util.TimeUtil;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.audio.fields.Album;
 import com.vkontakte.miracle.model.audio.fields.Artist;
 import com.vkontakte.miracle.model.audio.fields.Downloaded;
@@ -18,7 +18,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class AudioItem implements Serializable, ItemDataHolder{
+public class AudioItem implements Serializable, ItemDataHolder {
 
     private String id;
     private String ownerId;
@@ -36,7 +36,6 @@ public class AudioItem implements Serializable, ItemDataHolder{
     private Downloaded downloaded;
     private String originalId;
     private String originalOwnerId;
-
 
     public String getId() {
         return id;
@@ -131,7 +130,7 @@ public class AudioItem implements Serializable, ItemDataHolder{
         isExplicit = jsonObject.getBoolean("is_explicit");
         isLicensed = jsonObject.getBoolean("is_licensed");
 
-        durationString = TimeUtil.getDurationStringSecs(Locale.getDefault(),duration);
+        durationString = getDurationStringSecs(Locale.getDefault(),duration);
 
         if(jsonObject.has("main_artists")){
             JSONArray ja_artists = jsonObject.getJSONArray("main_artists");

@@ -1,19 +1,18 @@
 package com.vkontakte.miracle.fragment.catalog;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.fragment.base.templates.BaseRecyclerFragment;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.catalog.CatalogSectionAdapter;
-import com.vkontakte.miracle.engine.fragment.side.SideRecyclerFragment;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Catalog;
+import com.vkontakte.miracle.model.users.User;
+import com.vkontakte.miracle.network.api.Catalog;
 
-public class FragmentCatalogFriends extends SideRecyclerFragment {
+public class FragmentCatalogFriends extends BaseRecyclerFragment {
 
     private String ownerId;
 
@@ -23,17 +22,13 @@ public class FragmentCatalogFriends extends SideRecyclerFragment {
 
     @Override
     public RecyclerView.Adapter<?> onCreateRecyclerAdapter() {
-        ProfileItem profileItem = StorageUtil.get().currentUser();
-        return new CatalogSectionAdapter(Catalog.getFriends(ownerId, 1, profileItem.getAccessToken()));
+        User user = StorageUtil.get().currentUser();
+        return new CatalogSectionAdapter(Catalog.getFriends(ownerId, 1, user.getAccessToken()));
     }
 
     @Override
-    public String requestTitleText() {
-        Context context = getContext();
-        if(context!=null){
-            return context.getString(R.string.friends);
-        }
-        return super.requestTitleText();
+    public int requestTitleTextResId() {
+        return R.string.friends;
     }
 
     @Override

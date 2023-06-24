@@ -9,21 +9,17 @@
     <include layout="@layout/view_loading_circle"/>
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbarlayout"
+        android:id="@+id/appbarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:translationZ="?attr/globalTranslationZ"
         style="@style/Widget.AppBar">
-        <LinearLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Widget.Toolbar.TopAppBarWithBackButton"/>
+            style="@style/Widget.Toolbar">
+
             <FrameLayout
                 android:id="@+id/profileLink"
                 android:layout_width="match_parent"
@@ -124,7 +120,8 @@
 
                 </LinearLayout>
             </FrameLayout>
-        </LinearLayout>
+
+        </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout

@@ -2,8 +2,8 @@ package com.vkontakte.miracle.fragment.messages;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.miracle.engine.util.ColorUtil.getColorByAttributeId;
 import static com.vkontakte.miracle.engine.util.APIUtil.createOwnersMap;
-import static com.vkontakte.miracle.engine.util.ColorUtil.getColorByAttributeId;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 import static com.vkontakte.miracle.engine.util.StringsUtil.getMembersDeclensions;
 import static com.vkontakte.miracle.engine.util.StringsUtil.getMessageTypingDeclensions;
@@ -30,22 +30,24 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.async.AsyncExecutor;
+import com.miracle.engine.async.ExecutorConveyor;
+import com.miracle.engine.fragment.base.templates.BaseRecyclerFragment;
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.MainActivity;
-import com.vkontakte.miracle.MiracleApp;
+import com.vkontakte.miracle.MainApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.messages.ChatAdapter;
 import com.vkontakte.miracle.adapter.messages.ReplySwipeCallback;
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
-import com.vkontakte.miracle.engine.async.ExecutorConveyor;
 import com.vkontakte.miracle.engine.context.ContextExtractor;
-import com.vkontakte.miracle.engine.fragment.side.SideRecyclerFragment;
 import com.vkontakte.miracle.engine.util.LargeDataStorage;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.engine.util.TimeUtil;
@@ -55,9 +57,10 @@ import com.vkontakte.miracle.model.messages.MessageItem;
 import com.vkontakte.miracle.model.messages.fields.ChatSettings;
 import com.vkontakte.miracle.model.messages.fields.PushSettings;
 import com.vkontakte.miracle.model.users.ProfileItem;
+import com.vkontakte.miracle.model.users.User;
 import com.vkontakte.miracle.model.users.fields.LastSeen;
-import com.vkontakte.miracle.network.methods.Message;
-import com.vkontakte.miracle.network.methods.Users;
+import com.vkontakte.miracle.network.api.Message;
+import com.vkontakte.miracle.network.api.Users;
 import com.vkontakte.miracle.service.longpoll.LongPollServiceController;
 import com.vkontakte.miracle.service.longpoll.listeners.OnMessageTypingUpdateListener;
 import com.vkontakte.miracle.service.longpoll.listeners.OnUserOnlineUpdateListener;
@@ -71,11 +74,11 @@ import java.util.ArrayList;
 
 import retrofit2.Response;
 
-public class FragmentChat extends SideRecyclerFragment {
+public class FragmentChat extends BaseRecyclerFragment {
 
     private View rootView;
-    private MiracleApp miracleApp;
-    private ProfileItem userItem;
+    private MainApp mainApp;
+    private User user;
 
     private AppCompatEditText messageEditText;
     private ImageView sendButton;
@@ -115,29 +118,14 @@ public class FragmentChat extends SideRecyclerFragment {
             mainActivity.hideNavigationBars();
         }
 
-        miracleApp = MiracleApp.getInstance();
+        mainApp = MainApp.getInstance();
 
         rootView = super.onCreateView(inflater, container, savedInstanceState);
 
 
-        userItem = StorageUtil.get().currentUser();
-        ownerArrayMap.put(userItem.getId(), new Owner(userItem));
+        user = StorageUtil.get().currentUser();
+        ownerArrayMap.put(user.getId(), new Owner(user));
 
-
-        switch (conversationItem.getPeer().getType()){
-            case "user":{
-                updateAndSetFromUser();
-                break;
-            }
-            case "group":{
-                updateAndSetFromGroup();
-                break;
-            }
-            case "chat": {
-                updateAndSetFromChat();
-                break;
-            }
-        }
 
         onMessageTypingUpdateListener = messageTypingUpdates -> {
             ArrayList<ArrayList<MessageTypingUpdate>> arrayLists = new ArrayList<>();
@@ -197,10 +185,27 @@ public class FragmentChat extends SideRecyclerFragment {
         sendButton = rootView.findViewById(R.id.sendButton);
     }
 
+    @CallSuper
     @Override
-    public void initViews() {
-        super.initViews();
-        new ItemTouchHelper(new ReplySwipeCallback(miracleApp, position -> Log.d("ABOBA","SWIPED")))
+    public void initViews(@NonNull View rootView, @Nullable Bundle savedInstanceState){
+        super.initViews(rootView, savedInstanceState);
+
+        switch (conversationItem.getPeer().getType()){
+            case "user":{
+                updateAndSetFromUser();
+                break;
+            }
+            case "group":{
+                updateAndSetFromGroup();
+                break;
+            }
+            case "chat": {
+                updateAndSetFromChat();
+                break;
+            }
+        }
+
+        new ItemTouchHelper(new ReplySwipeCallback(mainApp, position -> Log.d("ABOBA","SWIPED")))
                 .attachToRecyclerView(getRecyclerView());
 
         TextWatcher textWatcher = new TextWatcher() {
@@ -217,7 +222,7 @@ public class FragmentChat extends SideRecyclerFragment {
                             sendButton.getAnimation().cancel();
                         }
 
-                        animateSendButton(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_send_28, miracleApp.getTheme()));
+                        animateSendButton(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_send_28, mainApp.getTheme()));
 
                         sendButton.setOnClickListener(view -> {
                             final String message = getTrimmed(messageEditText);
@@ -227,7 +232,7 @@ public class FragmentChat extends SideRecyclerFragment {
                                     try {
                                         Response<JSONObject> response =  message().send(conversationItem.getPeer().getId(),
                                                 message, null,null,
-                                                System.currentTimeMillis(),userItem.getAccessToken(),latest_api_v).execute();
+                                                System.currentTimeMillis(), user.getAccessToken(),latest_api_v).execute();
                                         JSONObject jsonObject = validateBody(response);
                                         int message_id = jsonObject.getInt("response");
                                     } catch (Exception e) {
@@ -250,7 +255,7 @@ public class FragmentChat extends SideRecyclerFragment {
                             sendButton.getAnimation().cancel();
                         }
 
-                        animateSendButton(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_voice_28, miracleApp.getTheme()));
+                        animateSendButton(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_voice_28, mainApp.getTheme()));
 
                         sendButton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -323,9 +328,9 @@ public class FragmentChat extends SideRecyclerFragment {
                     @Override
                     public void func() {
                         if(isText) {
-                            updateConversationMessageTyping(miracleApp.getString(R.string.formatted_typing), typingIds, true);
+                            updateConversationMessageTyping(mainApp.getString(R.string.formatted_typing), typingIds, true);
                         } else {
-                            updateConversationMessageTyping(miracleApp.getString(R.string.formatted_typing_audio), typingIds, false);
+                            updateConversationMessageTyping(mainApp.getString(R.string.formatted_typing_audio), typingIds, false);
                         }
                         onComplete();
                     }
@@ -342,7 +347,7 @@ public class FragmentChat extends SideRecyclerFragment {
                                 @Override
                                 public ProfileItem inBackground() {
                                     try {
-                                        Response<JSONObject> response = Users.getWithMessageFields(ownerId, userItem.getAccessToken()).execute();
+                                        Response<JSONObject> response = Users.getWithMessageFields(ownerId, user.getAccessToken()).execute();
                                         JSONObject jo_response = validateBody(response);
                                         JSONArray profiles = jo_response.getJSONArray("response");
 
@@ -421,7 +426,7 @@ public class FragmentChat extends SideRecyclerFragment {
 
     private void updateConversation() throws Exception {
         Response<JSONObject> response =  Message.getConversationById(conversationItem.getPeer().getId(),
-                userItem.getAccessToken()).execute();
+                user.getAccessToken()).execute();
 
         JSONObject jsonObject = validateBody(response).getJSONObject("response");
 
@@ -470,7 +475,7 @@ public class FragmentChat extends SideRecyclerFragment {
 
     private void setInfoFromChat(ChatSettings chatSettings){
         if(chatSettings.getPhoto200().isEmpty()){
-            ColorDrawable colorDrawable = new ColorDrawable(getColorByAttributeId(miracleApp, R.attr.colorSecondary));
+            ColorDrawable colorDrawable = new ColorDrawable(getColorByAttributeId(mainApp, R.attr.colorSecondary));
             imageView.setImageDrawable(colorDrawable);
 
             if(imageText ==null) {
@@ -493,7 +498,7 @@ public class FragmentChat extends SideRecyclerFragment {
     }
 
     private void setStatusFromChat(ChatSettings chatSettings){
-        setStatus(getMembersDeclensions(miracleApp, chatSettings.getMembersCount()));
+        setStatus(getMembersDeclensions(mainApp, chatSettings.getMembersCount()));
     }
 
     //
@@ -533,7 +538,7 @@ public class FragmentChat extends SideRecyclerFragment {
     }
 
     private void setStatusFromGroup(){
-        setStatus(miracleApp.getString(R.string.group));
+        setStatus(mainApp.getString(R.string.group));
     }
 
     //
@@ -588,11 +593,11 @@ public class FragmentChat extends SideRecyclerFragment {
 
     private void setStatusFromUser(ProfileItem profileItem){
         if(profileItem.isOnline()){
-            setStatus(miracleApp.getString(R.string.online));
+            setStatus(mainApp.getString(R.string.online));
         } else {
             if(profileItem.getLastSeen()!=null) {
                 LastSeen lastSeen = profileItem.getLastSeen();
-                setStatus(TimeUtil.getOnlineDateString(miracleApp, lastSeen.getTime(), profileItem.getSex()));
+                setStatus(TimeUtil.getOnlineDateString(mainApp, lastSeen.getTime(), profileItem.getSex()));
             }
         }
     }
@@ -717,6 +722,7 @@ public class FragmentChat extends SideRecyclerFragment {
 
     @Override
     public void readSavedInstance(Bundle savedInstanceState) {
+        super.readSavedInstance(savedInstanceState);
         String key = savedInstanceState.getString("conversationItem");
         if(key!=null){
             conversationItem = (ConversationItem) LargeDataStorage.get().getLargeData(key);

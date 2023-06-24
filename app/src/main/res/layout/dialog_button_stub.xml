@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.miracle.button.TextViewButton
+<com.miracle.widget.ExtendedMaterialButton
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="12dp"
-    android:textAlignment="textStart"
-    android:textAppearance="@style/ButtonTextAppearance"
-    android:background="@drawable/rounded_ripple"
-    app:ripple_alpha="0.1"
-    app:text_color="?android:attr/textColor"
-    app:icon_start_gravity="start"
-    app:icon_spacing="12dp"
-    app:icon_start_color="?attr/colorPrimary"
-    app:icon_end_color="?attr/colorPrimary"
-    app:icon_end_gravity="end"
-    tools:icon_start="@drawable/ic_microphone_28"
-    tools:icon_end="@drawable/ic_chevron_24"
-    tools:text="@string/go_to_artist"/>
+    android:gravity="center_vertical"
+    android:textColor="?android:attr/textColor"
+    app:iconPadding="12dp"
+    app:shapeAppearance="@style/ChildShapeAppearance"
+    tools:iconRight="@drawable/ic_chevron_24"
+    tools:iconLeft="@drawable/ic_microphone_28"
+    tools:text="@string/go_to_artist"
+    style="@style/TextButton2"/>

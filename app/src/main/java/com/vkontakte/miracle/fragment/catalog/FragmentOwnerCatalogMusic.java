@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.vkontakte.miracle.adapter.catalog.CatalogSectionAdapter;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.network.methods.Catalog;
+import com.vkontakte.miracle.network.api.Catalog;
 
-public class FragmentOwnerCatalogMusic extends AFragmentCatalogSection {
+public class FragmentOwnerCatalogMusic extends ARecyclerFragmentCatalogSection {
 
     private String ownerId;
 

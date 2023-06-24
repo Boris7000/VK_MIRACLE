@@ -7,10 +7,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.vkontakte.miracle.MiracleApp;
+import com.vkontakte.miracle.MainApp;
+import com.vkontakte.miracle.model.users.User;
 import com.vkontakte.miracle.service.longpoll.model.MessageAddedUpdate;
 import com.vkontakte.miracle.service.longpoll.model.MessageReadUpdate;
-import com.vkontakte.miracle.model.users.ProfileItem;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,10 +37,11 @@ public class StorageUtil {
     private final String LOG_TAG = "StorageUtil";
 
     private static StorageUtil instance;
-    private ProfileItem currentUser;
+    private User currentUser;
 
     public StorageUtil(){
         instance = this;
+        initializePublicDirectories();
         updateCurrentUser();
     }
 
@@ -64,12 +65,12 @@ public class StorageUtil {
     ////////////////////////////////////////////////////
 
     public void initializePublicDirectories(){
-        File cachesDir = createNewDirectory(CACHES_NAME_PUBLIC,MiracleApp.getInstance().getFilesDir());
+        File cachesDir = createNewDirectory(CACHES_NAME_PUBLIC, MainApp.getInstance().getFilesDir());
         createNewFile(USERS_NAME, cachesDir);
     }
 
     public void initializeDirectories(){
-        File cachesDir = createNewDirectory(getCurrentUserCachesPath(),MiracleApp.getInstance().getFilesDir());
+        File cachesDir = createNewDirectory(getCurrentUserCachesPath(), MainApp.getInstance().getFilesDir());
 
         createNewFile(SONGS_NAME, cachesDir);
 
@@ -107,6 +108,7 @@ public class StorageUtil {
             if(fileOutputStream!=null) {
                 fileOutputStream.writeObject(object);
                 fileOutputStream.close();
+                Log.d(LOG_TAG, "Write success "+object);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -169,11 +171,11 @@ public class StorageUtil {
     }
 
     @Nullable
-    public String getUserCachesPath(@Nullable ProfileItem profileItem){
-        if(profileItem==null){
+    public String getUserCachesPath(@Nullable User user){
+        if(user==null){
             return null;
         } else {
-            return String.format(Locale.getDefault(), CACHES_NAME, profileItem.getId());
+            return String.format(Locale.getDefault(), CACHES_NAME, user.getId());
         }
     }
 
@@ -183,23 +185,23 @@ public class StorageUtil {
         if(currentUserCachesPath==null){
             return null;
         } else {
-            return new File(MiracleApp.getInstance().getFilesDir(), currentUserCachesPath);
+            return new File(MainApp.getInstance().getFilesDir(), currentUserCachesPath);
         }
     }
 
     @Nullable
-    public File getUserCachesDir(@Nullable ProfileItem profileItem){
-        String userCachesPath = getUserCachesPath(profileItem);
+    public File getUserCachesDir(@Nullable User user){
+        String userCachesPath = getUserCachesPath(user);
         if(userCachesPath==null){
           return null;
         } else {
-            return new File(MiracleApp.getInstance().getFilesDir(), userCachesPath);
+            return new File(MainApp.getInstance().getFilesDir(), userCachesPath);
         }
     }
 
     @NonNull
     private File getPublicCachesDir(){
-        return new File(MiracleApp.getInstance().getFilesDir(), CACHES_NAME_PUBLIC);
+        return new File(MainApp.getInstance().getFilesDir(), CACHES_NAME_PUBLIC);
     }
 
     ////////////////////////////////////////////////////
@@ -226,22 +228,26 @@ public class StorageUtil {
 
     @Nullable
     private ObjectOutputStream getOutputStream(@Nullable String filename, @Nullable File parent) throws IOException {
-        if(filename==null||parent==null){
-            return null;
-        } else {
-            FileOutputStream fileOutputStream = new FileOutputStream(new File(parent,filename));
-            return new ObjectOutputStream(fileOutputStream);
+        if(filename!=null&&parent!=null) {
+            File file = new File(parent, filename);
+            if (file.isFile()) {
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                return new ObjectOutputStream(fileOutputStream);
+            }
         }
+        return null;
     }
 
     @Nullable
     private ObjectInputStream getInputStream(@Nullable String filename, @Nullable File parent) throws IOException {
-        if(filename==null||parent==null){
-            return null;
-        } else {
-            FileInputStream fileInputStream = new FileInputStream(new File(parent, filename));
-            return new ObjectInputStream(fileInputStream);
+        if(filename!=null&&parent!=null) {
+            File file = new File(parent, filename);
+            if (file.isFile() && file.length() > 0) {
+                FileInputStream fileInputStream = new FileInputStream(file);
+                return new ObjectInputStream(fileInputStream);
+            }
         }
+        return null;
     }
 
     ////////////////////////////////////////////////////
@@ -251,27 +257,27 @@ public class StorageUtil {
     }
 
     @Nullable
-    public ProfileItem loadCurrentUser(){
-        ArrayList<ProfileItem> profileItems = loadUsers();
-        if(profileItems.isEmpty()){
+    public User loadCurrentUser(){
+        ArrayList<User> users = loadUsers();
+        if(users.isEmpty()){
             return null;
         } else {
-            return profileItems.get(0);
+            return users.get(0);
         }
     }
 
     @NonNull
-    public ArrayList<ProfileItem> loadUsers(){
-        return new ArrayListReader<ProfileItem>(this)
-                .read(USERS_NAME, getPublicCachesDir(), object -> (ProfileItem) object);
+    public ArrayList<User> loadUsers(){
+        return new ArrayListReader<User>(instance)
+                .read(USERS_NAME, getPublicCachesDir(), object -> (User) object);
     }
 
-    public ProfileItem currentUser(){
+    public User currentUser(){
         return currentUser;
     }
 
-    public void saveUsers(ArrayList<ProfileItem> profileItems){
-        writeObject(USERS_NAME, getPublicCachesDir(), profileItems);
+    public void saveUsers(ArrayList<User> users){
+        writeObject(USERS_NAME, getPublicCachesDir(), users);
         updateCurrentUser();
     }
 
@@ -404,7 +410,7 @@ public class StorageUtil {
 
     @NonNull
     public ArrayList<MessageAddedUpdate> loadMessageAddedLongPollUpdates(File parent){
-        return new ArrayListReader<MessageAddedUpdate>(this)
+        return new ArrayListReader<MessageAddedUpdate>(instance)
                 .read(MESSAGE_ADDED_LONG_POLL_UPDATES_NAME, parent, object -> (MessageAddedUpdate) object);
     }
 
@@ -428,7 +434,7 @@ public class StorageUtil {
 
     @NonNull
     public ArrayList<MessageReadUpdate> loadMessageReadLongPollUpdates(File parent){
-        return new ArrayListReader<MessageReadUpdate>(this)
+        return new ArrayListReader<MessageReadUpdate>(instance)
                 .read(MESSAGE_READ_LONG_POLL_UPDATES_NAME, parent, object -> (MessageReadUpdate) object);
     }
 

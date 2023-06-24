@@ -1,5 +1,7 @@
 package com.vkontakte.miracle.engine.util;
 
+import static com.vkontakte.miracle.engine.util.NavigationUtil.hardResolveVKURL;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -21,8 +23,10 @@ import retrofit2.Response;
 public class NetworkUtil {
 
     public static void openURLInBrowser(String url, Context context){
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        context.startActivity(browserIntent);
+        if(!hardResolveVKURL(url, context)){
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            context.startActivity(browserIntent);
+        }
     }
 
     public static void CheckConnection(int timeOutMs) throws Exception {
@@ -32,44 +36,50 @@ public class NetworkUtil {
         socket.close();
     }
 
+    private static final String unknownError = "Error without description.\nhahaha, VK moment...\n\uD83D\uDE02\uD83E\uDD23\uD83D\uDE06\uD83D\uDE02\uD83E\uDD23\uD83D\uDE06\uD83D\uDE02\uD83E\uDD23\uD83D\uDE06";
+
     @NonNull
     public static JSONObject validateBody(Response<JSONObject> response) throws Exception {
-        if(response.errorBody()!=null||response.body()==null){
-            throwError(response);
-            return new JSONObject();
-        }
-        JSONObject jsonObject = response.body();
-        if(jsonObject.has("response")&&(jsonObject.get("response") instanceof JSONObject)) {
-            JSONObject jo_response = jsonObject.getJSONObject("response");
-            if (jo_response.has("error")) {
-                throwError(response);
-                return new JSONObject();
-            }
-        }
-        return jsonObject;
-    }
-
-
-    public static void throwError(Response<JSONObject> response) throws Exception {
-        JSONObject jsonObject;
-        if (response.errorBody() != null) {
-            jsonObject = new JSONObject(response.errorBody().string());
-            if(jsonObject.has("error_description")){
-                throw new Exception(jsonObject.getString("error_description"));
+        if(response.errorBody()==null&&response.body()!=null) {
+            JSONObject jsonObject = response.body();
+            if (jsonObject.has("response")) {
+                if((jsonObject.get("response") instanceof JSONObject)) {
+                    JSONObject jo_response = jsonObject.getJSONObject("response");
+                    if (jo_response.has("error")) {
+                        if (jsonObject.has("error_description")) {
+                            throwError(jsonObject.getString("error_description"));
+                        } else {
+                            throwError(unknownError);
+                        }
+                    }
+                }
+                return jsonObject;
             } else {
-                throw new Exception("Error without description.\nhahaha, VK moment...\n\uD83D\uDE02\uD83E\uDD23\uD83D\uDE06\uD83D\uDE02\uD83E\uDD23\uD83D\uDE06\uD83D\uDE02\uD83E\uDD23\uD83D\uDE06");
+                if (jsonObject.has("error") && (jsonObject.get("error") instanceof JSONObject)) {
+                    JSONObject jo_error = jsonObject.getJSONObject("error");
+                    if (jo_error.has("error_msg")) {
+                        throwError(jo_error.getString("error_msg"));
+                    } else {
+                        throwError(unknownError);
+                    }
+                }
             }
         } else {
-            jsonObject = response.body();
-            if(jsonObject!=null&&jsonObject.has("response")&&(jsonObject.get("response") instanceof JSONObject)){
-                jsonObject = jsonObject.getJSONObject("response");
-                if(jsonObject.has("error_description")){
-                    throw new Exception(jsonObject.getString("error_description"));
+            if(response.errorBody()!=null){
+                JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                if (jsonObject.has("error_description")) {
+                    throwError(jsonObject.getString("error_description"));
                 } else {
-                    throw new Exception("Error without description.\nhahaha, VK moment...\n\uD83D\uDE02\uD83E\uDD23\uD83D\uDE06\uD83D\uDE02\uD83E\uDD23\uD83D\uDE06\uD83D\uDE02\uD83E\uDD23\uD83D\uDE06");
+                    throwError(unknownError);
                 }
             }
         }
+        return new JSONObject();
+    }
+
+
+    public static void throwError(String errorMsg) throws Exception{
+        throw new Exception(errorMsg);
     }
 
     public static void logError(Exception e){ Log.i("API_error", e.toString()); }

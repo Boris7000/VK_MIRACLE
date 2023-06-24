@@ -1,6 +1,6 @@
 package com.vkontakte.miracle.login;
 
-import static com.vkontakte.miracle.engine.util.AdapterUtil.getHorizontalLayoutManager;
+import static com.miracle.engine.util.AdapterUtil.getHorizontalLayoutManager;
 import static com.vkontakte.miracle.engine.util.StringsUtil.getTrimmed;
 import static com.vkontakte.miracle.network.Constants.fake_receipt;
 
@@ -29,14 +29,14 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.miracle.button.TextViewButton;
-import com.vkontakte.miracle.MiracleApp;
+import com.miracle.engine.util.ColorUtil;
+import com.miracle.engine.util.DimensionsUtil;
+import com.miracle.widget.ExtendedMaterialButton;
+import com.vkontakte.miracle.MainApp;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.login.AccountsAdapter;
-import com.vkontakte.miracle.engine.util.ColorUtil;
-import com.vkontakte.miracle.engine.util.DimensionsUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.model.users.ProfileItem;
+import com.vkontakte.miracle.model.users.User;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 
@@ -54,15 +54,15 @@ public class LoginActivity extends AppCompatActivity {
     private ViewStub validationCodeFrameStub;
     private CaptchaCodeFrame captchaCodeFrame;
     private ViewStub captchaCodeFrameStub;
-    private MiracleApp miracleApp;
+    private MainApp mainApp;
     private boolean canLogin = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
 
-        miracleApp = (MiracleApp) getApplication();
+        mainApp = (MainApp) getApplication();
 
-        setTheme(miracleApp.getThemeRecourseId());
+        setTheme(mainApp.getThemeRecourseId());
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
         ScrollView rootView = findViewById(R.id.rootView);
 
-        getWindow().getDecorView().setBackgroundColor(ColorUtil.getColorByAttributeId(getTheme(),R.attr.colorSurfaceVariant));
+        getWindow().getDecorView().setBackgroundColor(ColorUtil.getColorByAttributeId(getTheme(),R.attr.colorBackgroundDark));
 
         ViewCompat.setOnApplyWindowInsetsListener(getWindow().getDecorView(), (v, windowInsets) -> {
             Insets systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 
         frameContainer = rootView.findViewById(R.id.frameContainer);
         loginFrame = frameContainer.findViewById(R.id.loginFrame);
-        TextViewButton loginButton = loginFrame.findViewById(R.id.loginButton);
+        ExtendedMaterialButton loginButton = loginFrame.findViewById(R.id.loginButton);
         loginField = loginFrame.findViewById(R.id.loginField);
         passField = loginFrame.findViewById(R.id.passField);
         validationCodeFrameStub = frameContainer.findViewById(R.id.validationCodeFrameStub);
@@ -130,7 +130,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
             @Override
             public void afterTextChanged(Editable editable) {
-                loginButton.setEnabled(getTrimmed(loginField).length()>0 && getTrimmed(passField).length()>0,true);
+                loginButton.setToggled(true);
+                loginButton.setEnabled(getTrimmed(loginField).length()>0 && getTrimmed(passField).length()>0);
             }
         };
         loginField.addTextChangedListener(textWatcher);
@@ -172,8 +173,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         StorageUtil storageUtil = StorageUtil.get();
-        storageUtil.initializePublicDirectories();
-        ArrayList<ProfileItem> accounts = storageUtil.loadUsers();
+        ArrayList<User> accounts = storageUtil.loadUsers();
         AccountsAdapter accountsAdapter = new AccountsAdapter(accounts, this);
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(getHorizontalLayoutManager(this));
@@ -196,7 +196,7 @@ public class LoginActivity extends AppCompatActivity {
     private void startLogin(String login, String pass){
         if(canLogin) {
             canLogin = false;
-            miracleApp.getFCMToken(task -> {
+            mainApp.getFCMToken(task -> {
                 String receipt;
                 if (task.isSuccessful()) {
                     receipt = task.getResult();
@@ -342,7 +342,7 @@ public class LoginActivity extends AppCompatActivity {
         this.canLogin = canLogin;
     }
 
-    public MiracleApp getMiracleApp() {
-        return miracleApp;
+    public MainApp getMiracleApp() {
+        return mainApp;
     }
 }

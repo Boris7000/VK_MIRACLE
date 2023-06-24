@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_checked="true" android:drawable="@drawable/radio_item_checked" />
-    <item android:state_checked="false" android:drawable="@drawable/radio_item_normal" />
-</selector>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <stroke
+        android:width="2dp"
+        android:color="@color/white"/>
+    <solid
+        android:color="@android:color/transparent"/>
+    <corners android:radius="@dimen/child_round" />
+    <padding
+        android:left="12dp"
+        android:right="12dp"/>
+</shape>

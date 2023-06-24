@@ -1,7 +1,5 @@
 package com.vkontakte.miracle.model.catalog.fields;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,11 +33,10 @@ public class CatalogLayout {
 
     public CatalogLayout(JSONObject jsonObject) throws JSONException {
 
-        Log.d("suchushcus",jsonObject.toString());
-
         name = jsonObject.getString("name");
 
         switch (name){
+            case "list_friend_suggests":
             case "music_chart_list":
             case "large_list":
             case "list":{

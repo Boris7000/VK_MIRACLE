@@ -6,114 +6,71 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/likesHolder"
+        <com.miracle.widget.ExtendedMaterialButton
+            android:id="@+id/likeButton"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:minWidth="52dp"
-            android:gravity="center"
-            android:background="@drawable/rounded_button_neutral"
-            android:paddingHorizontal="9dp">
+            android:layout_marginEnd="12dp"
+            android:paddingVertical="0dp"
+            android:paddingHorizontal="12dp"
+            android:minWidth="48dp"
+            android:drawablePadding="12dp"
+            android:checkable="true"
+            android:gravity="center_vertical"
+            android:animationDuration="800"
+            app:toggleCheckedStateOnClick="false"
+            app:iconPadding="12dp"
+            app:iconLeft="@drawable/ic_like_24_anim"
+            app:iconLeftStickingToText="false"
+            app:shapeAppearance="@style/ChildShapeAppearance"
+            style="@style/LikeTonalButton" />
 
-            <ImageView
-                android:id="@+id/likesIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_like_24"
-                app:tint="?attr/colorOnButtonNeutral" />
-
-            <TextView
-                android:id="@+id/likesText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="?attr/colorOnButtonNeutral"
-                android:textSize="13sp"
-                android:visibility="gone"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/commentsHolder"
+        <com.miracle.widget.ExtendedMaterialButton
+            android:id="@+id/commentButton"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
+            android:layout_marginEnd="12dp"
+            android:paddingVertical="0dp"
+            android:paddingHorizontal="12dp"
             android:minWidth="52dp"
-            android:layout_marginStart="8dp"
-            android:gravity="center"
-            android:background="@drawable/rounded_button_neutral"
-            android:paddingHorizontal="9dp">
+            android:drawablePadding="12dp"
+            app:iconPadding="12dp"
+            app:iconLeft="@drawable/ic_comments_24"
+            app:iconLeftStickingToText="true"
+            app:shapeAppearance="@style/ChildShapeAppearance"
+            tools:text="225"
+            style="@style/NeutralTonalButton" />
 
-            <ImageView
-                android:id="@+id/commentsIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                app:srcCompat="@drawable/ic_comments_24"
-                app:tint="?attr/colorOnButtonNeutral"/>
-            <TextView
-                android:id="@+id/commentsText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="?attr/colorOnButtonNeutral"
-                android:textSize="13sp"
-                android:visibility="gone"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/repostsHolder"
+        <com.miracle.widget.ExtendedMaterialButton
+            android:id="@+id/repostButton"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
+            android:paddingVertical="0dp"
+            android:paddingHorizontal="12dp"
             android:minWidth="52dp"
-            android:layout_marginStart="8dp"
-            android:gravity="center"
-            android:background="@drawable/rounded_button_neutral"
-            android:paddingHorizontal="9dp">
+            android:drawablePadding="12dp"
+            app:iconPadding="12dp"
+            app:iconLeft="@drawable/ic_share_24"
+            app:iconLeftStickingToText="true"
+            app:shapeAppearance="@style/ChildShapeAppearance"
+            tools:text="225"
+            style="@style/NeutralTonalButton" />
 
-            <ImageView
-                android:id="@+id/repostsIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                app:srcCompat="@drawable/ic_share_24"
-                app:tint="?attr/colorOnButtonNeutral"/>
-            <TextView
-                android:id="@+id/repostsText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="?attr/colorOnButtonNeutral"
-                android:textSize="13sp"
-                android:visibility="gone"/>
-        </LinearLayout>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/viewsHolder"
+    <com.miracle.widget.ExtendedTextView
+        android:id="@+id/viewsCounter"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:layout_gravity="end"
-        android:gravity="center_vertical">
-        <TextView
-            android:id="@+id/viewsText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:fontFamily="sans-serif-medium"
-            android:textColor="?attr/colorEmphasis_50"
-            android:textSize="13sp"
-            tools:text="252"/>
-
-        <ImageView
-            android:id="@+id/viewsIcon"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            app:srcCompat="@drawable/ic_views_outline_28"
-            app:tint="?attr/colorEmphasis_50" />
-
-    </LinearLayout>
+        android:gravity="center_vertical"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="?attr/colorEmphasis_50"
+        android:textSize="13sp"
+        android:drawablePadding="4dp"
+        app:iconRight="@drawable/ic_views_outline_28"
+        app:iconRightTint="?attr/colorEmphasis_50"
+        tools:text="252"/>
 
 </merge>

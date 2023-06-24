@@ -20,6 +20,70 @@
     <attr name="shapeAppearanceOverlay" format="reference"/>
     <attr name="icon_spacing" format="dimension"/>
 
+
+    <declare-styleable name="Button2">
+        <attr name="android:gravity"/>
+        <attr format="reference" name="shapeAppearance"/>
+        <attr name="android:textAppearance"/>
+
+        <attr name="android:background"/>
+        <attr format="color" name="android:backgroundTint"/>
+
+        <attr format="color" name="drawableTopTint"/>
+        <attr name="drawableTopTintMode">
+            <enum name="src_over" value="3"/>
+            <enum name="src_in" value="5"/>
+            <enum name="src_atop" value="9"/>
+            <enum name="multiply" value="14"/>
+            <enum name="screen" value="15"/>
+            <enum name="add" value="16"/>
+        </attr>
+
+        <attr format="color" name="drawableBottomTint"/>
+        <attr name="drawableBottomTintMode">
+            <enum name="src_over" value="3"/>
+            <enum name="src_in" value="5"/>
+            <enum name="src_atop" value="9"/>
+            <enum name="multiply" value="14"/>
+            <enum name="screen" value="15"/>
+            <enum name="add" value="16"/>
+        </attr>
+
+        <attr format="color" name="drawableLeftTint"/>
+        <attr name="drawableLeftTintMode">
+            <enum name="src_over" value="3"/>
+            <enum name="src_in" value="5"/>
+            <enum name="src_atop" value="9"/>
+            <enum name="multiply" value="14"/>
+            <enum name="screen" value="15"/>
+            <enum name="add" value="16"/>
+        </attr>
+
+        <attr format="color" name="drawableRightTint"/>
+        <attr name="drawableRightTintMode">
+            <enum name="src_over" value="3"/>
+            <enum name="src_in" value="5"/>
+            <enum name="src_atop" value="9"/>
+            <enum name="multiply" value="14"/>
+            <enum name="screen" value="15"/>
+            <enum name="add" value="16"/>
+        </attr>
+
+        <attr format="color" name="android:drawableTint"/>
+        <attr name="android:drawableTintMode">
+            <enum name="src_over" value="3"/>
+            <enum name="src_in" value="5"/>
+            <enum name="src_atop" value="9"/>
+            <enum name="multiply" value="14"/>
+            <enum name="screen" value="15"/>
+            <enum name="add" value="16"/>
+        </attr>
+
+        <attr name="android:checked"/>
+        <attr name="android:enabled"/>
+
+    </declare-styleable>
+
     <declare-styleable name="SwitchButton">
         <attr name="icon_color"/>
         <attr name="disabled_icon_color"/>

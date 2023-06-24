@@ -1,20 +1,21 @@
 package com.vkontakte.miracle.network;
 
 import com.vkontakte.miracle.network.converter.JSONConverterFactory;
-import com.vkontakte.miracle.network.methods.apis.IAccount;
-import com.vkontakte.miracle.network.methods.apis.IAudio;
-import com.vkontakte.miracle.network.methods.apis.ICatalog;
-import com.vkontakte.miracle.network.methods.apis.IExecute;
-import com.vkontakte.miracle.network.methods.apis.IFriends;
-import com.vkontakte.miracle.network.methods.apis.IGroups;
-import com.vkontakte.miracle.network.methods.apis.ILikes;
-import com.vkontakte.miracle.network.methods.apis.ILongPoll;
-import com.vkontakte.miracle.network.methods.apis.IMessage;
-import com.vkontakte.miracle.network.methods.apis.IOauth;
-import com.vkontakte.miracle.network.methods.apis.IPhotos;
-import com.vkontakte.miracle.network.methods.apis.IUsers;
-import com.vkontakte.miracle.network.methods.apis.IUtils;
-import com.vkontakte.miracle.network.methods.apis.IWall;
+import com.vkontakte.miracle.network.api.services.IAccount;
+import com.vkontakte.miracle.network.api.services.IAudio;
+import com.vkontakte.miracle.network.api.services.ICatalog;
+import com.vkontakte.miracle.network.api.services.IExecute;
+import com.vkontakte.miracle.network.api.services.IFriends;
+import com.vkontakte.miracle.network.api.services.IGroups;
+import com.vkontakte.miracle.network.api.services.ILikes;
+import com.vkontakte.miracle.network.api.services.ILongPoll;
+import com.vkontakte.miracle.network.api.services.IMessage;
+import com.vkontakte.miracle.network.api.services.IOauth;
+import com.vkontakte.miracle.network.api.services.IPhotos;
+import com.vkontakte.miracle.network.api.services.IStats;
+import com.vkontakte.miracle.network.api.services.IUsers;
+import com.vkontakte.miracle.network.api.services.IUtils;
+import com.vkontakte.miracle.network.api.services.IWall;
 
 import java.util.concurrent.TimeUnit;
 
@@ -102,5 +103,8 @@ public class Creator {
     }
     public static IUtils utils(){
         return getBuilder().create(IUtils.class);
+    }
+    public static IStats stats(){
+        return getBuilder().create(IStats.class);
     }
 }

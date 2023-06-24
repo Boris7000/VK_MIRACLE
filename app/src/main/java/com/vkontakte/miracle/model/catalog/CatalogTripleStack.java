@@ -1,8 +1,8 @@
 package com.vkontakte.miracle.model.catalog;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_TRIPLE_STACKED;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_TRIPLE_STACKED;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 
 import java.util.ArrayList;
 

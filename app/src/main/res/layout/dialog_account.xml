@@ -55,20 +55,23 @@
 
         </LinearLayout>
 
-        <com.miracle.button.TextViewButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/deleteButton"
-            style="@style/TextButton.PrimaryButton"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="@string/delete" />
+            android:text="@string/delete"
+            app:shapeAppearance="@style/ChildShapeAppearance"
+            style="@style/Button"/>
 
-        <com.miracle.button.TextViewButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/cancelButton"
-            style="@style/TextButton.SecondaryButton"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="@string/cancel" />
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            app:shapeAppearance="@style/ChildShapeAppearance"
+            style="@style/TonalButton"/>
+
     </LinearLayout>
 
 </FrameLayout>

@@ -1,15 +1,14 @@
 package com.vkontakte.miracle;
 
-import static com.vkontakte.miracle.engine.util.ImageUtil.bitmapFromLayerDrawable;
-import static com.vkontakte.miracle.engine.util.ImageUtil.getAverageHSLFromBitmap;
-import static com.vkontakte.miracle.engine.util.UIUtil.clearLightStatusBar;
-import static com.vkontakte.miracle.engine.util.UIUtil.setLightStatusBar;
-import static com.vkontakte.miracle.engine.view.ActivityRootView.STATE_AUDIO;
-import static com.vkontakte.miracle.engine.view.ActivityRootView.STATE_CLEAR;
-import static com.vkontakte.miracle.engine.view.ActivityRootView.STATE_STANDARD;
-import static com.vkontakte.miracle.engine.view.ActivityRootView.TYPE_LAND;
-import static com.vkontakte.miracle.engine.view.ActivityRootView.TYPE_PORTRAIT;
-import static com.vkontakte.miracle.engine.view.ActivityRootView.TYPE_TABLET;
+import static com.miracle.engine.util.ImageUtil.bitmapFromLayerDrawable;
+import static com.miracle.engine.util.ImageUtil.getAverageHSLFromBitmap;
+import static com.miracle.engine.util.UIUtil.clearLightStatusBar;
+import static com.miracle.engine.util.UIUtil.setLightStatusBar;
+import static com.miracle.engine.view.ActivityRootView.STATE_CLEAR;
+import static com.miracle.engine.view.ActivityRootView.STATE_STANDARD;
+import static com.miracle.engine.view.ActivityRootView.TYPE_LAND;
+import static com.miracle.engine.view.ActivityRootView.TYPE_PORTRAIT;
+import static com.miracle.engine.view.ActivityRootView.TYPE_TABLET;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
@@ -18,6 +17,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -35,19 +35,19 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationBarView;
+import com.miracle.engine.activity.tabs.TabsActivity;
+import com.miracle.engine.activity.tabs.TabsActivityController;
+import com.miracle.engine.async.AsyncExecutor;
+import com.miracle.engine.fragment.FragmentFabric;
+import com.miracle.engine.fragment.tabs.adapters.SimpleTabsAdapter;
+import com.miracle.engine.view.TabsFragmentContainer;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
-import com.vkontakte.miracle.engine.activity.tabs.TabsActivity;
-import com.vkontakte.miracle.engine.activity.tabs.TabsActivityController;
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
-import com.vkontakte.miracle.engine.fragment.FragmentFabric;
-import com.vkontakte.miracle.engine.fragment.tabs.adapters.SimpleTabsAdapter;
 import com.vkontakte.miracle.engine.picasso.ATarget;
 import com.vkontakte.miracle.engine.util.IMEUtil;
 import com.vkontakte.miracle.engine.util.LargeDataStorage;
 import com.vkontakte.miracle.engine.util.SettingsUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.engine.view.fragmentContainer.TabsFragmentContainer;
 import com.vkontakte.miracle.fragment.base.FragmentDialogs;
 import com.vkontakte.miracle.fragment.base.FragmentFeed;
 import com.vkontakte.miracle.fragment.base.FragmentMenu;
@@ -60,16 +60,17 @@ import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.fields.Album;
 import com.vkontakte.miracle.model.audio.fields.Photo;
 import com.vkontakte.miracle.service.longpoll.LongPollServiceController;
-import com.vkontakte.miracle.service.player.AOnPlayerEventListener;
-import com.vkontakte.miracle.service.player.AudioPlayerData;
-import com.vkontakte.miracle.service.player.OnPlayerEventListener;
-import com.vkontakte.miracle.service.player.PlayerServiceController;
+import com.vkontakte.miracle.service.player.AudioPlayerEventListener;
+import com.vkontakte.miracle.service.player.AudioPlayerMedia;
+import com.vkontakte.miracle.service.player.AudioPlayerServiceController;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends TabsActivity {
 
     ///Всякие плеерные дела
+    public static final int STATE_AUDIO = 2;
     private ViewStub playerBottomSheetStub;
     private FrameLayout playerBottomSheet;
     private BottomSheetBehavior<ViewStub> playerBottomSheetBehavior;
@@ -80,13 +81,14 @@ public class MainActivity extends TabsActivity {
     private int color;
     private Bitmap placeholderImage;
     private String previousImageUrl = "none";
-    private final OnPlayerEventListener onPlayerEventListener = new AOnPlayerEventListener() {
+    private final AudioPlayerEventListener audioPlayerEventListener = new AudioPlayerEventListener() {
         @Override
-        public void onSongChange(AudioPlayerData playerData, boolean animate) {
+        public void onMediaItemChange(AudioPlayerMedia audioPlayerMedia) {
             showingPlayer = true;
             showPlayerBottomSheet();
-            createTarget(playerData.getCurrentItem());
+            createTarget(audioPlayerMedia.getCurrentAudioItem());
         }
+
         @Override
         public void onPlayerClose() {
             showingPlayer = false;
@@ -101,11 +103,11 @@ public class MainActivity extends TabsActivity {
                 @Override
                 public Boolean inBackground() {
                     float[] hsl = getAverageHSLFromBitmap(bitmap);
-                    float[] hslEdited = new float[]{hsl[0],
-                            Math.min(hsl[1],0.52f), Math.max(Math.min(hsl[2],0.43f),0.18f)};
-                    if(Math.abs(hsl[2]-hslEdited[2])<0.035f){
-                        hslEdited[2]-=0.06f;
-                    }
+                    float[] hslEdited = new float[]{
+                            hsl[0],
+                            Math.min(hsl[1],0.65f),
+                            Math.max(Math.min(hsl[2], 0.50f), 0.18f),
+                    };
                     averageColor = ColorUtils.HSLToColor(hslEdited);
                     return true;
                 }
@@ -129,7 +131,7 @@ public class MainActivity extends TabsActivity {
 
         if(StorageUtil.get().currentUser()==null) {
             SettingsUtil.get().storeAuthorized(false);
-            Intent intent = new Intent(MiracleApp.getInstance(), LoginActivity.class);
+            Intent intent = new Intent(MainApp.getInstance(), LoginActivity.class);
             startActivity(intent);
             this.finish();
             return;
@@ -141,12 +143,12 @@ public class MainActivity extends TabsActivity {
 
         super.onCreate(savedInstanceState);
 
-        placeholderImage = bitmapFromLayerDrawable(MiracleApp.getInstance(),
+        placeholderImage = bitmapFromLayerDrawable(MainApp.getInstance(),
                 R.drawable.audio_placeholder_image_colored_large, 75, 75);
 
         restorePlayerBarState(savedInstanceState);
 
-        PlayerServiceController.get().addOnPlayerEventListener(onPlayerEventListener);
+        AudioPlayerServiceController.get().addOnPlayerEventListener(audioPlayerEventListener);
     }
 
     @Override
@@ -177,7 +179,7 @@ public class MainActivity extends TabsActivity {
                     }
                     case BottomSheetBehavior.STATE_EXPANDED:{
                         IMEUtil.hideKeyboard(MainActivity.this);
-                        if(!MiracleApp.getInstance().nightMode()) {
+                        if(!MainApp.getInstance().nightMode()) {
                             clearLightStatusBar(getWindow().getDecorView());
                         }
                         if(viewPager.getVisibility()!=View.VISIBLE) {
@@ -189,7 +191,7 @@ public class MainActivity extends TabsActivity {
                         break;
                     }
                     case BottomSheetBehavior.STATE_COLLAPSED:{
-                        if(!MiracleApp.getInstance().nightMode()) {
+                        if(!MainApp.getInstance().nightMode()) {
                             setLightStatusBar(getWindow().getDecorView());
                         }
                         if(viewPager.getVisibility()!=View.GONE) {
@@ -258,7 +260,7 @@ public class MainActivity extends TabsActivity {
                                     tabsFragmentContainer.getPaddingTop()!=systemBarsInsets.top) {
                                 tabsFragmentContainer.setPadding(
                                         tabsFragmentContainer.getPaddingLeft(),
-                                        systemBarsInsets.top,
+                                        0,//systemBarsInsets.top,
                                         tabsFragmentContainer.getPaddingRight(),
                                         bottomInsets);
                             }
@@ -277,7 +279,7 @@ public class MainActivity extends TabsActivity {
                                             tabsFragmentContainer.getPaddingTop() != systemBarsInsets.top) {
                                         tabsFragmentContainer.setPadding(
                                                 tabsFragmentContainer.getPaddingLeft(),
-                                                systemBarsInsets.top,
+                                                0,//systemBarsInsets.top,
                                                 tabsFragmentContainer.getPaddingRight(),
                                                 navigationBarView.getHeight());
                                     }
@@ -311,7 +313,7 @@ public class MainActivity extends TabsActivity {
                                             tabsFragmentContainer.getPaddingTop() != systemBarsInsets.top) {
                                         tabsFragmentContainer.setPadding(
                                                 tabsFragmentContainer.getPaddingLeft(),
-                                                systemBarsInsets.top,
+                                                0,//systemBarsInsets.top,
                                                 tabsFragmentContainer.getPaddingRight(),
                                                 playerBottomSheetBehavior.getPeekHeight());
                                     }
@@ -331,7 +333,7 @@ public class MainActivity extends TabsActivity {
                                             tabsFragmentContainer.getPaddingTop() != systemBarsInsets.top) {
                                         tabsFragmentContainer.setPadding(
                                                 tabsFragmentContainer.getPaddingLeft(),
-                                                systemBarsInsets.top,
+                                                0,//systemBarsInsets.top,
                                                 tabsFragmentContainer.getPaddingRight(),
                                                 playerBottomSheetBehavior.getPeekHeight());
                                     }
@@ -371,7 +373,7 @@ public class MainActivity extends TabsActivity {
                                     tabsFragmentContainer.getPaddingRight()!=systemBarsInsets.right) {
                                 tabsFragmentContainer.setPadding(
                                         systemBarsInsets.left,
-                                        systemBarsInsets.top,
+                                        0,//systemBarsInsets.top,
                                         systemBarsInsets.right,
                                         bottomInsets);
                             }
@@ -394,7 +396,7 @@ public class MainActivity extends TabsActivity {
                                             tabsFragmentContainer.getPaddingRight() != systemBarsInsets.right) {
                                         tabsFragmentContainer.setPadding(
                                                 navigationBarView.getWidth(),
-                                                systemBarsInsets.top,
+                                                0,//systemBarsInsets.top,
                                                 systemBarsInsets.right,
                                                 bottomInsets);
                                     }
@@ -458,7 +460,7 @@ public class MainActivity extends TabsActivity {
                                             tabsFragmentContainer.getPaddingRight() != systemBarsInsets.right) {
                                         tabsFragmentContainer.setPadding(
                                                 navigationBarView.getWidth(),
-                                                systemBarsInsets.top,
+                                                0,//systemBarsInsets.top,
                                                 systemBarsInsets.right,
                                                 playerBottomSheetBehavior.getPeekHeight());
                                     }
@@ -681,7 +683,7 @@ public class MainActivity extends TabsActivity {
 
     @Override
     protected void onDestroy() {
-        PlayerServiceController.get().removeOnPlayerEventListener(onPlayerEventListener);
+        AudioPlayerServiceController.get().removeOnPlayerEventListener(audioPlayerEventListener);
         super.onDestroy();
     }
 
@@ -709,10 +711,10 @@ public class MainActivity extends TabsActivity {
 
     public void exitFromAccount(){
         LongPollServiceController.get().actionStop();
-        PlayerServiceController.get().actionStop();
+        AudioPlayerServiceController.get().stop();
         SettingsUtil.get().storeAuthorized(false);//сброс индекса текущего пользователя
         new UnregisterDevice(this, StorageUtil.get().currentUser().getAccessToken()).start();
-        Intent intent = new Intent(MiracleApp.getInstance(), LoginActivity.class);
+        Intent intent = new Intent(MainApp.getInstance(), LoginActivity.class);
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.slide_in_reverse,R.anim.slide_out_reverse);

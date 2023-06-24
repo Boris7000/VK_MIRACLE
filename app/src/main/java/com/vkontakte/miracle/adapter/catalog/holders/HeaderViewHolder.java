@@ -11,15 +11,19 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.miracle.engine.adapter.MiracleAdapter;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.MiracleViewHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.engine.view.catalog.CatalogHeaderButton;
+import com.vkontakte.miracle.executors.catalog.ClearRecentGroups;
 import com.vkontakte.miracle.model.catalog.CatalogBlock;
 import com.vkontakte.miracle.model.catalog.fields.CatalogAction;
 import com.vkontakte.miracle.model.catalog.fields.CatalogLayout;
+
+import java.util.ArrayList;
 
 public class HeaderViewHolder extends MiracleViewHolder {
     private final TextView title;
@@ -74,7 +78,16 @@ public class HeaderViewHolder extends MiracleViewHolder {
                         break;
                     }
                     case "clear_recent_groups": {
-
+                        new ClearRecentGroups().start();
+                        MiracleAdapter adapter = getBindingMiracleAdapter();
+                        if(adapter!=null) {
+                            ArrayList<ItemDataHolder> itemDataHolders = adapter.getItemDataHolders();
+                            int pos = itemDataHolders.indexOf(catalogBlock);
+                            itemDataHolders.remove(pos);
+                            itemDataHolders.remove(pos);
+                            itemDataHolders.remove(pos);
+                            adapter.notifyItemRangeRemoved(pos,3);
+                        }
                         break;
                     }
                     case "select_sorting": {
@@ -97,7 +110,8 @@ public class HeaderViewHolder extends MiracleViewHolder {
     public static class Fabric implements ViewHolderFabric {
         @Override
         public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
-            return new HeaderViewHolder(inflater.inflate(R.layout.catalog_header_light, viewGroup, false));
+            return new HeaderViewHolder(
+                    inflater.inflate(R.layout.catalog_header_light, viewGroup, false));
         }
     }
 

@@ -1,8 +1,8 @@
 package com.vkontakte.miracle.model.audio.fields;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PLAYLIST_DESCRIPTION;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_PLAYLIST_DESCRIPTION;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 
 public class Description implements ItemDataHolder {
     private final String description;

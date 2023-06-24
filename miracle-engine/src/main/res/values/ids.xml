@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="rootView" type="id"/>
+    <item name="appbarLayout" type="id"/>
+    <item name="toolbar" type="id"/>
+    <item name="title" type="id"/>
+    <item name="searchEditText" type="id"/>
+    <item name="tabLayout" type="id"/>
+    <item name="refreshLayout" type="id"/>
+    <item name="scrollView" type="id"/>
+    <item name="linearLayout" type="id"/>
+    <item name="viewPager" type="id"/>
+    <item name="frameContainer" type="id"/>
+    <item name="bottomNavigationView" type="id"/>
+
+</resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:layoutDirection="rtl">
+
+
+    <com.miracle.widget.ExtendedTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:background="#8888"
+        android:includeFontPadding="false"
+
+        android:drawablePadding="0dp"
+        android:gravity="start"
+
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="20dp"
+
+        app:iconTop="#3C7E20"
+        app:iconBottom="#CFA613"
+        app:iconLeft="#1363BA"
+        app:iconRight="#F65555"
+
+        app:iconLeftStickingToText="true"
+        app:iconRightStickingToText="true"
+
+
+        app:iconsSize="10dp"
+        tools:text="AAAAAAAAAAA"
+        tools:layoutDirection="rtl"/>
+
+</LinearLayout>

@@ -1,12 +1,12 @@
 package com.vkontakte.miracle.model.audio;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PLAYLIST;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_PLAYLIST;
 
 import android.util.ArrayMap;
 
 import androidx.annotation.Nullable;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.Owner;
 import com.vkontakte.miracle.model.audio.fields.Artist;
@@ -15,9 +15,11 @@ import com.vkontakte.miracle.model.audio.fields.Genre;
 import com.vkontakte.miracle.model.audio.fields.Original;
 import com.vkontakte.miracle.model.audio.fields.Photo;
 import com.vkontakte.miracle.model.audio.wraps.AudioItemWF;
-import com.vkontakte.miracle.model.audio.wraps.AudioItemWC;
+import com.vkontakte.miracle.model.audio.wraps.LoadableAudioItemWC;
 import com.vkontakte.miracle.model.groups.GroupItem;
 import com.vkontakte.miracle.model.users.ProfileItem;
+import com.vkontakte.miracle.service.player.loader.AudioItemWCLoader;
+import com.vkontakte.miracle.service.player.loader.PlaylistLoader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,25 +27,25 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class PlaylistItem implements ItemDataHolder, AudioItemWC {
+public class PlaylistItem implements ItemDataHolder, LoadableAudioItemWC {
 
     private final String id;
     private final String ownerId;
-    private int type;
-    private String title;
-    private String description;
-    private int count;
-    private int followers;
-    private int plays;
-    private long createTime;
-    private long updateTime;
+    private final int type;
+    private final String title;
+    private final String description;
+    private final int count;
+    private final int followers;
+    private final int plays;
+    private final long createTime;
+    private final long updateTime;
     private boolean isFollowing;
     private Original original;
     private Followed followed;
     private Photo photo;
     private final String accessKey;
     private boolean isExplicit;
-    private String albumType;
+    private final String albumType;
 
     private ArrayList<Artist> mainArtists = new ArrayList<>();
     private ArrayList<Artist> featuredArtists = new ArrayList<>();
@@ -176,25 +178,32 @@ public class PlaylistItem implements ItemDataHolder, AudioItemWC {
         }
     }
 
-    public PlaylistItem(String ownerId, String id, String accessKey){
-        this.ownerId = ownerId;
-        this.id = id;
-        this.accessKey = accessKey;
-    }
-
     public PlaylistItem(JSONObject jsonObject, ArrayMap<String, ProfileItem> profilesMap, ArrayMap<String, GroupItem> groupsMap) throws JSONException {
 
         id = jsonObject.getString("id");
         ownerId = jsonObject.getString("owner_id");
+        accessKey = jsonObject.getString("access_key");
         type = jsonObject.getInt("type");
         createTime = jsonObject.getLong("create_time");
         if(jsonObject.has("original")){
             original = new Original(jsonObject.getJSONObject("original"));
         }
 
-        updateData(jsonObject);
+        title = jsonObject.getString("title");
+        description = jsonObject.getString("description");
+        count = jsonObject.getInt("count");
+        followers = jsonObject.getInt("followers");
+        plays = jsonObject.getInt("plays");
+        updateTime = jsonObject.getLong("update_time");
+        isFollowing = jsonObject.getBoolean("is_following");
 
-        accessKey = jsonObject.getString("access_key");
+        if(jsonObject.has("followed")){
+            followed = new Followed(jsonObject.getJSONObject("followed"));
+        }
+
+        if(jsonObject.has("photo")){
+            photo = new Photo(jsonObject.getJSONObject("photo"));
+        }
 
         albumType = jsonObject.getString("album_type");
 
@@ -329,24 +338,6 @@ public class PlaylistItem implements ItemDataHolder, AudioItemWC {
         }
     }
 
-    public void updateData(JSONObject jsonObject) throws JSONException{
-        title = jsonObject.getString("title");
-        description = jsonObject.getString("description");
-        count = jsonObject.getInt("count");
-        followers = jsonObject.getInt("followers");
-        plays = jsonObject.getInt("plays");
-        updateTime = jsonObject.getLong("update_time");
-        isFollowing = jsonObject.getBoolean("is_following");
-
-        if(jsonObject.has("followed")){
-            followed = new Followed(jsonObject.getJSONObject("followed"));
-        }
-
-        if(jsonObject.has("photo")){
-            photo = new Photo(jsonObject.getJSONObject("photo"));
-        }
-    }
-
     public PlaylistItem(PlaylistItem playlistItem){
         id = playlistItem.id;
         ownerId = playlistItem.ownerId;
@@ -389,6 +380,7 @@ public class PlaylistItem implements ItemDataHolder, AudioItemWC {
         }
     }
 
+
     @Override
     public int getViewHolderType() {
         return TYPE_PLAYLIST;
@@ -415,4 +407,8 @@ public class PlaylistItem implements ItemDataHolder, AudioItemWC {
         return false;
     }
 
+    @Override
+    public AudioItemWCLoader createAudioLoader() {
+        return new PlaylistLoader(this);
+    }
 }

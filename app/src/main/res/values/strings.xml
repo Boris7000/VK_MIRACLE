@@ -7,6 +7,7 @@
     <string name="liked">Понравилось</string>
     <string name="friends">Друзья</string>
     <string name="photos">Фотографии</string>
+    <string name="music">Музыка</string>
     <string name="audios">Аудиозапси</string>
     <string name="albums">Альбомы</string>
     <string name="album_missing">Похоже, альбома тут нет, делся куда-то 😿</string>
@@ -16,6 +17,7 @@
     <string name="groups">Сообщества</string>
     <string name="subscriptions">Подписки</string>
     <string name="followers">Подписчики</string>
+    <string name="follow">Подписаться</string>
     <string name="gifts">Подарки</string>
     <string name="peoples">Люди</string>
     <string name="group">Сообщество</string>
@@ -24,18 +26,14 @@
     <string name="wall">Запись на стене</string>
     <string name="wall_is_empty">Здесь пока нет записей 🙀</string>
     <string name="feed">Лента</string>
-    <string name="search">Поиск</string>
     <string name="settings">Настройки</string>
     <string name="debug">Отладка</string>
     <string name="audio_offline">Скачанная музыка</string>
     <string name="sign_out">Выйти из аккаунта</string>
     <string name="send">Отправить</string>
-    <string name="cancel">Отмена</string>
     <string name="download">Скачать</string>
     <string name="edit">Редактировать</string>
-    <string name="delete">Удалить</string>
     <string name="delete_from_device">Удалить с устройтсва</string>
-    <string name="back">Назад</string>
     <string name="play">Слушать</string>
     <string name="play_next">Слушать далее</string>
     <string name="now_playing">Сейчас играет:</string>
@@ -47,10 +45,21 @@
     <string name="play_shuffled">Перемешать все</string>
     <string name="delete_from_audio">Удалить из моей музыки</string>
     <string name="show_more">Показать все</string>
+    <string name="add">Добавить</string>
+    <string name="hide">Скрыть</string>
+    <string name="done">Готово</string>
     <string name="create_playlist">Создать плейлист</string>
+    <string name="new_playlist">Новый плейлист</string>
+    <string name="title">Название</string>
+    <string name="title_example">Например: «Для бега»</string>
+    <string name="description">Описание</string>
+    <string name="description_exmaple">Например: «Слушать на полной громкости»</string>
+    <string name="make_playlist_private">Сделать плейлист приватным</string>
+    <string name="make_playlist_private_description">Плейлист будет скрыт из поиска</string>
+    <string name="add_audios">Добавить музыку</string>
     <string name="default_timer">0:00</string>
+    <string name="player">Плеер</string>
 
-    <string name="error">Ошибка</string>
     <string name="unknownError">Что-то пошло не так 🤔</string>
     <string name="authorization">Авторизация</string>
     <string name="login">Логин</string>
@@ -97,61 +106,7 @@
     <string name="last_seen_sex_unknown">Был(-а) в сети %1$s</string>
     <string name="online">Online</string>
 
-    <string name="formatted_date_in">в %1$s</string>
-
     /////////////////////////
-
-    <string name="formatted_date_sec1">%1$d секунды назад</string>
-    <string name="formatted_date_sec2">%1$d секунд назад</string>
-    <string name="formatted_date_sec3">%1$d секунду назад</string>
-
-    /////////////////////////
-
-    <string name="formatted_date_min1">%1$d минуты назад</string>
-    <string name="formatted_date_min2">%1$d минут назад</string>
-    <string name="formatted_date_min3">%1$d минуту назад</string>
-
-    /////////////////////////
-
-    <string name="formatted_date_today">Сегодня в %1$s</string>
-    <string name="formatted_date_tomorrow">Завтра в %1$s</string>
-    <string name="formatted_date_yesterday">Вчера в %1$s</string>
-
-    <string name="formatted_date_today1">сегодня в %1$s</string>
-    <string name="formatted_date_tomorrow1">завтра в %1$s</string>
-    <string name="formatted_date_yesterday1">вчера в %1$s</string>
-
-    /////////////////////////
-
-    <string name="formatted_year_ago">Год назад</string>
-    <string name="formatted_hour_ago">Час назад</string>
-    <string name="formatted_date_now">Только что</string>
-
-
-    <string name="formatted_year_ago1">год назад</string>
-    <string name="formatted_hour_ago1">час назад</string>
-    <string name="formatted_date_now1">только что</string>
-
-    <string name="formatted_year_ago2">%1$dг</string>
-    <string name="formatted_hour_ago2">%1$dч</string>
-    <string name="formatted_minute_ago2">%1$dм</string>
-    <string name="formatted_week_ago2">%1$dн</string>
-    <string name="formatted_day_ago2">%1$dд</string>
-
-    /////////////////////////
-
-    <string name="formatted_date_M1">%1$d января </string>
-    <string name="formatted_date_M2">%1$d февраля </string>
-    <string name="formatted_date_M3">%1$d марта </string>
-    <string name="formatted_date_M4">%1$d апреля </string>
-    <string name="formatted_date_M5">%1$d мая </string>
-    <string name="formatted_date_M6">%1$d июня </string>
-    <string name="formatted_date_M7">%1$d июля </string>
-    <string name="formatted_date_M8">%1$d августа </string>
-    <string name="formatted_date_M9">%1$d сентября </string>
-    <string name="formatted_date_M10">%1$d октября </string>
-    <string name="formatted_date_M11">%1$d ноября </string>
-    <string name="formatted_date_M12">%1$d декабря </string>
 
     <string name="formatted_photo1">%1$d фотографии</string>
     <string name="formatted_photo2">%1$d фотографий</string>

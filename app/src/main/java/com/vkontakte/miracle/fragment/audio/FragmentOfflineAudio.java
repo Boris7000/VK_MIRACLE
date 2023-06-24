@@ -1,25 +1,19 @@
 package com.vkontakte.miracle.fragment.audio;
 
-import android.content.Context;
-
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.fragment.base.templates.BaseRecyclerFragment;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.audio.DownloadedAdapter;
-import com.vkontakte.miracle.engine.fragment.side.SideRecyclerFragment;
 
-public class FragmentOfflineAudio extends SideRecyclerFragment {
+public class FragmentOfflineAudio extends BaseRecyclerFragment {
     @Override
     public RecyclerView.Adapter<?> onCreateRecyclerAdapter() {
         return new DownloadedAdapter();
     }
 
     @Override
-    public String requestTitleText() {
-        Context context = getContext();
-        if(context!=null){
-            return context.getString(R.string.audio_offline);
-        }
-        return super.requestTitleText();
+    public int requestTitleTextResId() {
+        return R.string.audio_offline;
     }
 }

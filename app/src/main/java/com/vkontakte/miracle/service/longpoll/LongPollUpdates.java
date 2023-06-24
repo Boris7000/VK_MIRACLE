@@ -10,8 +10,6 @@ import static com.vkontakte.miracle.service.longpoll.model.LongPollUpdateTypes.A
 import static com.vkontakte.miracle.service.longpoll.model.LongPollUpdateTypes.ACTION_USER_WRITE_TEXT_IN_CHAT;
 import static com.vkontakte.miracle.service.longpoll.model.LongPollUpdateTypes.ACTION_USER_WRITE_TEXT_IN_DIALOG;
 
-import android.util.Log;
-
 import com.vkontakte.miracle.service.longpoll.model.MessageAddedUpdate;
 import com.vkontakte.miracle.service.longpoll.model.MessageReadUpdate;
 import com.vkontakte.miracle.service.longpoll.model.MessageTypingUpdate;
@@ -66,8 +64,6 @@ public class LongPollUpdates {
     }
 
     public LongPollUpdates(JSONArray updates) throws JSONException {
-
-        Log.d("rgiirhgirgrg", String.valueOf(updates.length()));
 
         for(int i=0;i<updates.length();i++){
             JSONArray ja_update = updates.getJSONArray(i);

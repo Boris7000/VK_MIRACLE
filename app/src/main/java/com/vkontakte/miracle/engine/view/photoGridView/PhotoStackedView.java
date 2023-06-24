@@ -1,12 +1,13 @@
 package com.vkontakte.miracle.engine.view.photoGridView;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_PHOTO;
-import static com.vkontakte.miracle.engine.util.DimensionsUtil.dpToPx;
+import static com.miracle.engine.util.DimensionsUtil.dpToPx;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_WRAPPED_PHOTO;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.ArrayMap;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +17,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.miracle.engine.recycler.IRecyclerView;
+import com.miracle.engine.recycler.MiracleViewRecycler;
+import com.miracle.engine.recycler.RecyclerController;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.photos.holders.PhotoGridItemViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.recycler.IRecyclerView;
-import com.vkontakte.miracle.engine.recycler.MiracleViewRecycler;
-import com.vkontakte.miracle.engine.recycler.RecyclerController;
 import com.vkontakte.miracle.fragment.photos.FragmentPhotoViewerDialog;
 import com.vkontakte.miracle.fragment.photos.PhotoDialogItem;
 import com.vkontakte.miracle.model.DataItemWrap;
@@ -41,7 +43,7 @@ public class PhotoStackedView extends FrameLayout implements IRecyclerView {
     //calculation result
     private final ArrayList<PhotoGridItem> photoGridItems = new ArrayList<>();
     //enter data
-    private ArrayList<ItemDataHolder> itemDataHolders = new ArrayList<>();
+    private final ArrayList<ItemDataHolder> itemDataHolders = new ArrayList<>();
     //clear media data
     private final ArrayList<MediaItem> mediaItems = new ArrayList<>();
     private boolean canApplyChanges = true;
@@ -54,8 +56,7 @@ public class PhotoStackedView extends FrameLayout implements IRecyclerView {
     public PhotoStackedView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         recyclerController = new RecyclerController(LayoutInflater.from(context));
-        recyclerController.getViewHolderFabricMap()
-                .put(TYPE_WRAPPED_PHOTO, new PhotoGridItemViewHolder.Fabric());
+
         if(attrs!=null) {
             TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.PhotoStackedView, 0, 0);
 
@@ -120,6 +121,7 @@ public class PhotoStackedView extends FrameLayout implements IRecyclerView {
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
+
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
 
@@ -206,8 +208,8 @@ public class PhotoStackedView extends FrameLayout implements IRecyclerView {
             });
         }
 
-        this.itemDataHolders = itemDataHolders;
-        ///////////////////////////////////////////////////////////
+        this.itemDataHolders.clear();
+        this.itemDataHolders.addAll(itemDataHolders);
 
         this.rowLength = rowLength;
         canApplyChanges = true;
@@ -222,12 +224,17 @@ public class PhotoStackedView extends FrameLayout implements IRecyclerView {
     }
 
     @Override
-    public MiracleViewRecycler getRecycledViewPool() {
-        return null;
+    public MiracleViewRecycler getViewRecycler() {
+        return recyclerController.getRecycledViewPool();
     }
 
     @Override
-    public void setRecycledViewPool(MiracleViewRecycler recycledViewPool) {
+    public ArrayMap<Integer, ViewHolderFabric> getViewHolderFabricMap() {
+        return recyclerController.getViewHolderFabricMap();
+    }
+
+    @Override
+    public void setViewRecycler(MiracleViewRecycler recycledViewPool) {
         recyclerController.setRecycledViewPool(recycledViewPool);
     }
 

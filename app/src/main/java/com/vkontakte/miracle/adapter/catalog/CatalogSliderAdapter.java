@@ -1,18 +1,18 @@
 package com.vkontakte.miracle.adapter.catalog;
 
-import static com.vkontakte.miracle.adapter.audio.holders.WrappedPlaylistViewHolderHorizontal.resolveDelete;
-import static com.vkontakte.miracle.adapter.audio.holders.WrappedPlaylistViewHolderHorizontal.resolveFollow;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_BANNER;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_LINK;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_SUGGESTION;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PLAYLIST_RECOMMENDATION;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_GROUP;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_PLAYLIST;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_PLAYLIST_RECOMMENDATION;
-import static com.vkontakte.miracle.engine.util.AdapterUtil.getVerticalLayoutManager;
+import static com.vkontakte.miracle.adapter.audio.holders.actions.PlaylistItemActions.resolveDelete;
+import static com.vkontakte.miracle.adapter.audio.holders.actions.PlaylistItemActions.resolveFollow;
+import static com.vkontakte.miracle.adapter.audio.holders.actions.PlaylistItemActions.resolveGoToArtist;
+import static com.vkontakte.miracle.adapter.audio.holders.actions.PlaylistItemActions.resolveGoToOwner;
+import static com.vkontakte.miracle.adapter.audio.holders.actions.PlaylistItemActions.resolvePlayNext;
 import static com.vkontakte.miracle.engine.util.NavigationUtil.goToPlaylist;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_CATALOG_LINK;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_CATALOG_SUGGESTION;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_WRAPPED_GROUP;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_WRAPPED_PLAYLIST;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_WRAPPED_PLAYLIST_RECOMMENDATION;
 
 import android.graphics.Color;
 import android.util.ArrayMap;
@@ -23,31 +23,29 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.adapter.MiracleNestedAsyncLoadAdapter;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.MiracleViewHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.miracle.engine.recycler.MiracleViewRecycler;
 import com.vkontakte.miracle.R;
+import com.vkontakte.miracle.adapter.audio.holders.WrappedAudioViewHolder;
 import com.vkontakte.miracle.adapter.audio.holders.WrappedPlaylistViewHolderHorizontal;
-import com.vkontakte.miracle.adapter.catalog.holders.CatalogBannerViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.CatalogLinkViewHolderHorizontal;
 import com.vkontakte.miracle.adapter.catalog.holders.CatalogSuggestionViewHolder;
 import com.vkontakte.miracle.adapter.catalog.holders.WrappedGroupViewHolderHorizontal;
 import com.vkontakte.miracle.dialog.audio.PlaylistDialog;
 import com.vkontakte.miracle.dialog.audio.PlaylistDialogActionListener;
-import com.vkontakte.miracle.engine.adapter.MiracleAdapter;
-import com.vkontakte.miracle.engine.adapter.MiracleNestedLoadableAdapter;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
+import com.vkontakte.miracle.engine.view.RecycleListView;
 import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.model.catalog.CatalogBlock;
-import com.vkontakte.miracle.model.catalog.CatalogExtendedArrays;
+import com.vkontakte.miracle.model.ExtendedArrays;
 import com.vkontakte.miracle.model.catalog.RecommendedPlaylist;
-import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Catalog;
-import com.vkontakte.miracle.service.player.PlayerServiceController;
+import com.vkontakte.miracle.model.users.User;
+import com.vkontakte.miracle.network.api.Catalog;
 
 import org.json.JSONObject;
 
@@ -55,7 +53,7 @@ import java.util.ArrayList;
 
 import retrofit2.Response;
 
-public class CatalogSliderAdapter extends MiracleNestedLoadableAdapter {
+public class CatalogSliderAdapter extends MiracleNestedAsyncLoadAdapter {
 
     private CatalogBlock catalogBlock;
 
@@ -96,13 +94,13 @@ public class CatalogSliderAdapter extends MiracleNestedLoadableAdapter {
                 setNextFrom(catalogBlock.getNextFrom());
             }
         } else {
-            ProfileItem profileItem = StorageUtil.get().currentUser();
+            User user = StorageUtil.get().currentUser();
             Response<JSONObject> response = Catalog.getBlockItems(catalogBlock.getId(),
-                    getNextFrom(), profileItem.getAccessToken()).execute();
+                    getNextFrom(), user.getAccessToken()).execute();
             JSONObject jo_response = validateBody(response).getJSONObject("response");
             JSONObject block = jo_response.getJSONObject("block");
-            CatalogExtendedArrays catalogExtendedArrays = new CatalogExtendedArrays(jo_response);
-            ArrayList<ItemDataHolder> itemDataHolders = catalogBlock.findItems(block,catalogExtendedArrays);
+            ExtendedArrays extendedArrays = new ExtendedArrays(jo_response);
+            ArrayList<ItemDataHolder> itemDataHolders = extendedArrays.extractForBlock(catalogBlock, block);
             int previous = holders.size();
             holders.addAll(itemDataHolders);
             setAddedCount(holders.size()-previous);
@@ -164,15 +162,15 @@ public class CatalogSliderAdapter extends MiracleNestedLoadableAdapter {
         arrayMap.put(TYPE_WRAPPED_PLAYLIST, new WrappedPlaylistViewHolderHorizontal.Fabric());
         arrayMap.put(TYPE_WRAPPED_GROUP, new WrappedGroupViewHolderHorizontal.Fabric());
         arrayMap.put(TYPE_WRAPPED_PLAYLIST_RECOMMENDATION, new RecommendedPlaylistViewHolderFabric());
-        arrayMap.put(TYPE_CATALOG_BANNER, new CatalogBannerViewHolder.FabricHorizontal());
         arrayMap.put(TYPE_CATALOG_LINK, new CatalogLinkViewHolderHorizontal.Fabric());
         arrayMap.put(TYPE_CATALOG_SUGGESTION, new CatalogSuggestionViewHolder.FabricHorizontal());
         return arrayMap;
     }
 
-    public class RecommendedPlaylistViewHolder extends MiracleViewHolder {
+    public class RecommendedPlaylistViewHolder extends MiracleViewHolder
+            implements View.OnClickListener, View.OnLongClickListener{
 
-        private final RecyclerView recyclerView;
+        private final RecycleListView recycleListView;
         private DataItemWrap<?,?> itemWrap;
         private RecommendedPlaylist recommendedPlaylist;
         private final TextView title;
@@ -182,51 +180,20 @@ public class CatalogSliderAdapter extends MiracleNestedLoadableAdapter {
 
         public RecommendedPlaylistViewHolder(@NonNull View itemView) {
             super(itemView);
-            recyclerView = itemView.findViewById(R.id.recyclerView);
-            recyclerView.setLayoutManager(getVerticalLayoutManager(itemView.getContext()));
-            RecyclerView.RecycledViewPool recycledViewPool =
-                    getNestedRecycledViewPool(TYPE_PLAYLIST_RECOMMENDATION);
-            recycledViewPool.setMaxRecycledViews(TYPE_WRAPPED_AUDIO, 15);
-            recyclerView.setRecycledViewPool(recycledViewPool);
+            recycleListView = itemView.findViewById(R.id.recycleListView);
+            recycleListView.getViewHolderFabricMap()
+                    .put(TYPE_WRAPPED_AUDIO, new WrappedAudioViewHolder.FabricTripleStacked());
+            MiracleViewRecycler newViewRecycler =
+                    getMiracleViewRecycler(TYPE_WRAPPED_PLAYLIST_RECOMMENDATION);
+            newViewRecycler.setMaxRecycledViews(TYPE_WRAPPED_AUDIO, 15);
+            recycleListView.setViewRecycler(newViewRecycler);
+
             title = itemView.findViewById(R.id.title);
             subtitle = itemView.findViewById(R.id.subtitle);
             percentage = itemView.findViewById(R.id.percentage);
             percentageTitle = itemView.findViewById(R.id.percentageTitle);
-            itemView.setOnClickListener(view ->
-                    goToPlaylist(recommendedPlaylist, getContext()));
-            itemView.setOnLongClickListener(view -> {
-                final PlaylistItem playlistItem = recommendedPlaylist;
-                PlaylistDialog playlistDialog = new PlaylistDialog(getContext(), playlistItem);
-                playlistDialog.setDialogActionListener(new PlaylistDialogActionListener() {
-                    @Override
-                    public void follow() {
-                        resolveFollow(itemWrap);
-                    }
-
-                    @Override
-                    public void delete() {
-                        resolveDelete(itemWrap);
-                    }
-
-                    @Override
-                    public void playNext() {
-                        PlayerServiceController.get().loadAndSetPlayNext(playlistItem);
-                    }
-
-                    @Override
-                    public void goToArtist() {
-                        NavigationUtil.goToArtist(playlistItem, getContext());
-                    }
-
-                    @Override
-                    public void goToOwner() {
-                        NavigationUtil.goToOwner(playlistItem, getContext());
-                    }
-                });
-                playlistDialog.show(view.getContext());
-                itemView.getParent().requestDisallowInterceptTouchEvent(true);
-                return true;
-            });
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
@@ -245,28 +212,43 @@ public class CatalogSliderAdapter extends MiracleNestedLoadableAdapter {
 
             title.setTextColor(Color.parseColor(recommendedPlaylist.getColor()));
 
-            RecyclerView.Adapter<?> adapter = recyclerView.getAdapter();
-            if(adapter instanceof CatalogTripleStackedAdapter){
-                CatalogTripleStackedAdapter catalogTripleStackedAdapter =
-                        ((CatalogTripleStackedAdapter)recyclerView.getAdapter());
-                catalogTripleStackedAdapter.iniFromFragment(getMiracleFragment());
-                catalogTripleStackedAdapter.setNewItemDataHolders(recommendedPlaylist.getAudioItems());
-                catalogTripleStackedAdapter.load();
-            } else {
-                if(adapter instanceof MiracleAdapter){
-                    MiracleAdapter miracleAdapter = (MiracleAdapter) adapter;
-                    miracleAdapter.setRecyclerView(null);
+            recycleListView.setItems(recommendedPlaylist.getAudioItems(), false);
+        }
+
+        @Override
+        public void onClick(View v) {
+            goToPlaylist(recommendedPlaylist, getContext());
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            final PlaylistItem playlistItem = recommendedPlaylist;
+            PlaylistDialog playlistDialog = new PlaylistDialog(getContext(), playlistItem);
+            playlistDialog.setDialogActionListener(new PlaylistDialogActionListener() {
+                @Override
+                public void follow() {
+                    resolveFollow(itemWrap);
                 }
-                CatalogTripleStackedAdapter catalogTripleStackedAdapter =
-                        new CatalogTripleStackedAdapter(recommendedPlaylist.getAudioItems());
-                catalogTripleStackedAdapter.iniFromFragment(getMiracleFragment());
-                catalogTripleStackedAdapter.setRecyclerView(recyclerView);
-                catalogTripleStackedAdapter.ini();
-                recyclerView.setHasFixedSize(false);
-                recyclerView.setAdapter(catalogTripleStackedAdapter);
-                catalogTripleStackedAdapter.load();
-                recyclerView.setHasFixedSize(true);
-            }
+                @Override
+                public void delete() {
+                    resolveDelete(itemWrap);
+                }
+                @Override
+                public void playNext() {
+                    resolvePlayNext(itemWrap);
+                }
+                @Override
+                public void goToArtist() {
+                    resolveGoToArtist(itemWrap, getContext());
+                }
+                @Override
+                public void goToOwner() {
+                    resolveGoToOwner(itemWrap, getContext());
+                }
+            });
+            playlistDialog.show(v.getContext());
+            itemView.getParent().requestDisallowInterceptTouchEvent(true);
+            return true;
         }
     }
 

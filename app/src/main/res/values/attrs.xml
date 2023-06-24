@@ -1,76 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr name="colorButtonNeutral" format="color"/>
-    <attr name="colorOnButtonNeutral" format="color"/>
-
     <attr name="colorLikeButton" format="color"/>
     <attr name="colorOnLikeButton" format="color"/>
-
-    <attr name="colorEditTextStroke" format="color"/>
-    <attr name="colorEditTextHint" format="color"/>
-
-    <attr name="colorSubtitle" format="color"/>
-    <attr name="colorSubtitle2" format="color"/>
-    <attr name="colorSubtitle3" format="color"/>
-
-    <attr name="colorPrimary_10" format="color"/>
-    <attr name="colorPrimary_20" format="color"/>
-    <attr name="colorPrimary_25" format="color"/>
-    <attr name="colorPrimary_30" format="color"/>
-    <attr name="colorPrimary_35" format="color"/>
-    <attr name="colorPrimary_40" format="color"/>
-    <attr name="colorPrimary_50" format="color"/>
-    <attr name="colorPrimary_60" format="color"/>
-    <attr name="colorPrimary_70" format="color"/>
-    <attr name="colorPrimary_80" format="color"/>
-    <attr name="colorPrimary_90" format="color"/>
-    <attr name="colorPrimary_95" format="color"/>
-    <attr name="colorPrimary_98" format="color"/>
-    <attr name="colorPrimary_99" format="color"/>
-
-    <attr name="colorSecondary_10" format="color"/>
-    <attr name="colorSecondary_20" format="color"/>
-    <attr name="colorSecondary_25" format="color"/>
-    <attr name="colorSecondary_30" format="color"/>
-    <attr name="colorSecondary_35" format="color"/>
-    <attr name="colorSecondary_40" format="color"/>
-    <attr name="colorSecondary_50" format="color"/>
-    <attr name="colorSecondary_60" format="color"/>
-    <attr name="colorSecondary_70" format="color"/>
-    <attr name="colorSecondary_80" format="color"/>
-    <attr name="colorSecondary_90" format="color"/>
-    <attr name="colorSecondary_95" format="color"/>
-    <attr name="colorSecondary_98" format="color"/>
-    <attr name="colorSecondary_99" format="color"/>
-
-    <attr name="colorSecondaryContainerDisabled" format="color"/>
-    <attr name="colorOnSecondaryContainerDisabled" format="color"/>
-    <attr name="colorPrimaryContainerDisabled" format="color"/>
-    <attr name="colorOnPrimaryContainerDisabled" format="color"/>
-
-    <attr name="colorPrimaryDisabled" format="color"/>
-    <attr name="colorOnPrimaryDisabled" format="color"/>
-    <attr name="colorSecondaryDisabled" format="color"/>
-    <attr name="colorOnSecondaryDisabled" format="color"/>
-
-    <attr name="colorEmphasis_90" format="color"/>
-    <attr name="colorEmphasis_70" format="color"/>
-    <attr name="colorEmphasis_65" format="color"/>
-    <attr name="colorEmphasis_60" format="color"/>
-    <attr name="colorEmphasis_50" format="color"/>
-    <attr name="colorEmphasis_40" format="color"/>
-
-    <attr name="colorSearchTextBackground" format="color"/>
-    <attr name="colorSearchTextHint" format="color"/>
-    <attr name="colorPlaceholder" format="color"/>
-    <attr name="colorStroke" format="color"/>
-    <attr name="colorDivider" format="color"/>
-
-    <attr name="colorCardBackground" format="color"/>
-    <attr name="colorSurfaceVariant2" format="color"/>
-    <attr name="colorPostBackground" format="color"/>
-
 
     <attr name="colorMessageInContainer" format="color"/>
     <attr name="colorOnMessageIn" format="color"/>
@@ -82,17 +14,6 @@
     <attr name="colorMessageOutPlaceholder" format="color"/>
     <attr name="colorMessageOutLink" format="color"/>
     <attr name="colorMessageOutStroke" format="color"/>
-
-
-    <attr name="globalTranslationZ" format="dimension"/>
-    <attr name="swipeRefreshCircleColor" format="color"/>
-    <attr name="scrollBarColor" format="color"/>
-
-
-    <declare-styleable name="MiracleBottomNavigationView">
-        <attr name="selectedColor" format="color"/>
-        <attr name="defaultColor" format="color"/>
-    </declare-styleable>
 
     <declare-styleable name="SwitchIconViewV2">
         <attr name="si_tint_color" format="color"/>
@@ -121,20 +42,11 @@
 
     <declare-styleable name="PhotoGridView">
         <attr name="spacing" format="dimension"/>
-        <attr name="listItemLayout"/>
     </declare-styleable>
 
     <declare-styleable name="MessageItemView">
         <attr name="asChat" format="boolean"/>
         <attr name="out" format="boolean"/>
-    </declare-styleable>
-
-    <declare-styleable name="ActivityRootView">
-        <attr name="type" format="enum">
-            <enum name="portrait" value="0"/>
-            <enum name="land" value="1"/>
-            <enum name="tablet" value="2"/>
-        </attr>
     </declare-styleable>
 
     <declare-styleable name="OneToOneSquareView">
@@ -148,14 +60,6 @@
         <attr name="highlightColor" format="color"/>
         <attr name="highlightUnderline" format="boolean"/>
         <attr name="enableClicking" format="boolean"/>
-    </declare-styleable>
-
-    <declare-styleable name="AudioListView">
-        <attr name="listItemLayout"/>
-    </declare-styleable>
-
-    <declare-styleable name="AudioItemView">
-        <attr name="placeHolderDrawable" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="MaskImageView">

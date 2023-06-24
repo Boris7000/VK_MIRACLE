@@ -1,6 +1,6 @@
 package com.vkontakte.miracle.fragment.photos;
 
-import static com.vkontakte.miracle.engine.adapter.AdapterStates.SATE_FIRST_LOADING_COMPLETE;
+import static com.miracle.engine.adapter.AdapterStates.SATE_FIRST_LOADING_COMPLETE;
 
 import android.os.Bundle;
 
@@ -8,11 +8,11 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.fragment.base.templates.BaseRecyclerFragment;
 import com.vkontakte.miracle.adapter.photos.PhotoAlbumAdapter;
-import com.vkontakte.miracle.engine.fragment.side.SideRecyclerFragment;
 import com.vkontakte.miracle.model.photos.PhotoAlbumItem;
 
-public class FragmentPhotoAlbum extends SideRecyclerFragment {
+public class FragmentPhotoAlbum extends BaseRecyclerFragment {
 
     private String photoAlbumId;
     private String ownerId;
@@ -61,9 +61,9 @@ public class FragmentPhotoAlbum extends SideRecyclerFragment {
         super.onRecyclerAdapterStateChange(state);
     }
 
-    @CallSuper
     @Override
     public void readSavedInstance(Bundle savedInstanceState) {
+        super.readSavedInstance(savedInstanceState);
         String key = savedInstanceState.getString("photoAlbumId");
         if (key!=null) {
             photoAlbumId = key;
@@ -81,7 +81,6 @@ public class FragmentPhotoAlbum extends SideRecyclerFragment {
         }
     }
 
-    @CallSuper
     @Override
     public void onClearSavedInstance(@NonNull Bundle savedInstanceState) {
         super.onClearSavedInstance(savedInstanceState);
@@ -90,7 +89,6 @@ public class FragmentPhotoAlbum extends SideRecyclerFragment {
         savedInstanceState.remove("photoAlbumTitle");
     }
 
-    @CallSuper
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);

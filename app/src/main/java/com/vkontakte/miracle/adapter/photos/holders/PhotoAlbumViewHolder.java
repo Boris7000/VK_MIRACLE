@@ -11,17 +11,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.MiracleViewHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.model.photos.PhotoAlbumItem;
 import com.vkontakte.miracle.model.photos.fields.Size;
 
-public class PhotoAlbumViewHolder extends MiracleViewHolder {
+public class PhotoAlbumViewHolder extends MiracleViewHolder
+        implements View.OnClickListener{
 
+    private PhotoAlbumItem photoAlbumItem;
     private final TextView title;
     private final TextView subtitle;
     private final ImageView image;
@@ -35,7 +37,7 @@ public class PhotoAlbumViewHolder extends MiracleViewHolder {
 
     @Override
     public void bind(ItemDataHolder itemDataHolder) {
-        PhotoAlbumItem photoAlbumItem = (PhotoAlbumItem) itemDataHolder;
+        photoAlbumItem = (PhotoAlbumItem) itemDataHolder;
         title.setText(photoAlbumItem.getTitle());
         subtitle.setText(getPhotosDeclensions(itemView.getContext(), photoAlbumItem.getSize()));
 
@@ -43,16 +45,21 @@ public class PhotoAlbumViewHolder extends MiracleViewHolder {
         Size size = sizes.get("x");
         if(size!=null) {
             Picasso.get().load(size.getUrl()).into(image);
-        }else (image).setImageDrawable(null);
+        } else{
+            (image).setImageDrawable(null);
+        }
+    }
 
-        itemView.setOnClickListener(view -> NavigationUtil.goToPhotoAlbum(photoAlbumItem, getContext()));
-
+    @Override
+    public void onClick(View v) {
+        NavigationUtil.goToPhotoAlbum(photoAlbumItem, getContext());
     }
 
     public static class Fabric implements ViewHolderFabric {
         @Override
         public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
-            return new PhotoAlbumViewHolder(inflater.inflate(R.layout.view_horizontal_list_item, viewGroup, false));
+            return new PhotoAlbumViewHolder(
+                    inflater.inflate(R.layout.view_horizontal_list_item, viewGroup, false));
         }
     }
 

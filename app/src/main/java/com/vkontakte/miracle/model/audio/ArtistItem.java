@@ -2,13 +2,13 @@ package com.vkontakte.miracle.model.audio;
 
 import androidx.collection.ArrayMap;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ArtistItem implements ItemDataHolder{
+public class ArtistItem implements ItemDataHolder {
 
     private final String id;
     private final String name;

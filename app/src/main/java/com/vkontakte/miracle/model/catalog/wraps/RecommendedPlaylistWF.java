@@ -1,6 +1,6 @@
 package com.vkontakte.miracle.model.catalog.wraps;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_PLAYLIST_RECOMMENDATION;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_WRAPPED_PLAYLIST_RECOMMENDATION;
 
 import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.ItemDataWrapFabric;

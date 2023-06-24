@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ExtendedTextView" parent="android:Widget.TextView">
+
+    </style>
+
+    <style name="ExtendedAppCompatTextView" parent="Widget.AppCompat.TextView">
+
+    </style>
+
+    <style name="ExtendedMaterialButton" parent="Widget.MaterialComponents.Button">
+
+    </style>
+
+</resources>

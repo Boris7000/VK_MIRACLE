@@ -1,15 +1,15 @@
 package com.vkontakte.miracle.adapter.wall;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WALL_COUNTER;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_WALL_COUNTER;
 
 import android.util.ArrayMap;
 
 import androidx.recyclerview.widget.DiffUtil;
 
+import com.miracle.engine.adapter.MiracleInstantLoadAdapter;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.adapter.wall.holders.WallCounterViewHolder;
-import com.vkontakte.miracle.engine.adapter.MiracleInstantLoadAdapter;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.model.wall.fields.Counter;
 import com.vkontakte.miracle.model.wall.fields.Counters;
 

@@ -1,16 +1,15 @@
 package com.vkontakte.miracle.fragment.photos;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.fragment.base.templates.BaseRecyclerFragment;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.photos.PhotoAllAdapter;
-import com.vkontakte.miracle.engine.fragment.side.SideRecyclerFragment;
 
-public class FragmentOwnerPhotos extends SideRecyclerFragment {
+public class FragmentOwnerPhotos extends BaseRecyclerFragment {
 
     private String ownerId;
 
@@ -24,12 +23,8 @@ public class FragmentOwnerPhotos extends SideRecyclerFragment {
     }
 
     @Override
-    public String requestTitleText() {
-        Context context = getContext();
-        if(context!=null) {
-            return context.getString(R.string.photos);
-        }
-        return super.requestTitleText();
+    public int requestTitleTextResId() {
+        return R.string.photos;
     }
 
     @Override

@@ -27,7 +27,7 @@ public class Constants {
 
     public static final String users_min_fields = base_fields + ",screen_name,verified,online,last_seen,friend_status";
     public static final String users_all_fields = users_min_fields +
-            ",status,photo_max,bdate,counters,home_town,sex,cover";
+            ",status,photo_max,bdate,counters,home_town,city,education,career,sex,cover";
 
     public static final String wall_fields = "video_files,photo_100,photo_200,sex,verified";
     public static final String message_fields = wall_fields+",online,last_seen";
@@ -60,7 +60,7 @@ public class Constants {
         map.put("client_secret", client_secret);
         map.put("scope", "all");
         map.put("2fa_supported", 1);
-        map.put("libverify_support", 0);
+        map.put("libverify_support", 1);
         map.put("v", latest_api_v);
         return map;
     }
@@ -70,6 +70,9 @@ public class Constants {
         map.put("api_id", client_id);
         map.put("client_id", client_id);
         map.put("client_secret", client_secret);
+        map.put("lang", "ru");
+        map.put("https", 1);
+        map.put("libverify_support", 1);
         map.put("v", latest_api_v);
         return map;
     }

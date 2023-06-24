@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="horizontalMargin">10dp</dimen>
-    <dimen name="round">20dp</dimen> <!--15dp-->
-    <dimen name="child_round">12dp</dimen>
-    <dimen name="child_round2">9dp</dimen>
-    <dimen name="translationZ">7dp</dimen>
-    <dimen name="translationZNight">9dp</dimen>
-    <dimen name="imageBorderWidth">0.7dp</dimen>
-    <dimen name="dividerWidth">0.8dp</dimen>
+
+    <item name="seekbar_track_height" type="dimen">4dp</item>
+    <item name="seekbar_track_corner_radius" type="dimen">4dp</item>
+
 </resources>

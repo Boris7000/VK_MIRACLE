@@ -1,5 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
+
+    <style name="Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="track">@drawable/switch_track</item>
+        <item name="trackDecoration">@drawable/switch_track_decoration</item>
+    </style>
+
+    <style name="Button" parent="Widget.Material3.Button">
+        <item name="shapeAppearance">@style/ShapeAppearance</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="iconPadding">16dp</item>
+        <item name="iconTopTint">@color/m3_button_foreground_color_selector</item>
+        <item name="iconBottomTint">@color/m3_button_foreground_color_selector</item>
+        <item name="iconLeftTint">@color/m3_button_foreground_color_selector</item>
+        <item name="iconRightTint">@color/m3_button_foreground_color_selector</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+    </style>
+
+    <style name="TextButton2" parent="Widget.Material3.Button.TextButton">
+        <item name="shapeAppearance">@style/ShapeAppearance</item>
+        <item name="rippleColor">@color/neutral_ripple_color_selector</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="iconPadding">16dp</item>
+        <item name="iconTopTint">@color/m3_text_button_foreground_color_selector</item>
+        <item name="iconBottomTint">@color/m3_text_button_foreground_color_selector</item>
+        <item name="iconLeftTint">@color/m3_text_button_foreground_color_selector</item>
+        <item name="iconRightTint">@color/m3_text_button_foreground_color_selector</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+    </style>
+
+    <style name="TonalButton" parent="Button">
+        <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.TonalButton</item>
+    </style>
+
+    <style name="NeutralTonalButton" parent="TonalButton">
+        <item name="backgroundTint">?attr/colorButtonNeutral</item>
+        <item name="rippleColor">@color/neutral_tonal_button_ripple_color_selector</item>
+        <item name="iconTopTint">?attr/colorOnButtonNeutral</item>
+        <item name="iconBottomTint">?attr/colorOnButtonNeutral</item>
+        <item name="iconLeftTint">?attr/colorOnButtonNeutral</item>
+        <item name="iconRightTint">?attr/colorOnButtonNeutral</item>
+        <item name="android:textColor">?attr/colorOnButtonNeutral</item>
+    </style>
+
+    <style name="ErrorTonalButton" parent="TonalButton">
+        <item name="backgroundTint">?attr/colorErrorContainer</item>
+        <item name="rippleColor">@color/error_tonal_button_ripple_color_selector</item>
+        <item name="iconTopTint">?attr/colorOnErrorContainer</item>
+        <item name="iconBottomTint">?attr/colorOnErrorContainer</item>
+        <item name="iconLeftTint">?attr/colorOnErrorContainer</item>
+        <item name="iconRightTint">?attr/colorOnErrorContainer</item>
+        <item name="android:textColor">?attr/colorOnErrorContainer</item>
+    </style>
+
+    <style name="LikeTonalButton" parent="TonalButton">
+        <item name="backgroundTint">@color/like_tonal_button_background_color_selector</item>
+        <item name="rippleColor">@color/like_tonal_button_ripple_color_selector</item>
+        <item name="iconTopTint">@color/like_tonal_button_foreground_color_selector</item>
+        <item name="iconBottomTint">@color/like_tonal_button_foreground_color_selector</item>
+        <item name="iconLeftTint">@color/like_tonal_button_foreground_color_selector</item>
+        <item name="iconRightTint">@color/like_tonal_button_foreground_color_selector</item>
+        <item name="android:textColor">@color/like_tonal_button_foreground_color_selector</item>
+    </style>
+
+    <style name="TonalPrimaryButton" parent="Button">
+        <item name="backgroundTint">@color/tonal_primary_button_background_color_selector</item>
+        <item name="rippleColor">@color/tonal_primary_button_ripple_color_selector</item>
+        <item name="iconTopTint">@color/tonal_primary_button_foreground_color_selector</item>
+        <item name="iconBottomTint">@color/tonal_primary_button_foreground_color_selector</item>
+        <item name="iconLeftTint">@color/tonal_primary_button_foreground_color_selector</item>
+        <item name="iconRightTint">@color/tonal_primary_button_foreground_color_selector</item>
+        <item name="android:textColor">@color/tonal_primary_button_foreground_color_selector</item>
+    </style>
+
     <style name="TextButton">
         <item name="android:textAppearance">@style/ButtonTextAppearance</item>
         <item name="shapeAppearanceOverlay">@style/ChildShapeAppearance</item>
@@ -27,56 +111,12 @@
         <item name="disabled_icon_end_color">?attr/colorOnSecondaryContainerDisabled</item>
     </style>
 
-    <style name="Widget.AppBar" parent="Widget.Design.AppBarLayout">
-        <item name="android:fitsSystemWindows">false</item>
-        <item name="liftOnScroll">false</item>
-        <item name="elevation">0dp</item>
-        <item name="statusBarForeground">?android:attr/windowBackground</item>
-        <item name="android:background">@drawable/app_bar_bg</item>
-        <item name="android:outlineAmbientShadowColor" tools:targetApi="29">@android:color/black</item>
-        <item name="android:outlineSpotShadowColor" tools:targetApi="29">@android:color/black</item>
-    </style>
-
-    <style name="Widget.AppBar.SurfaceVariant" parent="Widget.AppBar">
-        <item name="statusBarForeground">?attr/colorSurfaceVariant</item>
-        <item name="android:background">@drawable/app_bar_bg_surface_variant</item>
-    </style>
-
-    <style name="Widget.CollapsingToolbar" parent="Widget.Design.CollapsingToolbar">
-        <item name="android:fitsSystemWindows">false</item>
-        <item name="contentScrim">?android:attr/colorBackground</item>
-        <item name="statusBarScrim">?android:attr/colorBackground</item>
-        <item name="android:background">@drawable/app_bar_bg</item>
-    </style>
-
-    <style name="Widget.Toolbar" parent="Widget.AppCompat.Toolbar">
-        <item name="titleTextAppearance">@style/ToolBarTitleTextAppearance</item>
-    </style>
 
     <style name="Widget.Toolbar.TopAppBarWithLogo">
-        <!--<item name="navigationContentDescription">@string/back</item>-->
-        <item name="navigationIcon">@drawable/ic_logo_48</item>
-    </style>
+        <item name="logo">@drawable/toolbar_logo</item>
+   </style>
 
-    <style name="Widget.Toolbar.TopAppBarWithBackButton">
-        <!--<item name="navigationContentDescription">@string/back</item>-->
-        <item name="navigationIcon">@drawable/ic_back_28</item>
-    </style>
 
-    <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
-        <item name="tint">?attr/colorPrimary</item>
-    </style>
 
-    <style name="NavigationBarView">
-        <item name="itemIconSize">28dp</item>
-        <item name="itemIconTint">@color/nav_bar_icon_colors</item>
-        <item name="itemTextColor">@color/nav_bar_text_colors</item>
-        <item name="itemRippleColor">?attr/colorSecondaryContainer</item>
-        <item name="itemActiveIndicatorStyle">@style/NavigationBarView.Indicator</item>
-    </style>
-
-    <style name="NavigationBarView.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">?attr/colorSecondaryContainer</item>
-    </style>
 
 </resources>

@@ -1,16 +1,15 @@
 package com.vkontakte.miracle.fragment.audio;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.fragment.base.templates.BaseRecyclerFragment;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.audio.PlaylistAdapter;
-import com.vkontakte.miracle.engine.fragment.side.SideRecyclerFragment;
 
-public class FragmentPlaylist extends SideRecyclerFragment {
+public class FragmentPlaylist extends BaseRecyclerFragment {
 
     private String playlistId;
     private String ownerId;
@@ -34,16 +33,13 @@ public class FragmentPlaylist extends SideRecyclerFragment {
     }
 
     @Override
-    public String requestTitleText() {
-        Context context = getContext();
-        if(context!=null){
-            return context.getString(R.string.playlist);
-        }
-        return super.requestTitleText();
+    public int requestTitleTextResId() {
+        return R.string.playlist;
     }
 
     @Override
     public void readSavedInstance(Bundle savedInstanceState) {
+        super.readSavedInstance(savedInstanceState);
         playlistId = savedInstanceState.getString("playlistId");
         ownerId = savedInstanceState.getString("ownerId");
         accessKey = savedInstanceState.getString("accessKey");

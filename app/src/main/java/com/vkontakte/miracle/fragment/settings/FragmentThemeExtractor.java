@@ -1,30 +1,28 @@
 package com.vkontakte.miracle.fragment.settings;
 
-import static com.vkontakte.miracle.engine.util.ColorUtil.getColorByAttributeId;
+import static com.miracle.engine.util.ColorUtil.getColorByAttributeId;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.miracle.engine.fragment.base.templates.BaseListFragment;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.fragment.side.SideListFragment;
 
 import java.util.Locale;
 
-public class FragmentThemeExtractor extends SideListFragment {
+public class FragmentThemeExtractor extends BaseListFragment {
 
-    @NonNull
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-
+    public void initViews(@NonNull View rootView, @Nullable Bundle savedInstanceState) {
+        super.initViews(rootView, savedInstanceState);
         EditText editText = rootView.findViewById(R.id.et);
 
         Context context = getContext();
@@ -65,45 +63,43 @@ public class FragmentThemeExtractor extends SideListFragment {
 
                 String string = String.format(Locale.getDefault(),
                         "<color name=\"_10\">#%06X</color>\n" +
-                        "    <color name=\"_20\">#%06X</color>\n" +
-                        "    <color name=\"_25\">#%06X</color>\n" +
-                        "    <color name=\"_30\">#%06X</color>\n" +
-                        "    <color name=\"_35\">#%06X</color>\n" +
-                        "    <color name=\"_40\">#%06X</color>\n" +
-                        "    <color name=\"_50\">#%06X</color>\n" +
-                        "    <color name=\"_60\">#%06X</color>\n" +
-                        "    <color name=\"_70\">#%06X</color>\n" +
-                        "    <color name=\"_80\">#%06X</color>\n" +
-                        "    <color name=\"_90\">#%06X</color>\n" +
-                        "    <color name=\"_95\">#%06X</color>\n" +
-                        "    <color name=\"_98\">#%06X</color>\n" +
-                        "    <color name=\"_99\">#%06X</color>\n" +
-                        "    <color name=\"_secondary_10\">#%06X</color>\n" +
-                        "    <color name=\"_secondary_20\">#%06X</color>\n" +
-                        "    <color name=\"_secondary_25\">#%06X</color>\n" +
-                        "    <color name=\"_secondary_30\">#%06X</color>\n" +
-                        "    <color name=\"_secondary_35\">#%06X</color>\n" +
-                        "    <color name=\"_secondary_40\">#%06X</color>\n" +
-                        "    <color name=\"_secondary_50\">#%06X</color>\n" +
-                        "    <color name=\"_secondary_60\">#%06X</color>\n" +
-                        "    <color name=\"_secondary_70\">#%06X</color>\n" +
-                        "    <color name=\"_secondary_80\">#%06X</color>\n" +
-                        "    <color name=\"_secondary_90\">#%06X</color>\n" +
-                        "    <color name=\"_secondary_95\">#%06X</color>\n" +
-                        "    <color name=\"_secondary_98\">#%06X</color>\n" +
-                        "    <color name=\"_secondary_99\">#%06X</color>",
+                                "    <color name=\"_20\">#%06X</color>\n" +
+                                "    <color name=\"_25\">#%06X</color>\n" +
+                                "    <color name=\"_30\">#%06X</color>\n" +
+                                "    <color name=\"_35\">#%06X</color>\n" +
+                                "    <color name=\"_40\">#%06X</color>\n" +
+                                "    <color name=\"_50\">#%06X</color>\n" +
+                                "    <color name=\"_60\">#%06X</color>\n" +
+                                "    <color name=\"_70\">#%06X</color>\n" +
+                                "    <color name=\"_80\">#%06X</color>\n" +
+                                "    <color name=\"_90\">#%06X</color>\n" +
+                                "    <color name=\"_95\">#%06X</color>\n" +
+                                "    <color name=\"_98\">#%06X</color>\n" +
+                                "    <color name=\"_99\">#%06X</color>\n" +
+                                "    <color name=\"_secondary_10\">#%06X</color>\n" +
+                                "    <color name=\"_secondary_20\">#%06X</color>\n" +
+                                "    <color name=\"_secondary_25\">#%06X</color>\n" +
+                                "    <color name=\"_secondary_30\">#%06X</color>\n" +
+                                "    <color name=\"_secondary_35\">#%06X</color>\n" +
+                                "    <color name=\"_secondary_40\">#%06X</color>\n" +
+                                "    <color name=\"_secondary_50\">#%06X</color>\n" +
+                                "    <color name=\"_secondary_60\">#%06X</color>\n" +
+                                "    <color name=\"_secondary_70\">#%06X</color>\n" +
+                                "    <color name=\"_secondary_80\">#%06X</color>\n" +
+                                "    <color name=\"_secondary_90\">#%06X</color>\n" +
+                                "    <color name=\"_secondary_95\">#%06X</color>\n" +
+                                "    <color name=\"_secondary_98\">#%06X</color>\n" +
+                                "    <color name=\"_secondary_99\">#%06X</color>",
                         c10, c20,c25, c30, c35, c40, c50, c60, c70, c80, c90, c95, c98, c99,
                         cs10, cs20, cs25, cs30, cs35, cs40, cs50, cs60, cs70, cs80, cs90, cs95, cs98, cs99);
 
                 editText.setText(string);
             }
         }
-        return rootView;
     }
 
-    @NonNull
     @Override
-    public View inflateRootView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_theme_extractor, container, false);
+    public void inflateContent(@NonNull LayoutInflater inflater, @NonNull LinearLayout container) {
+        inflater.inflate(R.layout.fragment_content_theme_extractor, container, true);
     }
 }

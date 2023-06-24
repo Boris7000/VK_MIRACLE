@@ -1,8 +1,8 @@
 package com.vkontakte.miracle.model.catalog;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_SUGGESTION;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_CATALOG_SUGGESTION;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 
 import org.json.JSONException;
 import org.json.JSONObject;

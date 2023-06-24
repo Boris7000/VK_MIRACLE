@@ -1,5 +1,7 @@
 package com.vkontakte.miracle.adapter.photos.holders;
 
+import static com.miracle.engine.util.AdapterUtil.getHorizontalLayoutManager;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +12,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.MiracleViewHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.photos.HorizontalPhotoAlbumsAdapter;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.model.photos.PhotoAlbumItem;
+import com.vkontakte.miracle.model.photos.PhotoAlbumsHolder;
 
 import java.util.ArrayList;
-
-import static com.vkontakte.miracle.engine.util.AdapterUtil.getHorizontalLayoutManager;
 
 public class HorizontalListPhotoAlbumViewHolder extends MiracleViewHolder {
 

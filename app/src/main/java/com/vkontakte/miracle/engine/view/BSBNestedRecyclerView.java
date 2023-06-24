@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-public class BSBNestedRecyclerView  extends RecyclerView {
+public class BSBNestedRecyclerView extends RecyclerView {
 
     private final int touchSlop;
     private float initialX = 0f;

@@ -6,21 +6,22 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
-import com.miracle.button.TextViewButton;
+import com.miracle.widget.ExtendedMaterialButton;
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
 
 public class CaptchaCodeFrame extends LinearLayout {
 
     private EditText validationCodeField;
-    private TextViewButton sendButton;
-    private TextViewButton cancelButton;
+    private ExtendedMaterialButton sendButton;
+    private Button cancelButton;
     private ImageView captchaImage;
 
     public CaptchaCodeFrame(Context context) {
@@ -53,7 +54,8 @@ public class CaptchaCodeFrame extends LinearLayout {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                sendButton.setEnabled(getTrimmed(validationCodeField).length()>0, true);
+                sendButton.setToggled(true);
+                sendButton.setEnabled(getTrimmed(validationCodeField).length()>0);
             }
         };
         validationCodeField.addTextChangedListener(textWatcher);

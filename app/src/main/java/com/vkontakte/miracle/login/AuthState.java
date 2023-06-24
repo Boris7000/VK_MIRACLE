@@ -1,4 +1,5 @@
 package com.vkontakte.miracle.login;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 

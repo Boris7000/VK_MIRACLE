@@ -2,12 +2,12 @@ package com.vkontakte.miracle.executors.wall;
 
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.model.Owner;
-import com.vkontakte.miracle.model.users.ProfileItem;
+import com.vkontakte.miracle.model.users.User;
 import com.vkontakte.miracle.model.wall.PostItem;
-import com.vkontakte.miracle.network.methods.Likes;
+import com.vkontakte.miracle.network.api.Likes;
 
 import org.json.JSONObject;
 
@@ -17,18 +17,18 @@ import retrofit2.Response;
 public class AddLike extends AsyncExecutor<Boolean> {
 
     private final PostItem postItem;
-    private final ProfileItem profileItem;
+    private final User user;
     private int newLikesCount;
 
     public AddLike(PostItem postItem){
         this.postItem = postItem;
-        profileItem = StorageUtil.get().currentUser();
+        user = StorageUtil.get().currentUser();
     }
 
     @Override
     public Boolean inBackground() {
         try {
-            if(profileItem!=null) {
+            if(user !=null) {
 
                 Owner owner = postItem.getFrom();
                 if(owner==null){
@@ -42,7 +42,7 @@ public class AddLike extends AsyncExecutor<Boolean> {
                         "post",
                         postItem.getId(),
                         owner.getId(),
-                        profileItem.getAccessToken());
+                        user.getAccessToken());
 
                 Response<JSONObject> response = call.execute();
                 JSONObject jo_response = validateBody(response).getJSONObject("response");

@@ -1,19 +1,25 @@
 package com.vkontakte.miracle.adapter.messages;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CONVERSATION;
 import static com.vkontakte.miracle.engine.util.APIUtil.createOwnersMap;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_CONVERSATION;
 
 import android.util.ArrayMap;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.adapter.MiracleAsyncLoadAdapter;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.adapter.messages.holders.ConversationViewHolder;
-import com.vkontakte.miracle.engine.adapter.MiracleAsyncLoadAdapter;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
+import com.vkontakte.miracle.model.Owner;
+import com.vkontakte.miracle.model.messages.ConversationItem;
+import com.vkontakte.miracle.model.messages.MessageItem;
+import com.vkontakte.miracle.model.users.ProfileItem;
+import com.vkontakte.miracle.model.users.fields.LastSeen;
+import com.vkontakte.miracle.network.api.Message;
 import com.vkontakte.miracle.service.longpoll.LongPollServiceController;
 import com.vkontakte.miracle.service.longpoll.listeners.OnMessageAddedUpdateListener;
 import com.vkontakte.miracle.service.longpoll.listeners.OnMessageReadUpdateListener;
@@ -21,12 +27,6 @@ import com.vkontakte.miracle.service.longpoll.listeners.OnMessageTypingUpdateLis
 import com.vkontakte.miracle.service.longpoll.listeners.OnUserOnlineUpdateListener;
 import com.vkontakte.miracle.service.longpoll.model.MessageAddedUpdate;
 import com.vkontakte.miracle.service.longpoll.model.UserOnlineUpdate;
-import com.vkontakte.miracle.model.Owner;
-import com.vkontakte.miracle.model.messages.ConversationItem;
-import com.vkontakte.miracle.model.messages.MessageItem;
-import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.model.users.fields.LastSeen;
-import com.vkontakte.miracle.network.methods.Message;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

@@ -1,32 +1,33 @@
 package com.vkontakte.miracle.engine.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.miracle.engine.activity.tabs.TabsActivity;
+import com.miracle.engine.context.ContextExtractor;
 import com.vkontakte.miracle.dialog.audio.GoToArtistDialog;
-import com.vkontakte.miracle.engine.activity.tabs.TabsActivity;
-import com.vkontakte.miracle.engine.context.ContextExtractor;
 import com.vkontakte.miracle.engine.view.textView.OwnerLink;
+import com.vkontakte.miracle.fragment.audio.FragmentCreatePlaylist;
 import com.vkontakte.miracle.fragment.audio.FragmentOfflineAudio;
 import com.vkontakte.miracle.fragment.audio.FragmentPlaylist;
-import com.vkontakte.miracle.fragment.settings.FragmentColorSchemeSettings;
-import com.vkontakte.miracle.fragment.settings.FragmentTest;
+import com.vkontakte.miracle.fragment.base.FragmentsMusic;
 import com.vkontakte.miracle.fragment.catalog.FragmentAudioSearch;
 import com.vkontakte.miracle.fragment.catalog.FragmentCatalogArtist;
 import com.vkontakte.miracle.fragment.catalog.FragmentCatalogFriends;
 import com.vkontakte.miracle.fragment.catalog.FragmentCatalogGroups;
 import com.vkontakte.miracle.fragment.catalog.FragmentCatalogSection;
 import com.vkontakte.miracle.fragment.catalog.FragmentCatalogSectionUrl;
-import com.vkontakte.miracle.fragment.catalog.FragmentMusicSide;
 import com.vkontakte.miracle.fragment.catalog.FragmentOwnerCatalogMusic;
 import com.vkontakte.miracle.fragment.friends.FragmentFriends;
 import com.vkontakte.miracle.fragment.messages.FragmentChat;
 import com.vkontakte.miracle.fragment.photos.FragmentOwnerPhotos;
 import com.vkontakte.miracle.fragment.photos.FragmentPhotoAlbum;
+import com.vkontakte.miracle.fragment.settings.FragmentPlayerSettings;
+import com.vkontakte.miracle.fragment.settings.FragmentColorSchemeSettings;
 import com.vkontakte.miracle.fragment.settings.FragmentDebugSettings;
 import com.vkontakte.miracle.fragment.settings.FragmentInterfaceSettings;
 import com.vkontakte.miracle.fragment.settings.FragmentSettings;
+import com.vkontakte.miracle.fragment.settings.FragmentTest;
 import com.vkontakte.miracle.fragment.settings.FragmentThemeExtractor;
 import com.vkontakte.miracle.fragment.settings.FragmentUrlOpenTest;
 import com.vkontakte.miracle.fragment.wall.FragmentGroup;
@@ -43,18 +44,12 @@ import com.vkontakte.miracle.model.groups.GroupItem;
 import com.vkontakte.miracle.model.messages.ConversationItem;
 import com.vkontakte.miracle.model.photos.PhotoAlbumItem;
 import com.vkontakte.miracle.model.users.ProfileItem;
+import com.vkontakte.miracle.model.users.User;
 import com.vkontakte.miracle.model.wall.PostItem;
 
 import java.util.ArrayList;
 
 public class NavigationUtil {
-
-    public static void back(Context context){
-        Activity activity = ContextExtractor.extractActivity(context);
-        if(activity!=null){
-            activity.onBackPressed();
-        }
-    }
 
     ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -79,6 +74,14 @@ public class NavigationUtil {
         if(tabsActivity!=null) {
             FragmentColorSchemeSettings fragmentColorSchemeSettings = new FragmentColorSchemeSettings();
             tabsActivity.addFragment(fragmentColorSchemeSettings);
+        }
+    }
+
+    public static void goToPlayerSettings(Context context){
+        TabsActivity tabsActivity = ContextExtractor.extractTabsActivity(context);
+        if(tabsActivity!=null) {
+            FragmentPlayerSettings fragmentPlayerSettings = new FragmentPlayerSettings();
+            tabsActivity.addFragment(fragmentPlayerSettings);
         }
     }
 
@@ -162,6 +165,18 @@ public class NavigationUtil {
         }
     }
 
+    public static void goToProfile(DataItemWrap<?,?> itemWrap, Context context){
+        Object object = itemWrap.getItem();
+        if(object instanceof ProfileItem) {
+            ProfileItem profileItem = (ProfileItem) itemWrap.getItem();
+            goToProfile(profileItem, context);
+        }
+    }
+
+    public static void goToProfile(User user, Context context){
+        goToProfile(user.getId(), user.getFullName(), context);
+    }
+
     public static void goToProfile(ProfileItem profileItem, Context context){
         goToProfile(profileItem.getId(), profileItem.getFullName(), context);
     }
@@ -230,19 +245,6 @@ public class NavigationUtil {
 
     ////////////////////////////////////////////////////////////////////////////////////////
 
-    public static void goToArtist(DataItemWrap<?,?> itemWrap, Context context){
-        Object object = itemWrap.getItem();
-        if(object instanceof AudioItem) {
-            AudioItem audioItem = (AudioItem) itemWrap.getItem();
-            goToArtist(audioItem, context);
-        } else {
-            if(object instanceof PlaylistItem){
-                PlaylistItem playlistItem = (PlaylistItem) object;
-                goToArtist(playlistItem, context);
-            }
-        }
-    }
-
     public static void goToArtist(PlaylistItem playlistItem, Context context){
         goToArtist(playlistItem.getArtists(), context);
     }
@@ -265,17 +267,26 @@ public class NavigationUtil {
         goToArtist(artist.getId(), artist.getName(), context);
     }
 
-    public static void goToArtist(String artist, String artistName, Context context){
+    public static void goToArtist(String artistId, String artistName, Context context){
         TabsActivity tabsActivity = ContextExtractor.extractTabsActivity(context);
         if(tabsActivity!=null) {
             FragmentCatalogArtist fragmentCatalogArtist = new FragmentCatalogArtist();
-            fragmentCatalogArtist.setArtistId(artist);
+            fragmentCatalogArtist.setArtistId(artistId);
             fragmentCatalogArtist.setArtistName(artistName);
             tabsActivity.addFragment(fragmentCatalogArtist);
         }
     }
 
-    public static void goToArtist(String url, Context context){
+    public static void goToArtist(String artistId, Context context){
+        TabsActivity tabsActivity = ContextExtractor.extractTabsActivity(context);
+        if(tabsActivity!=null) {
+            FragmentCatalogArtist fragmentCatalogArtist = new FragmentCatalogArtist();
+            fragmentCatalogArtist.setArtistId(artistId);
+            tabsActivity.addFragment(fragmentCatalogArtist);
+        }
+    }
+
+    public static void goToArtistUrl(String url, Context context){
         TabsActivity tabsActivity = ContextExtractor.extractTabsActivity(context);
         if(tabsActivity!=null) {
             FragmentCatalogArtist fragmentCatalogArtist = new FragmentCatalogArtist();
@@ -284,12 +295,8 @@ public class NavigationUtil {
         }
     }
 
-    public static void goToArtistSearch(DataItemWrap<?,?> itemWrap, Context context){
-        Object object = itemWrap.getItem();
-        if(object instanceof AudioItem) {
-            AudioItem audioItem = (AudioItem) itemWrap.getItem();
-            goToAudioSearch(audioItem.getArtist(), context);
-        }
+    public static void goToArtistSearch(AudioItem audioItem, Context context){
+        goToAudioSearch(audioItem.getArtist(), context);
     }
 
     public static void goToAudioSearch(String q, Context context){
@@ -298,7 +305,7 @@ public class NavigationUtil {
             FragmentAudioSearch fragmentAudioSearch = new FragmentAudioSearch();
             if(q!=null) {
                 Bundle args = new Bundle();
-                args.putString("initialQ", q);
+                args.putString("searchQuery", q);
                 fragmentAudioSearch.setArguments(args);
             }
             tabsActivity.addFragment(fragmentAudioSearch);
@@ -312,8 +319,8 @@ public class NavigationUtil {
     }
 
     public static void goToOwnerMusic(String ownerId, Context context){
-        ProfileItem profileItem = StorageUtil.get().currentUser();
-        if(profileItem.getId().equals(ownerId)){
+        User user = StorageUtil.get().currentUser();
+        if(user.getId().equals(ownerId)){
             goToUserMusic(context);
         } else {
             TabsActivity tabsActivity = ContextExtractor.extractTabsActivity(context);
@@ -328,8 +335,8 @@ public class NavigationUtil {
     public static void goToUserMusic(Context context){
         TabsActivity tabsActivity = ContextExtractor.extractTabsActivity(context);
         if(tabsActivity!=null) {
-            FragmentMusicSide fragmentMusicSide = new FragmentMusicSide();
-            tabsActivity.addFragment(fragmentMusicSide);
+            FragmentsMusic fragmentsMusic = new FragmentsMusic();
+            tabsActivity.addFragment(fragmentsMusic);
         }
     }
 
@@ -372,8 +379,8 @@ public class NavigationUtil {
     }
 
     public static void goToOwnerFriends(String ownerId, Context context){
-        ProfileItem profileItem = StorageUtil.get().currentUser();
-        if(profileItem.getId().equals(ownerId)){
+        User user = StorageUtil.get().currentUser();
+        if(user.getId().equals(ownerId)){
             goToUserFriends(ownerId, context);
         } else {
             TabsActivity tabsActivity = ContextExtractor.extractTabsActivity(context);
@@ -473,6 +480,16 @@ public class NavigationUtil {
 
     ////////////////////////////////////////////////////////////////////////////////////////
 
+    public static void goPlaylistCreation(Context context){
+        TabsActivity tabsActivity = ContextExtractor.extractTabsActivity(context);
+        if(tabsActivity!=null) {
+            FragmentCreatePlaylist fragmentCreatePlaylist = new FragmentCreatePlaylist();
+            tabsActivity.addFragment(fragmentCreatePlaylist);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+
     public static boolean hardResolveVKURL(String url, Context context){
 
         if(!url.isEmpty()) {
@@ -491,14 +508,14 @@ public class NavigationUtil {
                     if(e.indexOf(s)==0){
                         e = e.substring(s.length());
                         String[] fields = e.split("_");
-                        goToPlaylist(new PlaylistItem(fields[0], fields[1], fields[2]), context);
+                        goToPlaylist(fields[1], fields[0], fields[2], context);
                         return true;
                     }
                     s = "music/album/";
                     if(e.indexOf(s)==0){
                         e = e.substring(s.length());
                         String[] fields = e.split("_");
-                        goToPlaylist(new PlaylistItem(fields[0], fields[1], fields[2]), context);
+                        goToPlaylist(fields[1], fields[0], fields[2], context);
                         return true;
                     }
                     s = "music/curator/";
@@ -507,7 +524,7 @@ public class NavigationUtil {
                     }
                     s = "artist/";
                     if(e.indexOf(s)==0){
-                        goToArtist(url, context);
+                        goToArtistUrl(url, context);
                         return true;
                     }
                     //TODO добавлять по возможности новые каталоги

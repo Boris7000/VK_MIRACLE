@@ -10,10 +10,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.model.catalog.CatalogUser;
 import com.vkontakte.miracle.model.catalog.fields.CatalogDescription;
 import com.vkontakte.miracle.model.users.ProfileItem;
@@ -21,7 +21,8 @@ import com.vkontakte.miracle.model.users.fields.OnlineInfo;
 
 import java.util.ArrayList;
 
-public class CatalogUserViewHolder extends MiracleViewHolder {
+public class CatalogUserViewHolder extends MiracleViewHolder
+        implements View.OnClickListener {
 
     private final ImageView imageView;
     private final ViewStub onlineStatusStub;
@@ -38,6 +39,7 @@ public class CatalogUserViewHolder extends MiracleViewHolder {
         subtitle = itemView.findViewById(R.id.subtitle);
         onlineStatusStub = itemView.findViewById(R.id.onlineStatusStub);
         verifiedStub = itemView.findViewById(R.id.verifiedStub);
+        itemView.setOnClickListener(this);
     }
 
     @Override
@@ -109,4 +111,7 @@ public class CatalogUserViewHolder extends MiracleViewHolder {
             }
         }
     }
+
+    @Override
+    public void onClick(View v) {}
 }

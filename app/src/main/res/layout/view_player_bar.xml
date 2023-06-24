@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.vkontakte.miracle.service.player.view.PlayerBarView
+<com.vkontakte.miracle.engine.view.player.PlayerBarView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -95,7 +95,7 @@
             android:layout_height="40dp"
             android:layout_weight="0"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_play_28"
+            android:src="@drawable/ic_pause_28"
             app:tint="?attr/colorEmphasis_60"
             android:contentDescription="pause or play"/>
 
@@ -123,4 +123,4 @@
 
     </LinearLayout>
 
-</com.vkontakte.miracle.service.player.view.PlayerBarView>
+</com.vkontakte.miracle.engine.view.player.PlayerBarView>

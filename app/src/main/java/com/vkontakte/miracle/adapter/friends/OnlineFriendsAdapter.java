@@ -1,17 +1,18 @@
 package com.vkontakte.miracle.adapter.friends;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PROFILE;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_PROFILE;
 
 import android.util.ArrayMap;
 
+import com.miracle.engine.adapter.MiracleAsyncLoadAdapter;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.adapter.friends.holders.ProfileViewHolder;
-import com.vkontakte.miracle.engine.adapter.MiracleAsyncLoadAdapter;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Friends;
+import com.vkontakte.miracle.model.users.User;
+import com.vkontakte.miracle.network.api.Friends;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,12 +31,12 @@ public class OnlineFriendsAdapter extends MiracleAsyncLoadAdapter {
 
     @Override
     public void onLoading() throws Exception {
-        ProfileItem userItem = StorageUtil.get().currentUser();
+        User user = StorageUtil.get().currentUser();
         ArrayList<ItemDataHolder> holders = getItemDataHolders();
         int previous = holders.size();
 
         Response<JSONObject> response =
-                Friends.getOnline(null, ownerId, userItem.getAccessToken()).execute();
+                Friends.getOnline(null, ownerId, user.getAccessToken()).execute();
 
         JSONObject jo_response = validateBody(response).getJSONObject("response");
 

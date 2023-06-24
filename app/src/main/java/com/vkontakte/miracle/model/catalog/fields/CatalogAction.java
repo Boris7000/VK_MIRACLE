@@ -1,14 +1,14 @@
 package com.vkontakte.miracle.model.catalog.fields;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_CREATE_PLAYLIST;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_OPEN_SECTION;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_PLAY;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_PLAY_SHUFFLED;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_BUTTON_CREATE_PLAYLIST;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_BUTTON_OPEN_SECTION;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_BUTTON_PLAY;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_BUTTON_PLAY_SHUFFLED;
 
 import android.util.Log;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -129,8 +129,8 @@ public class CatalogAction implements ItemDataHolder {
     public int getViewHolderType() {
         switch (type){
             default:{
-                Log.d("ofkokefe",type);
-                return R.layout.view_loading_item;
+                Log.d("unknown catalog action", type);
+                return -1;
             }
             case "play_shuffled_audios_from_block":{
                 return TYPE_BUTTON_PLAY_SHUFFLED;

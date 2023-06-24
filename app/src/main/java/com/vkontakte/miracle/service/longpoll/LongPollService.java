@@ -10,10 +10,10 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
+import com.vkontakte.miracle.model.users.User;
 import com.vkontakte.miracle.service.longpoll.listeners.OnNewUpdatesListener;
-import com.vkontakte.miracle.model.users.ProfileItem;
 
 import org.json.JSONObject;
 
@@ -44,14 +44,14 @@ public class LongPollService extends Service {
                 public LongPollUpdates inBackground() {
                     try {
                         try {
-                            ProfileItem profileItem = storageUtil.currentUser();
-                            if(profileItem!=null) {
-                                Log.d(LOG_TAG, profileItem.getId());
+                            User user = storageUtil.currentUser();
+                            if(user!=null) {
+                                Log.d(LOG_TAG, user.getId());
                                 Response<JSONObject> response;
                                 JSONObject jsonObject;
 
                                 if (server == null) {
-                                    response = message().getLongPollServer(1, 3, profileItem.getAccessToken(), latest_api_v).execute();
+                                    response = message().getLongPollServer(1, 3, user.getAccessToken(), latest_api_v).execute();
                                     jsonObject = validateBody(response).getJSONObject("response");
                                     server = jsonObject.getString("server").substring(11);
                                     key = jsonObject.getString("key");
@@ -70,13 +70,13 @@ public class LongPollService extends Service {
 
                                 ts = jsonObject.getString("ts");
 
-                                File userDirectory = storageUtil.getUserCachesDir(profileItem);
+                                File userDirectory = storageUtil.getUserCachesDir(user);
 
                                 storageUtil.writeMessageAddedLongPollUpdates(longPollUpdates.getMessageAddedUpdates(), userDirectory);
 
                                 storageUtil.writeMessageReadLongPollUpdates(longPollUpdates.getMessageReadUpdates(), userDirectory);
 
-                                if (profileItem.equals(storageUtil.currentUser())) {
+                                if (user.equals(storageUtil.currentUser())) {
                                     return longPollUpdates;
                                 }
                                 Log.d(LOG_TAG, "profiles not equals");

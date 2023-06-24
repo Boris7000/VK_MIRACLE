@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <com.miracle.widget.ExtendedMaterialButton
+        android:id="@+id/messageButton"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:padding="0dp"
+        android:layout_weight="1"
+        android:text="@string/message"
+        app:shapeAppearance="@style/ChildShapeAppearance"
+        style="@style/Button"/>
+
+    <Space
+        android:layout_width="12dp"
+        android:layout_height="0dp"/>
+
+    <com.miracle.widget.ExtendedMaterialButton
+        android:id="@+id/followButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="0dp"
+        android:checkable="true"
+        app:toggleCheckedStateOnClick="false"
+        app:iconLeftStickingToText="true"
+        app:iconLeft="@drawable/ic_add_done_28_anim"
+        app:shapeAppearance="@style/ChildShapeAppearance"
+        style="@style/TonalPrimaryButton"/>
+
+    <Space
+        android:layout_width="12dp"
+        android:layout_height="0dp"/>
+
+    <com.miracle.widget.ExtendedMaterialButton
+        android:id="@+id/optionsButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="0dp"
+        app:iconLeftStickingToText="true"
+        app:iconLeft="@drawable/ic_more_vertical_28"
+        app:shapeAppearance="@style/ChildShapeAppearance"
+        style="@style/TonalButton"/>
+
+</LinearLayout>

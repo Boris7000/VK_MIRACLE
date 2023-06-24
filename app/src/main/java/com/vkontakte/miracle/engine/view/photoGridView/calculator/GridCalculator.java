@@ -1,7 +1,6 @@
 package com.vkontakte.miracle.engine.view.photoGridView.calculator;
 
 import com.vkontakte.miracle.engine.view.photoGridView.MediaItem;
-import com.vkontakte.miracle.engine.view.photoGridView.PhotoGridItem;
 import com.vkontakte.miracle.engine.view.photoGridView.PhotoGridPosition;
 import com.vkontakte.miracle.model.photos.fields.Size;
 
@@ -38,7 +37,9 @@ public class GridCalculator {
                 if(count==3){
                     calculateForTriple(maxWidth, maxHeight, spacing);
                 } else {
-                    calculateSymmetric(maxWidth, maxHeight, spacing);
+                    if(count>3) {
+                        calculateSymmetric(maxWidth, maxHeight, spacing);
+                    }
                 }
             }
         }
@@ -170,8 +171,12 @@ public class GridCalculator {
 
             // first finding replace
             findReplace(rows, doubleRowCount);
-
-            while (maxNeighbourAspectRatioIndex>-1&&minAspectRatioIndex>-1&&totalVerticalAspectRatio>1.5f){
+            int counter = 0;
+            while (counter<30
+                    &&maxNeighbourAspectRatioIndex>-1
+                    &&minAspectRatioIndex>-1
+                    &&round(totalVerticalAspectRatio)>1.5f){
+                counter++;
 
                 GridRow minRow = rows.get(minAspectRatioIndex);
                 GridRow maxRow = rows.get(maxNeighbourAspectRatioIndex);
@@ -207,6 +212,17 @@ public class GridCalculator {
         }
 
         fit(rows, maxWidth, maxHeight, spacing);
+    }
+
+    private float round(float fl1){
+        if(fl1 > 1.54999f){
+            return fl1;
+        } else {
+            if(fl1 > 1.5f){
+                return 1.5f;
+            }
+        }
+        return  fl1;
     }
 
     private ArrayList<GridRow> createSingleRowGrid(){
@@ -247,7 +263,8 @@ public class GridCalculator {
 
     private ArrayList<GridRow> createSymmetricGrid(double doubleRowCount){
         ArrayList <GridRow> rowsSymmetric = new ArrayList<>();
-        int rowsCount = (int) Math.round(doubleRowCount);
+
+        int rowsCount = Math.max(1, (int)Math.round(doubleRowCount));
         int itemsInRowCount = count/rowsCount;
         int totalItemsDelta = 0;
 
@@ -286,8 +303,8 @@ public class GridCalculator {
         for(int index = 0; index<rows.size();index++){
             GridRow gridRow = rows.get(index);
 
-            float aspectRatio = gridRow.aspectRatio;
-            float verticalAspectRatio = gridRow.getVerticalAspectRatio();
+            double aspectRatio = gridRow.aspectRatio;
+            double verticalAspectRatio = gridRow.getVerticalAspectRatio();
 
             CalculationItem item1=null;
             CalculationItem item2=null;
@@ -501,7 +518,7 @@ public class GridCalculator {
 
     private static class GridRow{
 
-        private float aspectRatio = 0;
+        private double aspectRatio = 0;
 
         private final ArrayList<CalculationItem> items = new ArrayList<>();
 
@@ -523,7 +540,7 @@ public class GridCalculator {
             return items.size();
         }
 
-        public float getVerticalAspectRatio(){
+        public double getVerticalAspectRatio(){
             return 1f/aspectRatio;
         }
     }

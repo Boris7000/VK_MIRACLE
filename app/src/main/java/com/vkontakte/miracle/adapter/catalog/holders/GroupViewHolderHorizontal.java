@@ -10,13 +10,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.model.groups.GroupItem;
 
-public class GroupViewHolderHorizontal extends MiracleViewHolder {
+public class GroupViewHolderHorizontal extends MiracleViewHolder
+        implements View.OnClickListener{
 
     private final ImageView photo;
     private final TextView title;
@@ -28,6 +29,7 @@ public class GroupViewHolderHorizontal extends MiracleViewHolder {
         photo = itemView.findViewById(R.id.photo);
         title = itemView.findViewById(R.id.title);
         verifiedStub = itemView.findViewById(R.id.verifiedStub);
+        itemView.setOnClickListener(this);
     }
 
     @Override
@@ -59,4 +61,7 @@ public class GroupViewHolderHorizontal extends MiracleViewHolder {
             }
         }
     }
+
+    @Override
+    public void onClick(View v) {}
 }

@@ -125,7 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_play_48"
+            android:src="@drawable/ic_pause_48"
             app:tint="@color/white"/>
 
         <Space
@@ -162,43 +162,38 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
-    <LinearLayout
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginHorizontal="16dp"
+        android:progressDrawable="@drawable/seekbar_track_rounded"
+        android:progressTint="@color/white"
+        android:thumbTint="@color/white"
+        android:secondaryProgressTint="@color/white"
+        android:progressBackgroundTint="@color/white"
+        android:max="1000"
+        tools:progress="500"
+        tools:secondaryProgress="700"/>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
+        android:layout_marginHorizontal="30dp">
         <TextView
             android:id="@+id/currentTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white_half_50"
             android:text="@string/default_timer"/>
-
-        <SeekBar
-            android:id="@+id/seekBar"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:layout_marginHorizontal="0dp"
-            android:progressDrawable="@drawable/seek_bar_drawable"
-            android:max="1000"
-            android:progressTint="@color/white"
-            android:thumbTint="@color/white"
-            android:secondaryProgressTint="@color/white"
-            android:progressBackgroundTint="@color/white"
-            tools:progress="500"
-            tools:secondaryProgress="700"/>
-
         <TextView
             android:id="@+id/remainingTime"
+            android:layout_gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white_half_50"
             android:text="@string/default_timer"/>
-
-    </LinearLayout>
+    </FrameLayout>
 
     <Space
         android:layout_width="0dp"

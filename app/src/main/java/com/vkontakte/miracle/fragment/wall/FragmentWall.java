@@ -6,11 +6,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.fragment.base.templates.BaseRecyclerFragment;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.wall.WallAdapter;
-import com.vkontakte.miracle.engine.fragment.side.SideRecyclerFragment;
 
-public class FragmentWall extends SideRecyclerFragment {
+public class FragmentWall extends BaseRecyclerFragment {
 
     private String postId;
     private String ownerId;
@@ -39,6 +39,7 @@ public class FragmentWall extends SideRecyclerFragment {
 
     @Override
     public void readSavedInstance(Bundle savedInstanceState) {
+        super.readSavedInstance(savedInstanceState);
         String key = savedInstanceState.getString("postId");
         if(key!=null){
             postId = key;

@@ -6,9 +6,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
+import com.miracle.engine.adapter.holder.MiracleViewHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 
 public class StoriesViewHolder extends MiracleViewHolder {
     public StoriesViewHolder(@NonNull View itemView) {

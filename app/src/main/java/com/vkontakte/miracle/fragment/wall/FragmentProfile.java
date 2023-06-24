@@ -1,6 +1,6 @@
 package com.vkontakte.miracle.fragment.wall;
 
-import static com.vkontakte.miracle.engine.adapter.AdapterStates.SATE_FIRST_LOADING_COMPLETE;
+import static com.miracle.engine.adapter.AdapterStates.SATE_FIRST_LOADING_COMPLETE;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,12 +11,12 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.fragment.base.templates.BaseRecyclerFragment;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.wall.ProfileAdapter;
-import com.vkontakte.miracle.engine.fragment.side.SideRecyclerFragment;
 import com.vkontakte.miracle.model.users.ProfileItem;
 
-public class FragmentProfile extends SideRecyclerFragment {
+public class FragmentProfile extends BaseRecyclerFragment {
 
     private String profileId;
     private String profileName;
@@ -32,7 +32,7 @@ public class FragmentProfile extends SideRecyclerFragment {
     @NonNull
     @Override
     public View inflateRootView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_with_recycleview_dark, container, false);
+        return inflater.inflate(R.layout.fragment_with_recycleview_dark_base, container, false);
     }
 
     @Override
@@ -68,6 +68,7 @@ public class FragmentProfile extends SideRecyclerFragment {
 
     @Override
     public void readSavedInstance(Bundle savedInstanceState) {
+        super.readSavedInstance(savedInstanceState);
         String key = savedInstanceState.getString("profileId");
         if(key!=null){
             profileId = key;

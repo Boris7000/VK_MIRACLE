@@ -14,7 +14,7 @@
         android:layout_marginVertical="19dp"
         android:orientation="vertical"
         android:background="@drawable/rounded_card"
-        android:paddingVertical="12dp">
+        android:paddingVertical="@dimen/parent_padding">
 
         <FrameLayout
             android:id="@+id/container"
@@ -108,17 +108,18 @@
             android:id="@+id/buttonsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="12dp"
+            android:layout_marginHorizontal="@dimen/parent_padding"
             android:layout_marginBottom="8dp"
             android:orientation="vertical"/>
 
-        <com.miracle.button.TextViewButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/cancelButton"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginHorizontal="12dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/parent_padding"
             android:text="@string/cancel"
-            style="@style/TextButton.SecondaryButton"/>
+            app:shapeAppearance="@style/ChildShapeAppearance"
+            style="@style/TonalButton"/>
 
     </LinearLayout>
 

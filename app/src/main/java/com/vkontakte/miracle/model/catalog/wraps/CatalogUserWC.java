@@ -1,6 +1,6 @@
 package com.vkontakte.miracle.model.catalog.wraps;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 
 import java.util.ArrayList;
 

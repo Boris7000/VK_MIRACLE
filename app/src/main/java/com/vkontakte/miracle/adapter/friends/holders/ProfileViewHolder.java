@@ -12,17 +12,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.MiracleViewHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.model.users.fields.LastSeen;
 import com.vkontakte.miracle.model.users.fields.OnlineInfo;
 
-public class ProfileViewHolder extends MiracleViewHolder {
+public class ProfileViewHolder extends MiracleViewHolder
+        implements View.OnClickListener{
 
     private final ImageView imageView;
     private final ViewStub onlineStatusStub;
@@ -40,7 +41,7 @@ public class ProfileViewHolder extends MiracleViewHolder {
         subtitle.setVisibility(GONE);
         onlineStatusStub = itemView.findViewById(R.id.onlineStatusStub);
         verifiedStub = itemView.findViewById(R.id.verifiedStub);
-        itemView.setOnClickListener(view -> NavigationUtil.goToProfile(profileItem, getContext()));
+        itemView.setOnClickListener(this);
     }
 
     @Override
@@ -85,7 +86,6 @@ public class ProfileViewHolder extends MiracleViewHolder {
                     }
                 }
             }
-
         } else {
             if(onlineStatus !=null&& onlineStatus.getVisibility()!=GONE){
                 onlineStatus.setVisibility(GONE);
@@ -110,10 +110,16 @@ public class ProfileViewHolder extends MiracleViewHolder {
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        NavigationUtil.goToProfile(profileItem, getContext());
+    }
+
     public static class Fabric implements ViewHolderFabric {
         @Override
         public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
-            return new ProfileViewHolder(inflater.inflate(R.layout.view_profile_item, viewGroup, false));
+            return new ProfileViewHolder(
+                    inflater.inflate(R.layout.view_profile_item, viewGroup, false));
         }
     }
 }

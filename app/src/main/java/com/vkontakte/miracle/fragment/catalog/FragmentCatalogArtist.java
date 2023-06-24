@@ -2,75 +2,79 @@ package com.vkontakte.miracle.fragment.catalog;
 
 import android.os.Bundle;
 
-import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vkontakte.miracle.adapter.catalog.CatalogSectionAdapter;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Catalog;
+import com.vkontakte.miracle.model.users.User;
+import com.vkontakte.miracle.network.api.Catalog;
 
-public class FragmentCatalogArtist extends AFragmentCatalogSection {
+public class FragmentCatalogArtist extends ARecyclerFragmentCatalogSection {
 
     private String artistId;
-    private String artistName;
     private String url;
+    private String artistName;
 
     public void setArtistId(String artistId) {
         this.artistId = artistId;
-    }
-
-    public void setArtistName(String artistName) {
-        this.artistName = artistName;
-        setCatalogSectionTitle(artistName);
     }
 
     public void setUrl(String url) {
         this.url = url;
     }
 
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
 
     @Override
     public RecyclerView.Adapter<?> onCreateRecyclerAdapter() {
-        ProfileItem profileItem = StorageUtil.get().currentUser();
+        User user = StorageUtil.get().currentUser();
         if(artistId!=null) {
-            return new CatalogSectionAdapter(Catalog.getAudioArtist(artistId, 1, profileItem.getAccessToken()));
+            return new CatalogSectionAdapter(Catalog.getAudioArtist(artistId, 1, user.getAccessToken()));
         } else {
             if(url!=null){
-                return new CatalogSectionAdapter(Catalog.getAudioArtistFromUrl(url, 1, profileItem.getAccessToken()));
+                return new CatalogSectionAdapter(Catalog.getAudioArtistFromUrl(url, 1, user.getAccessToken()));
             }
         }
         return null;
     }
 
+    @Override
+    public String requestTitleText() {
+        if(artistName!=null){
+            return artistName;
+        }
+        return super.requestTitleText();
+    }
 
-    @CallSuper
+    @Override
     public void readSavedInstance(Bundle savedInstanceState){
+        super.readSavedInstance(savedInstanceState);
         String key = savedInstanceState.getString("artistId");
         if(key!=null){
             artistId = key;
             savedInstanceState.remove("artistId");
-        }
-        key = savedInstanceState.getString("artistName");
-        if(key!=null){
-            artistName = key;
-            savedInstanceState.remove("artistName");
         }
         key = savedInstanceState.getString("url");
         if (key!=null) {
             url = key;
             savedInstanceState.remove("url");
         }
-        super.readSavedInstance(savedInstanceState);
+        key = savedInstanceState.getString("artistName");
+        if(key!=null){
+            artistName = key;
+            savedInstanceState.remove("artistName");
+        }
     }
 
     @Override
     public void onClearSavedInstance(@NonNull Bundle savedInstanceState) {
         super.onClearSavedInstance(savedInstanceState);
         savedInstanceState.remove("artistId");
-        savedInstanceState.remove("artistName");
         savedInstanceState.remove("url");
+        savedInstanceState.remove("artistName");
     }
 
     @Override
@@ -79,11 +83,11 @@ public class FragmentCatalogArtist extends AFragmentCatalogSection {
         if(artistId !=null){
             outState.putString("artistId", artistId);
         }
-        if(artistName !=null){
-            outState.putString("artistName", artistName);
-        }
         if(url !=null){
             outState.putString("url", url);
+        }
+        if(artistName !=null){
+            outState.putString("artistName", artistName);
         }
     }
 

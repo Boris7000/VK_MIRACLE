@@ -1,10 +1,8 @@
 package com.vkontakte.miracle.model.wall.fields;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WALL_COUNTERS;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_WALL_COUNTERS;
 
-import android.util.Log;
-
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,8 +70,6 @@ public class Counters implements Serializable, ItemDataHolder{
     }
 
     public Counters(JSONObject jsonObject) throws JSONException {
-
-        Log.d("eiiejgieigjeigj", jsonObject.toString());
 
         if(jsonObject.has("audios")){
             audiosCount = jsonObject.getInt("audios");

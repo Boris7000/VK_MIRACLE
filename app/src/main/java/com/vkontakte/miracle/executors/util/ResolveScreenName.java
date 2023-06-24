@@ -2,10 +2,10 @@ package com.vkontakte.miracle.executors.util;
 
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Utils;
+import com.vkontakte.miracle.model.users.User;
+import com.vkontakte.miracle.network.api.Utils;
 
 import org.json.JSONObject;
 
@@ -15,19 +15,19 @@ import retrofit2.Response;
 public class ResolveScreenName extends AsyncExecutor<String[]> {
 
     private final String screen_name;
-    private final ProfileItem profileItem;
+    private final User user;
 
     public ResolveScreenName(String screen_name) {
         this.screen_name = screen_name;
-        profileItem = StorageUtil.get().currentUser();
+        user = StorageUtil.get().currentUser();
     }
 
 
     @Override
     public String[] inBackground() {
         try {
-            if(profileItem!=null) {
-                Call<JSONObject> call = Utils.resolveScreenName(screen_name, profileItem.getAccessToken());
+            if(user !=null) {
+                Call<JSONObject> call = Utils.resolveScreenName(screen_name, user.getAccessToken());
                 Response<JSONObject> response = call.execute();
                 JSONObject jo_response = validateBody(response);
 

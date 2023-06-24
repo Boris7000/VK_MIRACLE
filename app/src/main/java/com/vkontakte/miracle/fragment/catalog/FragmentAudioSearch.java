@@ -1,37 +1,20 @@
 package com.vkontakte.miracle.fragment.catalog;
 
-import android.content.Context;
-
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.vkontakte.miracle.R;
+import com.miracle.engine.fragment.search.templates.SearchBaseRecyclerFragment;
 import com.vkontakte.miracle.adapter.catalog.CatalogSectionAdapter;
-import com.vkontakte.miracle.engine.fragment.search.SearchSideRecyclerFragment;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Catalog;
+import com.vkontakte.miracle.model.users.User;
+import com.vkontakte.miracle.network.api.Catalog;
 
-public class FragmentAudioSearch extends SearchSideRecyclerFragment {
+public class FragmentAudioSearch extends SearchBaseRecyclerFragment {
 
     @Override
     public RecyclerView.Adapter<?> onCreateRecyclerAdapter() {
-        ProfileItem profileItem = StorageUtil.get().currentUser();
-        if(getSearchFragmentController().getContextQuery().isEmpty()){
-            return new CatalogSectionAdapter(Catalog.getAudioSearch(getSearchFragmentController().getQuery(), profileItem.getAccessToken()));
-        } else {
-            return new CatalogSectionAdapter(Catalog.getAudioContextSearch(getSearchFragmentController().getContextQuery(), profileItem.getAccessToken()));
-        }
-
+        User user = StorageUtil.get().currentUser();
+        return new CatalogSectionAdapter(Catalog.getAudioSearch(getSearchFragmentController().getSearchQuery(),
+                user.getAccessToken()));
     }
-
-    @Override
-    public String requestTitleText() {
-        Context context = getContext();
-        if(context!=null){
-            return context.getString(R.string.search);
-        }
-        return super.requestTitleText();
-    }
-
 
 }

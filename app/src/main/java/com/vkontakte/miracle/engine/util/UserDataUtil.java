@@ -8,7 +8,8 @@ import android.graphics.BitmapFactory;
 import androidx.annotation.NonNull;
 
 import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Users;
+import com.vkontakte.miracle.model.users.User;
+import com.vkontakte.miracle.network.api.Users;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,52 +21,59 @@ import retrofit2.Response;
 
 public class UserDataUtil {
 
-    public static void updateUserData(@NonNull ProfileItem profileItem) throws Exception {
+    public static void updateUserData(@NonNull User user) throws Exception {
 
         StorageUtil storageUtil = StorageUtil.get();
 
-        ArrayList<ProfileItem> profileItems = storageUtil.loadUsers();
+        ArrayList<User> users = storageUtil.loadUsers();
 
-        int pos = profileItems.indexOf(profileItem);
+        int pos = users.indexOf(user);
 
         if(pos>-1){
-            profileItems.remove(profileItem);
-            profileItems.add(0,profileItem);
-            storageUtil.saveUsers(profileItems);
+            users.remove(user);
+            users.add(0,user);
+            storageUtil.saveUsers(users);
         } else {
-            profileItems.add(0,profileItem);
-            storageUtil.saveUsers(profileItems);
+            users.add(0,user);
+            storageUtil.saveUsers(users);
             storageUtil.initializeDirectories();
         }
-        downloadAndSaveAccountImage(profileItem);
+        downloadAndSaveAccountImage(user);
     }
 
-    public static void downloadAndSaveAccountImage(ProfileItem profileItem) throws Exception {
-        if(!profileItem.getPhoto200().isEmpty()) {
-            Bitmap image = BitmapFactory.decodeStream((new URL(profileItem.getPhoto200())).openConnection().getInputStream());
-            StorageUtil.get().saveBitmap(image, "profileImage200.png");
+    public static void downloadAndSaveAccountImage(User user) throws Exception {
+        if(!user.getPhoto200().isEmpty()) {
+            Bitmap image = BitmapFactory.decodeStream((new URL(user.getPhoto200())).openConnection().getInputStream());
+            StorageUtil.get().saveBitmap(image, "userImage200.png");
         }
     }
 
     @NonNull
-    public static ProfileItem downloadUserData(String user_id, String accessToken) throws Exception {
+    public static User downloadUserData(String user_id, String accessToken) throws Exception {
         Response<JSONObject> response = Users.get(user_id, "photo_200,photo_100,online,last_seen,status",accessToken).execute();
 
         JSONArray jsonArray = validateBody(response).getJSONArray("response");
 
         ProfileItem profileItem = new ProfileItem(jsonArray.getJSONObject(0));
 
-        profileItem.setAccessToken(accessToken);
+        User user = new User(profileItem.getId());
+        user.setFirstName(profileItem.getFirstName());
+        user.setLastName(profileItem.getLastName());
+        user.setAccessToken(accessToken);
+        user.setPhoto100(profileItem.getPhoto100());
+        user.setPhoto200(profileItem.getPhoto200());
+        user.setOnline(profileItem.isOnline());
+        user.setLastSeen(profileItem.getLastSeen());
 
-        return profileItem;
+        return user;
     }
 
-    public static void removeUserData(ProfileItem profileItem){
+    public static void removeUserData(User user){
         StorageUtil storageUtil = StorageUtil.get();
-        ArrayList<ProfileItem> profileItems = storageUtil.loadUsers();
-        storageUtil.removeDirectory(storageUtil.getUserCachesDir(profileItem));
-        profileItems.remove(profileItem);
-        storageUtil.saveUsers(profileItems);
+        ArrayList<User> users = storageUtil.loadUsers();
+        storageUtil.removeDirectory(storageUtil.getUserCachesDir(user));
+        users.remove(user);
+        storageUtil.saveUsers(users);
     }
 
 }

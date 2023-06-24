@@ -1,6 +1,6 @@
 package com.vkontakte.miracle.model;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.wraps.AudioItemWC;
 import com.vkontakte.miracle.model.audio.wraps.AudioItemWF;

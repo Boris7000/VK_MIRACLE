@@ -1,38 +1,33 @@
 package com.vkontakte.miracle.model.catalog;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_ARTIST_BANNER;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_CATEGORIES_LIST;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_HEADER;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_HEADER_EXTENDED;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_SEPARATOR;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_SLIDER;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_TRIPLE_STACKED_SLIDER;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_ERROR;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_HORIZONTAL_BUTTONS;
+import static com.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_ERROR;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_ARTIST_BANNER;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_CATALOG_BANNER_SLIDER;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_CATALOG_CATEGORIES_LIST;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_CATALOG_HEADER;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_CATALOG_HEADER_EXTENDED;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_CATALOG_SEPARATOR;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_CATALOG_SLIDER;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_CATALOG_TRIPLE_STACKED_SLIDER;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_HORIZONTAL_BUTTONS;
 
-import android.util.ArrayMap;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.DataItemWrap;
-import com.vkontakte.miracle.model.audio.ArtistItem;
 import com.vkontakte.miracle.model.audio.AudioItem;
-import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.model.audio.wraps.AudioItemWF;
-import com.vkontakte.miracle.model.audio.wraps.AudioItemWC;
-import com.vkontakte.miracle.model.audio.wraps.PlaylistItemWF;
+import com.vkontakte.miracle.model.audio.wraps.LoadableAudioItemWC;
 import com.vkontakte.miracle.model.audio.wraps.PlaylistItemWC;
 import com.vkontakte.miracle.model.catalog.fields.CatalogAction;
 import com.vkontakte.miracle.model.catalog.fields.CatalogBadge;
 import com.vkontakte.miracle.model.catalog.fields.CatalogLayout;
 import com.vkontakte.miracle.model.catalog.wraps.CatalogUserWC;
-import com.vkontakte.miracle.model.catalog.wraps.CatalogUserWF;
-import com.vkontakte.miracle.model.catalog.wraps.RecommendedPlaylistWF;
-import com.vkontakte.miracle.model.groups.GroupItem;
-import com.vkontakte.miracle.model.groups.wraps.GroupItemWrapFabric;
 import com.vkontakte.miracle.model.groups.wraps.GroupItemWC;
+import com.vkontakte.miracle.service.player.loader.AudioItemWCLoader;
+import com.vkontakte.miracle.service.player.loader.CatalogBlockLoader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,7 +35,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class CatalogBlock implements ItemDataHolder, AudioItemWC, GroupItemWC,
+public class CatalogBlock implements ItemDataHolder, LoadableAudioItemWC, GroupItemWC,
         PlaylistItemWC, CatalogUserWC {
 
     private final String id;
@@ -76,12 +71,10 @@ public class CatalogBlock implements ItemDataHolder, AudioItemWC, GroupItemWC,
         return actions;
     }
 
-    public CatalogBlock(JSONObject jsonObject, CatalogExtendedArrays catalogExtendedArrays) throws JSONException {
+    public CatalogBlock(JSONObject jsonObject) throws JSONException {
 
         id = jsonObject.getString("id");
         dataType = jsonObject.getString("data_type");
-
-        items.addAll(findItems(jsonObject, catalogExtendedArrays));
 
         if(jsonObject.has("next_from")){
             nextFrom = jsonObject.getString("next_from");
@@ -130,153 +123,11 @@ public class CatalogBlock implements ItemDataHolder, AudioItemWC, GroupItemWC,
         this.nextFrom = nextFrom;
     }
 
-    public ArrayList<ItemDataHolder> findItems(JSONObject jsonObject, CatalogExtendedArrays catalogExtendedArrays) throws JSONException {
-
-        ArrayList<ItemDataHolder> catalogBlockItemDataHolders = new ArrayList<>();
-
-        switch (dataType){
-            default:{
-                Log.d("eifjiejfiej",jsonObject.toString());
-                break;
-            }
-            case "groups_friends_likes":{
-                JSONArray group_ids = jsonObject.getJSONArray("groups_likes_ids");
-                ArrayMap<String, GroupItem> groupsMap = catalogExtendedArrays.getGroupsMap();
-                GroupItemWrapFabric groupItemWrapFabric = new GroupItemWrapFabric();
-                for (int i = 0; i < group_ids.length(); i++) {
-                    GroupItem groupItem = groupsMap.get("-"+group_ids.getString(i));
-                    if(groupItem!=null){
-                        catalogBlockItemDataHolders.add(groupItemWrapFabric.create(groupItem, this));
-                    }
-                }
-                break;
-            }
-            case "groups_items":{
-                JSONArray groups = jsonObject.getJSONArray("group_items");
-                ArrayMap<String, GroupItem> groupsMap = catalogExtendedArrays.getGroupsMap();
-                GroupItemWrapFabric groupItemWrapFabric = new GroupItemWrapFabric();
-                for (int i = 0; i < groups.length(); i++) {
-                    GroupItem groupItem = groupsMap.get("-"+groups.getJSONObject(i).getString("id"));
-                    if(groupItem!=null){
-                        catalogBlockItemDataHolders.add(groupItemWrapFabric.create(groupItem, this));
-                    }
-                }
-                break;
-            }
-            case "groups":{
-                JSONArray group_ids = jsonObject.getJSONArray("group_ids");
-                ArrayMap<String, GroupItem> groupsMap = catalogExtendedArrays.getGroupsMap();
-                GroupItemWrapFabric groupItemWrapFabric = new GroupItemWrapFabric();
-                for (int i = 0; i < group_ids.length(); i++) {
-                    GroupItem groupItem = groupsMap.get("-"+group_ids.getString(i));
-                    if(groupItem!=null){
-                        catalogBlockItemDataHolders.add(groupItemWrapFabric.create(groupItem, this));
-                    }
-                }
-                break;
-            }
-            case "catalog_users":{
-                JSONArray catalog_users_ids = jsonObject.getJSONArray("catalog_users_ids");
-                ArrayMap<String, CatalogUser> catalogUsersMap = catalogExtendedArrays.getCatalogUsersMap();
-                CatalogUserWF catalogUserWF = new CatalogUserWF();
-                for (int i = 0; i < catalog_users_ids.length(); i++) {
-                    CatalogUser catalogUser = catalogUsersMap.get(catalog_users_ids.getString(i));
-                    if(catalogUser!=null){
-                        catalogBlockItemDataHolders.add(catalogUserWF.create(catalogUser, this));
-                    }
-                }
-                break;
-            }
-            case "music_recommended_playlists": {
-                JSONArray playlists_ids = jsonObject.getJSONArray("playlists_ids");
-                ArrayMap<String, RecommendedPlaylist> map = catalogExtendedArrays.getRecommendedPlaylistsMap();
-                RecommendedPlaylistWF recommendedPlaylistWF = new RecommendedPlaylistWF();
-                for (int i = 0; i < playlists_ids.length(); i++) {
-                    RecommendedPlaylist recommendedPlaylist = map.get(playlists_ids.getString(i));
-                    if(recommendedPlaylist!=null){
-                        catalogBlockItemDataHolders.add(recommendedPlaylistWF.create(recommendedPlaylist, this));
-                    }
-
-
-                }
-                break;
-            }
-            case "music_audios": {
-                JSONArray audios_ids = jsonObject.getJSONArray("audios_ids");
-                ArrayMap<String, AudioItem> audiosMap = catalogExtendedArrays.getAudiosMap();
-                AudioItemWF audioItemWF = new AudioItemWF();
-                for (int i = 0; i < audios_ids.length(); i++) {
-                    AudioItem audioItem = audiosMap.get(audios_ids.getString(i));
-                    if(audioItem!=null) {
-                        catalogBlockItemDataHolders.add(audioItemWF.create(audioItem,this));
-                    }
-                }
-                break;
-            }
-            case "music_playlists": {
-                JSONArray playlists_ids = jsonObject.getJSONArray("playlists_ids");
-                ArrayMap<String, PlaylistItem> playlistsMap = catalogExtendedArrays.getPlaylistsMap();
-                PlaylistItemWF playlistItemWF = new PlaylistItemWF();
-                for (int i = 0; i < playlists_ids.length(); i++) {
-                    PlaylistItem playlistItem = playlistsMap.get(playlists_ids.getString(i));
-                    if(playlistItem!=null){
-                        catalogBlockItemDataHolders.add(playlistItemWF.create(playlistItem, this));
-                    }
-                }
-                break;
-            }
-            case "artist": {
-                JSONArray artists_ids = jsonObject.getJSONArray("artists_ids");
-                ArrayMap<String, ArtistItem> artistsMap = catalogExtendedArrays.getArtistsMap();
-                for (int i = 0; i < artists_ids.length(); i++) {
-                    ArtistItem artistItem = artistsMap.get(artists_ids.getString(i));
-                    if(artistItem!=null) {
-                        catalogBlockItemDataHolders.add(artistItem);
-                    }
-                }
-                break;
-            }
-            case "links": {
-                JSONArray links_ids = jsonObject.getJSONArray("links_ids");
-                ArrayMap<String, CatalogLink> linksMap = catalogExtendedArrays.getLinksMap();
-                for (int i = 0; i < links_ids.length(); i++) {
-                    CatalogLink catalogLink = linksMap.get(links_ids.getString(i));
-                    if(catalogLink!=null) {
-                        catalogBlockItemDataHolders.add(catalogLink);
-                    }
-                }
-                break;
-            }
-            case "catalog_banners": {
-                JSONArray banner_ids = jsonObject.getJSONArray("catalog_banner_ids");
-                ArrayMap<String, CatalogBanner> bannersMap = catalogExtendedArrays.getBannersMap();
-                for (int i = 0; i < banner_ids.length(); i++) {
-                    CatalogBanner catalogBanner = bannersMap.get(banner_ids.getString(i));
-                    if(catalogBanner!=null) {
-                        catalogBlockItemDataHolders.add(catalogBanner);
-                    }
-                }
-                break;
-            }
-            case "search_suggestions": {
-                JSONArray suggestions_ids = jsonObject.getJSONArray("suggestions_ids");
-                ArrayMap<String, CatalogSuggestion> suggestionsMap = catalogExtendedArrays.getSuggestionsMap();
-                for (int i = 0; i < suggestions_ids.length(); i++) {
-                    CatalogSuggestion catalogSuggestion = suggestionsMap.get(suggestions_ids.getString(i));
-                    if(catalogSuggestion!=null) {
-                        catalogBlockItemDataHolders.add(catalogSuggestion);
-                    }
-                }
-                break;
-            }
-        }
-        return catalogBlockItemDataHolders;
-    }
-
     @Override
     public int getViewHolderType() {
         switch (layout.getName()){
             default:{
+                Log.d("unknown layout type", layout.getName());
                 return TYPE_ERROR;
             }
 
@@ -292,10 +143,11 @@ public class CatalogBlock implements ItemDataHolder, AudioItemWC, GroupItemWC,
             }
             case "slider":
             case "large_slider":
-            case "music_chart_large_slider":
-                //TODO вообще запихни эту хуету в отдельный слайдер
-            case "promo_banners_slider":{
+            case "music_chart_large_slider":{
                 return TYPE_CATALOG_SLIDER;
+            }
+            case "promo_banners_slider":{
+                return TYPE_CATALOG_BANNER_SLIDER;
             }
             case "horizontal_buttons":{
                 return TYPE_HORIZONTAL_BUTTONS;
@@ -355,4 +207,8 @@ public class CatalogBlock implements ItemDataHolder, AudioItemWC, GroupItemWC,
         return false;
     }
 
+    @Override
+    public AudioItemWCLoader createAudioLoader() {
+        return new CatalogBlockLoader(this);
+    }
 }

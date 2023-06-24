@@ -45,21 +45,23 @@
             android:background="@null" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.miracle.button.TextViewButton
+    <com.miracle.widget.ExtendedMaterialButton
         android:id="@+id/sendButton"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginBottom="12dp"
         android:text="@string/send"
         android:enabled="false"
-        style="@style/TextButton.PrimaryButton"/>
+        app:shapeAppearance="@style/ChildShapeAppearance"
+        style="@style/Button"/>
 
-    <com.miracle.button.TextViewButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/cancelButton"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:text="@string/cancel"
-        style="@style/TextButton.SecondaryButton"/>
+        app:shapeAppearance="@style/ChildShapeAppearance"
+        style="@style/TonalButton"/>
 
     <LinearLayout
         android:id="@+id/validationCodeForceSMSHolder"
@@ -73,22 +75,21 @@
             android:id="@+id/validationCodeForceSMSTimer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="9dp"
             tools:text="00:00"
             android:textColor="?attr/colorPrimary"
             android:visibility="gone"
             tools:visibility="visible"/>
 
-        <com.miracle.button.TextViewButton
+        <com.miracle.widget.ExtendedMaterialButton
             android:id="@+id/validationCodeForceSMSButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:paddingVertical="0dp"
             android:textAppearance="@style/ButtonTextAppearance"
             android:text="@string/forceValidationSMS"
             android:enabled="true"
-            app:disable_auto_background="true"
-            app:text_color="?attr/colorPrimary"
-            app:disabled_text_color="?attr/colorPrimaryDisabled"/>
+            style="@style/TextButton2"/>
+
     </LinearLayout>
 
 </com.vkontakte.miracle.login.ValidationCodeFrame>

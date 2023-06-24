@@ -1,11 +1,11 @@
 package com.vkontakte.miracle.model.wall;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_POST;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_POST;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.Attachments;
 import com.vkontakte.miracle.model.Owner;
-import com.vkontakte.miracle.model.catalog.CatalogExtendedArrays;
+import com.vkontakte.miracle.model.ExtendedArrays;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -85,7 +85,7 @@ public class PostItem implements ItemDataHolder {
         this.userLikes = userLikes;
     }
 
-    public PostItem(JSONObject jsonObject, CatalogExtendedArrays catalogExtendedArrays) throws JSONException {
+    public PostItem(JSONObject jsonObject, ExtendedArrays extendedArrays) throws JSONException {
 
         if(jsonObject.has("post_id")) {
             id = jsonObject.getString("post_id");
@@ -98,19 +98,19 @@ public class PostItem implements ItemDataHolder {
         }
 
         if(jsonObject.has("owner_id")){
-            owner = new Owner(jsonObject.getString("owner_id"), catalogExtendedArrays);
+            owner = new Owner(jsonObject.getString("owner_id"), extendedArrays);
         }
 
         if(jsonObject.has("source_id")){
-            source = new Owner(jsonObject.getString("source_id"), catalogExtendedArrays);
+            source = new Owner(jsonObject.getString("source_id"), extendedArrays);
         }
 
         if(jsonObject.has("from_id")){
-            from = new Owner(jsonObject.getString("from_id"), catalogExtendedArrays);
+            from = new Owner(jsonObject.getString("from_id"), extendedArrays);
         }
 
         if(jsonObject.has("to_id")){
-            to = new Owner(jsonObject.getString("to_id"), catalogExtendedArrays);
+            to = new Owner(jsonObject.getString("to_id"), extendedArrays);
         }
 
         date = jsonObject.getLong("date");

@@ -2,7 +2,7 @@ package com.vkontakte.miracle.model;
 
 import androidx.annotation.Nullable;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 
 public abstract class DataItemWrap<T,H> implements ItemDataHolder {
 

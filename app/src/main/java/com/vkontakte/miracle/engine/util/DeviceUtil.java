@@ -7,10 +7,12 @@ import static com.vkontakte.miracle.network.Constants.app_version_name;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Rect;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.Window;
 import android.view.WindowManager;
 
 import java.util.Locale;
@@ -115,6 +117,13 @@ public class DeviceUtil {
     {
         int id = resources.getIdentifier("config_showNavigationBar", "bool", "android");
         return id > 0 && resources.getBoolean(id);
+    }
+
+
+    public static int getStatusBarHeight(Window window){
+        Rect rectangle = new Rect();
+        window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
+        return rectangle.top;
     }
 
     private int getNavigationBarHeight(WindowManager wm) {

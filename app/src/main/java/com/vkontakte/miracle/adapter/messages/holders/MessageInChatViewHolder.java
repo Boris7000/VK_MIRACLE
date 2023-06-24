@@ -8,11 +8,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.MiracleViewHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.vkontakte.miracle.adapter.audio.holders.WrappedAudioViewHolder;
+import com.vkontakte.miracle.adapter.photos.holders.PhotoGridItemViewHolder;
 import com.vkontakte.miracle.model.Owner;
 import com.vkontakte.miracle.model.messages.MessageItem;
 
@@ -29,6 +31,7 @@ public class MessageInChatViewHolder extends MessageViewHolder {
 
     @Override
     public void bind(ItemDataHolder itemDataHolder) {
+
         super.bind(itemDataHolder);
 
         MessageItem messageItem = (MessageItem) itemDataHolder;
@@ -43,10 +46,21 @@ public class MessageInChatViewHolder extends MessageViewHolder {
         }
     }
 
+    @Override
+    public ViewHolderFabric getAudiosFabric(){
+        return new WrappedAudioViewHolder.FabricMessageIn();
+    }
+
+    @Override
+    public ViewHolderFabric getPhotosFabric() {
+        return new PhotoGridItemViewHolder.FabricMessageIn();
+    }
+
     public static class Fabric implements ViewHolderFabric {
         @Override
         public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
-            return new MessageInChatViewHolder(inflater.inflate(R.layout.view_message_item_in_chat, viewGroup, false));
+            return new MessageInChatViewHolder(
+                    inflater.inflate(R.layout.view_message_item_in_chat, viewGroup, false));
         }
     }
 }

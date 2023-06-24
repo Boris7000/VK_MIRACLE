@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.miracle.button.TextViewButton
+<com.miracle.widget.ExtendedMaterialButton
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:layout_gravity="center_vertical"
+    android:layout_height="wrap_content"
+    android:insetLeft="12dp"
+    android:insetRight="12dp"
+    android:padding="12dp"
+    app:iconPadding="12dp"
+    app:iconRight="@drawable/ic_chevron_24"
+    app:iconRightStickingToText="true"
     android:text="@string/show_more"
     android:textSize="16sp"
-    app:text_color="?attr/colorPrimary"
-    app:icon_end="@drawable/ic_chevron_24"
-    app:icon_end_color="?attr/colorPrimary"
-    app:shapeAppearanceOverlay="@style/ChildShapeAppearance"
-    app:background_color="@android:color/transparent"
-    style="@style/TextButton"/>
+    style="@style/TextButton2" />
+
+

@@ -1,23 +1,23 @@
 package com.vkontakte.miracle.adapter.audio;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_ERROR;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_LOADING;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
+import static com.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_ERROR;
+import static com.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_LOADING;
 import static com.vkontakte.miracle.engine.util.StorageUtil.SONGS_NAME;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
 
 import android.util.ArrayMap;
 
+import com.miracle.engine.adapter.MiracleInstantLoadAdapter;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.miracle.engine.adapter.holder.error.ErrorViewHolder;
+import com.miracle.engine.adapter.holder.loading.LoadingViewHolder;
 import com.vkontakte.miracle.adapter.audio.holders.WrappedAudioViewHolder;
-import com.vkontakte.miracle.engine.adapter.MiracleInstantLoadAdapter;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.adapter.holder.error.ErrorViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.loading.LoadingViewHolder;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.model.audio.AudioItem;
-import com.vkontakte.miracle.model.audio.wraps.AudioItemWF;
 import com.vkontakte.miracle.model.audio.DownloadedAudios;
-import com.vkontakte.miracle.model.users.ProfileItem;
+import com.vkontakte.miracle.model.audio.wraps.AudioItemWF;
+import com.vkontakte.miracle.model.users.User;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,8 +27,8 @@ public class DownloadedAdapter extends MiracleInstantLoadAdapter {
     @Override
     public void onLoading() throws Exception {
         StorageUtil storageUtil = StorageUtil.get();
-        ProfileItem profileItem = storageUtil.currentUser();
-        File cachesDir = storageUtil.getUserCachesDir(profileItem);
+        User user = storageUtil.currentUser();
+        File cachesDir = storageUtil.getUserCachesDir(user);
 
         ArrayList<ItemDataHolder> audios = new StorageUtil.
                 ArrayListReader<ItemDataHolder>(storageUtil).

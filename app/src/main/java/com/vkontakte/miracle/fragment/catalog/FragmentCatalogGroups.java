@@ -5,14 +5,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Catalog;
+import com.vkontakte.miracle.model.users.User;
+import com.vkontakte.miracle.network.api.Catalog;
 
 import org.json.JSONObject;
 
 import retrofit2.Call;
 
-public class FragmentCatalogGroups extends ASideTabsFragmentCatalogSections {
+public class FragmentCatalogGroups extends ATabsFragmentCatalogSections {
 
     private String ownerId;
 
@@ -22,8 +22,8 @@ public class FragmentCatalogGroups extends ASideTabsFragmentCatalogSections {
 
     @Override
     public Call<JSONObject> requestCall() {
-        ProfileItem profileItem = StorageUtil.get().currentUser();
-        return Catalog.getGroups(ownerId, profileItem.getAccessToken());
+        User user = StorageUtil.get().currentUser();
+        return Catalog.getGroups(ownerId, user.getAccessToken());
     }
 
     @Override
@@ -53,5 +53,10 @@ public class FragmentCatalogGroups extends ASideTabsFragmentCatalogSections {
     @Override
     public boolean asyncLoadTabs() {
         return true;
+    }
+
+    @Override
+    public void onSearchButtonClicked() {
+
     }
 }

@@ -1,8 +1,8 @@
 package com.vkontakte.miracle.model.wall;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_STORIES;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_STORIES;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 
 public class StoriesHolder implements ItemDataHolder {
 

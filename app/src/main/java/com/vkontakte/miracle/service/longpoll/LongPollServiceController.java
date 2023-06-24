@@ -1,15 +1,7 @@
 package com.vkontakte.miracle.service.longpoll;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
-
 import androidx.collection.ArrayMap;
 
-import com.vkontakte.miracle.MiracleApp;
-import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.service.longpoll.listeners.OnMessageAddedUpdateListener;
 import com.vkontakte.miracle.service.longpoll.listeners.OnMessageReadUpdateListener;
 import com.vkontakte.miracle.service.longpoll.listeners.OnMessageTypingUpdateListener;
@@ -75,13 +67,14 @@ public class LongPollServiceController {
     }
 
     public void startExecuting(){
+        /*
         if(StorageUtil.get().currentUser()!=null) {
             if (longPollService == null || longPollService.isDestroyed()) {
-                MiracleApp miracleApp = MiracleApp.getInstance();
-                Intent intent = new Intent(miracleApp, LongPollService.class);
+                MainApp mainApp = MainApp.getInstance();
+                Intent intent = new Intent(mainApp, LongPollService.class);
                 //Check is service is active
-                miracleApp.startService(intent);
-                miracleApp.bindService(intent, new ServiceConnection() {
+                mainApp.startService(intent);
+                mainApp.bindService(intent, new ServiceConnection() {
                     @Override
                     public void onServiceConnected(ComponentName name, IBinder binder) {
                         longPollService = ((LongPollServiceBinder) binder).getService();
@@ -98,6 +91,8 @@ public class LongPollServiceController {
                 }, Context.BIND_ABOVE_CLIENT);
             }
         }
+
+         */
     }
 
     public void actionStop(){

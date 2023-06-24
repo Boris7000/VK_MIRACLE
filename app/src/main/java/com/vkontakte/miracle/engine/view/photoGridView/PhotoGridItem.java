@@ -1,6 +1,6 @@
 package com.vkontakte.miracle.engine.view.photoGridView;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 
 public class PhotoGridItem implements ItemDataHolder {
     public ItemDataHolder itemDataHolder;

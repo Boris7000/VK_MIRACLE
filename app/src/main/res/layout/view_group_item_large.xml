@@ -5,116 +5,114 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp">
-
-
-    <ImageView
-        android:id="@+id/cover"
-        android:layout_width="match_parent"
-        android:layout_height="136dp"
-        android:scaleType="centerCrop"
-        app:srcCompat="?attr/colorSurfaceVariant2"/>
+    android:layout_marginBottom="8dp"
+    tools:background="?attr/colorBackgroundDarkest">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="114dp"
+        android:layout_marginTop="77dp"
+        android:paddingTop="57dp"
+        android:paddingBottom="4dp"
         android:layout_gravity="bottom"
         android:background="@drawable/rounded_card_window_color"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:layout_marginTop="12dp"
-            android:layout_marginHorizontal="12dp">
+            android:isScrollContainer="false">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/photo"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginEnd="12dp"
-                android:padding="@dimen/imageBorderWidth"
-                android:background="?attr/colorPlaceholder"
-                app:shapeAppearanceOverlay="@style/CircleShapeAppearance"
-                app:strokeColor="?attr/colorStroke"
-                app:strokeWidth="@dimen/imageBorderWidth"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center_vertical">
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="18sp"
+                android:textColor="?android:attr/textColor"
+                tools:text="Название"/>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:isScrollContainer="false">
-
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:fontFamily="sans-serif-medium"
-                        android:textSize="16sp"
-                        android:textColor="?android:attr/textColor"
-                        tools:text="Имя"/>
-
-                    <ViewStub
-                        android:id="@+id/verifiedStub"
-                        android:inflatedId="@+id/verified"
-                        android:layout_width="12sp"
-                        android:layout_height="12sp"
-                        android:layout_marginTop="0.7sp"
-                        android:layout_marginStart="5sp"
-                        android:layout_weight="0"
-                        android:layout="@layout/view_verified_icon_stub"/>
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/subtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorSubtitle"
-                    android:ellipsize="end"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center_vertical"
-                    android:maxLines="2"
-                    tools:text="Status" />
-
-            </LinearLayout>
+            <ViewStub
+                android:id="@+id/verifiedStub"
+                android:inflatedId="@+id/verified"
+                android:layout_width="12sp"
+                android:layout_height="12sp"
+                android:layout_marginTop="0.7sp"
+                android:layout_marginStart="5sp"
+                android:layout_weight="0"
+                android:layout="@layout/view_verified_icon_stub"/>
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="?attr/colorSubtitle"
+            android:maxLines="2"
+            tools:text="Status" />
 
+        <ViewStub
+            android:id="@+id/adminButtonsStub"
+            android:inflatedId="@+id/adminButtonsHolder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout="@layout/view_group_item_large_admin_buttons_stub"/>
+
+        <ViewStub
+            android:id="@+id/defaultButtonsStub"
+            android:inflatedId="@+id/defaultButtonsHolder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout="@layout/view_group_item_large_default_buttons_stub"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp"
             android:background="?attr/colorDivider"/>
 
         <TextView
             android:id="@+id/show_more_info_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="20dp"
             android:gravity="center_vertical"
-            android:textColor="?attr/colorSubtitle"
+            android:textColor="?attr/colorEmphasis_65"
             android:fontFamily="sans-serif-medium"
+            android:textSize="15sp"
             android:text="Подробнее"
             android:drawablePadding="8dp"
-            app:drawableStartCompat="@drawable/ic_info_20"
-            app:drawableTint="?attr/colorSubtitle" />
+            app:drawableStartCompat="@drawable/ic_info_outline_28"
+            app:drawableTint="?attr/colorEmphasis_65" />
 
     </LinearLayout>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/photo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="27dp"
+        android:padding="4dp"
+        android:background="?attr/colorPlaceholder"
+        app:shapeAppearanceOverlay="@style/CircleShapeAppearance"
+        app:strokeColor="?android:attr/colorBackground"
+        app:strokeWidth="4dp"/>
 
 </FrameLayout>
 

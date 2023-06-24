@@ -1,3 +1,2 @@
 rootProject.name = "VK MIRACLE"
-include ':app', ':firebase-installations', ':miracle-buttons'
-
+include ':app', ':firebase-installations', ':miracle-widget', ':miracle-engine', ':miracle-buttons'

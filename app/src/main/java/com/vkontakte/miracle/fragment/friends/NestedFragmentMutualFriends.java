@@ -3,12 +3,12 @@ package com.vkontakte.miracle.fragment.friends;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.fragment.tabs.nested.NestedMiracleFragmentFabric;
+import com.miracle.engine.fragment.tabs.nested.templates.NestedRecyclerFragment;
 import com.vkontakte.miracle.adapter.friends.MutualFriendsAdapter;
-import com.vkontakte.miracle.engine.fragment.MiracleFragment;
-import com.vkontakte.miracle.engine.fragment.NestedMiracleFragmentFabric;
-import com.vkontakte.miracle.engine.fragment.nested.NestedRecyclerFragment;
 
 public class NestedFragmentMutualFriends extends NestedRecyclerFragment {
 
@@ -56,7 +56,7 @@ public class NestedFragmentMutualFriends extends NestedRecyclerFragment {
 
         @NonNull
         @Override
-        public MiracleFragment createFragment() {
+        public Fragment createFragment() {
             NestedFragmentMutualFriends fragmentMutualFriends = new NestedFragmentMutualFriends();
             fragmentMutualFriends.setOwnerId(ownerId);
             return fragmentMutualFriends;

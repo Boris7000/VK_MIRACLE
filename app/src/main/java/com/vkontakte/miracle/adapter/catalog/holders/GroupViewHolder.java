@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.groups.GroupItem;
 
 public class GroupViewHolder extends GroupViewHolderHorizontal {
@@ -19,6 +19,7 @@ public class GroupViewHolder extends GroupViewHolderHorizontal {
     public GroupViewHolder(@NonNull View itemView) {
         super(itemView);
         subtitle = itemView.findViewById(R.id.subtitle);
+        itemView.setOnClickListener(this);
     }
 
     @Override

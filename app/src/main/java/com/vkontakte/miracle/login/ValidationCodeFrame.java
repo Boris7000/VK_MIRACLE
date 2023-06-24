@@ -1,5 +1,6 @@
 package com.vkontakte.miracle.login;
 
+import static com.miracle.engine.util.TimeUtil.getDurationStringMills;
 import static com.vkontakte.miracle.engine.util.StringsUtil.getTrimmed;
 import static com.vkontakte.miracle.login.AuthState.VALIDATION_CODE_HAS_ALREADY_BEEN_RESENT;
 import static com.vkontakte.miracle.login.AuthState.VALIDATION_CODE_RESENDS_LIMIT;
@@ -11,26 +12,26 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.miracle.button.TextViewButton;
+import com.miracle.engine.async.baseExecutors.ListenableTimer;
+import com.miracle.widget.ExtendedMaterialButton;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.util.TimeUtil;
-import com.vkontakte.miracle.engine.async.baseExecutors.ListenableTimer;
 
 import java.util.Locale;
 
 public class ValidationCodeFrame extends LinearLayout {
 
     private EditText validationCodeField;
-    private TextViewButton sendButton;
-    private TextViewButton cancelButton;
+    private ExtendedMaterialButton sendButton;
+    private Button cancelButton;
     private LinearLayout forceSMSHolder;
-    private TextViewButton forceSMSButton;
+    private ExtendedMaterialButton forceSMSButton;
     private TextView forceSMSTimer;
     private ListenableTimer timer;
     private AuthState authState;
@@ -67,7 +68,8 @@ public class ValidationCodeFrame extends LinearLayout {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                sendButton.setEnabled(!getTrimmed(validationCodeField).isEmpty(), true);
+                sendButton.setToggled(true);
+                sendButton.setEnabled(!getTrimmed(validationCodeField).isEmpty());
             }
         };
         validationCodeField.addTextChangedListener(textWatcher);
@@ -186,12 +188,13 @@ public class ValidationCodeFrame extends LinearLayout {
                     public void onExecute(Boolean object) {
                         if(object) {
                             forceSMSTimer.setVisibility(GONE);
-                            forceSMSButton.setEnabled(true, true);
+                            forceSMSButton.setToggled(true);
+                            forceSMSButton.setEnabled(true);
                         }
                     }
                 };
                 timer.setOnTickListener((remaining, total) -> {
-                    String timerString = TimeUtil.getDurationStringMills(locale, remaining);
+                    String timerString = getDurationStringMills(locale, remaining);
                     forceSMSTimer.setText(timerString);
                 });
                 timer.start();

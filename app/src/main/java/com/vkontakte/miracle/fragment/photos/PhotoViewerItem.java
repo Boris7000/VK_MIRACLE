@@ -2,8 +2,7 @@ package com.vkontakte.miracle.fragment.photos;
 
 import android.graphics.drawable.Drawable;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.view.photoGridView.MediaItem;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 
 public class PhotoViewerItem {
 

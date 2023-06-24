@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace 'com.vkontakte.miracle'
     compileSdkVersion 33
 
     defaultConfig {
@@ -24,7 +25,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    namespace 'com.vkontakte.miracle'
 }
 
 dependencies {
@@ -37,11 +37,13 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-process:2.5.1"
     implementation "androidx.lifecycle:lifecycle-common:2.5.1"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation 'com.google.android.material:material:1.8.0-alpha01'
+    implementation 'com.google.android.material:material:1.7.0'
     implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.7'
+    implementation project(path: ':miracle-widget')
     implementation project(path: ':miracle-buttons')
+    implementation project(path: ':miracle-engine')
     implementation project(path: ':firebase-installations')
     //noinspection GradleDependency
     implementation 'com.squareup.picasso:picasso:2.8'

@@ -50,21 +50,22 @@
             android:background="@null" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.miracle.button.TextViewButton
+    <com.miracle.widget.ExtendedMaterialButton
         android:id="@+id/sendButton"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginBottom="12dp"
         android:text="@string/send"
         android:enabled="false"
-        style="@style/TextButton.PrimaryButton"/>
+        app:shapeAppearance="@style/ChildShapeAppearance"
+        style="@style/Button"/>
 
-    <com.miracle.button.TextViewButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/cancelButton"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:text="@string/cancel"
-        style="@style/TextButton.SecondaryButton"/>
-
+        app:shapeAppearance="@style/ChildShapeAppearance"
+        style="@style/TonalButton"/>
 
 </com.vkontakte.miracle.login.CaptchaCodeFrame>

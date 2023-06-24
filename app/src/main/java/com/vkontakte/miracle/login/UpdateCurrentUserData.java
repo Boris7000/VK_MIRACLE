@@ -2,22 +2,22 @@ package com.vkontakte.miracle.login;
 
 import android.util.Log;
 
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.engine.util.UserDataUtil;
-import com.vkontakte.miracle.model.users.ProfileItem;
+import com.vkontakte.miracle.model.users.User;
 
 public class UpdateCurrentUserData extends AsyncExecutor<Boolean> {
 
     public static final String LOGIN_TAG = "UpdateCurrentUserData";
-    private ProfileItem profileItemNew;
-    private final onCompleteListener onCompleteListener;
+    private User userNew;
+    private final OnCompleteListener onCompleteListener;
 
     public UpdateCurrentUserData(){
         this(null);
     }
 
-    public UpdateCurrentUserData(onCompleteListener onCompleteListener){
+    public UpdateCurrentUserData(OnCompleteListener onCompleteListener){
         this.onCompleteListener = onCompleteListener;
     }
 
@@ -26,21 +26,20 @@ public class UpdateCurrentUserData extends AsyncExecutor<Boolean> {
 
         try {
 
-            ProfileItem profileItemOld = StorageUtil.get().currentUser();
+            User userOld = StorageUtil.get().currentUser();
 
-            if (profileItemOld != null){
+            if (userOld != null){
 
-                profileItemNew = UserDataUtil.downloadUserData(profileItemOld.getId(), profileItemOld.getAccessToken());
+                userNew = UserDataUtil.downloadUserData(userOld.getId(), userOld.getAccessToken());
 
-                boolean hasChanges = !profileItemNew.getPhoto200().equals(profileItemOld.getPhoto200()) ||
-                        !profileItemNew.getFullName().equals(profileItemOld.getFullName()) ||
-                        !profileItemNew.getStatus().equals(profileItemOld.getStatus()) ||
-                        profileItemNew.isOnline() != profileItemOld.isOnline() ||
-                        profileItemNew.getLastSeen().getPlatform() != profileItemOld.getLastSeen().getPlatform() ||
-                        profileItemNew.getLastSeen().getTime() != profileItemOld.getLastSeen().getTime();
+                boolean hasChanges = !userNew.getPhoto200().equals(userOld.getPhoto200()) ||
+                        !userNew.getFullName().equals(userOld.getFullName()) ||
+                        userNew.isOnline() != userOld.isOnline() ||
+                        userNew.getLastSeen().getPlatform() != userOld.getLastSeen().getPlatform() ||
+                        userNew.getLastSeen().getTime() != userOld.getLastSeen().getTime();
 
                 if (hasChanges) {
-                    UserDataUtil.updateUserData(profileItemNew);
+                    UserDataUtil.updateUserData(userNew);
                 }
 
                 return hasChanges;
@@ -56,11 +55,11 @@ public class UpdateCurrentUserData extends AsyncExecutor<Boolean> {
     @Override
     public void onExecute(Boolean object) {
         if(onCompleteListener!=null){
-            onCompleteListener.onComplete(profileItemNew, object);
+            onCompleteListener.onComplete(userNew, object);
         }
     }
 
-    public interface onCompleteListener{
-        void onComplete(ProfileItem profileItem, boolean hasChanges);
+    public interface OnCompleteListener{
+        void onComplete(User user, boolean hasChanges);
     }
 }

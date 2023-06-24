@@ -1,30 +1,29 @@
 package com.vkontakte.miracle.engine.view.photoGridView;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_PHOTO;
+import static com.miracle.engine.util.DimensionsUtil.dpToPx;
 import static com.vkontakte.miracle.engine.util.DeviceUtil.getWindowHeight;
-import static com.vkontakte.miracle.engine.util.DimensionsUtil.dpToPx;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.ArrayMap;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.miracle.engine.recycler.IRecyclerView;
+import com.miracle.engine.recycler.MiracleViewRecycler;
+import com.miracle.engine.recycler.RecyclerController;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.photos.holders.PhotoGridItemViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.recycler.IRecyclerView;
-import com.vkontakte.miracle.engine.recycler.MiracleViewRecycler;
-import com.vkontakte.miracle.engine.recycler.RecyclerController;
 import com.vkontakte.miracle.engine.view.photoGridView.calculator.CalculationItem;
 import com.vkontakte.miracle.engine.view.photoGridView.calculator.GridCalculator;
 import com.vkontakte.miracle.fragment.photos.FragmentPhotoViewerDialog;
@@ -41,8 +40,6 @@ public class PhotoGridView extends FrameLayout implements IRecyclerView {
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
     private final static int DEFAULT_SPACING_DP = 2;
-    private final static int DEFAULT_LAYOUT_RES = R.layout.view_photo_grid_item;
-    private final int layoutResId;
 
     private final int spacing;
     private int measuredWidth = -1;
@@ -50,7 +47,7 @@ public class PhotoGridView extends FrameLayout implements IRecyclerView {
     //calculation result
     private final ArrayList<PhotoGridItem> photoGridItems = new ArrayList<>();
     //enter data
-    private ArrayList<ItemDataHolder> itemDataHolders = new ArrayList<>();
+    private final ArrayList<ItemDataHolder> itemDataHolders = new ArrayList<>();
     //clear media data
     private final ArrayList<MediaItem> mediaItems = new ArrayList<>();
     private boolean canApplyChanges = true;
@@ -63,8 +60,6 @@ public class PhotoGridView extends FrameLayout implements IRecyclerView {
     public PhotoGridView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         recyclerController = new RecyclerController(LayoutInflater.from(context));
-        recyclerController.getViewHolderFabricMap()
-                .put(TYPE_WRAPPED_PHOTO, new PhotoGridViewHolderFabric());
 
         maxHeight = (int) (getWindowHeight(context)*0.75f);
         if(attrs!=null) {
@@ -72,11 +67,9 @@ public class PhotoGridView extends FrameLayout implements IRecyclerView {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 saveAttributeDataForStyleable(context, R.styleable.PhotoGridView, attrs, attributes, 0, 0);
             }
-            layoutResId = attributes.getResourceId(R.styleable.PhotoGridView_listItemLayout, DEFAULT_LAYOUT_RES);
             spacing = (int) attributes.getDimension(R.styleable.PhotoGridView_spacing, dpToPx(context, DEFAULT_SPACING_DP));
         }else {
             spacing = (int)  dpToPx(context, DEFAULT_SPACING_DP);
-            layoutResId = DEFAULT_LAYOUT_RES;
         }
     }
 
@@ -158,7 +151,7 @@ public class PhotoGridView extends FrameLayout implements IRecyclerView {
         super.onLayout(changed, l, t, r, b);
     }
 
-    public void setPhotos(ArrayList<ItemDataHolder> itemDataHolders) {
+    public void setItems(ArrayList<ItemDataHolder> itemDataHolders) {
 
         canApplyChanges = false;
 
@@ -211,8 +204,8 @@ public class PhotoGridView extends FrameLayout implements IRecyclerView {
             });
         }
 
-        this.itemDataHolders = itemDataHolders;
-        ///////////////////////////////////////////////////////////
+        this.itemDataHolders.clear();
+        this.itemDataHolders.addAll(itemDataHolders);
 
         canApplyChanges = true;
         needChanges = true;
@@ -225,21 +218,26 @@ public class PhotoGridView extends FrameLayout implements IRecyclerView {
         requestLayout();
     }
 
-    @Override
-    public MiracleViewRecycler getRecycledViewPool() {
-        return null;
+    public void clearItems(){
+        canApplyChanges = false;
+        recyclerController.loadAllViewsToPool(this, this.itemDataHolders);
+        this.itemDataHolders.clear();
+        canApplyChanges = true;
     }
 
     @Override
-    public void setRecycledViewPool(MiracleViewRecycler recycledViewPool) {
+    public MiracleViewRecycler getViewRecycler() {
+        return recyclerController.getRecycledViewPool();
+    }
+
+    @Override
+    public ArrayMap<Integer, ViewHolderFabric> getViewHolderFabricMap() {
+        return recyclerController.getViewHolderFabricMap();
+    }
+
+    @Override
+    public void setViewRecycler(MiracleViewRecycler recycledViewPool) {
         recyclerController.setRecycledViewPool(recycledViewPool);
-    }
-
-    public class PhotoGridViewHolderFabric implements ViewHolderFabric {
-        @Override
-        public RecyclerView.ViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
-            return new PhotoGridItemViewHolder(inflater.inflate(layoutResId,viewGroup, false));
-        }
     }
 
 }

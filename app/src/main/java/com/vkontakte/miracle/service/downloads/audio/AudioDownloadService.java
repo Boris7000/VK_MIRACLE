@@ -5,7 +5,6 @@ import static com.vkontakte.miracle.notification.AppNotificationChannels.AUDIO_D
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
@@ -13,15 +12,11 @@ import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
 
-import com.vkontakte.miracle.MainActivity;
-import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
-import com.vkontakte.miracle.engine.async.ExecutorConveyor;
+import com.miracle.engine.async.AsyncExecutor;
+import com.miracle.engine.async.ExecutorConveyor;
 import com.vkontakte.miracle.executors.audio.DownloadAudio;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.notification.AppNotificationChannels;
-
-import java.util.ArrayList;
 
 public class AudioDownloadService extends Service {
 
@@ -35,45 +30,21 @@ public class AudioDownloadService extends Service {
 
 
     //Notification
+    NotificationCompat.Builder currentBuilder;
     private NotificationManager notificationManager;
     private final int NOTIFICATION_ID = -104;
 
 
-    private void sendNotification(AudioItem audioItem, int progress){
-        Notification notification = createNotification(audioItem, progress);
-        notificationManager.notify(NOTIFICATION_ID, notification);
-    }
+    private NotificationCompat.Builder createNotificationBuilder(AudioItem audioItem){
 
-    private Notification createNotification(AudioItem audioItem, int progress){
+        int smallIcon= android.R.drawable.stat_sys_download;
 
-        int smallIcon=R.drawable.ic_download_28;
-
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        //intent.putExtra("PlayerBottomSheetExpanded", true);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
-
-        ArrayList<AsyncExecutor<Boolean>> asyncExecutors = conveyor.getAsyncExecutors();
-        String subtext;
-
-        if(asyncExecutors.size()<=1){
-            subtext = "Скачивание";
-        } else {
-            subtext = "Скачивание (еще "+(asyncExecutors.size()-1)+")";
-        }
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, AUDIO_DOWNLOAD_CHANNEL_ID)
+        return new NotificationCompat.Builder(this, AUDIO_DOWNLOAD_CHANNEL_ID)
                 .setSmallIcon(smallIcon)
                 .setContentTitle(audioItem.getArtist()+" - "+audioItem.getTitle())
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setShowWhen(false)
-                .setProgress(100, progress,false)
-                .setSubText(subtext)
-                .setContentIntent(contentIntent)
                 .setChannelId(AUDIO_DOWNLOAD_CHANNEL_ID);
-
-        return notificationBuilder.build();
     }
 
     @Override
@@ -94,57 +65,12 @@ public class AudioDownloadService extends Service {
 
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        handleIncomingAction(intent);
-        return super.onStartCommand(intent, flags, startId);
-    }
+    public void addNewDownload(AudioItem audioItem){
 
-    private void handleIncomingAction(Intent playbackAction){
-
-        if (destroyed||conveyor==null||
-                playbackAction==null||playbackAction.getAction()==null){
+        if(destroyed){
             return;
         }
 
-        String actionString = playbackAction.getAction();
-
-        /*
-        switch (actionString){
-            case ACTION_PLAY:{
-                transportControls.play();
-                break;
-            }
-            case ACTION_PAUSE:{
-                transportControls.pause();
-                break;
-            }
-            case ACTION_STOP:{
-                transportControls.stop();
-                break;
-            }
-            case ACTION_NEXT:{
-                skipToNext();
-                break;
-            }
-            case ACTION_PREVIOUS:{
-                skipToPrevious();
-                break;
-            }
-            case ACTION_SEEK_TO:{
-                seekTo(playbackAction.getLongExtra("position",0));
-                break;
-            }
-            case ACTION_CHANGE_REPEAT:{
-                changeRepeatMode(playbackAction.getIntExtra("repeatMode", Player.REPEAT_MODE_OFF));
-                break;
-            }
-        }
-
-         */
-    }
-
-    public void addNewDownload(AudioItem audioItem){
         for (AsyncExecutor<Boolean> asyncExecutor: conveyor.getAsyncExecutors()){
             DownloadAudio downloadAudio = (DownloadAudio) asyncExecutor;
             if(downloadAudio.getAudioItem().equals(audioItem)){
@@ -154,29 +80,35 @@ public class AudioDownloadService extends Service {
 
         DownloadAudio downloadAudio = new DownloadAudio(audioItem);
 
-        if(!foregroundStarted){
-            foregroundStarted = true;
-            Notification notification = createNotification(audioItem, 0);
-            startForeground(NOTIFICATION_ID, notification);
-            notificationManager.notify(NOTIFICATION_ID, notification);
-        } else {
-            downloadAudio.addOnStartListener(asyncExecutor -> {
-                progress = 0;
-                sendNotification(audioItem, 0);
-            });
-        }
+        NotificationCompat.Builder builder = createNotificationBuilder(audioItem);
+
+        downloadAudio.addOnStartListener(asyncExecutor -> {
+            this.progress = 0;
+            currentBuilder = builder;
+            updateCounter(currentBuilder);
+            builder.setProgress(100, 0, false);
+            sendNotification(currentBuilder);
+        });
 
         downloadAudio.setOnProgressListener(progress -> {
             if(this.progress!=progress) {
                 int diff = progress-this.progress;
-                if(diff>=20) {
+                if(diff>=10) {
                     this.progress = progress;
-                    sendNotification(downloadAudio.getAudioItem(), progress);
+                    builder.setProgress(100, progress, false);
+                    notificationManager.notify(NOTIFICATION_ID, builder.build());
                 }
             }
         });
 
         conveyor.addAsyncExecutor(downloadAudio);
+
+        if(currentBuilder!=null) {
+            updateCounter(currentBuilder);
+            sendNotification(currentBuilder);
+        } else {
+            currentBuilder = builder;
+        }
 
         downloadAudio.addOnExecuteListener(asyncExecutor -> {
             if(conveyor.getAsyncExecutors().isEmpty()){
@@ -184,6 +116,22 @@ public class AudioDownloadService extends Service {
             }
         });
 
+    }
+
+    private void updateCounter(NotificationCompat.Builder builder){
+        if (conveyor.getAsyncExecutors().size()>1) {
+            builder.setSubText("И еще " + (conveyor.getAsyncExecutors().size() - 1));
+        }
+    }
+
+    private void sendNotification(NotificationCompat.Builder builder){
+        Notification notification = builder.build();
+        if(!foregroundStarted){
+            foregroundStarted = true;
+            startForeground(NOTIFICATION_ID, notification);
+        } else {
+            notificationManager.notify(NOTIFICATION_ID, notification);
+        }
     }
 
     @Override

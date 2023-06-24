@@ -2,9 +2,8 @@ package com.vkontakte.miracle.adapter.messages.holders;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_WRAPPED_PHOTO;
 
 import android.view.View;
 import android.view.ViewStub;
@@ -13,27 +12,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 
+import com.miracle.engine.adapter.MiracleAdapter;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.MiracleViewHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.miracle.engine.recycler.MiracleViewRecycler;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.recycler.MiracleViewRecycler;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
-import com.vkontakte.miracle.engine.view.AudioListView;
+import com.vkontakte.miracle.engine.view.RecycleListView;
 import com.vkontakte.miracle.engine.view.photoGridView.PhotoGridView;
 import com.vkontakte.miracle.engine.view.textView.MiracleTextView;
 import com.vkontakte.miracle.model.Attachments;
 import com.vkontakte.miracle.model.messages.ConversationItem;
 import com.vkontakte.miracle.model.messages.MessageItem;
 
-import java.util.ArrayList;
-
-public class MessageViewHolder extends MiracleViewHolder {
+public abstract class MessageViewHolder extends MiracleViewHolder {
 
     private final MiracleTextView text;
     private final TextView time;
     private PhotoGridView photoGridView;
     private CardView photoGridViewHolder;
     private final ViewStub photosViewStub;
-    private AudioListView audiosView;
+    private RecycleListView audiosView;
     private final ViewStub audiosViewStub;
 
     private MessageItem messageItem;
@@ -49,7 +48,7 @@ public class MessageViewHolder extends MiracleViewHolder {
 
     @Override
     public void bind(ItemDataHolder itemDataHolder) {
-        super.bind(itemDataHolder);
+
         messageItem = (MessageItem) itemDataHolder;
 
         time.setText(messageItem.getTime(), TextView.BufferType.SPANNABLE);
@@ -71,60 +70,95 @@ public class MessageViewHolder extends MiracleViewHolder {
 
             if(!attachments.getMediaItems().isEmpty()){
                 if(photoGridView==null) {
-                    if(photosViewStub!=null) {
-                        photoGridViewHolder = (CardView) photosViewStub.inflate();
-                    } else {
-                        photoGridViewHolder = itemView.findViewById(R.id.photosView);
-                    }
-                    photoGridView = (PhotoGridView) photoGridViewHolder.getChildAt(0);
-                    MiracleViewRecycler miracleViewRecycler =
-                            getMiracleAdapter().getMiracleViewRecycler(itemDataHolder.getViewHolderType());
-                    miracleViewRecycler.setMaxRecycledViews(TYPE_PHOTO, 15);
-                    photoGridView.setRecycledViewPool(miracleViewRecycler);
+                    inflatePhotos();
                 }
+                updatePhotosRecycler(itemDataHolder);
                 if(photoGridViewHolder.getVisibility()!=VISIBLE) {
                     photoGridViewHolder.setVisibility(VISIBLE);
                 }
-                photoGridView.setPhotos(attachments.getMediaItems());
+                photoGridView.setItems(attachments.getMediaItems());
             } else {
                 if(photoGridViewHolder!=null&&photoGridViewHolder.getVisibility()!=GONE){
-                    photoGridView.setPhotos(attachments.getMediaItems());
+                    photoGridView.clearItems();
                     photoGridViewHolder.setVisibility(GONE);
                 }
             }
 
             if(!attachments.getAudioItems().isEmpty()){
                 if(audiosView==null) {
-                    if(photosViewStub!=null) {
-                        audiosView = (AudioListView) audiosViewStub.inflate();
-                    } else {
-                        audiosView = itemView.findViewById(R.id.audiosView);
-                    }
-                    MiracleViewRecycler miracleViewRecycler =
-                            getMiracleAdapter().getMiracleViewRecycler(itemDataHolder.getViewHolderType());
-                    miracleViewRecycler.setMaxRecycledViews(TYPE_WRAPPED_AUDIO, 15);
-                    audiosView.setRecycledViewPool(miracleViewRecycler);
+                    inflateAudios();
                 }
-
+                updateAudiosRecycler(itemDataHolder);
                 if(audiosView.getVisibility()!=VISIBLE) {
                     audiosView.setVisibility(VISIBLE);
                 }
-                audiosView.setItems(attachments.getAudioItems());
+                audiosView.setItems(attachments.getAudioItems(), false);
             }else {
                 if(audiosView!=null&&audiosView.getVisibility()!=GONE){
-                    audiosView.setItems(attachments.getAudioItems());
+                    audiosView.clearItems();
                     audiosView.setVisibility(GONE);
                 }
             }
 
         } else {
             if(photoGridViewHolder!=null&&photoGridViewHolder.getVisibility()!=GONE){
-                photoGridView.setPhotos(new ArrayList<>());
+                photoGridView.clearItems();
                 photoGridViewHolder.setVisibility(GONE);
             }
             if(audiosView!=null&&audiosView.getVisibility()!=GONE){
-                audiosView.setItems(new ArrayList<>());
+                audiosView.clearItems();
                 audiosView.setVisibility(GONE);
+            }
+        }
+    }
+
+    public abstract ViewHolderFabric getAudiosFabric();
+
+    public abstract ViewHolderFabric getPhotosFabric();
+
+    public void inflatePhotos(){
+        if(photosViewStub!=null) {
+            photoGridViewHolder = (CardView) photosViewStub.inflate();
+        } else {
+            photoGridViewHolder = itemView.findViewById(R.id.photosView);
+        }
+        photoGridView = (PhotoGridView) photoGridViewHolder.getChildAt(0);
+        photoGridView.getViewHolderFabricMap().put(TYPE_WRAPPED_PHOTO, getPhotosFabric());
+    }
+
+    public void updatePhotosRecycler(ItemDataHolder itemDataHolder){
+        if(photoGridView!=null) {
+            MiracleAdapter miracleAdapter = getBindingMiracleAdapter();
+            if(miracleAdapter!=null) {
+                MiracleViewRecycler miracleViewRecycler =
+                        miracleAdapter.getMiracleViewRecycler(itemDataHolder.getViewHolderType());
+                if(photoGridView.getViewRecycler()!=miracleViewRecycler) {
+                    miracleViewRecycler.setMaxRecycledViews(TYPE_WRAPPED_PHOTO, 15);
+                    photoGridView.setViewRecycler(miracleViewRecycler);
+                }
+            }
+        }
+    }
+
+    public void inflateAudios(){
+        if(photosViewStub!=null) {
+            audiosView = (RecycleListView) audiosViewStub.inflate();
+        } else {
+            audiosView = itemView.findViewById(R.id.audiosView);
+        }
+        audiosView.getViewHolderFabricMap().put(TYPE_WRAPPED_AUDIO, getAudiosFabric());
+    }
+
+    public void updateAudiosRecycler(ItemDataHolder itemDataHolder){
+        if(audiosView!=null) {
+            MiracleAdapter miracleAdapter = getBindingMiracleAdapter();
+            if(miracleAdapter!=null) {
+                MiracleViewRecycler miracleViewRecycler =
+                        miracleAdapter.getMiracleViewRecycler(itemDataHolder.getViewHolderType());
+                if(audiosView.getViewRecycler()!=miracleViewRecycler) {
+                    miracleViewRecycler.setMaxRecycledViews(TYPE_WRAPPED_AUDIO, 15);
+                    audiosView.setViewRecycler(miracleViewRecycler);
+                }
             }
         }
     }

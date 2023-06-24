@@ -1,16 +1,16 @@
 package com.vkontakte.miracle.model.photos;
 
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_PHOTO_ALBUM;
+
 import androidx.collection.ArrayMap;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.photos.fields.Size;
 import com.vkontakte.miracle.model.photos.wraps.PhotoItemWC;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO_ALBUM;
 
 import java.util.ArrayList;
 

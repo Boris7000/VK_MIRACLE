@@ -1,22 +1,23 @@
 package com.vkontakte.miracle.adapter.wall;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.getWallFabrics;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.getWallFabrics;
 
 import android.util.ArrayMap;
+import android.util.Log;
 
+import com.miracle.engine.adapter.MiracleAsyncLoadAdapter;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.miracle.engine.adapter.holder.error.ErrorDataHolder;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.MiracleAsyncLoadAdapter;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.adapter.holder.error.ErrorDataHolder;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.model.catalog.CatalogExtendedArrays;
+import com.vkontakte.miracle.model.ExtendedArrays;
 import com.vkontakte.miracle.model.groups.GroupItem;
-import com.vkontakte.miracle.model.users.ProfileItem;
+import com.vkontakte.miracle.model.users.User;
 import com.vkontakte.miracle.model.wall.PostItem;
-import com.vkontakte.miracle.network.methods.Groups;
-import com.vkontakte.miracle.network.methods.Wall;
+import com.vkontakte.miracle.network.api.Execute;
+import com.vkontakte.miracle.network.api.Wall;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,14 +42,15 @@ public class GroupAdapter extends MiracleAsyncLoadAdapter {
 
     @Override
     public void onLoading() throws Exception {
-        ProfileItem userItem = StorageUtil.get().currentUser();
+        User user = StorageUtil.get().currentUser();
         ArrayList<ItemDataHolder> holders = getItemDataHolders();
 
         int previous = holders.size();
         Response<JSONObject> response;
         if(!loaded()) {
 
-            response =  Groups.get(groupId.substring(1),userItem.getAccessToken()).execute();
+            /*
+            response =  Groups.get(groupId.substring(1),user.getAccessToken()).execute();
 
             JSONObject jo_response = validateBody(response).getJSONObject("response");
 
@@ -57,15 +59,30 @@ public class GroupAdapter extends MiracleAsyncLoadAdapter {
             groupItem = new GroupItem(ja_groups.getJSONObject(0));
 
             holders.add(groupItem);
+
+             */
+
+            //////////////////////////////////////////////////////////////
+
+            response =  Execute.getFullGroupNewNew(groupId.substring(1),user.getAccessToken()).execute();
+
+            JSONObject jo_response = validateBody(response).getJSONObject("response");
+
+            groupItem = new GroupItem(jo_response);
+
+            holders.add(groupItem);
+
+            Log.d("okfoekfokef",jo_response.toString());
+
         }
 
-        response = Wall.get(groupId,getNextFrom(), getStep(), userItem.getAccessToken()).execute();
+        response = Wall.get(groupId,getNextFrom(), getStep(), user.getAccessToken()).execute();
 
         JSONObject jo_response = validateBody(response).getJSONObject("response");
 
         setTotalCount(jo_response.getInt("count"));
 
-        CatalogExtendedArrays catalogExtendedArrays = new CatalogExtendedArrays(jo_response);
+        ExtendedArrays extendedArrays = new ExtendedArrays(jo_response);
 
         JSONArray items = jo_response.getJSONArray("items");
         if(items.length()>0) {
@@ -73,7 +90,7 @@ public class GroupAdapter extends MiracleAsyncLoadAdapter {
             for (int i = 0; i < items.length(); i++) {
                 JSONObject postObject = items.getJSONObject(i);
                 if (postObject.has("post_type")) {
-                    PostItem postItem = new PostItem(postObject, catalogExtendedArrays);
+                    PostItem postItem = new PostItem(postObject, extendedArrays);
                     postItems.add(postItem);
                 }
             }

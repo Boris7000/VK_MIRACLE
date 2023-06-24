@@ -1,30 +1,20 @@
 package com.vkontakte.miracle.fragment.friends;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.fragment.NestedMiracleFragmentFabric;
-import com.vkontakte.miracle.engine.fragment.side.SideTabsFragment;
+import com.miracle.engine.fragment.tabs.nested.NestedMiracleFragmentFabric;
+import com.miracle.engine.fragment.searchable.templates.SearchableBaseTabsFragment;
 
 import java.util.ArrayList;
 
-public class FragmentFriends extends SideTabsFragment {
+public class FragmentFriends extends SearchableBaseTabsFragment {
 
     private String ownerId;
 
     public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
-    }
-
-    @NonNull
-    @Override
-    public View inflateRootView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_with_tabs, container, false);
     }
 
     @Override
@@ -63,5 +53,10 @@ public class FragmentFriends extends SideTabsFragment {
     @Override
     public ArrayList<NestedMiracleFragmentFabric> getErrorTabs() {
         return null;
+    }
+
+    @Override
+    public void onSearchButtonClicked() {
+
     }
 }

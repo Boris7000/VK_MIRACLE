@@ -2,9 +2,9 @@ package com.vkontakte.miracle.adapter.messages.holders;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.vkontakte.miracle.engine.util.ColorUtil.getColorByAttributeId;
+import static com.miracle.engine.util.ColorUtil.getColorByAttributeId;
+import static com.miracle.engine.util.TimeUtil.getShortDateString;
 import static com.vkontakte.miracle.engine.util.StringsUtil.getWordFirstChar;
-import static com.vkontakte.miracle.engine.util.TimeUtil.getMessageDateString;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
@@ -17,11 +17,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.MiracleViewHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.model.Owner;
 import com.vkontakte.miracle.model.messages.ConversationItem;
@@ -31,7 +31,10 @@ import com.vkontakte.miracle.model.messages.fields.Peer;
 import com.vkontakte.miracle.model.users.ProfileItem;
 import com.vkontakte.miracle.model.users.fields.LastSeen;
 
-public class ConversationViewHolder extends MiracleViewHolder {
+public class ConversationViewHolder extends MiracleViewHolder
+        implements View.OnClickListener {
+
+    private ConversationItem conversationItem;
 
     private boolean isMessageTyping = false;
     private String ownersString;
@@ -58,7 +61,6 @@ public class ConversationViewHolder extends MiracleViewHolder {
 
     public ConversationViewHolder(@NonNull View itemView) {
         super(itemView);
-
         imageView = itemView.findViewById(R.id.photo);
         body = itemView.findViewById(R.id.body);
         from = itemView.findViewById(R.id.message_text_from);
@@ -77,7 +79,7 @@ public class ConversationViewHolder extends MiracleViewHolder {
 
         Context context = itemView.getContext();
 
-        ConversationItem conversationItem = (ConversationItem) itemDataHolder;
+        conversationItem = (ConversationItem) itemDataHolder;
 
         if(conversationItem.getPushSettings()!=null){
             if(muted ==null) {
@@ -135,7 +137,7 @@ public class ConversationViewHolder extends MiracleViewHolder {
         } else {
             MessageItem messageItem = conversationItem.getLastMessage();
             if(messageItem!=null){
-                date.setText(getMessageDateString(context, messageItem.getDate()));
+                date.setText(getShortDateString(context, messageItem.getDate()));
 
                 if(messageItem.isOut()){
                     from.setText("Вы: ");
@@ -174,9 +176,6 @@ public class ConversationViewHolder extends MiracleViewHolder {
                 }
             }
         }
-
-        itemView.setOnClickListener(view -> NavigationUtil.goToChat(conversationItem, getContext()));
-
     }
 
     private void setFromChat(Context context, ChatSettings chatSettings){
@@ -287,11 +286,9 @@ public class ConversationViewHolder extends MiracleViewHolder {
         }
     }
 
-    public static class Fabric implements ViewHolderFabric {
-        @Override
-        public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
-            return new ConversationViewHolder(inflater.inflate(R.layout.view_conversation_item, viewGroup, false));
-        }
+    @Override
+    public void onClick(View v) {
+        NavigationUtil.goToChat(conversationItem, getContext());
     }
 
     public void setIsTyping(boolean isWriting) {
@@ -300,5 +297,13 @@ public class ConversationViewHolder extends MiracleViewHolder {
 
     public void setOwnersString(String ownersString) {
         this.ownersString = ownersString;
+    }
+
+    public static class Fabric implements ViewHolderFabric {
+        @Override
+        public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
+            return new ConversationViewHolder(
+                    inflater.inflate(R.layout.view_conversation_item, viewGroup, false));
+        }
     }
 }

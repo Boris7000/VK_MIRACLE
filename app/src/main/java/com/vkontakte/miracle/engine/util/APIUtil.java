@@ -1,12 +1,13 @@
 package com.vkontakte.miracle.engine.util;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 import static com.vkontakte.miracle.engine.util.StringsUtil.stringFromArrayList;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
 
 import android.util.ArrayMap;
+import android.util.Log;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.Owner;
 import com.vkontakte.miracle.model.audio.ArtistItem;
@@ -19,8 +20,8 @@ import com.vkontakte.miracle.model.catalog.CatalogUser;
 import com.vkontakte.miracle.model.catalog.RecommendedPlaylist;
 import com.vkontakte.miracle.model.groups.GroupItem;
 import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Groups;
-import com.vkontakte.miracle.network.methods.Users;
+import com.vkontakte.miracle.network.api.Groups;
+import com.vkontakte.miracle.network.api.Users;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -106,6 +107,7 @@ public class APIUtil {
     }
 
     public static ArrayMap<String, GroupItem> createGroupsMap(JSONArray groups) throws JSONException {
+        Log.d("pekpekfpef",groups.toString());
         ArrayMap<String,GroupItem> groupsMap = new ArrayMap<>();
         for(int i=0;i < groups.length(); i++){
             GroupItem groupItem = new GroupItem(groups.getJSONObject(i));

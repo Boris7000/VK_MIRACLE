@@ -14,6 +14,8 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/firebase-installations" />
             <option value="$PROJECT_DIR$/miracle-buttons" />
+            <option value="$PROJECT_DIR$/miracle-engine" />
+            <option value="$PROJECT_DIR$/miracle-widget" />
           </set>
         </option>
       </GradleProjectSettings>

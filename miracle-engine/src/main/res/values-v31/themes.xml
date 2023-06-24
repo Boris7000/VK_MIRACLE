@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Sys1Theme" parent="BaseTheme">
+        <item name="colorPrimary_10">@android:color/system_accent1_900</item>
+        <item name="colorPrimary_20">@android:color/system_accent1_800</item>
+        <item name="colorPrimary_25">@android:color/system_accent1_800</item>
+        <item name="colorPrimary_30">@android:color/system_accent1_700</item>
+        <item name="colorPrimary_35">@android:color/system_accent1_700</item>
+        <item name="colorPrimary_40">@android:color/system_accent1_600</item>
+        <item name="colorPrimary_50">@android:color/system_accent1_500</item>
+        <item name="colorPrimary_60">@android:color/system_accent1_400</item>
+        <item name="colorPrimary_70">@android:color/system_accent1_300</item>
+        <item name="colorPrimary_80">@android:color/system_accent1_200</item>
+        <item name="colorPrimary_90">@android:color/system_accent1_100</item>
+        <item name="colorPrimary_95">@android:color/system_accent1_50</item>
+        <item name="colorPrimary_98">@android:color/system_accent1_50</item>
+        <item name="colorPrimary_99">@android:color/system_accent1_10</item>
+        <item name="colorSecondary_10">@android:color/system_accent2_900</item>
+        <item name="colorSecondary_20">@android:color/system_accent2_800</item>
+        <item name="colorSecondary_25">@android:color/system_accent2_800</item>
+        <item name="colorSecondary_30">@android:color/system_accent2_700</item>
+        <item name="colorSecondary_35">@android:color/system_accent2_700</item>
+        <item name="colorSecondary_40">@android:color/system_accent2_600</item>
+        <item name="colorSecondary_50">@android:color/system_accent2_500</item>
+        <item name="colorSecondary_60">@android:color/system_accent2_400</item>
+        <item name="colorSecondary_70">@android:color/system_accent2_400</item>
+        <item name="colorSecondary_80">@android:color/system_accent2_300</item>
+        <item name="colorSecondary_90">@android:color/system_accent2_100</item>
+        <item name="colorSecondary_95">@android:color/system_accent2_50</item>
+        <item name="colorSecondary_98">@android:color/system_accent2_50</item>
+        <item name="colorSecondary_99">@android:color/system_accent2_10</item>
+    </style>
+</resources>

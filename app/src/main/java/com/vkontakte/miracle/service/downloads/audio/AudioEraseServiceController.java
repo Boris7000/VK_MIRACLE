@@ -7,7 +7,7 @@ import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
 
-import com.vkontakte.miracle.MiracleApp;
+import com.vkontakte.miracle.MainApp;
 import com.vkontakte.miracle.model.audio.AudioItem;
 
 public class AudioEraseServiceController {
@@ -34,18 +34,18 @@ public class AudioEraseServiceController {
 
     private void startAndErase(AudioItem audioItem){
 
-        MiracleApp miracleApp = MiracleApp.getInstance();
+        MainApp mainApp = MainApp.getInstance();
 
-        Intent playerIntent = new Intent(miracleApp, AudioEraseService.class);
+        Intent playerIntent = new Intent(mainApp, AudioEraseService.class);
 
         //Check is service is active
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            miracleApp.startForegroundService(playerIntent);
+            mainApp.startForegroundService(playerIntent);
         } else {
-            miracleApp.startService(playerIntent);
+            mainApp.startService(playerIntent);
         }
 
-        miracleApp.bindService(playerIntent, new ServiceConnection() {
+        mainApp.bindService(playerIntent, new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder binder) {
                 audioEraseService = ((AudioEraseServiceBinder) binder).getService();

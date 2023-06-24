@@ -1,10 +1,10 @@
 package com.vkontakte.miracle.executors.image;
 
-import static com.vkontakte.miracle.engine.util.ImageUtil.fastBlur;
+import static com.miracle.engine.util.ImageUtil.fastBlur;
 
 import android.graphics.Bitmap;
 
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.miracle.engine.async.AsyncExecutor;
 
 public class BlurImage extends AsyncExecutor<Bitmap> {
 

@@ -1,23 +1,36 @@
 package com.vkontakte.miracle.model.audio;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_PLAY_SHUFFLED;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_BUTTON_PLAY_SHUFFLED;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 
 public class PlaylistShuffleItem implements ItemDataHolder {
 
-    private final PlaylistItem playlistItem;
+    private final String playlistId;
+    private final String ownerId;
+    private final String accessKey;
 
-    public PlaylistItem getPlaylistItem() {
-        return playlistItem;
+    public PlaylistShuffleItem(String playlistId, String ownerId, String accessKey){
+        this.playlistId = playlistId;
+        this.ownerId = ownerId;
+        this.accessKey = accessKey;
     }
 
-    public PlaylistShuffleItem(PlaylistItem playlistItem) {
-        this.playlistItem = playlistItem;
+    public String getPlaylistId() {
+        return playlistId;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public String getAccessKey() {
+        return accessKey;
     }
 
     @Override
     public int getViewHolderType() {
         return TYPE_BUTTON_PLAY_SHUFFLED;
     }
+
 }

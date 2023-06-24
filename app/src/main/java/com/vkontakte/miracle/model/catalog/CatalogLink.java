@@ -1,10 +1,10 @@
 package com.vkontakte.miracle.model.catalog;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_LINK;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_CATALOG_LINK;
 
 import android.util.Log;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.catalog.fields.Image;
 
 import org.json.JSONArray;
@@ -42,7 +42,7 @@ public class CatalogLink implements ItemDataHolder {
     }
 
     public CatalogLink(JSONObject jsonObject) throws JSONException {
-        Log.d("eifjiejfiej2",jsonObject.toString());
+
         id = jsonObject.getString("id");
 
         url = jsonObject.getString("url");

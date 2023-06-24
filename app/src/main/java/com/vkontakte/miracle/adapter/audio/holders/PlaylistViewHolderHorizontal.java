@@ -10,14 +10,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.model.audio.fields.Photo;
 
-public class PlaylistViewHolderHorizontal extends MiracleViewHolder {
+public class PlaylistViewHolderHorizontal extends MiracleViewHolder
+        implements View.OnClickListener, View.OnLongClickListener{
 
     private final ImageView imageView;
     private final TextView title;
@@ -31,6 +32,8 @@ public class PlaylistViewHolderHorizontal extends MiracleViewHolder {
         title = itemView.findViewById(R.id.title);
         subtitle = itemView.findViewById(R.id.subtitle);
         explicitStub = itemView.findViewById(R.id.explicitStub);
+        itemView.setOnClickListener(this);
+        itemView.setOnLongClickListener(this);
     }
 
     @Override
@@ -66,5 +69,13 @@ public class PlaylistViewHolderHorizontal extends MiracleViewHolder {
                 explicit.setVisibility(GONE);
             }
         }
+    }
+
+    @Override
+    public void onClick(View view){}
+
+    @Override
+    public boolean onLongClick(View view){
+        return false;
     }
 }

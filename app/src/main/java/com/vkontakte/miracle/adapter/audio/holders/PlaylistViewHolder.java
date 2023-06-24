@@ -5,8 +5,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 
 public class PlaylistViewHolder extends PlaylistViewHolderHorizontal {

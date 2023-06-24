@@ -1,9 +1,9 @@
 package com.vkontakte.miracle.adapter.messages;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_MESSAGE_IN;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_MESSAGE_OUT;
 import static com.vkontakte.miracle.engine.util.APIUtil.createOwnersMap;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_MESSAGE_IN;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_MESSAGE_OUT;
 
 import android.util.ArrayMap;
 import android.view.ViewGroup;
@@ -11,24 +11,24 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.adapter.MiracleAsyncLoadAdapter;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.adapter.messages.holders.MessageInChatViewHolder;
 import com.vkontakte.miracle.adapter.messages.holders.MessageInViewHolder;
 import com.vkontakte.miracle.adapter.messages.holders.MessageOutViewHolder;
 import com.vkontakte.miracle.adapter.messages.holders.MessageViewHolder;
-import com.vkontakte.miracle.engine.adapter.MiracleAsyncLoadAdapter;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.service.longpoll.LongPollServiceController;
-import com.vkontakte.miracle.service.longpoll.listeners.OnMessageAddedUpdateListener;
-import com.vkontakte.miracle.service.longpoll.listeners.OnMessageReadUpdateListener;
-import com.vkontakte.miracle.service.longpoll.model.MessageAddedUpdate;
 import com.vkontakte.miracle.model.Owner;
 import com.vkontakte.miracle.model.messages.ConversationItem;
 import com.vkontakte.miracle.model.messages.MessageItem;
 import com.vkontakte.miracle.model.messages.fields.Peer;
-import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Message;
+import com.vkontakte.miracle.model.users.User;
+import com.vkontakte.miracle.network.api.Message;
+import com.vkontakte.miracle.service.longpoll.LongPollServiceController;
+import com.vkontakte.miracle.service.longpoll.listeners.OnMessageAddedUpdateListener;
+import com.vkontakte.miracle.service.longpoll.listeners.OnMessageReadUpdateListener;
+import com.vkontakte.miracle.service.longpoll.model.MessageAddedUpdate;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -53,7 +53,7 @@ public class ChatAdapter extends MiracleAsyncLoadAdapter {
     @Override
     public void onLoading() throws Exception {
 
-        ProfileItem profileItem = StorageUtil.get().currentUser();
+        User user = StorageUtil.get().currentUser();
         ArrayList<ItemDataHolder> holders = getItemDataHolders();
 
         MessageItem messageItem = conversationItem.getLastMessage();
@@ -62,7 +62,7 @@ public class ChatAdapter extends MiracleAsyncLoadAdapter {
         setTimeStump(System.currentTimeMillis()/1000);
 
         Response<JSONObject> response =  Message.getHistory(peer.getId(), messageItem!=null?messageItem.getId():"-1",
-                holders.size(), getStep(), profileItem.getAccessToken()).execute();
+                holders.size(), getStep(), user.getAccessToken()).execute();
 
         JSONObject jsonObject = validateBody(response).getJSONObject("response");
 

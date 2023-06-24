@@ -34,14 +34,36 @@ public class Size {
                 url = jsonObject.getString("src");
             }
         }
-        if(jsonObject.has("width")){
-            width = jsonObject.getInt("width");
-        }
-        if(jsonObject.has("width")){
-            height = jsonObject.getInt("height");
-        }
+
         if(jsonObject.has("type")){
             type = jsonObject.getString("type");
+        }
+
+        if(jsonObject.has("width")){
+            width = jsonObject.getInt("width");
+            if(width<=0){
+                switch (type){
+                    default:
+                    case "s":{
+                        width = 75;
+                        break;
+                    }
+                    case "m":{
+                        width = 130;
+                        break;
+                    }
+                    case "x":{
+                        width = 604;
+                        break;
+                    }
+                }
+            }
+        }
+        if(jsonObject.has("height")){
+            height = jsonObject.getInt("height");
+            if(height<=0){
+                height = width;
+            }
         }
     }
 

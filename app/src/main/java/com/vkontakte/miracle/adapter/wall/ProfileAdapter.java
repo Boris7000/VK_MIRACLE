@@ -1,10 +1,10 @@
 package com.vkontakte.miracle.adapter.wall;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WALL_COUNTER;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WALL_COUNTERS;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.getWallFabrics;
-import static com.vkontakte.miracle.engine.util.AdapterUtil.getHorizontalLayoutManager;
+import static com.miracle.engine.util.AdapterUtil.getHorizontalLayoutManager;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_WALL_COUNTER;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_WALL_COUNTERS;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.getWallFabrics;
 
 import android.util.ArrayMap;
 import android.view.LayoutInflater;
@@ -14,21 +14,22 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.adapter.MiracleAdapter;
+import com.miracle.engine.adapter.MiracleAsyncLoadAdapter;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.MiracleViewHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.miracle.engine.adapter.holder.error.ErrorDataHolder;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.MiracleAdapter;
-import com.vkontakte.miracle.engine.adapter.MiracleAsyncLoadAdapter;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.adapter.holder.error.ErrorDataHolder;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.model.catalog.CatalogExtendedArrays;
+import com.vkontakte.miracle.model.ExtendedArrays;
 import com.vkontakte.miracle.model.users.ProfileItem;
+import com.vkontakte.miracle.model.users.User;
 import com.vkontakte.miracle.model.wall.PostItem;
 import com.vkontakte.miracle.model.wall.fields.Counter;
 import com.vkontakte.miracle.model.wall.fields.Counters;
-import com.vkontakte.miracle.network.methods.Users;
-import com.vkontakte.miracle.network.methods.Wall;
+import com.vkontakte.miracle.network.api.Users;
+import com.vkontakte.miracle.network.api.Wall;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -52,14 +53,14 @@ public class ProfileAdapter extends MiracleAsyncLoadAdapter {
 
     @Override
     public void onLoading() throws Exception {
-        ProfileItem userItem = StorageUtil.get().currentUser();
+        User user = StorageUtil.get().currentUser();
         ArrayList<ItemDataHolder> holders = getItemDataHolders();
 
         int previous = holders.size();
         Response<JSONObject> response;
         if(!loaded()) {
 
-            response =  Users.get(profileId,userItem.getAccessToken()).execute();
+            response =  Users.get(profileId,user.getAccessToken()).execute();
 
             JSONArray ja_response = validateBody(response).getJSONArray("response");
             profileItem = new ProfileItem(ja_response.getJSONObject(0));
@@ -79,13 +80,13 @@ public class ProfileAdapter extends MiracleAsyncLoadAdapter {
             }
         }
 
-        response = Wall.get(profileId,getNextFrom(), getStep(), userItem.getAccessToken()).execute();
+        response = Wall.get(profileId,getNextFrom(), getStep(), user.getAccessToken()).execute();
 
         JSONObject jo_response = validateBody(response).getJSONObject("response");
 
         setTotalCount(jo_response.getInt("count"));
 
-        CatalogExtendedArrays catalogExtendedArrays = new CatalogExtendedArrays(jo_response);
+        ExtendedArrays extendedArrays = new ExtendedArrays(jo_response);
 
         JSONArray items = jo_response.getJSONArray("items");
         if(items.length()>0) {
@@ -93,7 +94,7 @@ public class ProfileAdapter extends MiracleAsyncLoadAdapter {
             for (int i = 0; i < items.length(); i++) {
                 JSONObject postObject = items.getJSONObject(i);
                 if (postObject.has("post_type")) {
-                    PostItem postItem = new PostItem(postObject, catalogExtendedArrays);
+                    PostItem postItem = new PostItem(postObject, extendedArrays);
                     postItems.add(postItem);
                 }
             }
@@ -150,7 +151,7 @@ public class ProfileAdapter extends MiracleAsyncLoadAdapter {
             CountersAdapter countersAdapter;
             if(adapter instanceof CountersAdapter){
                 countersAdapter = ((CountersAdapter)recyclerView.getAdapter());
-                countersAdapter.iniFromFragment(getMiracleFragment());
+                countersAdapter.iniFromFragment(getFragment());
                 countersAdapter.setNewCounters(counters);
             } else {
                 if(adapter instanceof MiracleAdapter){
@@ -158,7 +159,7 @@ public class ProfileAdapter extends MiracleAsyncLoadAdapter {
                     miracleAdapter.setRecyclerView(null);
                 }
                 countersAdapter = new CountersAdapter(counters);
-                countersAdapter.iniFromFragment(getMiracleFragment());
+                countersAdapter.iniFromFragment(getFragment());
                 countersAdapter.setRecyclerView(recyclerView);
                 countersAdapter.ini();
                 if(recyclerView.hasFixedSize()) {

@@ -6,59 +6,63 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.graphics.Insets;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 
+import com.miracle.engine.activity.MiracleActivity;
+import com.miracle.engine.context.ContextExtractor;
+import com.miracle.engine.fragment.FragmentFabric;
+import com.miracle.engine.fragment.recycler.templates.RecyclerFragment;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.adapter.audio.PlayingAdapter;
-import com.vkontakte.miracle.engine.activity.MiracleActivity;
-import com.vkontakte.miracle.engine.context.ContextExtractor;
-import com.vkontakte.miracle.engine.fragment.FragmentFabric;
-import com.vkontakte.miracle.engine.fragment.MiracleFragment;
-import com.vkontakte.miracle.engine.fragment.recycler.RecyclerFragment;
-import com.vkontakte.miracle.service.player.AOnPlayerEventListener;
-import com.vkontakte.miracle.service.player.AudioPlayerData;
-import com.vkontakte.miracle.service.player.OnPlayerEventListener;
-import com.vkontakte.miracle.service.player.PlayerServiceController;
+import com.vkontakte.miracle.adapter.audio.PlayingNowAdapter;
+import com.vkontakte.miracle.service.player.AudioPlayerEventListener;
+import com.vkontakte.miracle.service.player.AudioPlayerMedia;
+import com.vkontakte.miracle.service.player.AudioPlayerServiceController;
 
 public class FragmentPlaying extends RecyclerFragment {
 
     private View rootView;
-    private PlayingAdapter playingAdapter;
-    private final OnPlayerEventListener onPlayerEventListener = new AOnPlayerEventListener() {
+    private PlayingNowAdapter playingNowAdapter;
+
+    private final AudioPlayerEventListener audioPlayerEventListener = new AudioPlayerEventListener() {
         @Override
-        public void onSongChange(AudioPlayerData playerData, boolean animate) {
-            if(playingAdapter==null){
-                playingAdapter = new PlayingAdapter(playerData);
-                getRecyclerFragmentController().setRecyclerAdapter(playingAdapter);
+        public void onMediaItemChange(AudioPlayerMedia audioPlayerMedia) {
+            getRecyclerView().scrollToPosition(audioPlayerMedia.getItemIndex());
+        }
+
+        @Override
+        public void onMediaChange(AudioPlayerMedia audioPlayerMedia) {
+            if(playingNowAdapter ==null){
+                playingNowAdapter = new PlayingNowAdapter(audioPlayerMedia);
+                getRecyclerFragmentController().setRecyclerAdapter(playingNowAdapter);
             } else {
-                playingAdapter.setNewAudioPlayerData(playerData);
-                playingAdapter.load();
+                playingNowAdapter.setNewAudioPlayerData(audioPlayerMedia);
+                playingNowAdapter.load();
             }
-            getRecyclerView().scrollToPosition(playerData.getCurrentItemIndex());
         }
     };
+
     private final OnApplyWindowInsetsListener onApplyWindowInsetsListener = (v, windowInsets) -> {
         Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
         rootView.setPadding(insets.left, insets.top, insets.right, insets.bottom);
         return windowInsets;
     };
 
-    @NonNull
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        
-        rootView = super.onCreateView(inflater, container, savedInstanceState);
+    public void initViews(@NonNull View rootView, @Nullable Bundle savedInstanceState) {
+        super.initViews(rootView, savedInstanceState);
+
+        this.rootView = rootView;
 
         MiracleActivity miracleActivity = ContextExtractor.extractMiracleActivity(getContext());
         if(miracleActivity!=null) {
             miracleActivity.addOnApplyWindowInsetsListener(onApplyWindowInsetsListener);
         }
-        
-        PlayerServiceController.get().addOnPlayerEventListener(onPlayerEventListener);
-        
-        return rootView;
+
+        AudioPlayerServiceController.get().addOnPlayerEventListener(audioPlayerEventListener);
     }
 
     @Override
@@ -83,14 +87,14 @@ public class FragmentPlaying extends RecyclerFragment {
         if(miracleActivity!=null) {
             miracleActivity.removeOnApplyWindowInsetsListener(onApplyWindowInsetsListener);
         }
-        PlayerServiceController.get().removeOnPlayerEventListener(onPlayerEventListener);
+        AudioPlayerServiceController.get().removeOnPlayerEventListener(audioPlayerEventListener);
         super.onDestroy();
     }
 
     public static class Fabric implements FragmentFabric {
         @NonNull
         @Override
-        public MiracleFragment createFragment() {
+        public Fragment createFragment() {
             return new FragmentPlaying();
         }
     }

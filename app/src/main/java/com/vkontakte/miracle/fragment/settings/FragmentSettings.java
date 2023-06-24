@@ -3,36 +3,39 @@ package com.vkontakte.miracle.fragment.settings;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.miracle.engine.fragment.base.templates.BaseListFragment;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.fragment.side.SideListFragment;
 import com.vkontakte.miracle.engine.util.NavigationUtil;
 
-public class FragmentSettings extends SideListFragment {
+public class FragmentSettings extends BaseListFragment {
 
-    @NonNull
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-
-        View interfaceSettings = rootView.findViewById(R.id.settings_interface);
-        interfaceSettings.setOnClickListener(view -> NavigationUtil.goToInterfaceSettings(getContext()));
-
-        View test = rootView.findViewById(R.id.debug);
-        test.setOnClickListener(view -> NavigationUtil.goToDebug(getContext()));
+    public void initViews(@NonNull View rootView, @Nullable Bundle savedInstanceState) {
+        super.initViews(rootView, savedInstanceState);
 
 
-        return rootView;
+        rootView.findViewById(R.id.settings_interface).
+                setOnClickListener(view -> NavigationUtil.goToInterfaceSettings(getContext()));
+
+        rootView.findViewById(R.id.settings_player).
+                setOnClickListener(view -> NavigationUtil.goToPlayerSettings(getContext()));
+
+        rootView.findViewById(R.id.debug).
+                setOnClickListener(view -> NavigationUtil.goToDebug(getContext()));
     }
 
-    @NonNull
     @Override
-    public View inflateRootView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+    public int requestTitleTextResId() {
+        return R.string.settings;
     }
 
+    @Override
+    public void inflateContent(@NonNull LayoutInflater inflater, @NonNull LinearLayout container) {
+        inflater.inflate(R.layout.fragment_content_settings, container, true);
+    }
 }

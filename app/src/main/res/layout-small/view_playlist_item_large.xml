@@ -103,37 +103,42 @@
         android:layout_marginTop="16dp"
         android:orientation="horizontal">
 
-
-        <com.miracle.button.TextViewButton
+        <com.miracle.widget.ExtendedMaterialButton
             android:id="@+id/playButton"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginEnd="12dp"
             android:layout_weight="1"
-            app:icon_start="@drawable/ic_play_16"
-            style="@style/TextButton.PrimaryButton"/>
+            android:padding="0dp"
+            app:iconLeftStickingToText="true"
+            app:iconLeft="@drawable/ic_play_16"
+            app:shapeAppearance="@style/ChildShapeAppearance"
+            style="@style/Button"/>
 
-        <com.miracle.button.Button
+        <com.miracle.widget.ExtendedMaterialButton
             android:id="@+id/addButton"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
             android:layout_marginEnd="12dp"
-            android:enabled="false"
-            android:src="@drawable/ic_add_28"
-            app:background_color="?attr/colorSecondary"
-            app:disabled_background_color="?attr/colorSecondaryContainer"
-            app:disabled_icon_color="?attr/colorOnSecondaryContainer"
-            app:icon_color="?attr/colorOnSecondary"
-            app:shapeAppearanceOverlay="@style/ChildShapeAppearance" />
+            android:padding="0dp"
+            android:checkable="true"
+            app:toggleCheckedStateOnClick="false"
+            app:iconLeftStickingToText="true"
+            app:iconLeft="@drawable/ic_add_done_28_anim"
+            app:shapeAppearance="@style/ChildShapeAppearance"
+            style="@style/TonalPrimaryButton"/>
 
-        <com.miracle.button.TextViewButton
+        <com.miracle.widget.ExtendedMaterialButton
             android:id="@+id/optionsButton"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            app:icon_start="@drawable/ic_more_vertical_28"
-            style="@style/TextButton.SecondaryButton"/>
+            android:padding="0dp"
+            app:iconLeftStickingToText="true"
+            app:iconLeft="@drawable/ic_more_vertical_28"
+            app:shapeAppearance="@style/ChildShapeAppearance"
+            style="@style/TonalButton"/>
 
     </LinearLayout>
 

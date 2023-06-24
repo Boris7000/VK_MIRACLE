@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.LinearLayout"
+    tools:orientation="vertical">
+    <FrameLayout
+        android:id="@+id/settings_color_scheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_ripple">
+        <ImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginVertical="9dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/circle_card_container_secondary"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_palette_28"
+            app:tint="?attr/colorSecondary" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="68dp"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:singleLine="true"
+                android:text="@string/settings_color_scheme"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:fontFamily="sans-serif"
+                android:textColor="?attr/colorSubtitle"
+                android:textSize="13sp"
+                android:text="Изменение акцентных цветов"/>
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/settings_views_styles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_ripple">
+
+        <ImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginVertical="9dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/circle_card_container_secondary"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_post_28"
+            app:tint="?attr/colorSecondary" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="68dp"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:singleLine="true"
+                android:text="Cтили элементов интерфейса"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:fontFamily="sans-serif"
+                android:textColor="?attr/colorSubtitle"
+                android:textSize="13sp"
+                android:text="Изменение стилей элементов интерфейса"/>
+        </LinearLayout>
+    </FrameLayout>
+</merge>

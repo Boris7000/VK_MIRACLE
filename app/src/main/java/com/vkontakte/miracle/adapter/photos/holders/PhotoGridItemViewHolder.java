@@ -9,11 +9,11 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.MiracleViewHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.squareup.picasso.Picasso;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.view.photoGridView.MediaItem;
 import com.vkontakte.miracle.engine.view.photoGridView.PhotoGridItem;
 import com.vkontakte.miracle.engine.view.photoGridView.PhotoGridPosition;
@@ -89,6 +89,20 @@ public class PhotoGridItemViewHolder extends MiracleViewHolder {
         @Override
         public RecyclerView.ViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
             return new PhotoGridItemViewHolder(inflater.inflate(R.layout.view_photo_grid_item, viewGroup, false));
+        }
+    }
+
+    public static class FabricMessageIn implements ViewHolderFabric {
+        @Override
+        public RecyclerView.ViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
+            return new PhotoGridItemViewHolder(inflater.inflate(R.layout.view_message_item_photo_grid_item_in, viewGroup, false));
+        }
+    }
+
+    public static class FabricMessageOut implements ViewHolderFabric {
+        @Override
+        public RecyclerView.ViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
+            return new PhotoGridItemViewHolder(inflater.inflate(R.layout.view_message_item_photo_grid_item_out, viewGroup, false));
         }
     }
 }

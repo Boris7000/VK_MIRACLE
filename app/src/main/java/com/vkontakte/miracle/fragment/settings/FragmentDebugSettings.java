@@ -3,35 +3,36 @@ package com.vkontakte.miracle.fragment.settings;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.miracle.engine.fragment.base.templates.BaseListFragment;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.fragment.side.SideListFragment;
 import com.vkontakte.miracle.engine.util.NavigationUtil;
 
-public class FragmentDebugSettings extends SideListFragment {
+public class FragmentDebugSettings extends BaseListFragment {
 
-    @NonNull
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-
+    public void initViews(@NonNull View rootView, @Nullable Bundle savedInstanceState) {
+        super.initViews(rootView, savedInstanceState);
         View interfaceSettings = rootView.findViewById(R.id.url_test);
         interfaceSettings.setOnClickListener(view -> NavigationUtil.goToUrlTest(getContext()));
 
         View test = rootView.findViewById(R.id.system_theme);
         test.setOnClickListener(view -> NavigationUtil.goToSystemThemeExtractor(getContext()));
-
-        return rootView;
     }
 
-    @NonNull
     @Override
-    public View inflateRootView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_settings_debug, container, false);
+    public int requestTitleTextResId() {
+        return R.string.debug;
     }
+
+    @Override
+    public void inflateContent(@NonNull LayoutInflater inflater, @NonNull LinearLayout container) {
+        inflater.inflate(R.layout.fragment_content_settings_debug, container, true);
+    }
+
 
 }

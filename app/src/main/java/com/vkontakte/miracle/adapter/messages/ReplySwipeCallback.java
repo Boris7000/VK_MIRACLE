@@ -1,7 +1,6 @@
 package com.vkontakte.miracle.adapter.messages;
 
-import static com.vkontakte.miracle.engine.util.ColorUtil.getColorByAttributeId;
-import static com.vkontakte.miracle.engine.util.DimensionsUtil.dpToPx;
+import static com.miracle.engine.util.ColorUtil.getColorByAttributeId;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,6 +17,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.util.DimensionsUtil;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.messages.holders.MessageViewHolder;
 
@@ -114,7 +114,7 @@ public class ReplySwipeCallback extends ItemTouchHelper.Callback {
     }
 
     private int convertToDp(int pixels){
-        return (int) dpToPx(context, pixels);
+        return (int) DimensionsUtil.dpToPx(context, pixels);
     }
 
 

@@ -19,5 +19,5 @@
         android:id="@+id/tab_music"
         android:enabled="true"
         android:icon="@drawable/ic_vk_music_outline_28"
-        android:title="Музыка"/>
+        android:title="@string/music"/>
 </menu>

@@ -1,25 +1,24 @@
 package com.vkontakte.miracle.fragment.base;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miracle.engine.fragment.FragmentFabric;
+import com.miracle.engine.fragment.base.templates.BaseRecyclerFragment;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.wall.FeedAdapter;
-import com.vkontakte.miracle.engine.fragment.FragmentFabric;
-import com.vkontakte.miracle.engine.fragment.MiracleFragment;
-import com.vkontakte.miracle.engine.fragment.base.BaseRecyclerFragment;
 
 public class FragmentFeed extends BaseRecyclerFragment {
 
     @NonNull
     @Override
     public View inflateRootView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_feed, container, false);
+        return inflater.inflate(R.layout.fragment_with_recycleview_dark_base, container, false);
     }
 
     @Override
@@ -28,18 +27,14 @@ public class FragmentFeed extends BaseRecyclerFragment {
     }
 
     @Override
-    public String requestTitleText() {
-        Context context = getContext();
-        if(context!=null){
-            return context.getString(R.string.feed);
-        }
-        return super.requestTitleText();
+    public int requestTitleTextResId() {
+        return R.string.feed;
     }
 
     public static class Fabric implements FragmentFabric {
         @NonNull
         @Override
-        public MiracleFragment createFragment() {
+        public Fragment createFragment() {
             return new FragmentFeed();
         }
     }

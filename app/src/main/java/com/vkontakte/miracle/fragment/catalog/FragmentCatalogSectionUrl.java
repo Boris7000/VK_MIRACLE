@@ -7,25 +7,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.vkontakte.miracle.adapter.catalog.CatalogSectionAdapter;
 import com.vkontakte.miracle.engine.util.StorageUtil;
-import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Catalog;
+import com.vkontakte.miracle.model.users.User;
+import com.vkontakte.miracle.network.api.Catalog;
 
 import org.json.JSONObject;
 
 import retrofit2.Call;
 
-public class FragmentCatalogSectionUrl extends AFragmentCatalogSection {
+public class FragmentCatalogSectionUrl extends ARecyclerFragmentCatalogSection {
 
     private String catalogSectionUrl;
 
     @Override
     public RecyclerView.Adapter<?> onCreateRecyclerAdapter() {
 
-        ProfileItem profileItem = StorageUtil.get().currentUser();
+        User user = StorageUtil.get().currentUser();
         Call<JSONObject> call = null;
 
         if(catalogSectionUrl.indexOf("https://vk.com/audio?section")==0){
-            call = Catalog.getAudioFromUrl(catalogSectionUrl, profileItem.getAccessToken());
+            call = Catalog.getAudioFromUrl(catalogSectionUrl, user.getAccessToken());
         }
 
         if(call!=null) {
@@ -42,12 +42,12 @@ public class FragmentCatalogSectionUrl extends AFragmentCatalogSection {
 
     @Override
     public void readSavedInstance(Bundle savedInstanceState) {
+        super.readSavedInstance(savedInstanceState);
         String key = savedInstanceState.getString("catalogSectionUrl");
         if (key!=null) {
             catalogSectionUrl = key;
             savedInstanceState.remove("catalogSectionUrl");
         }
-        super.readSavedInstance(savedInstanceState);
     }
 
     @Override

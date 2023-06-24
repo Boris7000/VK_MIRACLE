@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:parentTag="android.widget.LinearLayout"
+    tools:orientation="vertical">
+    <FrameLayout
+        android:id="@+id/profileLink"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="12dp"
+        android:paddingHorizontal="12dp"
+        android:background="@drawable/menu_top_bg">
+
+        <FrameLayout
+            android:layout_gravity="center_vertical"
+            android:layout_width="52dp"
+            android:layout_height="52dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="2dp"
+                android:background="?attr/colorPlaceholder"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/CircleShapeAppearance"
+                app:strokeColor="?attr/colorOnSecondary"
+                app:strokeWidth="2dp"/>
+
+            <ImageView
+                android:id="@+id/onlineStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:backgroundTint="?attr/colorOnSecondary"
+                app:tint="@color/green"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/current_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="12dp"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="marquee"
+            android:fontFamily="sans-serif-medium"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:textAllCaps="false"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="16sp"
+            tools:text="Name" />
+    </FrameLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.miracle.button.view.SwitchButton
+                android:id="@+id/no_push_switch"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_marginHorizontal="12dp"
+                android:enabled="false"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_do_not_disturb_28"
+                app:icon_color="?attr/colorOnSecondary"
+                app:background_color="?attr/colorSecondary"
+                app:disabled_icon_color="?attr/colorOnSecondaryContainerDisabled"
+                app:disabled_background_color="?attr/colorSecondaryContainerDisabled"
+                app:shapeAppearanceOverlay="@style/CircleShapeAppearance"/>
+
+            <com.miracle.button.view.SwitchButton
+                android:id="@+id/incognito_switch"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_marginEnd="12dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_incognito_28"
+                android:enabled="false"
+                app:icon_color="?attr/colorOnSecondary"
+                app:background_color="?attr/colorSecondary"
+                app:disabled_icon_color="?attr/colorOnSecondaryContainerDisabled"
+                app:disabled_background_color="?attr/colorSecondaryContainerDisabled"
+                app:shapeAppearanceOverlay="@style/CircleShapeAppearance"/>
+
+            <com.miracle.button.view.SwitchButton
+                android:id="@+id/dark_theme_switch"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_marginEnd="12dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_night_28"
+                android:enabled="false"
+                app:auto_click_switch="false"
+                app:icon_color="?attr/colorOnSecondary"
+                app:background_color="?attr/colorSecondary"
+                app:disabled_icon_color="?attr/colorOnSecondaryContainerDisabled"
+                app:disabled_background_color="?attr/colorSecondaryContainerDisabled"
+                app:shapeAppearanceOverlay="@style/CircleShapeAppearance"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.miracle.widget.ExtendedMaterialButton
+            android:id="@+id/notifications_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/notifications"
+            android:textColor="?android:attr/textColor"
+            app:iconRight="@drawable/ic_chevron_24"
+            app:iconLeft="@drawable/ic_notifications_28"
+            style="@style/TextButton2"/>
+
+        <com.miracle.widget.ExtendedMaterialButton
+            android:id="@+id/favorite_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/liked"
+            android:textColor="?android:attr/textColor"
+            app:iconRight="@drawable/ic_chevron_24"
+            app:iconLeft="@drawable/ic_like_28"
+            style="@style/TextButton2"/>
+
+        <com.miracle.widget.ExtendedMaterialButton
+            android:id="@+id/friends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/friends"
+            android:textColor="?android:attr/textColor"
+            app:iconRight="@drawable/ic_chevron_24"
+            app:iconLeft="@drawable/ic_friends_28"
+            style="@style/TextButton2"/>
+
+        <com.miracle.widget.ExtendedMaterialButton
+            android:id="@+id/groups"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/groups"
+            android:textColor="?android:attr/textColor"
+            app:iconRight="@drawable/ic_chevron_24"
+            app:iconLeft="@drawable/ic_groups_28"
+            style="@style/TextButton2"/>
+
+        <com.miracle.widget.ExtendedMaterialButton
+            android:id="@+id/photos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/photos"
+            android:textColor="?android:attr/textColor"
+            app:iconRight="@drawable/ic_chevron_24"
+            app:iconLeft="@drawable/ic_photos_28"
+            style="@style/TextButton2"/>
+
+        <com.miracle.widget.ExtendedMaterialButton
+            android:id="@+id/videos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/videos"
+            android:textColor="?android:attr/textColor"
+            app:iconRight="@drawable/ic_chevron_24"
+            app:iconLeft="@drawable/ic_vk_videos_outline_28"
+            style="@style/TextButton2"/>
+
+        <com.miracle.widget.ExtendedMaterialButton
+            android:id="@+id/settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/settings"
+            android:textColor="?android:attr/textColor"
+            app:iconRight="@drawable/ic_chevron_24"
+            app:iconLeft="@drawable/ic_settings_28"
+            style="@style/TextButton2"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/exit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/sign_out"
+            style="@style/ErrorTonalButton"/>
+
+    </LinearLayout>
+</merge>

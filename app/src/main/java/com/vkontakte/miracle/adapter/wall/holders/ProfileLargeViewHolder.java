@@ -2,7 +2,7 @@ package com.vkontakte.miracle.adapter.wall.holders;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.vkontakte.miracle.engine.util.ImageUtil.fastBlur;
+import static com.miracle.engine.util.ImageUtil.fastBlur;
 import static com.vkontakte.miracle.engine.util.ImageUtil.getOptimalSize;
 import static com.vkontakte.miracle.engine.view.PicassoDrawableCopy.setBitmap;
 
@@ -18,20 +18,24 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.MiracleViewHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.miracle.engine.async.AsyncExecutor;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
-import com.vkontakte.miracle.MiracleApp;
+import com.vkontakte.miracle.MainApp;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.picasso.ATarget;
 import com.vkontakte.miracle.engine.util.DeviceUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.engine.util.TimeUtil;
 import com.vkontakte.miracle.model.catalog.fields.Image;
 import com.vkontakte.miracle.model.users.ProfileItem;
+import com.vkontakte.miracle.model.users.User;
+import com.vkontakte.miracle.model.users.fields.Career;
+import com.vkontakte.miracle.model.users.fields.City;
+import com.vkontakte.miracle.model.users.fields.University;
 import com.vkontakte.miracle.model.users.fields.LastSeen;
 import com.vkontakte.miracle.model.wall.fields.Cover;
 
@@ -50,7 +54,16 @@ public class ProfileLargeViewHolder extends MiracleViewHolder {
     private LinearLayout profileButtonsHolder;
     private final ViewStub userButtonsStub;
     private LinearLayout userButtonsHolder;
-    private final ProfileItem userItem;
+    private final User user;
+    private final ViewStub placeStub;
+    private LinearLayout place;
+    private TextView placeTitle;
+    private final ViewStub workStub;
+    private LinearLayout work;
+    private TextView workTitle;
+    private final ViewStub universityStub;
+    private LinearLayout university;
+    private TextView universityTitle;
 
     private final Target target = new ATarget() {
         @Override
@@ -65,8 +78,8 @@ public class ProfileLargeViewHolder extends MiracleViewHolder {
                 }
                 @Override
                 public void onExecute(Boolean object) {
-                    MiracleApp miracleApp = MiracleApp.getInstance();
-                    setBitmap(coverImage, miracleApp, blurBitmap);
+                    MainApp mainApp = MainApp.getInstance();
+                    setBitmap(coverImage, mainApp, blurBitmap);
                 }
             }.start();
         }
@@ -74,7 +87,7 @@ public class ProfileLargeViewHolder extends MiracleViewHolder {
 
     public ProfileLargeViewHolder(@NonNull View itemView) {
         super(itemView);
-        userItem = StorageUtil.get().currentUser();
+        user = StorageUtil.get().currentUser();
         image = itemView.findViewById(R.id.photo);
         coverImage = itemView.findViewById(R.id.cover);
         title = itemView.findViewById(R.id.title);
@@ -84,6 +97,9 @@ public class ProfileLargeViewHolder extends MiracleViewHolder {
         verifiedStub = itemView.findViewById(R.id.verifiedStub);
         profileButtonsStub = itemView.findViewById(R.id.profileButtonsStub);
         userButtonsStub = itemView.findViewById(R.id.userButtonsStub);
+        placeStub = itemView.findViewById(R.id.placeStub);
+        workStub = itemView.findViewById(R.id.workStub);
+        universityStub = itemView.findViewById(R.id.educationStub);
         coverImage.setTag(target);
     }
 
@@ -167,7 +183,7 @@ public class ProfileLargeViewHolder extends MiracleViewHolder {
         }
 
 
-        if(profileItem.getId().equals(userItem.getId())){
+        if(profileItem.getId().equals(user.getId())){
             if(profileButtonsHolder!=null&&profileButtonsHolder.getVisibility()!=GONE) {
                 profileButtonsHolder.setVisibility(GONE);
             }
@@ -198,6 +214,68 @@ public class ProfileLargeViewHolder extends MiracleViewHolder {
         }
 
         setCover(profileItem);
+
+        if(profileItem.getCity()!=null){
+            if(place==null||placeTitle==null) {
+                if(placeStub!=null) {
+                    place = (LinearLayout) placeStub.inflate();
+                } else {
+                    place = itemView.findViewById(R.id.place);
+                }
+                placeTitle = place.findViewById(R.id.placeTitle);
+            }
+            if(place.getVisibility()!=VISIBLE) {
+                place.setVisibility(VISIBLE);
+            }
+            City city = profileItem.getCity();
+            placeTitle.setText(city.getTitle());
+        } else {
+            if(place!=null&&place.getVisibility()!=GONE){
+                place.setVisibility(GONE);
+            }
+        }
+
+        if(profileItem.getCareer()!=null&&profileItem.getCareer().getCompany()!=null){
+            if(work==null||workTitle==null) {
+                if(workStub!=null) {
+                    work = (LinearLayout) workStub.inflate();
+                } else {
+                    work = itemView.findViewById(R.id.work);
+                }
+                workTitle = work.findViewById(R.id.workTitle);
+            }
+            if(work.getVisibility()!=VISIBLE) {
+                work.setVisibility(VISIBLE);
+            }
+            Career career = profileItem.getCareer();
+            workTitle.setText(career.getCompany());
+        } else {
+            if(work!=null&&work.getVisibility()!=GONE){
+                work.setVisibility(GONE);
+            }
+        }
+
+        if(profileItem.getEducation()!=null){
+            if(university ==null|| universityTitle ==null) {
+                if(universityStub !=null) {
+                    university = (LinearLayout) universityStub.inflate();
+                } else {
+                    university = itemView.findViewById(R.id.university);
+                }
+                universityTitle = university.findViewById(R.id.universityTitle);
+            }
+            if(university.getVisibility()!=VISIBLE) {
+                university.setVisibility(VISIBLE);
+            }
+            University university = profileItem.getEducation();
+            universityTitle.setText(university.getUniversityName());
+        } else {
+            if(university !=null&& university.getVisibility()!=GONE){
+                university.setVisibility(GONE);
+            }
+        }
+
+
 
     }
 

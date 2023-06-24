@@ -14,23 +14,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.dialog.login.AccountDialog;
+import com.vkontakte.miracle.dialog.login.UserDialog;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.login.AuthState;
 import com.vkontakte.miracle.login.LoginActivity;
 import com.vkontakte.miracle.login.RegisterDevice;
-import com.vkontakte.miracle.model.users.ProfileItem;
+import com.vkontakte.miracle.model.users.User;
 
 import java.util.ArrayList;
 
 public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.UserViewHolder> {
 
-    private final ArrayList<ProfileItem> accounts;
+    private final ArrayList<User> users;
     private final LayoutInflater inflater;
     private final LoginActivity loginActivity;
 
-    public AccountsAdapter(ArrayList<ProfileItem> accounts, LoginActivity loginActivity){
-        this.accounts = accounts;
+    public AccountsAdapter(ArrayList<User> users, LoginActivity loginActivity){
+        this.users = users;
         this.loginActivity = loginActivity;
         inflater = LayoutInflater.from(loginActivity);
     }
@@ -48,8 +48,8 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.UserVi
 
     @Override
     public int getItemCount() {
-        if(accounts !=null) {
-            return accounts.size();
+        if(users !=null) {
+            return users.size();
         } else return 0;
     }
 
@@ -57,7 +57,7 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.UserVi
 
         private final TextView name;
         private final ImageView imageView;
-        private ProfileItem profileItem;
+        private User user;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,14 +65,14 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.UserVi
             imageView = itemView.findViewById(R.id.photo);
             itemView.setOnLongClickListener(view -> {
                 Context context = view.getContext();
-                AccountDialog accountDialog = new AccountDialog(context,profileItem);
-                accountDialog.setDialogActionListener(() -> {
-                    removeUserData(profileItem);
-                    int pos = accounts.indexOf(profileItem);
-                    accounts.remove(pos);
+                UserDialog userDialog = new UserDialog(context, user);
+                userDialog.setDialogActionListener(() -> {
+                    removeUserData(user);
+                    int pos = users.indexOf(user);
+                    users.remove(pos);
                     notifyItemRemoved(pos);
                 });
-                accountDialog.show(context);
+                userDialog.show(context);
                 return true;
             });
 
@@ -89,7 +89,7 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.UserVi
                         }
 
                         AuthState authState = AuthState
-                                .fromAccount(profileItem.getAccessToken(),profileItem.getId(),receipt);
+                                .fromAccount(user.getAccessToken(), user.getId(),receipt);
                         new RegisterDevice(authState, loginActivity).start();
                     });
                 }
@@ -97,10 +97,10 @@ public class AccountsAdapter extends RecyclerView.Adapter<AccountsAdapter.UserVi
         }
 
         public void bind(int position){
-            profileItem = accounts.get(position);
-            name.setText(profileItem.getFirstName());
+            user = users.get(position);
+            name.setText(user.getFirstName());
             StorageUtil storageUtil = StorageUtil.get();
-            imageView.setImageBitmap(storageUtil.loadBitmap("profileImage200.png",storageUtil.getUserCachesDir(profileItem)));
+            imageView.setImageBitmap(storageUtil.loadBitmap("userImage200.png",storageUtil.getUserCachesDir(user)));
         }
     }
 

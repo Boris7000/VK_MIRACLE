@@ -1,14 +1,11 @@
 package com.vkontakte.miracle.model.groups;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_GROUP;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_GROUP;
 
-import android.util.Log;
-
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.model.wall.fields.Cover;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.wall.fields.Counters;
+import com.vkontakte.miracle.model.wall.fields.Cover;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,7 +16,6 @@ public class GroupItem implements ItemDataHolder {
     private String photo100 = "";
     private String photo200 = "";
     private String photoMax = "";
-    private String coverUrl = "";
     private String screenName = "";
     private String status = "";
     private String activity = "";
@@ -27,6 +23,7 @@ public class GroupItem implements ItemDataHolder {
 
     private int membersCount = 0;
 
+    private boolean isAdmin;
     private boolean isMember;
     private boolean isClosed;
     private boolean verified;
@@ -49,9 +46,6 @@ public class GroupItem implements ItemDataHolder {
     public String getPhotoMax(){
         return photoMax;
     }
-    public String getCoverUrl(){
-        return coverUrl;
-    }
     public String getScreenName() {
         return screenName;
     }
@@ -69,6 +63,9 @@ public class GroupItem implements ItemDataHolder {
         return membersCount;
     }
 
+    public boolean isAdmin() {
+        return isAdmin;
+    }
     public boolean isMember() {
         return isMember;
     }
@@ -85,6 +82,10 @@ public class GroupItem implements ItemDataHolder {
 
     public Cover getCover() {
         return cover;
+    }
+
+    public void setIsMember(boolean isMember) {
+        this.isMember = isMember;
     }
 
     public GroupItem(String id){
@@ -107,8 +108,6 @@ public class GroupItem implements ItemDataHolder {
 
     public GroupItem(JSONObject jsonObject)throws JSONException {
 
-        Log.d("roorkgorkg",jsonObject.toString());
-
         String id = jsonObject.getString("id");
         if(id.charAt(0)!='-'){
             this.id = "-"+id;
@@ -128,6 +127,9 @@ public class GroupItem implements ItemDataHolder {
 
         if(jsonObject.has("is_closed")){
             isClosed = jsonObject.getInt("is_closed")==1;
+        }
+        if (jsonObject.has("is_admin")){
+            isAdmin = jsonObject.getInt("is_admin")==1;
         }
         if (jsonObject.has("is_member")){
             isMember = jsonObject.getInt("is_member")==1;
@@ -151,7 +153,12 @@ public class GroupItem implements ItemDataHolder {
             activity = jsonObject.getString("activity");
         }
         if (jsonObject.has("status")){
-            status = jsonObject.getString("status");
+            if(jsonObject.get("status") instanceof JSONObject){
+                JSONObject jo_status = jsonObject.getJSONObject("status");
+                status = jo_status.getString("text");
+            } else {
+                status = jsonObject.getString("status");
+            }
         }
         if (jsonObject.has("description")){
             description = jsonObject.getString("description");
@@ -165,17 +172,6 @@ public class GroupItem implements ItemDataHolder {
             Object counters = jsonObject.get("counters");
             if (counters instanceof JSONObject) {
                 this.counters = new Counters((JSONObject) counters);
-            }
-        }
-
-        if(jsonObject.has("cover")){
-            JSONObject cover = jsonObject.getJSONObject("cover");
-            if(cover.getInt("enabled") == 1){
-                if(cover.has("images")){
-                    JSONArray images = cover.getJSONArray("images");
-                    JSONObject image = images.getJSONObject(images.length()-1);
-                    coverUrl = image.getString("url");
-                }
             }
         }
     }

@@ -28,9 +28,9 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.miracle.engine.fragment.FragmentFabric;
+import com.miracle.engine.fragment.tabs.adapters.SimpleTabsAdapter;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.fragment.FragmentFabric;
-import com.vkontakte.miracle.engine.fragment.tabs.adapters.SimpleTabsAdapter;
 import com.vkontakte.miracle.engine.util.LargeDataStorage;
 import com.vkontakte.miracle.engine.view.bottomToolBar.MiracleBottomToolBar;
 import com.vkontakte.miracle.engine.view.zoomableImageView.OnPhotoActionListener;

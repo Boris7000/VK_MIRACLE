@@ -12,12 +12,12 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.MiracleViewHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.engine.picasso.ATarget;
 import com.vkontakte.miracle.executors.image.BlurImage;
 import com.vkontakte.miracle.model.audio.ArtistItem;
@@ -28,7 +28,7 @@ import java.util.Map;
 public class ArtistBannerViewHolder extends MiracleViewHolder {
 
     private final ImageView photo;
-    private final Target target = new ATarget() {
+    private final Target blurTarget = new ATarget() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             new BlurImage(bitmap, 0.2f, 4){
@@ -39,7 +39,6 @@ public class ArtistBannerViewHolder extends MiracleViewHolder {
             }.start();
         }
     };
-
 
     public ArtistBannerViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -66,19 +65,18 @@ public class ArtistBannerViewHolder extends MiracleViewHolder {
         Picasso.get().cancelRequest(photo);
         if(!imgUrl.isEmpty()) {
             if(artistItem.isAlbumCover()){
-                Picasso.get().load(imgUrl).into(target);
+                Picasso.get().load(imgUrl).into(blurTarget);
             } else {
                 Picasso.get().load(imgUrl).into(photo);
             }
-
         }
-
     }
 
     public static class Fabric implements ViewHolderFabric {
         @Override
         public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
-            return new ArtistBannerViewHolder(inflater.inflate(R.layout.view_artist_item_banner, viewGroup, false));
+            return new ArtistBannerViewHolder(
+                    inflater.inflate(R.layout.view_artist_item_banner, viewGroup, false));
         }
     }
 

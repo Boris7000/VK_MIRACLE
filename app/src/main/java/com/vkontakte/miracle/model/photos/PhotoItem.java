@@ -1,6 +1,6 @@
 package com.vkontakte.miracle.model.photos;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PHOTO;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_PHOTO;
 
 import androidx.annotation.Nullable;
 import androidx.collection.ArrayMap;

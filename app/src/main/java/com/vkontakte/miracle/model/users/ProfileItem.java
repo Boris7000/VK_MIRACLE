@@ -1,18 +1,20 @@
 package com.vkontakte.miracle.model.users;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PROFILE;
-
-import android.util.Log;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_PROFILE;
 
 import androidx.annotation.Nullable;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.model.wall.fields.Cover;
-import com.vkontakte.miracle.model.wall.fields.Counters;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.vkontakte.miracle.model.users.fields.Career;
+import com.vkontakte.miracle.model.users.fields.City;
 import com.vkontakte.miracle.model.users.fields.LastSeen;
 import com.vkontakte.miracle.model.users.fields.OnlineInfo;
 import com.vkontakte.miracle.model.users.fields.RelationPartner;
+import com.vkontakte.miracle.model.users.fields.University;
+import com.vkontakte.miracle.model.wall.fields.Counters;
+import com.vkontakte.miracle.model.wall.fields.Cover;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,7 +28,7 @@ public class ProfileItem implements Serializable, ItemDataHolder {
     private String accessToken;
     private String birthDate;
     private String countryName;
-    private String city;
+    private String homeTown;
     private String photo100 = "";
     private String photo200 = "";
     private String photoMax = "";
@@ -44,6 +46,9 @@ public class ProfileItem implements Serializable, ItemDataHolder {
 
     private LastSeen lastSeen;
     private OnlineInfo onlineInfo;
+    private City city;
+    private Career career;
+    private University university;
     private RelationPartner relationPartner;
     private Counters counters;
     private Cover cover;
@@ -73,8 +78,8 @@ public class ProfileItem implements Serializable, ItemDataHolder {
     public String getCountryName(){
         return countryName;
     }
-    public String getCity(){
-        return city;
+    public String getHomeTown(){
+        return homeTown;
     }
     public String getPhoto100(){
         return photo100;
@@ -130,6 +135,16 @@ public class ProfileItem implements Serializable, ItemDataHolder {
     public OnlineInfo getOnlineInfo() {
         return onlineInfo;
     }
+    public City getCity() {
+        return city;
+    }
+    public Career getCareer() {
+        return career;
+    }
+    public University getEducation() {
+        return university;
+    }
+
     public RelationPartner getRelationPartner() {
         return relationPartner;
     }
@@ -158,7 +173,7 @@ public class ProfileItem implements Serializable, ItemDataHolder {
     }
 
     public ProfileItem(JSONObject jsonObject)throws JSONException {
-        Log.d("gugugugu",jsonObject.toString());
+
         id = jsonObject.getString("id");
         firstName = jsonObject.getString("first_name");
         lastName = jsonObject.getString("last_name");
@@ -196,7 +211,19 @@ public class ProfileItem implements Serializable, ItemDataHolder {
                 status = jsonObject.getString("status");
             }
             if(jsonObject.has("home_town")){
-                city = jsonObject.getString("home_town");
+                homeTown = jsonObject.getString("home_town");
+            }
+            if(jsonObject.has("city")){
+                city = new City(jsonObject.getJSONObject("city"));
+            }
+            if (jsonObject.has("career")){
+                JSONArray jsonArray = jsonObject.getJSONArray("career");
+                if(jsonArray.length()>0) {
+                    career = new Career(jsonArray.getJSONObject(0));
+                }
+            }
+            if (jsonObject.has("university")&&jsonObject.getInt("university")!=0){
+                university = new University(jsonObject);
             }
             if(jsonObject.has("country")){
                 countryName = jsonObject.getString("country");

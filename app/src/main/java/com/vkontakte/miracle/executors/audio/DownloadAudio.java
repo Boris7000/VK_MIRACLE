@@ -4,13 +4,13 @@ import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 import static com.vkontakte.miracle.engine.util.StorageUtil.MP3S_NAME;
 import static com.vkontakte.miracle.engine.util.StorageUtil.SONGS_NAME;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.model.audio.AudioItem;
 import com.vkontakte.miracle.model.audio.fields.Downloaded;
-import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Audio;
+import com.vkontakte.miracle.model.users.User;
+import com.vkontakte.miracle.network.api.Audio;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,12 +30,12 @@ import retrofit2.Response;
 public class DownloadAudio extends AsyncExecutor<Boolean> {
 
     private final AudioItem audioItem;
-    private final ProfileItem profileItem;
+    private final User user;
     private OnProgressListener onProgressListener;
 
     public DownloadAudio(AudioItem audioItem) {
         this.audioItem = audioItem;
-        profileItem = StorageUtil.get().currentUser();
+        user = StorageUtil.get().currentUser();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class DownloadAudio extends AsyncExecutor<Boolean> {
                     audioItem.getOwnerId(),
                     audioItem.getId(),
                     "5.87",
-                    profileItem.getAccessToken());
+                    user.getAccessToken());
 
             Response<JSONObject> response = call.execute();
 
@@ -61,7 +61,7 @@ public class DownloadAudio extends AsyncExecutor<Boolean> {
 
             StorageUtil storageUtil = StorageUtil.get();
 
-            File cachesDir = storageUtil.getUserCachesDir(profileItem);
+            File cachesDir = storageUtil.getUserCachesDir(user);
 
             File mp3sDir = new File(cachesDir, MP3S_NAME);
             File mp3File = new File(mp3sDir, audioItem.getOwnerId()+"_"+audioItem.getId()+".mp3");
@@ -84,13 +84,15 @@ public class DownloadAudio extends AsyncExecutor<Boolean> {
 
                 byte[] data = new byte[1024];
                 int count;
-                int total = uc.getContentLength();
+                int total = uc.getContentLength()/1024;
                 int current=0;
 
                 while ((count = fis.read(data)) != -1) {
 
+                    current++;
+
                     if(onProgressListener!=null){
-                        onProgressListener.onProgress((int)(((current+=count)*100)/total));
+                        onProgressListener.onProgress((int)(((current*100)/total)));
                     }
 
                     fos.write(data, 0, count);

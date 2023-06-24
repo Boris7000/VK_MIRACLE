@@ -1,29 +1,17 @@
 package com.vkontakte.miracle.fragment.settings;
 
-import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
+import com.miracle.engine.fragment.base.templates.BaseListFragment;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.fragment.side.SideListFragment;
 
-public class FragmentTest extends SideListFragment {
+public class FragmentTest extends BaseListFragment {
 
-    @NonNull
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-
-        return rootView;
-    }
-
-    @NonNull
-    @Override
-    public View inflateRootView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_test, container, false);
+    public void inflateContent(@NonNull LayoutInflater inflater, @NonNull LinearLayout container) {
+        inflater.inflate(R.layout.fragment_content_test, container, true);
     }
 }

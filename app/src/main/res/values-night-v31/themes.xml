@@ -2,10 +2,10 @@
 <resources>
     <style name="AppThemeStart" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:forceDarkAllowed">true</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_screen_animated_vector_night</item>
-        <item name="android:windowSplashScreenAnimationDuration">500</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_screen_animator_night</item>
+        <item name="android:windowSplashScreenAnimationDuration">600</item>
+        <item name="android:colorBackground">@color/neutral_10</item>
         <item name="android:navigationBarColor">?android:attr/colorBackground</item>
         <item name="android:statusBarColor">?android:attr/colorBackground</item>
-        <item name="android:colorBackground">@color/darkBack</item>
     </style>
 </resources>

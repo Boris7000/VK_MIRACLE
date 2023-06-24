@@ -11,7 +11,7 @@
     android:scrollbarThumbVertical="@drawable/scroll_bar_drawable"
     android:scrollbars="vertical"
     android:clipToPadding="false"
-    tools:background="?attr/colorSurfaceVariant">
+    tools:background="?attr/colorBackgroundDark">
     <LinearLayout
         android:layout_width="420dp"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             android:layout_marginTop="20dp"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_vk_monochrome_logo"
+            android:src="@drawable/ic_logo_96_svg"
             app:tint="?attr/colorPrimary"/>
 
         <FrameLayout
@@ -58,12 +58,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    app:boxStrokeWidth="2dp"
-                    app:boxCornerRadiusBottomEnd="@dimen/child_round"
-                    app:boxCornerRadiusTopEnd="@dimen/child_round"
-                    app:boxCornerRadiusBottomStart="@dimen/child_round"
-                    app:boxCornerRadiusTopStart="@dimen/child_round"
+                    app:shapeAppearance="@style/ChildShapeAppearance"
                     app:boxStrokeColor="@color/primary_tinted_outlined_text_box_colors"
+                    app:boxStrokeWidth="2dp"
                     android:textColorHint="?attr/colorEditTextHint"
                     app:hintTextColor="?attr/colorSecondary"
                     app:boxBackgroundMode="outline">
@@ -87,12 +84,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    app:boxStrokeWidth="2dp"
-                    app:boxCornerRadiusBottomEnd="@dimen/child_round"
-                    app:boxCornerRadiusTopEnd="@dimen/child_round"
-                    app:boxCornerRadiusBottomStart="@dimen/child_round"
-                    app:boxCornerRadiusTopStart="@dimen/child_round"
+                    app:shapeAppearance="@style/ChildShapeAppearance"
                     app:boxStrokeColor="@color/primary_tinted_outlined_text_box_colors"
+                    app:boxStrokeWidth="2dp"
                     android:textColorHint="?attr/colorEditTextHint"
                     app:hintTextColor="?attr/colorSecondary"
                     app:passwordToggleTint="?attr/colorEditTextHint"
@@ -115,13 +109,14 @@
                         android:background="@null" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.miracle.button.TextViewButton
+                <com.miracle.widget.ExtendedMaterialButton
                     android:id="@+id/loginButton"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:text="@string/sign_in"
                     android:enabled="false"
-                    style="@style/TextButton.PrimaryButton"/>
+                    app:shapeAppearance="@style/ChildShapeAppearance"
+                    style="@style/Button"/>
 
             </LinearLayout>
 

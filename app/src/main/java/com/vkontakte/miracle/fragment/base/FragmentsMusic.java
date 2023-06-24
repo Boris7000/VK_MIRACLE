@@ -1,23 +1,19 @@
 package com.vkontakte.miracle.fragment.base;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
+import com.miracle.engine.fragment.FragmentFabric;
+import com.miracle.engine.fragment.tabs.nested.NestedMiracleFragmentFabric;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.fragment.FragmentFabric;
-import com.vkontakte.miracle.engine.fragment.MiracleFragment;
-import com.vkontakte.miracle.engine.fragment.NestedMiracleFragmentFabric;
 import com.vkontakte.miracle.engine.util.NavigationUtil;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.fragment.audio.FragmentOfflineAudioNested;
-import com.vkontakte.miracle.fragment.catalog.ABaseTabsFragmentCatalogSections;
-import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Catalog;
+import com.vkontakte.miracle.fragment.catalog.ATabsFragmentCatalogSections;
+import com.vkontakte.miracle.model.users.User;
+import com.vkontakte.miracle.network.api.Catalog;
 
 import org.json.JSONObject;
 
@@ -25,19 +21,7 @@ import java.util.ArrayList;
 
 import retrofit2.Call;
 
-public class FragmentsMusic extends ABaseTabsFragmentCatalogSections {
-
-    @NonNull
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-
-        View searchEditText = rootView.findViewById(R.id.searchBar);
-        searchEditText.setOnClickListener(view -> NavigationUtil.goToAudioSearch(null, getContext()));
-
-        return rootView;
-    }
+public class FragmentsMusic extends ATabsFragmentCatalogSections {
 
     @Override
     public ArrayList<NestedMiracleFragmentFabric> getErrorTabs() {
@@ -58,20 +42,19 @@ public class FragmentsMusic extends ABaseTabsFragmentCatalogSections {
 
     @Override
     public Call<JSONObject> requestCall() {
-        ProfileItem profileItem = StorageUtil.get().currentUser();
-        return Catalog.getAudio(profileItem.getId(), profileItem.getAccessToken());
+        User user = StorageUtil.get().currentUser();
+        return Catalog.getAudio(user.getId(), user.getAccessToken());
     }
 
-    @NonNull
     @Override
-    public View inflateRootView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_music, container, false);
+    public void onSearchButtonClicked() {
+        NavigationUtil.goToAudioSearch(null, getContext());
     }
 
     public static class Fabric implements FragmentFabric {
         @NonNull
         @Override
-        public MiracleFragment createFragment() {
+        public Fragment createFragment() {
             return new FragmentsMusic();
         }
     }

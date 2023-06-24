@@ -1,14 +1,14 @@
 package com.vkontakte.miracle.model.messages;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_MESSAGE_IN;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_MESSAGE_OUT;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_MESSAGE_IN;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_MESSAGE_OUT;
 
 import android.util.ArrayMap;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.service.longpoll.model.MessageAddedUpdate;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.Attachments;
 import com.vkontakte.miracle.model.Owner;
+import com.vkontakte.miracle.service.longpoll.model.MessageAddedUpdate;
 
 import org.json.JSONException;
 import org.json.JSONObject;

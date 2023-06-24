@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/checked"
+        android:state_checked="true"
+        android:drawable="@drawable/ic_cancel_28_vector" />
+    <item
+        android:id="@+id/unchecked"
+        android:drawable="@drawable/ic_add_28_vector" />
+    <transition
+        android:fromId="@+id/unchecked"
+        android:toId="@+id/checked"
+        android:drawable="@drawable/av_add_to_remove_animator" />
+    <transition
+        android:fromId="@+id/checked"
+        android:toId="@+id/unchecked"
+        android:drawable="@drawable/av_remove_to_add_animator" />
+</animated-selector>

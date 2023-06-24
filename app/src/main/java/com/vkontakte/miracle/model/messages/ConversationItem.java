@@ -1,10 +1,10 @@
 package com.vkontakte.miracle.model.messages;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CONVERSATION;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_CONVERSATION;
 
 import android.util.ArrayMap;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.Owner;
 import com.vkontakte.miracle.model.messages.fields.CanWrite;
 import com.vkontakte.miracle.model.messages.fields.ChatSettings;

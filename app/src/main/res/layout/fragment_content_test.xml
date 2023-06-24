@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.LinearLayout"
+    tools:orientation="vertical">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:background="#8888">
+        <View
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="#000"/>
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="#888"
+        android:drawablePadding="0dp"
+
+        android:includeFontPadding="false"
+
+        android:paddingStart="0dp"
+        android:paddingTop="0dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="0dp"
+
+        android:gravity="center"
+
+        app:drawableTopCompat="@drawable/ic_comments_28"
+        app:drawableBottomCompat="@drawable/ic_comments_28"
+        app:drawableLeftCompat="@drawable/ic_comments_28"
+        app:drawableRightCompat="@drawable/ic_comments_28"
+
+        app:drawableTint="#1363BA"
+
+        tools:text="AAAAA" />
+
+    <com.miracle.widget.ExtendedTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="#888"
+        android:drawablePadding="20dp"
+
+        android:includeFontPadding="false"
+
+        android:paddingStart="0dp"
+        android:paddingTop="0dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="0dp"
+
+        android:gravity="center"
+
+        app:iconTop="@drawable/ic_comments_28"
+        app:iconBottom="@drawable/ic_comments_28"
+        app:iconLeft="@drawable/ic_comments_28"
+        app:iconRight="@drawable/ic_comments_28"
+
+        app:iconTopTint="#3C7E20"
+        app:iconBottomTint="#CFA613"
+        app:iconLeftTint="#1363BA"
+        app:iconRightTint="#F65555"
+
+        app:iconTopStickingToText="false"
+        app:iconBottomStickingToText="false"
+        app:iconLeftStickingToText="false"
+        app:iconRightStickingToText="false"
+
+        app:iconTopSize="20dp"
+        app:iconBottomSize="30dp"
+        app:iconLeftSize="40dp"
+        app:iconRightSize="60dp"
+
+        tools:text="AAAAA"/>
+
+    <com.miracle.widget.ExtendedAppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="#888"
+        android:drawablePadding="20dp"
+
+        android:includeFontPadding="false"
+
+        android:paddingStart="0dp"
+        android:paddingTop="0dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="0dp"
+
+        android:gravity="center"
+
+        app:iconTop="@drawable/ic_comments_28"
+        app:iconBottom="@drawable/ic_comments_28"
+        app:iconLeft="@drawable/ic_comments_28"
+        app:iconRight="@drawable/ic_comments_28"
+
+        app:iconTopTint="#3C7E20"
+        app:iconBottomTint="#CFA613"
+        app:iconLeftTint="#1363BA"
+        app:iconRightTint="#F65555"
+
+        app:iconTopStickingToText="false"
+        app:iconBottomStickingToText="false"
+        app:iconLeftStickingToText="false"
+        app:iconRightStickingToText="false"
+
+        app:iconTopSize="20dp"
+        app:iconBottomSize="30dp"
+        app:iconLeftSize="40dp"
+        app:iconRightSize="60dp"
+
+        tools:text="AAAAA"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:icon="@drawable/ic_comments_28"
+        app:iconGravity="end"
+        app:iconPadding="20dp"
+
+        tools:text="AAAAA"/>
+
+    <com.miracle.widget.ExtendedMaterialButton
+        style="@style/Widget.Material3.Button.TextButton"
+
+        android:drawablePadding="10dp"
+        app:iconPadding="10dp"
+
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:iconTop="#fff"
+        app:iconBottom="#fff"
+        app:iconLeft="#fff"
+        app:iconRight="#fff"
+
+        app:iconTopTint="#3C7E20"
+        app:iconBottomTint="#CFA613"
+        app:iconLeftTint="#1363BA"
+        app:iconRightTint="#F65555"
+
+        app:iconTopStickingToText="true"
+        app:iconBottomStickingToText="true"
+        app:iconLeftStickingToText="true"
+        app:iconRightStickingToText="true"
+
+        app:iconTopSize="10dp"
+        app:iconBottomSize="10dp"
+        app:iconLeftSize="10dp"
+        app:iconRightSize="10dp"
+
+        tools:text="A"/>
+</merge>

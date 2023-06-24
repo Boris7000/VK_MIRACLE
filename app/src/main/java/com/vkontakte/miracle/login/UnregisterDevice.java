@@ -7,7 +7,7 @@ import static com.vkontakte.miracle.network.Creator.account;
 import android.content.Context;
 import android.util.Log;
 
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.miracle.engine.async.AsyncExecutor;
 
 public class UnregisterDevice extends AsyncExecutor<Boolean> {
 

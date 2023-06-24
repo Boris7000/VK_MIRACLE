@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="12dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="12dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/photo"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:padding="@dimen/imageBorderWidth"
+            android:scaleType="centerCrop"
+            android:background="?attr/colorPlaceholder"
+            android:foreground="@drawable/image_placeholder_transluent"
+            app:shapeAppearanceOverlay="@style/ChildShapeAppearance"
+            app:strokeColor="?attr/colorStroke"
+            app:strokeWidth="@dimen/imageBorderWidth"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical"
+            android:gravity="bottom">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:layout_marginStart="3dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:fontFamily="sans-serif"
+                android:textColor="?attr/colorSubtitle"
+                android:text="@string/title"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_card_child_container_secondary"
+                android:backgroundTint="?attr/colorSearchTextBackground">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/titleEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginVertical="4dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:paddingVertical="4dp"
+                    android:includeFontPadding="false"
+                    android:background="@android:color/transparent"
+                    android:focusable="true"
+                    android:hint="@string/title_example"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:scrollbars="vertical"
+                    android:textColorHint="?attr/colorSearchTextHint"
+                    android:textCursorDrawable="@drawable/edit_text_cursor_drawable"
+                    android:textSize="16sp"/>
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:layout_marginStart="3dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:fontFamily="sans-serif"
+                android:textColor="?attr/colorSubtitle"
+                android:text="@string/description"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@drawable/rounded_card_child_container_secondary"
+                android:backgroundTint="?attr/colorSearchTextBackground">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/descriptionEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginVertical="4dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:paddingVertical="4dp"
+                    android:includeFontPadding="false"
+                    android:background="@android:color/transparent"
+                    android:focusable="true"
+                    android:gravity="top"
+                    android:hint="@string/description_exmaple"
+                    android:imeOptions="normal"
+                    android:inputType="textMultiLine"
+                    android:scrollbars="vertical"
+                    android:textColorHint="?attr/colorSearchTextHint"
+                    android:textCursorDrawable="@drawable/edit_text_cursor_drawable"
+                    android:textSize="16sp"/>
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:fontFamily="sans-serif"
+                android:textSize="15sp"
+                android:text="@string/make_playlist_private"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:fontFamily="sans-serif"
+                android:textColor="?attr/colorSubtitle"
+                android:textSize="13sp"
+                android:text="@string/make_playlist_private_description"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            app:showText="false"
+            style="@style/Switch"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="9dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:background="?attr/colorPlaceholder"
+            android:padding="@dimen/imageBorderWidth"
+            android:scaleType="centerInside"
+            app:shapeAppearanceOverlay="@style/ChildShapeAppearance"
+            app:srcCompat="@drawable/ic_list_add_28"
+            app:tint="?attr/colorEmphasis_60"
+            app:strokeColor="?attr/colorStroke"
+            app:strokeWidth="@dimen/imageBorderWidth" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:fontFamily="sans-serif"
+            android:textSize="16sp"
+            android:text="@string/add_audios" />
+
+    </FrameLayout>
+
+</LinearLayout>

@@ -14,14 +14,16 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.fragment.FragmentFabric;
+import com.miracle.engine.fragment.MiracleFragment;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
-import com.vkontakte.miracle.MiracleApp;
+import com.vkontakte.miracle.MainApp;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.fragment.FragmentFabric;
-import com.vkontakte.miracle.engine.fragment.MiracleFragment;
 import com.vkontakte.miracle.engine.util.LargeDataStorage;
 import com.vkontakte.miracle.engine.view.photoGridView.MediaItem;
 import com.vkontakte.miracle.engine.view.zoomableImageView.ZoomableImageView2;
@@ -38,7 +40,7 @@ public class FragmentPhotoNested extends MiracleFragment {
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             show();
             image.setZoomable(true);
-            setBitmap(image, MiracleApp.getInstance(), bitmap);
+            setBitmap(image, MainApp.getInstance(), bitmap);
 
         }
 
@@ -60,10 +62,18 @@ public class FragmentPhotoNested extends MiracleFragment {
 
     @NonNull
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View inflateRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_photo_nested, container, false);
+    }
 
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+    @Override
+    public void findViews(@NonNull View rootView) {
+        progressBar = rootView.findViewById(R.id.progressCircle);
+        image = rootView.findViewById(R.id.photo);
+    }
 
+    @Override
+    public void initViews(@NonNull View rootView, @Nullable Bundle savedInstanceState) {
         FragmentPhotoViewerDialog parentFragment = (FragmentPhotoViewerDialog) getParentFragment();
 
         if(parentFragment!=null) {
@@ -78,20 +88,6 @@ public class FragmentPhotoNested extends MiracleFragment {
         }
 
         createTarget(photoDialogItem);
-
-        return rootView;
-    }
-
-    @NonNull
-    @Override
-    public View inflateRootView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_photo_nested, container, false);
-    }
-
-    @Override
-    public void findViews(@NonNull View rootView) {
-        progressBar = rootView.findViewById(R.id.progressCircle);
-        image = rootView.findViewById(R.id.photo);
     }
 
     public void show(){
@@ -109,7 +105,7 @@ public class FragmentPhotoNested extends MiracleFragment {
 
     private void createTarget(PhotoDialogItem photoDialogItem){
         Picasso.get().cancelRequest(target);
-        int displayWidth = getWindowWidth(MiracleApp.getInstance());
+        int displayWidth = getWindowWidth(MainApp.getInstance());
         ItemDataHolder mediaItemData = photoDialogItem.getItemDataHolder();
         DataItemWrap<?,?> dataItemWrap = (DataItemWrap<?,?>)mediaItemData;
         MediaItem mediaItem = (MediaItem) dataItemWrap.getItem();
@@ -137,7 +133,6 @@ public class FragmentPhotoNested extends MiracleFragment {
 
     @Override
     public void onClearSavedInstance(@NonNull Bundle savedInstanceState) {
-        super.onClearSavedInstance(savedInstanceState);
         String key = savedInstanceState.getString("photoDialogItem");
         if (key != null) {
             LargeDataStorage.get().removeLargeData(key);
@@ -163,7 +158,7 @@ public class FragmentPhotoNested extends MiracleFragment {
 
         @NonNull
         @Override
-        public MiracleFragment createFragment() {
+        public Fragment createFragment() {
             FragmentPhotoNested fragmentPhotoNested = new FragmentPhotoNested();
             fragmentPhotoNested.setPhotoDialogItem(photoDialogItem);
             return fragmentPhotoNested;

@@ -106,9 +106,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:ellipsize="end"
-                    android:singleLine="true"
                     android:fontFamily="sans-serif"
                     android:gravity="center_vertical"
+                    android:singleLine="true"
                     android:textColor="?attr/colorEmphasis_60"
                     android:textSize="15sp"
                     tools:text="Кто: " />

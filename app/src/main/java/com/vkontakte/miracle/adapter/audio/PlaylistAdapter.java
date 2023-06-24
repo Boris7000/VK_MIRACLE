@@ -1,31 +1,32 @@
 package com.vkontakte.miracle.adapter.audio;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_BUTTON_PLAY_SHUFFLED;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PLAYLIST;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_PLAYLIST_DESCRIPTION;
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_BUTTON_PLAY_SHUFFLED;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_PLAYLIST;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_PLAYLIST_DESCRIPTION;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_WRAPPED_AUDIO;
 
 import android.util.ArrayMap;
 
+import com.miracle.engine.adapter.MiracleAsyncLoadAdapter;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.miracle.engine.adapter.holder.error.ErrorDataHolder;
 import com.vkontakte.miracle.R;
 import com.vkontakte.miracle.adapter.audio.holders.PlaylistDescriptionViewHolder;
 import com.vkontakte.miracle.adapter.audio.holders.PlaylistLargeViewHolder;
 import com.vkontakte.miracle.adapter.audio.holders.PlaylistShuffleViewHolder;
 import com.vkontakte.miracle.adapter.audio.holders.WrappedAudioViewHolder;
-import com.vkontakte.miracle.engine.adapter.MiracleAsyncLoadAdapter;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.adapter.holder.error.ErrorDataHolder;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.model.audio.AudioItem;
-import com.vkontakte.miracle.model.audio.wraps.AudioItemWF;
 import com.vkontakte.miracle.model.audio.PlaylistItem;
 import com.vkontakte.miracle.model.audio.PlaylistShuffleItem;
 import com.vkontakte.miracle.model.audio.fields.Description;
+import com.vkontakte.miracle.model.audio.wraps.AudioItemWF;
 import com.vkontakte.miracle.model.groups.GroupItem;
 import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Execute;
+import com.vkontakte.miracle.model.users.User;
+import com.vkontakte.miracle.network.api.Execute;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -51,7 +52,7 @@ public class PlaylistAdapter extends MiracleAsyncLoadAdapter {
     @Override
     public void onLoading() throws Exception {
 
-        ProfileItem profileItem = StorageUtil.get().currentUser();
+        User user = StorageUtil.get().currentUser();
         ArrayList<ItemDataHolder> holders = getItemDataHolders();
 
         int previous = holders.size();
@@ -62,7 +63,7 @@ public class PlaylistAdapter extends MiracleAsyncLoadAdapter {
         if(!loaded()) {
             Call<JSONObject> call = Execute.getPlaylist(
                     ownerId, playlistId, true, 0,
-                    getStep(), accessKey, profileItem.getAccessToken());
+                    getStep(), accessKey, user.getAccessToken());
             response = call.execute();
             jo_response = validateBody(response);
 
@@ -102,14 +103,14 @@ public class PlaylistAdapter extends MiracleAsyncLoadAdapter {
             if(playlistItem.getDescription()!=null&&!playlistItem.getDescription().isEmpty()){
                 holders.add(new Description(playlistItem.getDescription()));
             }
-            holders.add(new PlaylistShuffleItem(playlistItem));
+            holders.add(new PlaylistShuffleItem(playlistId,ownerId,accessKey));
             setTotalCount(playlistItem.getCount());
         }
 
         if(response==null){
             response = Execute.getPlaylist(
                     ownerId, playlistId, false, getLoadedCount(),
-                    getStep(), accessKey, profileItem.getAccessToken()).execute();
+                    getStep(), accessKey, user.getAccessToken()).execute();
             jo_response = validateBody(response).getJSONObject("response");
         }
 
@@ -139,6 +140,12 @@ public class PlaylistAdapter extends MiracleAsyncLoadAdapter {
     public void ini() {
         super.ini();
         setStep(50);
+    }
+
+    @Override
+    public void restoreState() {
+        super.restoreState();
+        playlistItem = null;
     }
 
     @Override

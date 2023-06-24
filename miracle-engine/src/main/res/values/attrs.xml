@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="colorBackgroundDark" format="color"/>
+    <attr name="colorBackgroundDarkest" format="color"/>
+
+    <attr name="colorButtonNeutral" format="color"/>
+    <attr name="colorOnButtonNeutral" format="color"/>
+
+    <attr name="colorEditTextStroke" format="color"/>
+    <attr name="colorEditTextHint" format="color"/>
+
+    <attr name="colorSubtitle" format="color"/>
+    <attr name="colorSubtitle2" format="color"/>
+    <attr name="colorSubtitle3" format="color"/>
+
+    <attr name="colorPrimary_10" format="color"/>
+    <attr name="colorPrimary_20" format="color"/>
+    <attr name="colorPrimary_25" format="color"/>
+    <attr name="colorPrimary_30" format="color"/>
+    <attr name="colorPrimary_35" format="color"/>
+    <attr name="colorPrimary_40" format="color"/>
+    <attr name="colorPrimary_50" format="color"/>
+    <attr name="colorPrimary_60" format="color"/>
+    <attr name="colorPrimary_70" format="color"/>
+    <attr name="colorPrimary_80" format="color"/>
+    <attr name="colorPrimary_90" format="color"/>
+    <attr name="colorPrimary_95" format="color"/>
+    <attr name="colorPrimary_98" format="color"/>
+    <attr name="colorPrimary_99" format="color"/>
+
+    <attr name="colorSecondary_10" format="color"/>
+    <attr name="colorSecondary_20" format="color"/>
+    <attr name="colorSecondary_25" format="color"/>
+    <attr name="colorSecondary_30" format="color"/>
+    <attr name="colorSecondary_35" format="color"/>
+    <attr name="colorSecondary_40" format="color"/>
+    <attr name="colorSecondary_50" format="color"/>
+    <attr name="colorSecondary_60" format="color"/>
+    <attr name="colorSecondary_70" format="color"/>
+    <attr name="colorSecondary_80" format="color"/>
+    <attr name="colorSecondary_90" format="color"/>
+    <attr name="colorSecondary_95" format="color"/>
+    <attr name="colorSecondary_98" format="color"/>
+    <attr name="colorSecondary_99" format="color"/>
+
+    <attr name="colorSecondaryContainerDisabled" format="color"/>
+    <attr name="colorOnSecondaryContainerDisabled" format="color"/>
+    <attr name="colorPrimaryContainerDisabled" format="color"/>
+    <attr name="colorOnPrimaryContainerDisabled" format="color"/>
+
+    <attr name="colorPrimaryDisabled" format="color"/>
+    <attr name="colorOnPrimaryDisabled" format="color"/>
+    <attr name="colorSecondaryDisabled" format="color"/>
+    <attr name="colorOnSecondaryDisabled" format="color"/>
+
+    <attr name="colorEmphasis_90" format="color"/>
+    <attr name="colorEmphasis_70" format="color"/>
+    <attr name="colorEmphasis_65" format="color"/>
+    <attr name="colorEmphasis_60" format="color"/>
+    <attr name="colorEmphasis_50" format="color"/>
+    <attr name="colorEmphasis_40" format="color"/>
+
+    <attr name="colorSearchTextBackground" format="color"/>
+    <attr name="colorSearchTextHint" format="color"/>
+    <attr name="colorPlaceholder" format="color"/>
+    <attr name="colorStroke" format="color"/>
+    <attr name="colorDivider" format="color"/>
+
+    <attr name="colorCardBackground" format="color"/>
+
+    <attr name="globalTranslationZ" format="dimension"/>
+    <attr name="swipeRefreshCircleColor" format="color"/>
+    <attr name="scrollBarColor" format="color"/>
+
+    <declare-styleable name="ActivityRootView">
+        <attr name="type" format="enum">
+            <enum name="portrait" value="0"/>
+            <enum name="land" value="1"/>
+            <enum name="tablet" value="2"/>
+        </attr>
+    </declare-styleable>
+
+</resources>

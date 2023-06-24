@@ -2,9 +2,9 @@ package com.vkontakte.miracle.model;
 
 import android.util.ArrayMap;
 
-import com.vkontakte.miracle.model.catalog.CatalogExtendedArrays;
 import com.vkontakte.miracle.model.groups.GroupItem;
 import com.vkontakte.miracle.model.users.ProfileItem;
+import com.vkontakte.miracle.model.users.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +19,7 @@ public class Owner {
     private String photo200;
     private GroupItem groupItem;
     private ProfileItem profileItem;
+    private User user;
     private boolean verified;
 
     public String getId() {
@@ -45,6 +46,10 @@ public class Owner {
         return photo200;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public GroupItem getGroupItem() {
         return groupItem;
     }
@@ -55,6 +60,20 @@ public class Owner {
 
     public boolean isVerified() {
         return verified;
+    }
+
+    public void createFromProfile(User user){
+        this.user = user;
+        id = user.getId();
+        name = user.getFullName();
+        shortName = user.getFirstName();
+        nameWithInitials = user.getFirstName();
+        if(user.getLastName()!=null&&!user.getLastName().isEmpty()) {
+            nameWithInitials = nameWithInitials + " " + user.getLastName().charAt(0) + ".";
+        }
+        photo100 = user.getPhoto100();
+        photo200 = user.getPhoto200();
+        verified = user.isVerified();
     }
 
     public void createFromProfile(ProfileItem profileItem){
@@ -130,6 +149,10 @@ public class Owner {
         }
     }
 
+    public Owner(User user){
+        createFromProfile(user);
+    }
+
     public Owner(ProfileItem profileItem){
         createFromProfile(profileItem);
     }
@@ -138,9 +161,9 @@ public class Owner {
         createFromGroup(groupItem);
     }
 
-    public Owner(String owner_id, CatalogExtendedArrays catalogExtendedArrays){
+    public Owner(String owner_id, ExtendedArrays extendedArrays){
         if (owner_id.charAt(0) == '-') {
-            ArrayMap<String, GroupItem> groupsMap = catalogExtendedArrays.getGroupsMap();
+            ArrayMap<String, GroupItem> groupsMap = extendedArrays.getGroupsMap();
             if(groupsMap!=null) {
                 GroupItem groupItem = groupsMap.get(owner_id);
                 if (groupItem != null) {
@@ -148,7 +171,7 @@ public class Owner {
                 }
             }
         } else {
-            ArrayMap<String, ProfileItem> profilesMap = catalogExtendedArrays.getProfilesMap();
+            ArrayMap<String, ProfileItem> profilesMap = extendedArrays.getProfilesMap();
             if(profilesMap!=null) {
                 ProfileItem profileItem = profilesMap.get(owner_id);
                 if (profileItem != null) {

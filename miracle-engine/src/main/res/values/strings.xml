@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="error">Error</string>
+    <string name="unknownError">Unknown error</string>
+    <string name="search">Search</string>
+    <string name="back">Back</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+
+    <string name="formatted_time_1">%dh:%dm:%02ds</string>
+    <string name="formatted_time_2">%dm:%02ds</string>
+    <string name="formatted_time_3">%ds</string>
+    <string name="formatted_date_in">in %1$s</string>
+
+    /////////////////////////
+
+    <string name="formatted_date_sec1">%1$d seconds ago</string>
+    <string name="formatted_date_sec2">%1$d seconds ago</string>
+    <string name="formatted_date_sec3">%1$d seconds ago</string>
+
+    /////////////////////////
+
+    <string name="formatted_date_min1">%1$d minutes ago</string>
+    <string name="formatted_date_min2">%1$d minutes ago</string>
+    <string name="formatted_date_min3">%1$d minutes ago</string>
+
+    /////////////////////////
+
+    <string name="formatted_date_today">Today at %1$s</string>
+    <string name="formatted_date_tomorrow">Tomorrow at %1$s</string>
+    <string name="formatted_date_yesterday">Yesterday at %1$s</string>
+
+    <string name="formatted_date_today1">today at %1$s</string>
+    <string name="formatted_date_tomorrow1">tomorrow at %1$s</string>
+    <string name="formatted_date_yesterday1">yesterday at %1$s</string>
+
+    /////////////////////////
+
+    <string name="formatted_year_ago">A year ago</string>
+    <string name="formatted_hour_ago">Hour ago</string>
+    <string name="formatted_date_now">Just now</string>
+
+
+    <string name="formatted_year_ago1">a year ago</string>
+    <string name="formatted_hour_ago1">hour ago</string>
+    <string name="formatted_date_now1">just now</string>
+
+    <string name="formatted_year_ago2">%1$dy</string>
+    <string name="formatted_hour_ago2">%1$dh</string>
+    <string name="formatted_minute_ago2">%1$dm</string>
+    <string name="formatted_week_ago2">%1$dw</string>
+    <string name="formatted_day_ago2">%1$dd</string>
+
+    /////////////////////////
+
+    <string name="formatted_date_M1">%1$d Jan. </string>
+    <string name="formatted_date_M2">%1$d Feb. </string>
+    <string name="formatted_date_M3">%1$d Mar. </string>
+    <string name="formatted_date_M4">%1$d Apr. </string>
+    <string name="formatted_date_M5">%1$d May </string>
+    <string name="formatted_date_M6">%1$d Jun. </string>
+    <string name="formatted_date_M7">%1$d Jul. </string>
+    <string name="formatted_date_M8">%1$d Aug. </string>
+    <string name="formatted_date_M9">%1$d Sep. </string>
+    <string name="formatted_date_M10">%1$d Oct. </string>
+    <string name="formatted_date_M11">%1$d Nov </string>
+    <string name="formatted_date_M12">%1$d Dec. </string>
+
+</resources>

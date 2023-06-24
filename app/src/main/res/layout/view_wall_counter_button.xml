@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.miracle.button.TextViewButton
+<com.miracle.widget.ExtendedMaterialButton
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/TextButton.SecondaryButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="6dp"
     android:padding="12dp"
-    app:icon_start_size="24dp"
-    tools:icon_start="@drawable/ic_photos_28"
-    app:icon_start="@android:color/transparent"
-    tools:text="@string/photos"/>
+    app:iconPadding="12dp"
+    app:iconLeftSize="24dp"
+    app:shapeAppearance="@style/ChildShapeAppearance"
+    tools:text="@string/photos"
+    tools:iconLeft="@drawable/ic_photos_28"
+    style="@style/TonalButton"/>

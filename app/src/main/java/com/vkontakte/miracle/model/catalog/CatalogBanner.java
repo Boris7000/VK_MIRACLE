@@ -1,10 +1,12 @@
 package com.vkontakte.miracle.model.catalog;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_CATALOG_BANNER;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_CATALOG_BANNER;
 
 import android.util.Log;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
+import androidx.annotation.Nullable;
+
+import com.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.model.catalog.fields.CatalogAction;
 import com.vkontakte.miracle.model.catalog.fields.Image;
 
@@ -50,7 +52,7 @@ public class CatalogBanner implements ItemDataHolder {
 
     public CatalogBanner(JSONObject jsonObject) throws JSONException {
 
-        Log.d("suwdwokdowkdchushcdus",jsonObject.toString());
+        Log.d("dpdvdpvkdpkvdv",jsonObject.toString());
 
         id = jsonObject.getString("id");
 
@@ -66,7 +68,6 @@ public class CatalogBanner implements ItemDataHolder {
 
         if(jsonObject.has("image_mode")){
             imageMode = jsonObject.getString("image_mode");
-            Log.d("suwdwokdowkdchushcdus",imageMode);
         }
 
         if(jsonObject.has("click_action")){
@@ -86,4 +87,27 @@ public class CatalogBanner implements ItemDataHolder {
     public int getViewHolderType() {
         return TYPE_CATALOG_BANNER;
     }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(obj!=null){
+            if(obj instanceof CatalogBanner){
+                CatalogBanner catalogBanner = (CatalogBanner) obj;
+                return catalogBanner.id.equals(id);
+            }
+        }
+        return false;
+    }
+
+    public boolean equalsContent(@Nullable Object obj){
+        if(obj!=null){
+            if(obj instanceof CatalogBanner){
+                CatalogBanner catalogBanner = (CatalogBanner) obj;
+                return catalogBanner.text.equals(text)&&catalogBanner.title.equals(title)&&
+                        catalogBanner.subtext.equals(subtext);
+            }
+        }
+        return false;
+    }
+
 }

@@ -7,7 +7,6 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -258,9 +257,6 @@ public class ZoomableImageView2 extends AppCompatImageView implements OnGestureL
 
         float[]values = new float[9];
         mSuppMatrix.getValues(values);
-        Log.d("igirjigjrgj", "scale "+ values[0]);
-        Log.d("igirjigjrgj", "x "+values[2]);
-        Log.d("igirjigjrgj", "y "+values[5]);
 
         mSuppMatrix.postTranslate(dx, dy);
         checkAndDisplayMatrix();
@@ -280,9 +276,6 @@ public class ZoomableImageView2 extends AppCompatImageView implements OnGestureL
 
             float[]values = new float[9];
             mSuppMatrix.getValues(values);
-            Log.d("igirjigjrgj", "scale "+ values[0]);
-            Log.d("igirjigjrgj", "x "+values[2]);
-            Log.d("igirjigjrgj", "y "+values[5]);
 
             mSuppMatrix.postScale(scaleFactor, scaleFactor, focusX, focusY);
             checkAndDisplayMatrix();

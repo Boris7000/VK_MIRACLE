@@ -1,8 +1,10 @@
 package com.vkontakte.miracle.engine.view.textView;
 
-import static com.vkontakte.miracle.engine.util.ColorUtil.getColorByAttributeId;
+import static androidx.core.util.PatternsCompat.AUTOLINK_WEB_URL;
+import static com.miracle.engine.util.ColorUtil.getColorByAttributeId;
 import static com.vkontakte.miracle.engine.util.NetworkUtil.openURLInBrowser;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
@@ -13,8 +15,9 @@ import android.text.style.CharacterStyle;
 import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
 
+import androidx.annotation.NonNull;
+
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.util.NavigationUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,12 +37,16 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
     private final int highlightColor;
     private final boolean highlightUnderline;
 
-    private static final Pattern urlPattern = Pattern.compile("((http|https|rstp)://\\S+)");
+
+    @SuppressLint("RestrictedApi") //fucking shit, why
+    private static final Pattern urlPattern = AUTOLINK_WEB_URL;//Pattern.compile("((http|https|rstp)://\\S+)");
     private static final Pattern hashTagPattern = Pattern.compile("(#)([а-яА-Я\\w][а-яА-Я@\\w]+)");
     private static final Pattern dogPatter = Pattern.compile("(@)(all|online)");
     private static final Pattern ownerPattern = Pattern.compile("\\[(id|club)(\\d+)\\|([^]]+)]");
     private static final Pattern topicCommentPattern = Pattern.compile("\\[(id|club)(\\d*):bp(-\\d*)_(\\d*)\\|([^]]+)]");
     private static final Pattern otherLinkPattern = Pattern.compile("\\[(https:[^]]+)\\|([^]]+)]");
+
+    private static final String[] protocols = new String[] { "http://", "https://", "rtsp://" };
 
     public MiracleTextView(Context context) {
         this(context, null);
@@ -181,7 +188,7 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
                 if(onURLClickListener!=null){
                     onURLClickListener.onURLClicked(s);
                 } else {
-                    openURLInBrowser(s,getContext());
+                    openURLInBrowser(makeUrl(s),getContext());
                 }
             });
             originalText.setSpan(span, m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -264,6 +271,29 @@ public class MiracleTextView extends androidx.appcompat.widget.AppCompatTextView
         return input;
     }
 
+    private static String makeUrl(@NonNull String url) {
+
+        boolean hasPrefix = false;
+
+        for (String prefix : protocols) {
+            if (url.regionMatches(true, 0, prefix, 0, prefix.length())) {
+                hasPrefix = true;
+
+                // Fix capitalization if necessary
+                if (!url.regionMatches(false, 0, prefix, 0, prefix.length())) {
+                    url = prefix + url.substring(prefix.length());
+                }
+
+                break;
+            }
+        }
+
+        if (!hasPrefix) {
+            url = protocols[0] + url;
+        }
+
+        return url;
+    }
 
     public void setOnHashTagClickListener(OnHashTagClickListener mOnHashTagClickListener) {
         this.onHashTagClickListener = mOnHashTagClickListener;

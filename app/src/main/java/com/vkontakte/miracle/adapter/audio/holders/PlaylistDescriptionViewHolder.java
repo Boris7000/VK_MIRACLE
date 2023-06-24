@@ -7,10 +7,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.MiracleViewHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.R;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.MiracleViewHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
 import com.vkontakte.miracle.model.audio.fields.Description;
 
 public class PlaylistDescriptionViewHolder extends MiracleViewHolder {
@@ -31,7 +31,8 @@ public class PlaylistDescriptionViewHolder extends MiracleViewHolder {
     public static class Fabric implements ViewHolderFabric {
         @Override
         public MiracleViewHolder create(LayoutInflater inflater, ViewGroup viewGroup) {
-            return new PlaylistDescriptionViewHolder(inflater.inflate(R.layout.view_playlist_description_item, viewGroup, false));
+            return new PlaylistDescriptionViewHolder(
+                    inflater.inflate(R.layout.view_playlist_description_item, viewGroup, false));
         }
     }
 

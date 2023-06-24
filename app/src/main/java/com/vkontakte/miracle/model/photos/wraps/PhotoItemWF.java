@@ -1,6 +1,6 @@
 package com.vkontakte.miracle.model.photos.wraps;
 
-import static com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes.TYPE_WRAPPED_PHOTO;
+import static com.vkontakte.miracle.engine.util.ViewHolderTypes.TYPE_WRAPPED_PHOTO;
 
 import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.ItemDataWrapFabric;

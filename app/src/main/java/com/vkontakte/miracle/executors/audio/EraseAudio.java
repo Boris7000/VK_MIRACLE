@@ -3,11 +3,11 @@ package com.vkontakte.miracle.executors.audio;
 import static com.vkontakte.miracle.engine.util.StorageUtil.MP3S_NAME;
 import static com.vkontakte.miracle.engine.util.StorageUtil.SONGS_NAME;
 
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.async.AsyncExecutor;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.async.AsyncExecutor;
 import com.vkontakte.miracle.engine.util.StorageUtil;
 import com.vkontakte.miracle.model.audio.AudioItem;
-import com.vkontakte.miracle.model.users.ProfileItem;
+import com.vkontakte.miracle.model.users.User;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,11 +15,11 @@ import java.util.ArrayList;
 public class EraseAudio extends AsyncExecutor<Boolean> {
 
     private final AudioItem audioItem;
-    private final ProfileItem profileItem;
+    private final User user;
 
     public EraseAudio(AudioItem audioItem) {
         this.audioItem = audioItem;
-        profileItem = StorageUtil.get().currentUser();
+        user = StorageUtil.get().currentUser();
     }
 
     @Override
@@ -29,7 +29,7 @@ public class EraseAudio extends AsyncExecutor<Boolean> {
 
             StorageUtil storageUtil = StorageUtil.get();
 
-            File cachesDir = storageUtil.getUserCachesDir(profileItem);
+            File cachesDir = storageUtil.getUserCachesDir(user);
 
             File mp3sDir = new File(cachesDir, MP3S_NAME);
             File mp3File = new File(mp3sDir, audioItem.getOwnerId()+"_"+audioItem.getId()+".mp3");

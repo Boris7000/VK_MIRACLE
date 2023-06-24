@@ -4,21 +4,21 @@ import static com.vkontakte.miracle.engine.util.NetworkUtil.validateBody;
 
 import android.util.ArrayMap;
 
-import com.vkontakte.miracle.adapter.photos.holders.PhotoAlbumsHolder;
-import com.vkontakte.miracle.adapter.photos.holders.StackedPhotosItem;
-import com.vkontakte.miracle.engine.adapter.MiracleAsyncLoadAdapter;
-import com.vkontakte.miracle.engine.adapter.holder.ItemDataHolder;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderFabric;
-import com.vkontakte.miracle.engine.adapter.holder.ViewHolderTypes;
+import com.miracle.engine.adapter.MiracleAsyncLoadAdapter;
+import com.miracle.engine.adapter.holder.ItemDataHolder;
+import com.miracle.engine.adapter.holder.ViewHolderFabric;
+import com.vkontakte.miracle.model.photos.PhotoAlbumsHolder;
+import com.vkontakte.miracle.model.photos.StackedPhotosItem;
 import com.vkontakte.miracle.engine.util.StorageUtil;
+import com.vkontakte.miracle.engine.util.ViewHolderTypes;
 import com.vkontakte.miracle.model.Attachments;
 import com.vkontakte.miracle.model.DataItemWrap;
 import com.vkontakte.miracle.model.photos.PhotoAlbumItem;
 import com.vkontakte.miracle.model.photos.PhotoItem;
 import com.vkontakte.miracle.model.photos.wraps.PhotoItemWC;
 import com.vkontakte.miracle.model.photos.wraps.PhotoItemWF;
-import com.vkontakte.miracle.model.users.ProfileItem;
-import com.vkontakte.miracle.network.methods.Photos;
+import com.vkontakte.miracle.model.users.User;
+import com.vkontakte.miracle.network.api.Photos;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -40,12 +40,12 @@ public class PhotoAllAdapter extends MiracleAsyncLoadAdapter {
     @Override
     public void onLoading() throws Exception {
 
-        ProfileItem profileItem = StorageUtil.get().currentUser();
+        User user = StorageUtil.get().currentUser();
         ArrayList<ItemDataHolder> holders = getItemDataHolders();
 
         if(!loaded()){
             Response<JSONObject> response =  Photos.getAlbums(ownerId, 12,
-                    0, profileItem.getAccessToken()).execute();
+                    0, user.getAccessToken()).execute();
 
             JSONObject jsonObject = validateBody(response).getJSONObject("response");
 
@@ -60,7 +60,7 @@ public class PhotoAllAdapter extends MiracleAsyncLoadAdapter {
         }
 
         Response<JSONObject> response = Photos.getAll(ownerId, getStep(),
-                getLoadedCount(), profileItem.getAccessToken()).execute();
+                getLoadedCount(), user.getAccessToken()).execute();
 
         JSONObject jsonObject = validateBody(response).getJSONObject("response");
 
