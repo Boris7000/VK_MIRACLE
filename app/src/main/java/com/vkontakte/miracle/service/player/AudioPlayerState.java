@@ -1,7 +1,8 @@
 package com.vkontakte.miracle.service.player;
 
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.Player.RepeatMode;
+
+import androidx.media3.common.Player;
+import androidx.media3.exoplayer.ExoPlayer;
 
 public class AudioPlayerState {
 
@@ -13,7 +14,7 @@ public class AudioPlayerState {
     private int state = STATE_BUFFERING;
     private boolean playWhenReady = true;
 
-    @RepeatMode
+    @Player.RepeatMode
     private int repeatMode = ExoPlayer.REPEAT_MODE_OFF;
 
     private long duration = 1;
@@ -37,12 +38,12 @@ public class AudioPlayerState {
         this.playWhenReady = playWhenReady;
     }
 
-    @RepeatMode
+    @Player.RepeatMode
     public int getRepeatMode() {
         return repeatMode;
     }
 
-    public void setRepeatMode(@RepeatMode int repeatMode) {
+    public void setRepeatMode(@Player.RepeatMode int repeatMode) {
         this.repeatMode = repeatMode;
     }
 

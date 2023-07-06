@@ -4,9 +4,10 @@ plugins {
 
 android {
     namespace 'com.vkontakte.miracle'
-    compileSdkVersion 33
+    compileSdk 33
 
     defaultConfig {
+        buildToolsVersion = "33.0.2"
         applicationId "com.vkontakte.miracle"
         minSdkVersion 23
         targetSdkVersion 33
@@ -31,25 +32,26 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'androidx.core:core:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.core:core:1.10.1'
     implementation 'androidx.media:media:1.6.0'
-    implementation "androidx.lifecycle:lifecycle-process:2.5.1"
-    implementation "androidx.lifecycle:lifecycle-common:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-process:2.6.1"
+    implementation "androidx.lifecycle:lifecycle-common:2.6.1"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.7'
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.11'
     implementation project(path: ':miracle-widget')
     implementation project(path: ':miracle-buttons')
     implementation project(path: ':miracle-engine')
     implementation project(path: ':firebase-installations')
     //noinspection GradleDependency
     implementation 'com.squareup.picasso:picasso:2.8'
-    implementation 'com.google.android.gms:play-services-auth:20.3.0'
-    implementation 'com.google.android.exoplayer:exoplayer:2.18.1'
-    implementation ('com.google.firebase:firebase-messaging:23.0.8') {
+    implementation 'com.google.android.gms:play-services-auth:20.6.0'
+    implementation 'androidx.media3:media3-exoplayer:1.1.0'
+    implementation 'androidx.media3:media3-exoplayer-hls:1.1.0'
+    implementation ('com.google.firebase:firebase-messaging:23.1.2') {
         exclude group: "com.google.firebase", module: "firebase-installations"
     }
 }

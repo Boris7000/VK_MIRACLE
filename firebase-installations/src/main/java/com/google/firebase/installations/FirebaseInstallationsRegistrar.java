@@ -17,36 +17,48 @@ package com.google.firebase.installations;
 import androidx.annotation.Keep;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.annotations.concurrent.Background;
+import com.google.firebase.annotations.concurrent.Blocking;
 import com.google.firebase.components.Component;
 import com.google.firebase.components.ComponentRegistrar;
 import com.google.firebase.components.Dependency;
-import com.google.firebase.heartbeatinfo.HeartBeatInfo;
+import com.google.firebase.components.Qualified;
+import com.google.firebase.concurrent.FirebaseExecutors;
+import com.google.firebase.heartbeatinfo.HeartBeatConsumerComponent;
+import com.google.firebase.heartbeatinfo.HeartBeatController;
 import com.google.firebase.platforminfo.LibraryVersionComponent;
-import com.google.firebase.platforminfo.UserAgentPublisher;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @hide
  */
 @Keep
 public class FirebaseInstallationsRegistrar implements ComponentRegistrar {
+    private static final String LIBRARY_NAME = "fire-installations";
 
     @Override
     public List<Component<?>> getComponents() {
         return Arrays.asList(
                 Component.builder(FirebaseInstallationsApi.class)
+                        .name(LIBRARY_NAME)
                         .add(Dependency.required(FirebaseApp.class))
-                        .add(Dependency.optionalProvider(HeartBeatInfo.class))
-                        .add(Dependency.optionalProvider(UserAgentPublisher.class))
+                        .add(Dependency.optionalProvider(HeartBeatController.class))
+                        .add(Dependency.required(Qualified.qualified(Background.class, ExecutorService.class)))
+                        .add(Dependency.required(Qualified.qualified(Blocking.class, Executor.class)))
                         .factory(
                                 c ->
                                         new FirebaseInstallations(
                                                 c.get(FirebaseApp.class),
-                                                c.getProvider(UserAgentPublisher.class),
-                                                c.getProvider(HeartBeatInfo.class)))
+                                                c.getProvider(HeartBeatController.class),
+                                                c.get(Qualified.qualified(Background.class, ExecutorService.class)),
+                                                FirebaseExecutors.newSequentialExecutor(
+                                                        c.get(Qualified.qualified(Blocking.class, Executor.class)))))
                         .build(),
-                LibraryVersionComponent.create("fire-installations", "17.0.0"));
+                HeartBeatConsumerComponent.create(),
+                LibraryVersionComponent.create(LIBRARY_NAME, BuildConfig.VERSION_NAME_INSTALLATION));
     }
 }

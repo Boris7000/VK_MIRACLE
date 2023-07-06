@@ -142,6 +142,7 @@ public class CatalogBlock implements ItemDataHolder, LoadableAudioItemWC, GroupI
                 return TYPE_CATALOG_SEPARATOR;
             }
             case "slider":
+            case "recomms_slider":
             case "large_slider":
             case "music_chart_large_slider":{
                 return TYPE_CATALOG_SLIDER;
@@ -157,14 +158,10 @@ public class CatalogBlock implements ItemDataHolder, LoadableAudioItemWC, GroupI
                 return TYPE_CATALOG_TRIPLE_STACKED_SLIDER;
             }
             case "banner":{
-                switch (dataType){
-                    default:{
-                        return TYPE_ERROR;
-                    }
-                    case "artist":{
-                        return TYPE_ARTIST_BANNER;
-                    }
+                if (dataType.equals("artist")) {
+                    return TYPE_ARTIST_BANNER;
                 }
+                return TYPE_ERROR;
             }
             case "categories_list":{
                 return TYPE_CATALOG_CATEGORIES_LIST;

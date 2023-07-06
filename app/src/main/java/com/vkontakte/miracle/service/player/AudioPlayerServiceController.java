@@ -10,7 +10,7 @@ import android.os.IBinder;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 
-import com.google.android.exoplayer2.Player.RepeatMode;
+import androidx.media3.common.Player.RepeatMode;
 import com.miracle.engine.adapter.holder.ItemDataHolder;
 import com.vkontakte.miracle.MainApp;
 import com.vkontakte.miracle.engine.util.StatisticsController;

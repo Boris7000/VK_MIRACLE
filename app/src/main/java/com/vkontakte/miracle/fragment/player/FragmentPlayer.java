@@ -35,8 +35,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.media3.common.Player;
 
-import com.google.android.exoplayer2.Player;
 import com.miracle.engine.activity.MiracleActivity;
 import com.miracle.engine.async.AsyncExecutor;
 import com.miracle.engine.context.ContextExtractor;
