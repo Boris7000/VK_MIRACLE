@@ -1,24 +1,32 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 33
+    namespace 'com.google.firebase.installations'
+    compileSdk 33
 
     defaultConfig {
+        buildToolsVersion = "33.0.2"
         minSdkVersion 23
         targetSdkVersion 33
+        buildConfigField("String", "VERSION_NAME_INSTALLATION", asStringVar("17.0.2"))
+        buildConfigField("String", "PATCH_APP_ID", asStringVar("com.vkontakte.android"))
+        buildConfigField("String", "PATCH_APP_FINGERPRINT", asStringVar("48761EEF50EE53AFC4CC9C5F10E6BDE7F8F5B82F"))
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    namespace 'com.google.firebase.installations'
+}
+
+static def asStringVar(String str) {
+    return "\"$str\""
 }
 
 dependencies {
-    implementation 'com.google.firebase:firebase-common:20.1.2'
-    implementation 'com.google.firebase:firebase-installations-interop:17.0.2'
-    implementation 'com.google.firebase:firebase-components:17.0.1'
+    implementation 'com.google.firebase:firebase-common:20.3.3'
+    implementation 'com.google.firebase:firebase-installations-interop:17.1.0'
+    implementation 'com.google.firebase:firebase-components:17.1.0'
     implementation 'com.google.android.gms:play-services-tasks:18.0.2'
-    compileOnly "com.google.auto.value:auto-value-annotations:1.9"
-    annotationProcessor "com.google.auto.value:auto-value:1.8.2"
+    compileOnly "com.google.auto.value:auto-value-annotations:1.10.1"
+    annotationProcessor "com.google.auto.value:auto-value:1.10.1"
 }

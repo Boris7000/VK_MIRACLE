@@ -8,8 +8,8 @@ import android.content.SharedPreferences;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.Player.RepeatMode;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.common.Player.RepeatMode;
 import com.vkontakte.miracle.MainApp;
 
 public class AudioPlayerSettingsUtil {

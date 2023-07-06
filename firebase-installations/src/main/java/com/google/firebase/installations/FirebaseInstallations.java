@@ -14,6 +14,7 @@
 
 package com.google.firebase.installations;
 
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
 import androidx.annotation.GuardedBy;
@@ -27,7 +28,8 @@ import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.heartbeatinfo.HeartBeatInfo;
+import com.google.firebase.components.Lazy;
+import com.google.firebase.heartbeatinfo.HeartBeatController;
 import com.google.firebase.inject.Provider;
 import com.google.firebase.installations.FirebaseInstallationsException.Status;
 import com.google.firebase.installations.internal.FidListener;
@@ -38,7 +40,6 @@ import com.google.firebase.installations.local.PersistedInstallationEntry;
 import com.google.firebase.installations.remote.FirebaseInstallationServiceClient;
 import com.google.firebase.installations.remote.InstallationResponse;
 import com.google.firebase.installations.remote.TokenResult;
-import com.google.firebase.platforminfo.UserAgentPublisher;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,11 +48,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -79,9 +78,11 @@ public class FirebaseInstallations implements FirebaseInstallationsApi {
                 private final AtomicInteger mCount = new AtomicInteger(1);
 
                 @Override
+                // TODO(b/258422917): Migrate to go/firebase-android-executors
+                @SuppressLint("ThreadPoolCreation")
                 public Thread newThread(Runnable r) {
                     return new Thread(
-                            r, String.format(Locale.getDefault(),"firebase-installations-executor-%d", mCount.getAndIncrement()));
+                            r, String.format(Locale.getDefault(), "firebase-installations-executor-%d", mCount.getAndIncrement()));
                 }
             };
     private static final String API_KEY_VALIDATION_MSG =
@@ -104,15 +105,15 @@ public class FirebaseInstallations implements FirebaseInstallationsApi {
     private final FirebaseInstallationServiceClient serviceClient;
     private final PersistedInstallation persistedInstallation;
     private final Utils utils;
-    private final IidStore iidStore;
+    private final Lazy<IidStore> iidStore;
     private final RandomFidGenerator fidGenerator;
     private final Object lock = new Object();
     private final ExecutorService backgroundExecutor;
-    private final ExecutorService networkExecutor;
-    @GuardedBy("lock")
-    private final List<StateListener> listeners = new ArrayList<>();
+    private final Executor networkExecutor;
     @GuardedBy("FirebaseInstallations.this")
     private final Set<FidListener> fidListeners = new HashSet<>();
+    @GuardedBy("lock")
+    private final List<StateListener> listeners = new ArrayList<>();
     /* FID of this Firebase Installations instance. Cached after successfully registering and
     persisting the FID locally. NOTE: cachedFid resets if FID is deleted.*/
     @GuardedBy("this")
@@ -121,34 +122,35 @@ public class FirebaseInstallations implements FirebaseInstallationsApi {
     /**
      * package private constructor.
      */
+    // TODO(b/258422917): Migrate to go/firebase-android-executors
+    @SuppressLint("ThreadPoolCreation")
     FirebaseInstallations(
             FirebaseApp firebaseApp,
-            @NonNull Provider<UserAgentPublisher> publisher,
-            @NonNull Provider<HeartBeatInfo> heartbeatInfo) {
+            @NonNull Provider<HeartBeatController> heartBeatProvider,
+            @NonNull ExecutorService backgroundExecutor,
+            @NonNull Executor networkExecutor) {
         this(
-                new ThreadPoolExecutor(
-                        CORE_POOL_SIZE,
-                        MAXIMUM_POOL_SIZE,
-                        KEEP_ALIVE_TIME_IN_SECONDS,
-                        TimeUnit.SECONDS,
-                        new LinkedBlockingQueue<>(),
-                        THREAD_FACTORY),
+                backgroundExecutor,
+                networkExecutor,
                 firebaseApp,
                 new FirebaseInstallationServiceClient(
-                        firebaseApp.getApplicationContext(), publisher, heartbeatInfo),
+                        heartBeatProvider),
                 new PersistedInstallation(firebaseApp),
                 Utils.getInstance(),
-                new IidStore(firebaseApp),
+                new Lazy<>(() -> new IidStore(firebaseApp)),
                 new RandomFidGenerator());
     }
 
+    // TODO(b/258422917): Migrate to go/firebase-android-executors
+    @SuppressLint("ThreadPoolCreation")
     FirebaseInstallations(
             ExecutorService backgroundExecutor,
+            Executor networkExecutor,
             FirebaseApp firebaseApp,
             FirebaseInstallationServiceClient serviceClient,
             PersistedInstallation persistedInstallation,
             Utils utils,
-            IidStore iidStore,
+            Lazy<IidStore> iidStore,
             RandomFidGenerator fidGenerator) {
         this.firebaseApp = firebaseApp;
         this.serviceClient = serviceClient;
@@ -157,14 +159,7 @@ public class FirebaseInstallations implements FirebaseInstallationsApi {
         this.iidStore = iidStore;
         this.fidGenerator = fidGenerator;
         this.backgroundExecutor = backgroundExecutor;
-        networkExecutor =
-                new ThreadPoolExecutor(
-                        CORE_POOL_SIZE,
-                        MAXIMUM_POOL_SIZE,
-                        KEEP_ALIVE_TIME_IN_SECONDS,
-                        TimeUnit.SECONDS,
-                        new LinkedBlockingQueue<>(),
-                        THREAD_FACTORY);
+        this.networkExecutor = networkExecutor;
     }
 
     /**
@@ -275,7 +270,7 @@ public class FirebaseInstallations implements FirebaseInstallationsApi {
 
     /**
      * Call to delete this Firebase app installation from the Firebase backend. This call may cause
-     * Firebase Cloud Messaging, Firebase Remote Config, Firebase Predictions, or Firebase In-App
+     * Firebase Cloud Messaging, Firebase Remote Config, Firebase A/B Testing, or Firebase In-App
      * Messaging to not function properly.
      */
     @NonNull
@@ -294,7 +289,7 @@ public class FirebaseInstallations implements FirebaseInstallationsApi {
     public synchronized FidListenerHandle registerFidListener(@NonNull FidListener listener) {
         fidListeners.add(listener);
         return () -> {
-            synchronized (FirebaseInstallations.this) {
+            synchronized (this) {
                 fidListeners.remove(listener);
             }
         };
@@ -364,7 +359,7 @@ public class FirebaseInstallations implements FirebaseInstallationsApi {
      * @param forceRefresh true if this is for a getAuthToken call and if the caller wants to fetch a
      *                     new auth token from the server even if an unexpired auth token exists on the client.
      */
-    private final void doRegistrationOrRefresh(boolean forceRefresh) {
+    private void doRegistrationOrRefresh(boolean forceRefresh) {
 
         PersistedInstallationEntry prefs = getPrefsWithGeneratedIdMultiProcessSafe();
 
@@ -378,6 +373,10 @@ public class FirebaseInstallations implements FirebaseInstallationsApi {
         // Execute network calls (CreateInstallations or GenerateAuthToken) to the FIS Servers on
         // a separate executor i.e networkExecutor
         networkExecutor.execute(() -> doNetworkCallIfNecessary(forceRefresh));
+    }
+
+    private IidStore getIidStore() {
+        return iidStore.get();
     }
 
     private void doNetworkCallIfNecessary(boolean forceRefresh) {
@@ -428,7 +427,8 @@ public class FirebaseInstallations implements FirebaseInstallationsApi {
     private synchronized void updateFidListener(
             PersistedInstallationEntry prefs, PersistedInstallationEntry updatedPrefs) {
         if (fidListeners.size() != 0
-                && !prefs.getFirebaseInstallationId().equals(updatedPrefs.getFirebaseInstallationId())) {
+                && !TextUtils.equals(
+                prefs.getFirebaseInstallationId(), updatedPrefs.getFirebaseInstallationId())) {
             // Update all the registered FidListener about fid changes.
             for (FidListener listener : fidListeners) {
                 listener.onFidChanged(updatedPrefs.getFirebaseInstallationId());
@@ -511,7 +511,7 @@ public class FirebaseInstallations implements FirebaseInstallationsApi {
             return fidGenerator.createRandomFid();
         }
         // For a default/chime firebase installation, read the existing iid from shared prefs
-        String fid = iidStore.readIid();
+        String fid = getIidStore().readIid();
         if (TextUtils.isEmpty(fid)) {
             fid = fidGenerator.createRandomFid();
         }
@@ -531,7 +531,7 @@ public class FirebaseInstallations implements FirebaseInstallationsApi {
                 && prefs.getFirebaseInstallationId().length() == 11) {
             // For a default firebase installation, read the stored star scoped iid token. This token
             // will be used for authenticating Instance-ID when migrating to FIS.
-            iidToken = iidStore.readToken();
+            iidToken = getIidStore().readToken();
         }
 
         InstallationResponse response =

@@ -11,6 +11,7 @@ import static com.vkontakte.miracle.service.player.AudioPlayerControls.ACTION_SE
 import static com.vkontakte.miracle.service.player.AudioPlayerControls.ACTION_STOP;
 import static com.vkontakte.miracle.service.player.AudioPlayerControls.playbackAction;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -38,14 +39,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.PlaybackException;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.Player.RepeatMode;
-import com.google.android.exoplayer2.analytics.AnalyticsListener;
-import com.google.android.exoplayer2.audio.AudioAttributes;
+import androidx.media3.common.AudioAttributes;
+import androidx.media3.common.C;
+import androidx.media3.common.util.UnstableApi;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.common.MediaItem;
+import androidx.media3.common.PlaybackException;
+import androidx.media3.common.Player;
+import androidx.media3.common.Player.RepeatMode;
+import androidx.media3.exoplayer.analytics.AnalyticsListener;
+
 import com.miracle.engine.async.baseExecutors.SimpleTimer;
 import com.miracle.engine.util.DimensionsUtil;
 import com.squareup.picasso.Picasso;
@@ -631,8 +634,9 @@ public class AudioPlayerService extends Service implements ExoPlayer.Listener, A
 
     ///////////////////////////////////////////////////////////////////////////
 
+    @SuppressLint("UnsafeOptInUsageError")
     @Override
-    public void onPlayWhenReadyChanged(@NonNull EventTime eventTime, boolean playWhenReady, int reason) {
+    public void onPlayWhenReadyChanged(@NonNull AnalyticsListener.EventTime eventTime, boolean playWhenReady, int reason) {
         AudioItem audioItem = audioPlayerMedia.getCurrentAudioItem();
         Notification notification = createNotification(audioItem, songImage, playWhenReady);
         notificationManager.notify(NOTIFICATION_ID, notification);
@@ -654,6 +658,7 @@ public class AudioPlayerService extends Service implements ExoPlayer.Listener, A
         notifyOnStateChange();
     }
 
+    @SuppressLint("UnsafeOptInUsageError")
     @Override
     public void onPlaybackStateChanged(@NonNull EventTime eventTime, int playbackState) {
         if(playbackState==ExoPlayer.STATE_READY){

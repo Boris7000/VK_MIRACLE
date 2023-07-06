@@ -3,9 +3,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
+    namespace 'com.miracle.button'
+    compileSdk 33
 
     defaultConfig {
+        buildToolsVersion = "33.0.2"
         minSdkVersion 23
         targetSdkVersion 33
     }
@@ -20,13 +22,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    namespace 'com.miracle.button'
 }
 
 dependencies {
     testImplementation 'junit:junit:4.13.2'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
